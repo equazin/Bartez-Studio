@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { company, seo } from "../constants";
+import { company } from "../constants";
 
 export const runtime = "edge";
 export const alt = company.name;
@@ -17,9 +17,9 @@ export default function OG() {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: "72px",
-          background: "linear-gradient(150deg,#0c3520 0%,#0A2818 60%,#061a10 100%)",
+          background: "linear-gradient(135deg,#0F2747 0%,#0A1A33 60%,#070f1f 100%)",
           color: "#fff",
-          fontFamily: "Georgia, serif",
+          fontFamily: "sans-serif",
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
@@ -28,32 +28,32 @@ export default function OG() {
               width: 56,
               height: 56,
               borderRadius: 14,
-              background: "linear-gradient(135deg,#22C55E,#14532D)",
+              background: "linear-gradient(135deg,#2563EB,#06B6D4)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              color: "#0A2818",
-              fontSize: 34,
-              fontWeight: 600,
+              color: "#fff",
+              fontSize: 32,
+              fontWeight: 700,
             }}
           >
             B
           </div>
-          <div style={{ fontSize: 30, fontWeight: 700, fontFamily: "sans-serif" }}>
-            Bartez <span style={{ color: "#B8956A", fontWeight: 500 }}>· Tecnología</span>
+          <div style={{ fontSize: 30, fontWeight: 700 }}>
+            Bartez <span style={{ color: "#38BDF8", fontWeight: 500 }}>Tecnología</span>
           </div>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ fontSize: 76, lineHeight: 1.05, letterSpacing: "-0.02em", maxWidth: 900 }}>
-            {company.tagline}
+          <div style={{ fontSize: 70, lineHeight: 1.05, letterSpacing: "-0.02em", maxWidth: 940, fontWeight: 700 }}>
+            El partner tecnológico de tu empresa.
           </div>
-          <div style={{ fontSize: 28, color: "rgba(255,255,255,.72)", marginTop: 24, fontFamily: "sans-serif", maxWidth: 880 }}>
-            Distribución mayorista de hardware IT · Rosario, Argentina
+          <div style={{ fontSize: 27, color: "rgba(255,255,255,.75)", marginTop: 22, maxWidth: 900 }}>
+            Mayorista de hardware IT + servicios profesionales · Rosario, Argentina
           </div>
         </div>
 
-        <div style={{ display: "flex", gap: 36, color: "#B8956A", fontSize: 22, fontFamily: "sans-serif" }}>
+        <div style={{ display: "flex", gap: 30, color: "#38BDF8", fontSize: 22 }}>
           <span>+14.000 productos</span>
           <span>·</span>
           <span>Cotización en 24 hs</span>

@@ -2,121 +2,144 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
-import { ArrowRight, ChevronDown } from "lucide-react";
+import { Server, Laptop, Network, Cloud, Cctv, HardDrive, ShieldCheck, Clock } from "lucide-react";
 import { hero } from "../../constants";
+import { Button } from "../ui/Button";
+
+const nodes = [
+  { icon: Laptop, label: "Notebooks", x: 8, y: 12 },
+  { icon: Network, label: "Redes", x: 78, y: 8 },
+  { icon: Cloud, label: "Cloud", x: 84, y: 62 },
+  { icon: Cctv, label: "CCTV", x: 60, y: 90 },
+  { icon: HardDrive, label: "Storage", x: 6, y: 72 },
+];
 
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const yDevice = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : -60]);
-  const yPill = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : 40]);
+  const yVisual = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : -50]);
 
   return (
     <section
       id="top"
       ref={ref}
-      className="relative overflow-hidden bg-[linear-gradient(160deg,#0c3520_0%,#0A2818_100%)] text-white"
+      className="relative overflow-hidden bg-ink text-white"
     >
-      <div className="pointer-events-none absolute inset-0 grid-lines" aria-hidden />
-      <div
-        className="pointer-events-none absolute -right-20 top-0 h-[480px] w-[480px] rounded-full opacity-70 blur-2xl"
-        style={{ background: "radial-gradient(circle, rgba(34,197,94,.22), transparent 65%)" }}
-        aria-hidden
-      />
+      {/* fondo tech */}
+      <div className="pointer-events-none absolute inset-0 bg-grid-tech [background-size:48px_48px] [mask-image:radial-gradient(120%_100%_at_50%_0%,#000_40%,transparent_80%)]" aria-hidden />
+      <div className="pointer-events-none absolute -left-32 top-10 h-[420px] w-[420px] rounded-full bg-brand/25 blur-[100px]" aria-hidden />
+      <div className="pointer-events-none absolute right-0 top-40 h-[380px] w-[380px] rounded-full bg-accent/20 blur-[100px]" aria-hidden />
 
-      <div className="relative z-10 mx-auto grid max-w-[1200px] items-center gap-10 px-7 pb-20 pt-28 md:grid-cols-[1.05fr_.95fr] md:pt-32">
+      <div className="relative z-10 mx-auto grid max-w-[1200px] items-center gap-12 px-7 pb-20 pt-32 md:grid-cols-[1.05fr_.95fr] md:pt-40">
         <div>
           <motion.span
-            initial={reduce ? false : { opacity: 0, y: 14 }}
+            initial={reduce ? false : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="mb-6 inline-flex items-center gap-2 rounded-full border border-bronce/35 px-4 py-1.5 text-[12.5px] font-semibold text-bronce"
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-[12.5px] font-medium text-sky"
           >
-            ◆ {hero.eyebrow}
+            <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulseline" />
+            {hero.eyebrow}
           </motion.span>
 
           <motion.h1
             initial={reduce ? false : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.05 }}
-            className="font-serif text-[clamp(42px,5.5vw,72px)] leading-[1.02] tracking-[-0.02em] text-balance"
+            transition={{ duration: 0.6, delay: 0.05 }}
+            className="mt-6 font-display text-[clamp(38px,5vw,64px)] font-bold leading-[1.04] tracking-[-0.02em] text-balance"
           >
-            {hero.title}
+            El partner <span className="text-gradient">tecnológico</span> de tu empresa.
           </motion.h1>
 
           <motion.p
-            initial={reduce ? false : { opacity: 0, y: 18 }}
+            initial={reduce ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.12 }}
-            className="mt-6 max-w-[46ch] text-[clamp(16px,1.4vw,19px)] text-white/75"
+            transition={{ duration: 0.6, delay: 0.12 }}
+            className="mt-6 max-w-[52ch] text-[clamp(15px,1.3vw,18px)] leading-relaxed text-slate-300"
           >
             {hero.subtitle}
           </motion.p>
 
           <motion.div
-            initial={reduce ? false : { opacity: 0, y: 16 }}
+            initial={reduce ? false : { opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.18 }}
-            className="mt-9 flex flex-wrap gap-3.5"
+            transition={{ duration: 0.6, delay: 0.18 }}
+            className="mt-8 flex flex-wrap gap-3.5"
           >
-            <a
-              href={hero.ctaPrimary.href}
-              className="inline-flex items-center gap-2 rounded-full bg-verde px-7 py-3.5 text-[15px] font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-verde-acento hover:text-verde-deep hover:shadow-glow"
-            >
-              {hero.ctaPrimary.label} <ArrowRight size={18} />
-            </a>
-            <a
-              href={hero.ctaSecondary.href}
-              className="inline-flex items-center gap-2 rounded-full border border-white/35 px-7 py-3.5 text-[15px] font-semibold text-white transition-colors hover:border-verde-acento hover:text-verde-acento"
-            >
+            <Button href={hero.ctaPrimary.href} variant="primary" arrow>
+              {hero.ctaPrimary.label}
+            </Button>
+            <Button href={hero.ctaSecondary.href} variant="ghost-light">
               {hero.ctaSecondary.label}
-            </a>
+            </Button>
           </motion.div>
 
-          <div className="mt-16 flex items-center gap-2.5 text-[12px] uppercase tracking-[0.1em] text-white/50">
-            <ChevronDown size={16} className="animate-bounce" /> Partners oficiales abajo
+          <div className="mt-12 grid max-w-md grid-cols-2 gap-x-8 gap-y-5 sm:grid-cols-4">
+            {hero.stats.map((s) => (
+              <div key={s.label}>
+                <div className="font-display text-[26px] font-bold text-white">{s.value}</div>
+                <div className="text-[12px] leading-tight text-slate-400">{s.label}</div>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Visual de hardware (servidor render CSS) con parallax */}
-        <motion.div style={{ y: yDevice }} className="relative">
-          <div className="relative aspect-[4/3.4] overflow-hidden rounded-3xl border border-bronce/25 bg-[#0b2f1d] shadow-[0_40px_80px_-30px_rgba(0,0,0,.6)]">
-            <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  "linear-gradient(150deg,rgba(34,197,94,.10),rgba(10,40,24,.2)),radial-gradient(80% 80% at 70% 20%,rgba(184,149,106,.18),transparent 60%)",
-              }}
-              aria-hidden
-            />
-            <div className="absolute left-1/2 top-1/2 w-[62%] -translate-x-1/2 -translate-y-1/2">
-              {[0, 1, 2, 3, 4].map((i) => (
-                <div
-                  key={i}
-                  className="relative mb-2.5 flex h-[30px] items-center gap-1.5 rounded-md border border-bronce/25 bg-[linear-gradient(90deg,#16321f,#1d4a2e)] px-3"
-                >
-                  <span className={`h-[7px] w-[7px] rounded-full ${i % 2 ? "bg-bronce" : "bg-verde-acento shadow-[0_0_8px_#22C55E]"}`} />
-                  <span className={`h-[7px] w-[7px] rounded-full ${i % 3 ? "bg-verde-acento shadow-[0_0_8px_#22C55E]" : "bg-bronce"}`} />
-                  <span
-                    className="ml-auto h-[11px] w-[42%] rounded-sm"
-                    style={{ background: "repeating-linear-gradient(90deg,rgba(184,149,106,.3) 0 3px,transparent 3px 7px)" }}
-                  />
-                </div>
+        {/* Visual: topología de infraestructura */}
+        <motion.div style={{ y: yVisual }} className="relative">
+          <div className="relative aspect-square rounded-3xl border border-white/10 bg-gradient-to-br from-navy/80 to-ink p-4 shadow-card">
+            <div className="absolute inset-4 rounded-2xl bg-grid-tech [background-size:28px_28px] opacity-40" aria-hidden />
+
+            {/* líneas SVG centro→satélites */}
+            <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+              {nodes.map((n, i) => (
+                <line key={i} x1="50" y1="50" x2={n.x + 8} y2={n.y + 8} stroke="url(#lg)" strokeWidth="0.5" className="animate-pulseline" style={{ animationDelay: `${i * 0.3}s` }} />
               ))}
+              <defs>
+                <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stopColor="#38BDF8" stopOpacity="0.9" />
+                  <stop offset="1" stopColor="#06B6D4" stopOpacity="0.2" />
+                </linearGradient>
+              </defs>
+            </svg>
+
+            {/* nodo central */}
+            <div className="absolute left-1/2 top-1/2 z-10 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-1.5 rounded-2xl border border-accent/40 bg-brand/20 px-5 py-4 backdrop-blur-sm">
+              <Server className="h-7 w-7 text-sky" strokeWidth={1.6} />
+              <span className="text-[12px] font-semibold">Datacenter</span>
+              <span className="flex items-center gap-1 text-[10px] text-emerald">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald" /> online
+              </span>
             </div>
-            <span className="absolute bottom-3.5 right-3.5 rounded-full bg-verde-acento px-3 py-1.5 text-[11px] font-semibold text-verde-deep">
-              ● Stock disponible
-            </span>
+
+            {/* nodos satélite */}
+            {nodes.map((n) => (
+              <div
+                key={n.label}
+                className="absolute z-10 flex flex-col items-center gap-1 rounded-xl border border-white/10 bg-white/[0.06] px-3 py-2 backdrop-blur-sm"
+                style={{ left: `${n.x}%`, top: `${n.y}%` }}
+              >
+                <n.icon className="h-[18px] w-[18px] text-sky" strokeWidth={1.6} />
+                <span className="text-[10.5px] text-slate-200">{n.label}</span>
+              </div>
+            ))}
           </div>
 
-          <motion.div
-            style={{ y: yPill }}
-            className="absolute -left-3.5 top-8 rounded-2xl bg-crema/95 px-4 py-3 text-[13px] font-semibold text-texto shadow-[0_16px_40px_-16px_rgba(0,0,0,.5)]"
-          >
-            <span className="block text-[10px] font-semibold uppercase tracking-[0.1em] text-bronce">Entrega</span>
-            Rosario → todo el país
-          </motion.div>
+          {/* badges flotantes */}
+          <div className="absolute -left-4 top-16 flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-ink shadow-lg">
+            <ShieldCheck className="h-5 w-5 text-emerald" />
+            <div className="text-[12px] leading-tight">
+              <div className="font-semibold">Garantía oficial</div>
+              <div className="text-slate-500">marcas líderes</div>
+            </div>
+          </div>
+          <div className="absolute -right-3 bottom-10 flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-ink shadow-lg">
+            <Clock className="h-5 w-5 text-brand" />
+            <div className="text-[12px] leading-tight">
+              <div className="font-semibold">Soporte B2B</div>
+              <div className="text-slate-500">respuesta 24 hs</div>
+            </div>
+          </div>
         </motion.div>
       </div>
     </section>

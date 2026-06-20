@@ -39,9 +39,19 @@ export const contact = {
   },
 };
 
+export const topbar = {
+  items: [
+    { icon: "MapPin", text: "Rosario · Entrega a todo el país" },
+    { icon: "ReceiptText", text: "Responsable Inscripto · Factura A" },
+    { icon: "Headset", text: "Atención B2B dedicada" },
+  ],
+  cta: { label: "Abrí tu cuenta corporativa", href: "#contacto" },
+};
+
 export const nav = {
   links: [
     { label: "Soluciones", href: "#soluciones" },
+    { label: "Servicios", href: "#servicios" },
     { label: "Catálogo", href: "#catalogo" },
     { label: "Nosotros", href: "#nosotros" },
     { label: "Contacto", href: "#contacto" },
@@ -50,15 +60,16 @@ export const nav = {
 };
 
 export const hero = {
-  eyebrow: "Hardware IT corporativo · Entrega a todo el país",
-  title: "Tecnología que mueve empresas.",
+  eyebrow: "Distribuidor mayorista de tecnología IT + servicios",
+  title: "El partner tecnológico de tu empresa.",
   subtitle:
-    "Servidores, notebooks corporativas, redes e infraestructura. El partner mayorista que garantiza continuidad operativa a empresas medianas y grandes de toda la Argentina.",
+    "Distribución mayorista de hardware IT y servicios profesionales: servidores, notebooks corporativas, redes, infraestructura, soporte e implementación. Todo con stock real, precios mayoristas y respaldo de ingeniería.",
   ctaPrimary: { label: "Pedí tu cotización", href: "#contacto" },
-  ctaSecondary: { label: "Hablá con un asesor", href: "#contacto" },
+  ctaSecondary: { label: "Ver soluciones", href: "#soluciones" },
   stats: [
     { value: "+14.000", label: "productos en catálogo" },
     { value: "24 hs", label: "cotización promedio" },
+    { value: "8", label: "marcas oficiales" },
     { value: "País", label: "cobertura nacional" },
   ],
 };
@@ -147,8 +158,47 @@ export const solutions = {
   ],
 };
 
-export const whyBartez = {
+export const services = {
   num: "02",
+  eyebrow: "Servicios IT",
+  title: "No solo vendemos equipos: te acompañamos en todo el ciclo.",
+  desc: "Sumá a la distribución de hardware un equipo técnico que diseña, implementa y soporta tu infraestructura.",
+  items: [
+    {
+      icon: "DraftingCompass",
+      title: "Ingeniería y dimensionamiento",
+      desc: "Relevamos tu operación y diseñamos la solución correcta antes de cotizar.",
+    },
+    {
+      icon: "Wrench",
+      title: "Implementación e instalación",
+      desc: "Puesta en marcha de servidores, redes y CCTV con técnicos certificados.",
+    },
+    {
+      icon: "Headset",
+      title: "Soporte y mantenimiento",
+      desc: "Mesa de ayuda y mantenimiento preventivo para continuidad operativa.",
+    },
+    {
+      icon: "ShieldCheck",
+      title: "Garantía y posventa",
+      desc: "Gestión de garantías oficiales y reemplazos con respaldo de marca.",
+    },
+    {
+      icon: "Cloud",
+      title: "Infraestructura y cloud",
+      desc: "Virtualización, almacenamiento y soluciones híbridas a medida.",
+    },
+    {
+      icon: "Boxes",
+      title: "Abastecimiento corporativo",
+      desc: "Provisión recurrente y stock dedicado para tu fleet y recambios.",
+    },
+  ],
+};
+
+export const whyBartez = {
+  num: "03",
   eyebrow: "Nosotros",
   title: "Un proveedor de confianza para la continuidad de tu operación.",
   body: [
@@ -172,7 +222,7 @@ export const testimonial = {
 };
 
 export const catalogPreview = {
-  num: "03",
+  num: "04",
   eyebrow: "Catálogo destacado",
   title: "Algunos de los productos con stock disponible.",
   cta: { label: "Ver catálogo completo", href: "#contacto" },
@@ -190,7 +240,7 @@ export const catalogPreview = {
 };
 
 export const process = {
-  num: "04",
+  num: "05",
   eyebrow: "Proceso comercial",
   title: "De la consulta a la entrega, sin fricciones.",
   steps: [
@@ -202,7 +252,7 @@ export const process = {
 };
 
 export const contactSection = {
-  num: "05",
+  num: "06",
   eyebrow: "Contacto",
   title: "Cotizá tu próximo proyecto IT.",
   lead: "Respondé el formulario y un asesor comercial te contacta. Cotización formal en 24 hs hábiles.",

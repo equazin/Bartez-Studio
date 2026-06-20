@@ -3,6 +3,7 @@ import { Hero } from "../components/sections/Hero";
 import { TrustBar } from "../components/sections/TrustBar";
 import { Pillars } from "../components/sections/Pillars";
 import { Solutions } from "../components/sections/Solutions";
+import { Services } from "../components/sections/Services";
 import { WhyBartez } from "../components/sections/WhyBartez";
 import { Testimonial } from "../components/sections/Testimonial";
 import { CatalogPreview } from "../components/sections/CatalogPreview";
@@ -23,9 +24,10 @@ export default function Home() {
         <TrustBar />
         <Pillars />
         <Solutions />
+        <Services />
         <WhyBartez />
-        <Testimonial />
         <CatalogPreview />
+        <Testimonial />
         <Process />
         <Contact />
         <Downloads />
