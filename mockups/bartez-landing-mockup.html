@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bartez Tecnología — Mockup landing (Hero A/B · Soluciones · Contacto)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --verde:#14532D;
+    --verde-deep:#0A2818;
+    --verde-acento:#22C55E;
+    --crema:#FAF8F3;
+    --texto:#0F1F17;
+    --bronce:#B8956A;
+    --r:20px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',system-ui,sans-serif;color:var(--texto);background:var(--crema);line-height:1.55;-webkit-font-smoothing:antialiased}
+  .serif{font-family:'Fraunces',Georgia,serif;font-weight:500;letter-spacing:-.02em;line-height:1.02}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+  .eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--bronce);font-weight:600}
+  a{color:inherit;text-decoration:none}
+  .btn{display:inline-flex;align-items:center;gap:9px;font-weight:600;font-size:15px;border-radius:999px;padding:14px 26px;cursor:pointer;transition:.25s ease;border:1px solid transparent}
+  .btn-primary{background:var(--verde);color:#fff}
+  .btn-primary:hover{background:var(--verde-acento);color:var(--verde-deep);transform:translateY(-2px);box-shadow:0 14px 30px -12px rgba(34,197,94,.5)}
+  .btn-ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.35)}
+  .btn-ghost:hover{border-color:var(--verde-acento);color:var(--verde-acento)}
+  .btn-ghost-dark{background:transparent;color:var(--verde);border-color:rgba(20,83,45,.3)}
+  .btn-ghost-dark:hover{border-color:var(--verde);background:rgba(20,83,45,.05)}
+
+  /* NAV */
+  nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:rgba(10,40,24,.55);border-bottom:1px solid rgba(184,149,106,.18)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .logo{display:flex;align-items:center;gap:10px;color:#fff;font-weight:700;font-size:19px;letter-spacing:-.01em}
+  .logo .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--verde-acento),var(--verde));display:grid;place-items:center;color:var(--verde-deep);font-family:'Fraunces',serif;font-weight:600}
+  .nav-links{display:flex;gap:30px;align-items:center}
+  .nav-links a{color:rgba(255,255,255,.82);font-size:14.5px;font-weight:500;transition:.2s}
+  .nav-links a:hover{color:var(--verde-acento)}
+  @media(max-width:860px){.nav-links a:not(.btn){display:none}}
+
+  /* HERO base */
+  .hero{position:relative;overflow:hidden;color:#fff}
+  .hero-label{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;letter-spacing:.04em;color:var(--bronce);border:1px solid rgba(184,149,106,.35);padding:7px 15px;border-radius:999px;margin-bottom:26px}
+  .hero h1{font-size:clamp(46px,7vw,84px);max-width:14ch}
+  .hero p.sub{font-size:clamp(16px,1.4vw,19px);color:rgba(255,255,255,.74);max-width:46ch;margin-top:26px}
+  .hero-cta{display:flex;gap:14px;margin-top:38px;flex-wrap:wrap}
+  .scroll-ind{display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.5);font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-top:64px}
+  .scroll-ind .line{width:1px;height:40px;background:linear-gradient(var(--bronce),transparent)}
+
+  /* HERO A — geométrico verde + líneas doradas */
+  .heroA{background:radial-gradient(120% 120% at 80% 0%,#10402a 0%,var(--verde-deep) 55%,#061a10 100%)}
+  .heroA .wrap{position:relative;z-index:2;padding-top:92px;padding-bottom:64px}
+  .heroA .geo{position:absolute;inset:0;z-index:1;opacity:.9;pointer-events:none}
+  .heroA .ring{position:absolute;border:1px solid rgba(184,149,106,.22);border-radius:50%}
+  .heroA .r1{width:620px;height:620px;right:-160px;top:-140px}
+  .heroA .r2{width:420px;height:420px;right:-40px;top:-30px;border-color:rgba(34,197,94,.18)}
+  .heroA .r3{width:240px;height:240px;right:80px;top:80px}
+  .heroA .glow{position:absolute;width:480px;height:480px;right:-60px;top:-40px;background:radial-gradient(circle,rgba(34,197,94,.22),transparent 65%);filter:blur(20px)}
+  .heroA .grid-lines{position:absolute;inset:0;background-image:linear-gradient(rgba(184,149,106,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(184,149,106,.06) 1px,transparent 1px);background-size:64px 64px;mask-image:linear-gradient(180deg,transparent,#000 30%,#000 70%,transparent)}
+  .stat-row{display:flex;gap:40px;margin-top:50px;flex-wrap:wrap}
+  .stat-row .s b{font-family:'Fraunces',serif;font-size:30px;display:block;color:#fff}
+  .stat-row .s span{font-size:13px;color:rgba(255,255,255,.6)}
+
+  /* HERO B — split con visual de hardware */
+  .heroB{background:linear-gradient(160deg,#0c3520 0%,var(--verde-deep) 100%)}
+  .heroB .split{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;padding:88px 0 72px;position:relative;z-index:2}
+  @media(max-width:900px){.heroB .split{grid-template-columns:1fr}}
+  .heroB h1{font-size:clamp(42px,5.5vw,72px)}
+  .device{position:relative;aspect-ratio:4/3.4;border-radius:24px;background:
+    linear-gradient(150deg,rgba(34,197,94,.10),rgba(10,40,24,.2)),
+    radial-gradient(80% 80% at 70% 20%,rgba(184,149,106,.18),transparent 60%),
+    #0b2f1d;
+    border:1px solid rgba(184,149,106,.25);overflow:hidden;box-shadow:0 40px 80px -30px rgba(0,0,0,.6)}
+  .device .server{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:62%}
+  .device .u{height:30px;border-radius:7px;background:linear-gradient(90deg,#16321f,#1d4a2e);border:1px solid rgba(184,149,106,.25);margin-bottom:11px;position:relative;display:flex;align-items:center;padding:0 12px;gap:6px}
+  .device .u i{width:7px;height:7px;border-radius:50%;background:var(--verde-acento);box-shadow:0 0 8px var(--verde-acento)}
+  .device .u i.amber{background:var(--bronce);box-shadow:none}
+  .device .u .bay{margin-left:auto;width:42%;height:11px;border-radius:3px;background:repeating-linear-gradient(90deg,rgba(184,149,106,.3) 0 3px,transparent 3px 7px)}
+  .device .badge{position:absolute;bottom:14px;right:14px;font-size:11px;font-weight:600;color:var(--verde-deep);background:var(--verde-acento);padding:6px 12px;border-radius:999px}
+  .heroB .floatpill{position:absolute;left:-14px;top:30px;background:rgba(250,248,243,.96);color:var(--texto);border-radius:14px;padding:12px 16px;font-size:13px;font-weight:600;box-shadow:0 16px 40px -16px rgba(0,0,0,.5)}
+  .heroB .floatpill small{display:block;color:var(--bronce);font-weight:600;font-size:10px;letter-spacing:.1em;text-transform:uppercase}
+
+  .variant-tag{position:absolute;top:16px;left:50%;transform:translateX(-50%);z-index:9;background:var(--bronce);color:#1a1208;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:6px 16px;border-radius:999px}
+
+  /* TRUST */
+  .trust{background:var(--verde-deep);padding:30px 0;border-top:1px solid rgba(255,255,255,.06)}
+  .trust p{text-align:center;color:rgba(255,255,255,.45);font-size:12px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:18px}
+  .trust .logos{display:flex;justify-content:center;gap:46px;flex-wrap:wrap;align-items:center}
+  .trust .logos span{color:rgba(255,255,255,.42);font-weight:700;font-size:20px;letter-spacing:-.02em;filter:grayscale(1);transition:.3s}
+  .trust .logos span:hover{color:rgba(255,255,255,.85)}
+
+  /* SOLUCIONES */
+  section.sol{padding:110px 0;background:var(--crema)}
+  .sec-head{max-width:660px;margin-bottom:54px}
+  .sec-head .num{font-family:'Fraunces',serif;color:var(--bronce);font-size:15px;border-bottom:1px solid var(--bronce);padding-bottom:4px}
+  .sec-head h2{font-size:clamp(34px,4.4vw,56px);margin-top:20px;color:var(--verde-deep)}
+  .sec-head p{color:#4a5a50;font-size:17px;margin-top:16px}
+  .sol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  @media(max-width:900px){.sol-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:600px){.sol-grid{grid-template-columns:1fr}}
+  .card{position:relative;border-radius:var(--r);overflow:hidden;background:#fff;border:1px solid rgba(20,83,45,.08);padding:0;min-height:300px;display:flex;flex-direction:column;justify-content:flex-end;transition:.35s cubic-bezier(.2,.7,.2,1);box-shadow:0 1px 2px rgba(15,31,23,.04)}
+  .card:hover{transform:translateY(-6px);box-shadow:0 30px 60px -28px rgba(20,83,45,.35);border-color:rgba(184,149,106,.4)}
+  .card .img{position:absolute;inset:0;background:linear-gradient(160deg,#10402a,var(--verde-deep))}
+  .card.c1 .img{background:linear-gradient(160deg,#16432c,#0a2818)}
+  .card.c2 .img{background:linear-gradient(160deg,#1b4d31,#0c331f)}
+  .card.c3 .img{background:linear-gradient(160deg,#123d27,#08230f)}
+  .card.c4 .img{background:linear-gradient(160deg,#1d5235,#0a2818)}
+  .card.c5 .img{background:linear-gradient(160deg,#14492e,#0b2c1b)}
+  .card.c6 .img{background:linear-gradient(160deg,#17472d,#082110)}
+  .card .img::after{content:"";position:absolute;inset:0;background:radial-gradient(70% 60% at 75% 15%,rgba(184,149,106,.18),transparent 60%),linear-gradient(transparent 35%,rgba(6,20,12,.85))}
+  .card .glyph{position:absolute;top:22px;left:22px;width:46px;height:46px;border-radius:12px;background:rgba(255,255,255,.08);border:1px solid rgba(184,149,106,.35);display:grid;place-items:center;color:var(--verde-acento);z-index:2}
+  .card .body{position:relative;z-index:2;padding:26px;color:#fff}
+  .card .body .cat{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--bronce);font-weight:600}
+  .card .body h3{font-family:'Fraunces',serif;font-size:23px;margin:8px 0 6px}
+  .card .body p{font-size:13.5px;color:rgba(255,255,255,.7)}
+  .card .more{display:inline-flex;align-items:center;gap:7px;color:var(--verde-acento);font-weight:600;font-size:14px;margin-top:16px;opacity:0;transform:translateY(8px);transition:.35s}
+  .card:hover .more{opacity:1;transform:translateY(0)}
+
+  /* CONTACTO */
+  section.contacto{padding:110px 0;background:var(--verde-deep);color:#fff;position:relative;overflow:hidden}
+  section.contacto .glow2{position:absolute;width:600px;height:600px;left:-150px;bottom:-200px;background:radial-gradient(circle,rgba(34,197,94,.14),transparent 65%);filter:blur(10px)}
+  .contact-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:56px;position:relative;z-index:2}
+  @media(max-width:900px){.contact-grid{grid-template-columns:1fr;gap:40px}}
+  .contacto h2{font-size:clamp(34px,4.4vw,54px)}
+  .contacto .lead{color:rgba(255,255,255,.7);margin-top:16px;font-size:16px;max-width:38ch}
+  .cinfo{margin-top:34px;display:flex;flex-direction:column;gap:20px}
+  .cinfo .row{display:flex;gap:14px;align-items:flex-start}
+  .cinfo .ic{width:42px;height:42px;border-radius:11px;background:rgba(255,255,255,.06);border:1px solid rgba(184,149,106,.3);display:grid;place-items:center;color:var(--verde-acento);flex:none}
+  .cinfo .row b{display:block;font-size:15px}
+  .cinfo .row span{font-size:13.5px;color:rgba(255,255,255,.6)}
+  .form{background:rgba(250,248,243,.97);border-radius:24px;padding:34px;color:var(--texto)}
+  .form h3{font-family:'Fraunces',serif;font-size:24px;color:var(--verde-deep)}
+  .form .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px}
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field.full{grid-column:1/-1}
+  .field label{font-size:12.5px;font-weight:600;color:#3a4a40}
+  .field input,.field select,.field textarea{font-family:inherit;font-size:14.5px;padding:12px 14px;border-radius:12px;border:1px solid rgba(20,83,45,.18);background:#fff;color:var(--texto);transition:.2s}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--verde);box-shadow:0 0 0 3px rgba(34,197,94,.18)}
+  .form .btn{width:100%;justify-content:center;margin-top:20px}
+  .form .note{font-size:11.5px;color:#6a7a70;text-align:center;margin-top:12px}
+
+  /* WhatsApp float */
+  .wa{position:fixed;right:22px;bottom:22px;z-index:60;background:var(--verde);color:#fff;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;box-shadow:0 14px 30px -8px rgba(20,83,45,.6);transition:.25s}
+  .wa:hover{background:var(--verde-acento);transform:scale(1.07)}
+  footer{background:#061a10;color:rgba(255,255,255,.5);padding:40px 0;text-align:center;font-size:13px}
+  .divider-note{background:var(--bronce);color:#1a1208;text-align:center;font-size:12px;font-weight:600;letter-spacing:.05em;padding:9px}
+</style>
+</head>
+<body>
+
+<div class="divider-note">MOCKUP DE APROBACIÓN · Bartez Tecnología · 2 variantes de Hero (A y B) + Soluciones + Contacto — elegí una variante de Hero</div>
+
+<!-- NAV -->
+<nav>
+  <div class="wrap nav-in">
+    <div class="logo"><span class="mark">B</span> Bartez<span style="color:var(--bronce);font-weight:500">·Tecnología</span></div>
+    <div class="nav-links">
+      <a href="#">Soluciones</a>
+      <a href="#">Catálogo</a>
+      <a href="#">Nosotros</a>
+      <a href="#contacto">Contacto</a>
+      <a href="#contacto" class="btn btn-primary" style="padding:11px 20px">Solicitar cotización</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===================== HERO VARIANTE A ===================== -->
+<header class="hero heroA">
+  <span class="variant-tag">Hero — Variante A · geométrico editorial</span>
+  <div class="geo">
+    <div class="grid-lines"></div>
+    <div class="glow"></div>
+    <div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div>
+  </div>
+  <div class="wrap">
+    <span class="hero-label">◆ Distribuidora mayorista de hardware IT · Rosario</span>
+    <h1 class="serif">Tecnología que mueve empresas.</h1>
+    <p class="sub">Distribución mayorista de hardware IT para corporaciones argentinas. Stock real, asesoramiento de ingeniería y condiciones B2B en cada cotización.</p>
+    <div class="hero-cta">
+      <a href="#contacto" class="btn btn-primary">Pedí tu cotización →</a>
+      <a href="#" class="btn btn-ghost">Ver catálogo</a>
+    </div>
+    <div class="stat-row">
+      <div class="s"><b>+14.000</b><span>productos en catálogo</span></div>
+      <div class="s"><b>24 hs</b><span>cotización promedio</span></div>
+      <div class="s"><b>País</b><span>cobertura nacional</span></div>
+    </div>
+    <div class="scroll-ind"><div class="line"></div> Scrolleá para explorar</div>
+  </div>
+</header>
+
+<!-- ===================== HERO VARIANTE B ===================== -->
+<header class="hero heroB">
+  <span class="variant-tag">Hero — Variante B · split con visual de hardware</span>
+  <div class="wrap split">
+    <div>
+      <span class="hero-label">◆ Hardware IT corporativo · Entrega a todo el país</span>
+      <h1 class="serif">Tecnología que mueve empresas.</h1>
+      <p class="sub">Servidores, notebooks corporativas, redes e infraestructura. El partner mayorista que garantiza continuidad operativa a empresas medianas y grandes.</p>
+      <div class="hero-cta">
+        <a href="#contacto" class="btn btn-primary">Pedí tu cotización →</a>
+        <a href="#" class="btn btn-ghost">Hablá con un asesor</a>
+      </div>
+      <div class="scroll-ind"><div class="line"></div> Partners oficiales abajo</div>
+    </div>
+    <div style="position:relative">
+      <div class="device">
+        <div class="server">
+          <div class="u"><i></i><i class="amber"></i><div class="bay"></div></div>
+          <div class="u"><i></i><i></i><div class="bay"></div></div>
+          <div class="u"><i class="amber"></i><i></i><div class="bay"></div></div>
+          <div class="u"><i></i><i></i><div class="bay"></div></div>
+          <div class="u"><i></i><i class="amber"></i><div class="bay"></div></div>
+          <div class="badge">● Stock disponible</div>
+        </div>
+      </div>
+      <div class="floatpill"><small>Entrega</small>Rosario → todo el país</div>
+    </div>
+  </div>
+</header>
+
+<!-- TRUST BAR -->
+<section class="trust">
+  <div class="wrap">
+    <p>Partners y marcas oficiales</p>
+    <div class="logos">
+      <span>DELL</span><span>Lenovo</span><span>HP</span><span>CISCO</span><span>intel</span><span>AMD</span><span>APC</span>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUCIONES -->
+<section class="sol" id="soluciones">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="num">01 — Soluciones</span>
+      <h2 class="serif">Todo el equipamiento IT que tu empresa necesita, en un solo proveedor.</h2>
+      <p>Desde un rack de servidores hasta el fleet de notebooks de toda la compañía. Asesoramiento técnico incluido en cada línea.</p>
+    </div>
+    <div class="sol-grid">
+      <article class="card c1"><div class="img"></div>
+        <div class="glyph">▤</div>
+        <div class="body"><div class="cat">Datacenter</div><h3>Servidores y storage</h3><p>Dell PowerEdge, almacenamiento y virtualización.</p><span class="more">Ver más →</span></div>
+      </article>
+      <article class="card c2"><div class="img"></div>
+        <div class="glyph">▭</div>
+        <div class="body"><div class="cat">Movilidad</div><h3>Notebooks corporativas</h3><p>Gamas Essential · Pro · Elite para cada equipo.</p><span class="more">Ver más →</span></div>
+      </article>
+      <article class="card c3"><div class="img"></div>
+        <div class="glyph">⇄</div>
+        <div class="body"><div class="cat">Networking</div><h3>Infraestructura de red</h3><p>Switches, access points y firewalls gestionados.</p><span class="more">Ver más →</span></div>
+      </article>
+      <article class="card c4"><div class="img"></div>
+        <div class="glyph">▣</div>
+        <div class="body"><div class="cat">Workstations</div><h3>Estaciones y PCs armadas</h3><p>Equipos a medida para ingeniería y diseño.</p><span class="more">Ver más →</span></div>
+      </article>
+      <article class="card c5"><div class="img"></div>
+        <div class="glyph">⌨</div>
+        <div class="body"><div class="cat">Accesorios</div><h3>Periféricos corporativos</h3><p>Monitores, docks y accesorios homologados.</p><span class="more">Ver más →</span></div>
+      </article>
+      <article class="card c6"><div class="img"></div>
+        <div class="glyph">◉</div>
+        <div class="body"><div class="cat">Seguridad</div><h3>Videovigilancia y CCTV</h3><p>Cámaras, NVR y soluciones de monitoreo.</p><span class="more">Ver más →</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section class="contacto" id="contacto">
+  <div class="glow2"></div>
+  <div class="wrap contact-grid">
+    <div>
+      <span class="num" style="font-family:'Fraunces',serif;color:var(--bronce);font-size:15px">02 — Contacto</span>
+      <h2 class="serif" style="margin-top:18px">Cotizá tu próximo proyecto IT.</h2>
+      <p class="lead">Respondé el formulario y un asesor comercial te contacta. Cotización formal en 24 hs hábiles.</p>
+      <div class="cinfo">
+        <div class="row"><div class="ic">⌖</div><div><b>9 de Julio 3418, Rosario</b><span>Santa Fe, Argentina</span></div></div>
+        <div class="row"><div class="ic">✆</div><div><b>WhatsApp comercial</b><span>+54 9 341 000-0000</span></div></div>
+        <div class="row"><div class="ic">✉</div><div><b>comercial@bartez.com.ar</b><span>Atención B2B dedicada</span></div></div>
+        <div class="row"><div class="ic">◷</div><div><b>Lun a Vie · 9 a 18 hs</b><span>Factura A · Responsable Inscripto</span></div></div>
+      </div>
+    </div>
+    <div class="form">
+      <h3>Solicitá tu cotización</h3>
+      <div class="grid2">
+        <div class="field"><label>Empresa</label><input placeholder="Razón social" /></div>
+        <div class="field"><label>Nombre</label><input placeholder="Tu nombre" /></div>
+        <div class="field"><label>Email corporativo</label><input placeholder="vos@empresa.com" /></div>
+        <div class="field"><label>Teléfono</label><input placeholder="+54 9 ..." /></div>
+        <div class="field full"><label>Tipo de consulta</label>
+          <select><option>Cotización</option><option>Asesoramiento técnico</option><option>Cuenta corporativa</option></select>
+        </div>
+        <div class="field full"><label>Mensaje</label><textarea rows="3" placeholder="Contanos qué equipamiento necesitás..."></textarea></div>
+        <div class="field full"><label style="display:flex;gap:8px;align-items:center;font-weight:500;color:#3a4a40"><input type="checkbox" style="width:auto" /> Quiero agendar una reunión con un asesor</label></div>
+      </div>
+      <a href="#" class="btn btn-primary">Enviar consulta →</a>
+      <p class="note">Al enviar, creamos tu lead en el CRM y te llega una confirmación por mail.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">Bartez Tecnología · Distribución mayorista de hardware IT · 9 de Julio 3418, Rosario · Diseñado en Rosario 🌿</div>
+</footer>
+
+<a class="wa" href="#" title="WhatsApp comercial">✆</a>
+
+</body>
+</html>
