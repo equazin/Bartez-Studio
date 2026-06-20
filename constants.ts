@@ -234,14 +234,14 @@ export const downloads = {
       id: "brochure",
       title: "Brochure institucional",
       desc: "Quiénes somos, capacidades y casos.",
-      // Reemplazar por link real de Google Drive en producción / env
-      file: "BROCHURE_DRIVE_URL",
+      // Servido desde /public; sobreescribible con DRIVE_BROCHURE_URL (env)
+      file: "/brochure.pdf",
     },
     {
       id: "catalogo",
       title: "Catálogo de productos (PDF)",
       desc: "Líneas, marcas y modelos destacados.",
-      file: "CATALOGO_DRIVE_URL",
+      file: "/catalogo.pdf",
     },
   ],
 };

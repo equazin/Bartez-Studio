@@ -42,10 +42,11 @@ export async function POST(req: Request) {
     agendarReunion: false,
   });
 
+  // Prioridad: link de Drive (env) → PDF servido desde /public como fallback.
   const url =
     resource === "brochure"
-      ? process.env.DRIVE_BROCHURE_URL || ""
-      : process.env.DRIVE_CATALOGO_URL || "";
+      ? process.env.DRIVE_BROCHURE_URL || "/brochure.pdf"
+      : process.env.DRIVE_CATALOGO_URL || "/catalogo.pdf";
 
   return NextResponse.json({ ok: true, url });
 }
