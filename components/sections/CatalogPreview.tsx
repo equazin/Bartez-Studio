@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, ChevronLeft, ChevronRight, PackageCheck, FileText } from "lucide-react";
 import { catalogPreview } from "../../constants";
@@ -51,8 +52,15 @@ export function CatalogPreview() {
               ))
             : catalogPreview.products.map((p, i) => (
                 <article key={i} className="group w-[270px] flex-none snap-start rounded-2xl border border-slate-200 bg-white p-6 transition-all hover:-translate-y-1 hover:border-brand/40 hover:shadow-card">
-                  <div className="relative flex h-28 items-center justify-center rounded-xl bg-slate-50 ring-1 ring-slate-100">
-                    <span className="font-display text-2xl font-bold text-slate-400 transition-colors group-hover:text-brand">{p.brand}</span>
+                  <div className="relative h-36 overflow-hidden rounded-xl bg-gradient-to-b from-slate-100 to-slate-50 ring-1 ring-slate-200">
+                    <Image
+                      src={p.image}
+                      alt={`${p.brand} ${p.model}`}
+                      fill
+                      sizes="270px"
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <span className="absolute left-2.5 top-2.5 rounded-md bg-white/90 px-2 py-0.5 text-[11px] font-bold text-ink shadow-sm backdrop-blur">{p.brand}</span>
                   </div>
                   <div className="mt-5 text-[11px] font-semibold uppercase tracking-[0.12em] text-brand">{p.category}</div>
                   <h3 className="mt-1.5 text-[16px] font-semibold text-ink">{p.model}</h3>

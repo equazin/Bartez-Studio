@@ -77,7 +77,15 @@ export const hero = {
 
 export const partners = {
   title: "Partners y marcas oficiales",
-  brands: ["Dell", "Lenovo", "HP", "Cisco", "Intel", "AMD", "APC", "Kingston"],
+  brands: [
+    { name: "Dell", logo: "/logos/dell.svg" },
+    { name: "Lenovo", logo: "/logos/lenovo.svg" },
+    { name: "HP", logo: "/logos/hp.svg" },
+    { name: "Cisco", logo: "/logos/cisco.svg" },
+    { name: "Intel", logo: "/logos/intel.svg" },
+    { name: "AMD", logo: "/logos/amd.svg" },
+    { name: "Kingston", logo: "/logos/kingston.svg" },
+  ],
 };
 
 export const pillars = {
@@ -299,14 +307,12 @@ export const catalogPreview = {
   cta: { label: "Ver catálogo completo", href: "#contacto" },
   // Productos mock — reemplazar por catálogo real
   products: [
-    { brand: "Dell", model: "PowerEdge R760", category: "Servidor", stock: true },
-    { brand: "Lenovo", model: "ThinkPad T14 Gen 5", category: "Notebook", stock: true },
-    { brand: "HP", model: "ProBook 460 G11", category: "Notebook", stock: true },
-    { brand: "Cisco", model: "Catalyst 9200", category: "Switch", stock: true },
-    { brand: "Dell", model: "UltraSharp U2724D", category: "Monitor", stock: true },
-    { brand: "APC", model: "Smart-UPS 1500VA", category: "Energía", stock: true },
-    { brand: "Lenovo", model: "ThinkCentre M70q", category: "Mini PC", stock: true },
-    { brand: "Intel", model: "NUC 13 Pro", category: "Mini PC", stock: false },
+    { brand: "Dell", model: "PowerEdge R760", category: "Servidor", stock: true, image: "/photos/products/server.jpg" },
+    { brand: "Lenovo", model: "ThinkPad T14 Gen 5", category: "Notebook", stock: true, image: "/photos/products/laptop1.jpg" },
+    { brand: "HP", model: "ProBook 460 G11", category: "Notebook", stock: true, image: "/photos/products/laptop2.jpg" },
+    { brand: "Cisco", model: "Catalyst 9200", category: "Switch", stock: true, image: "/photos/products/switch.jpg" },
+    { brand: "Dell", model: "UltraSharp U2724D", category: "Monitor", stock: true, image: "/photos/products/monitor.jpg" },
+    { brand: "APC", model: "Smart-UPS 1500VA", category: "Energía", stock: true, image: "/photos/products/ups.jpg" },
   ],
 };
 
@@ -328,16 +334,17 @@ export const quote = {
   title: "Armá tu cotización en 2 minutos.",
   desc: "Seleccioná lo que necesitás, indicá cantidades y te enviamos una propuesta formal en 24 hs hábiles.",
   categories: [
-    { id: "servidores", label: "Servidores y storage", icon: "Server" },
-    { id: "notebooks", label: "Notebooks corporativas", icon: "Laptop", variants: ["Essential", "Pro", "Elite"] },
-    { id: "redes", label: "Infraestructura de red", icon: "Network" },
-    { id: "workstations", label: "Workstations y PCs", icon: "MonitorSmartphone", variants: ["Estándar", "Avanzada", "Pro"] },
-    { id: "perifericos", label: "Periféricos y monitores", icon: "Keyboard" },
-    { id: "cctv", label: "Videovigilancia / CCTV", icon: "Cctv" },
-    { id: "servicios", label: "Servicios IT (instalación / soporte)", icon: "Wrench" },
+    { id: "servidores", label: "Servidores y storage", icon: "Server", suggestions: ["Dell PowerEdge R760", "Dell PowerEdge R360", "HPE ProLiant DL360", "Storage / NAS"] },
+    { id: "notebooks", label: "Notebooks corporativas", icon: "Laptop", suggestions: ["Lenovo ThinkPad T14", "HP ProBook 460", "Dell Latitude 5550", "Dell Latitude 3550"] },
+    { id: "redes", label: "Infraestructura de red", icon: "Network", suggestions: ["Cisco Catalyst 9200", "MikroTik", "Ubiquiti UniFi", "Fortinet FortiGate"] },
+    { id: "workstations", label: "Workstations y PCs", icon: "MonitorSmartphone", suggestions: ["Dell Precision 3680", "HP Z2", "PC armada a medida"] },
+    { id: "perifericos", label: "Periféricos y monitores", icon: "Keyboard", suggestions: ["Monitor Dell UltraSharp", "Dock Dell WD19", "Teclado + mouse corporativo"] },
+    { id: "cctv", label: "Videovigilancia / CCTV", icon: "Cctv", suggestions: ["Cámaras Hikvision", "Cámaras Dahua", "NVR + cámaras IP"] },
+    { id: "servicios", label: "Servicios IT (instalación / soporte)", icon: "Wrench", suggestions: ["Instalación", "Soporte / mantenimiento", "Implementación de red"] },
   ],
   urgencias: ["Lo antes posible", "Este mes", "Próximos 3 meses", "Sólo estoy cotizando"],
-  steps: ["Qué necesitás", "Cantidades", "Tus datos"],
+  steps: ["Qué necesitás", "Detalle", "Tus datos"],
+  detailLabel: "Modelo o especificación (opcional)",
 };
 
 export const contactSection = {
