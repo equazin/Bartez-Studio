@@ -16,6 +16,18 @@ import type { IntegrationResult, LeadSink } from "./types";
  */
 const API = "https://api.monday.com/v2";
 
+// Defaults del board "Leads Web Bartez" (no son secretos). Sobreescribibles por env.
+const BOARD = process.env.MONDAY_BOARD_ID || "18418630086";
+const GROUP = process.env.MONDAY_GROUP_ID || "topics";
+const COL = {
+  empresa: process.env.MONDAY_COL_EMPRESA || "text_mm4gmwsf",
+  email: process.env.MONDAY_COL_EMAIL || "email_mm4gfs0f",
+  telefono: process.env.MONDAY_COL_TELEFONO || "phone_mm4gxh5s",
+  tipo: process.env.MONDAY_COL_TIPO || "color_mm4g97d1",
+  mensaje: process.env.MONDAY_COL_MENSAJE || "long_text_mm4gda50",
+  estado: process.env.MONDAY_COL_ESTADO || "color_mm4gyw76",
+};
+
 const tipoLabel: Record<Lead["tipoConsulta"], string> = {
   cotizacion: "Cotización",
   asesoramiento: "Asesoramiento",
@@ -25,19 +37,19 @@ const tipoLabel: Record<Lead["tipoConsulta"], string> = {
 export const mondaySink: LeadSink = {
   name: "monday.com",
   isConfigured() {
-    return Boolean(process.env.MONDAY_API_TOKEN && process.env.MONDAY_BOARD_ID);
+    return Boolean(process.env.MONDAY_API_TOKEN);
   },
   async handle(lead: Lead): Promise<IntegrationResult> {
     if (!this.isConfigured()) {
-      return { name: this.name, ok: false, skipped: true, detail: "MONDAY_API_TOKEN/BOARD_ID ausentes" };
+      return { name: this.name, ok: false, skipped: true, detail: "MONDAY_API_TOKEN ausente" };
     }
     try {
-      const boardId = process.env.MONDAY_BOARD_ID!;
-      const groupId = process.env.MONDAY_GROUP_ID || "topics";
+      const boardId = BOARD;
+      const groupId = GROUP;
 
       const colVals: Record<string, unknown> = {};
-      const set = (env: string | undefined, value: unknown) => {
-        if (env) colVals[env] = value;
+      const set = (id: string, value: unknown) => {
+        colVals[id] = value;
       };
       const itemsText = lead.items?.length
         ? "Pedido: " +
@@ -46,12 +58,12 @@ export const mondaySink: LeadSink = {
         : "";
       const mensaje = [itemsText, lead.mensaje].filter(Boolean).join("\n");
 
-      set(process.env.MONDAY_COL_EMPRESA, lead.empresa);
-      set(process.env.MONDAY_COL_EMAIL, { email: lead.email, text: lead.email });
-      set(process.env.MONDAY_COL_TELEFONO, lead.telefono || "");
-      set(process.env.MONDAY_COL_TIPO, { label: tipoLabel[lead.tipoConsulta] });
-      set(process.env.MONDAY_COL_MENSAJE, mensaje);
-      set(process.env.MONDAY_COL_ESTADO, { label: "Nuevo" });
+      set(COL.empresa, lead.empresa);
+      set(COL.email, { email: lead.email, text: lead.email });
+      set(COL.telefono, lead.telefono || "");
+      set(COL.tipo, { label: tipoLabel[lead.tipoConsulta] });
+      set(COL.mensaje, mensaje);
+      set(COL.estado, { label: "Nuevo" });
 
       const query = `mutation ($board: ID!, $group: String, $name: String!, $cols: JSON!) {
         create_item(board_id: $board, group_id: $group, item_name: $name, column_values: $cols) { id }

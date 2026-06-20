@@ -22,14 +22,19 @@ export const apolloSink: LeadSink = {
       return { name: this.name, ok: false, skipped: true, detail: "APOLLO_API_KEY ausente" };
     }
     const apiKey = process.env.APOLLO_API_KEY!;
+    const headers = {
+      "Content-Type": "application/json",
+      "Cache-Control": "no-cache",
+      "X-Api-Key": apiKey,
+    };
     try {
       const domain = lead.email.split("@")[1] ?? "";
 
       // 1) Crear/actualizar cuenta (empresa)
       const accountRes = await fetch(`${API}/accounts`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", "Cache-Control": "no-cache" },
-        body: JSON.stringify({ api_key: apiKey, name: lead.empresa, domain }),
+        headers,
+        body: JSON.stringify({ name: lead.empresa, domain }),
       });
       const account = await accountRes.json().catch(() => ({}));
       const accountId = account?.account?.id;
@@ -38,9 +43,8 @@ export const apolloSink: LeadSink = {
       const [first, ...rest] = lead.nombre.trim().split(" ");
       const contactRes = await fetch(`${API}/contacts`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", "Cache-Control": "no-cache" },
+        headers,
         body: JSON.stringify({
-          api_key: apiKey,
           first_name: first,
           last_name: rest.join(" ") || "-",
           email: lead.email,
