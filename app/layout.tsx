@@ -1,0 +1,111 @@
+import type { Metadata, Viewport } from "next";
+import { Inter, Fraunces } from "next/font/google";
+import "./globals.css";
+import { company, seo, contact } from "../constants";
+import { Analytics } from "../components/Analytics";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-fraunces",
+  weight: ["400", "500", "600"],
+  display: "swap",
+});
+
+export const viewport: Viewport = {
+  themeColor: "#0A2818",
+  width: "device-width",
+  initialScale: 1,
+};
+
+export const metadata: Metadata = {
+  metadataBase: new URL(company.url),
+  title: seo.title,
+  description: seo.description,
+  keywords: seo.keywords,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "es_AR",
+    url: company.url,
+    siteName: company.name,
+    title: seo.title,
+    description: seo.description,
+    // La imagen OG (1200x630) se genera en app/opengraph-image.tsx
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: seo.title,
+    description: seo.description,
+  },
+  icons: {
+    icon: "/favicon.svg",
+    apple: "/icon-192.png",
+  },
+  manifest: "/manifest.webmanifest",
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${company.url}/#organization`,
+      name: company.name,
+      url: company.url,
+      logo: `${company.url}/icon-512.png`,
+      description: seo.description,
+      sameAs: [contact.social.linkedin, contact.social.instagram],
+    },
+    {
+      "@type": "LocalBusiness",
+      "@id": `${company.url}/#localbusiness`,
+      name: company.name,
+      image: `${company.url}${seo.ogImage}`,
+      url: company.url,
+      telephone: contact.phoneDisplay,
+      email: contact.email,
+      priceRange: "$$",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "9 de Julio 3418",
+        addressLocality: "Rosario",
+        addressRegion: "Santa Fe",
+        addressCountry: "AR",
+      },
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: company.geo.lat,
+        longitude: company.geo.lng,
+      },
+      openingHoursSpecification: {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        opens: "09:00",
+        closes: "18:00",
+      },
+    },
+  ],
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="es" className={`${inter.variable} ${fraunces.variable}`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
+      <body className="font-sans antialiased">
+        {children}
+        <Analytics />
+      </body>
+    </html>
+  );
+}
