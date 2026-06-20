@@ -20,18 +20,18 @@ export const company = {
   province: "Santa Fe",
   country: "Argentina",
   address: "9 de Julio 3418, Rosario, Santa Fe",
-  geo: { lat: -32.9468, lng: -60.6393 }, // aprox. Rosario centro — ajustar al real
+  geo: { lat: -32.9481114, lng: -60.6717758 }, // 9 de Julio 3418, Echesortu, Rosario (geocodificado)
   url: "https://bartez.com.ar",
   founded: "2015",
 };
 
 export const contact = {
   // Reemplazar por datos reales en producción
-  whatsappNumber: "5493410000000",
+  whatsappNumber: "5493415104902",
   whatsappMessage:
     "Hola, vengo de la web y quisiera una cotización.",
-  email: "comercial@bartez.com.ar",
-  phoneDisplay: "+54 9 341 000-0000",
+  email: "ventas@bartez.com.ar",
+  phoneDisplay: "+54 9 341 510-4902",
   hours: "Lunes a Viernes · 9 a 18 hs",
   social: {
     linkedin: "https://www.linkedin.com/company/bartez",

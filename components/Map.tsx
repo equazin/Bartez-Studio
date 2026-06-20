@@ -6,7 +6,7 @@ import { company } from "../constants";
  */
 export function Map() {
   const { lat, lng } = company.geo;
-  const d = 0.01;
+  const d = 0.005;
   const bbox = `${lng - d}%2C${lat - d}%2C${lng + d}%2C${lat + d}`;
   const src = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat}%2C${lng}`;
   return (

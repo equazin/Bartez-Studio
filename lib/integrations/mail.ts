@@ -8,7 +8,7 @@ import { contact, company } from "../../constants";
  * Soporta dos providers vía MAIL_PROVIDER:
  *  - "resend"  → RESEND_API_KEY
  *  - "brevo"   → BREVO_API_KEY
- * Remitente: MAIL_FROM (ej. "Bartez <comercial@bartez.com.ar>")
+ * Remitente: MAIL_FROM (ej. "Bartez <ventas@bartez.com.ar>")
  * Destino interno: MAIL_TO (default contact.email)
  *
  * Si no hay provider configurado, se marca skipped (el lead igual se persiste).
