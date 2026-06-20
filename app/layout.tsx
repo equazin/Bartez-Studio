@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: "/favicon.svg",
-    apple: "/icon-192.png",
+    apple: "/favicon.svg",
   },
   manifest: "/manifest.webmanifest",
 };
@@ -58,7 +58,7 @@ const jsonLd = {
       "@id": `${company.url}/#organization`,
       name: company.name,
       url: company.url,
-      logo: `${company.url}/icon-512.png`,
+      logo: `${company.url}/favicon.svg`,
       description: seo.description,
       sameAs: [contact.social.linkedin, contact.social.instagram],
     },

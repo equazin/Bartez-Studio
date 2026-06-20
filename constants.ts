@@ -296,5 +296,5 @@ export const seo = {
     "notebooks corporativas Argentina",
     "infraestructura de red B2B",
   ],
-  ogImage: "/og-image.png",
+  ogImage: "/opengraph-image",
 };
