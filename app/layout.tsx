@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
-import { company, seo, contact } from "../constants";
+import { company, seo, contact, faq } from "../constants";
 import { Analytics } from "../components/Analytics";
 
 const inter = Inter({
@@ -89,6 +89,15 @@ const jsonLd = {
         opens: "09:00",
         closes: "18:00",
       },
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `${company.url}/#faq`,
+      mainEntity: faq.items.map((it) => ({
+        "@type": "Question",
+        name: it.q,
+        acceptedAnswer: { "@type": "Answer", text: it.a },
+      })),
     },
   ],
 };

@@ -4,15 +4,19 @@ import { TrustBar } from "../components/sections/TrustBar";
 import { Pillars } from "../components/sections/Pillars";
 import { Solutions } from "../components/sections/Solutions";
 import { Services } from "../components/sections/Services";
+import { Showcase } from "../components/sections/Showcase";
 import { WhyBartez } from "../components/sections/WhyBartez";
+import { Industries } from "../components/sections/Industries";
 import { Testimonial } from "../components/sections/Testimonial";
 import { CatalogPreview } from "../components/sections/CatalogPreview";
 import { Process } from "../components/sections/Process";
+import { Faq } from "../components/sections/Faq";
 import { Contact } from "../components/sections/Contact";
 import { Payments } from "../components/sections/Payments";
 import { Downloads } from "../components/sections/Downloads";
 import { Footer } from "../components/Footer";
 import { WhatsAppFloat } from "../components/WhatsAppFloat";
+import { MobileCTA } from "../components/MobileCTA";
 import { CookieBanner } from "../components/CookieBanner";
 
 export default function Home() {
@@ -25,16 +29,20 @@ export default function Home() {
         <Pillars />
         <Solutions />
         <Services />
+        <Showcase />
         <WhyBartez />
+        <Industries />
         <CatalogPreview />
-        <Testimonial />
         <Process />
+        <Testimonial />
+        <Faq />
         <Contact />
         <Downloads />
         <Payments />
       </main>
       <Footer />
       <WhatsAppFloat />
+      <MobileCTA />
       <CookieBanner />
     </>
   );

@@ -197,6 +197,76 @@ export const services = {
   ],
 };
 
+export const showcase = {
+  image: "/photos/datacenter.jpg",
+  imageAlt: "Sala de servidores moderna con racks de datacenter",
+  eyebrow: "Infraestructura real",
+  title: "Del datacenter a la última notebook, te abastecemos.",
+  desc: "Operamos como tu área de compras IT: stock real, marcas oficiales y logística propia para que tu empresa nunca pare.",
+  kpis: [
+    { value: "99,9%", label: "compromiso de continuidad" },
+    { value: "24 hs", label: "cotización promedio" },
+    { value: "8", label: "marcas oficiales" },
+    { value: "100%", label: "Factura A" },
+  ],
+};
+
+export const industries = {
+  num: "04",
+  eyebrow: "Sectores",
+  title: "Acompañamos a empresas de todos los sectores.",
+  desc: "Desde una PyME en crecimiento hasta operaciones multisitio. Adaptamos la solución a tu industria.",
+  image: "/photos/office.jpg",
+  imageAlt: "Equipo de trabajo en oficina moderna usando tecnología",
+  items: [
+    "Corporativo y oficinas",
+    "Retail y comercio",
+    "Salud y laboratorios",
+    "Educación",
+    "Gobierno y sector público",
+    "Industria y manufactura",
+    "Agro y campo",
+    "Estudios y servicios profesionales",
+  ],
+};
+
+export const whyImage = {
+  src: "/photos/engineer.jpg",
+  alt: "Técnico de IT trabajando en un rack de servidores",
+};
+
+export const faq = {
+  num: "07",
+  eyebrow: "Preguntas frecuentes",
+  title: "Lo que las empresas suelen consultar.",
+  items: [
+    {
+      q: "¿Cuál es el plazo de cotización y entrega?",
+      a: "Cotizamos en un plazo de 24 hs hábiles. Los tiempos de entrega dependen del producto y la ubicación: con stock disponible despachamos en 24/72 hs a todo el país.",
+    },
+    {
+      q: "¿Emiten Factura A y trabajan con cuenta corriente?",
+      a: "Sí. Somos Responsable Inscripto, emitimos Factura A y ofrecemos condiciones corporativas, cuenta corriente y financiación según evaluación crediticia.",
+    },
+    {
+      q: "¿Las marcas tienen garantía oficial?",
+      a: "Trabajamos con marcas oficiales (Dell, Lenovo, HP, Cisco, entre otras) y gestionamos la garantía y la posventa con respaldo del fabricante.",
+    },
+    {
+      q: "¿Hacen envíos al interior del país?",
+      a: "Sí, tenemos cobertura nacional con logística propia y operadores. Coordinamos el despacho y te damos seguimiento del envío.",
+    },
+    {
+      q: "¿Ofrecen servicios además de la venta de equipos?",
+      a: "Sí: ingeniería y dimensionamiento, implementación e instalación, soporte y mantenimiento, e infraestructura/cloud. Te acompañamos en todo el ciclo.",
+    },
+    {
+      q: "¿Hay un monto mínimo de compra?",
+      a: "Trabajamos principalmente con empresas en modalidad mayorista. Escribinos tu necesidad y te armamos la mejor propuesta según volumen.",
+    },
+  ],
+};
+
 export const whyBartez = {
   num: "03",
   eyebrow: "Nosotros",
@@ -222,7 +292,7 @@ export const testimonial = {
 };
 
 export const catalogPreview = {
-  num: "04",
+  num: "05",
   eyebrow: "Catálogo destacado",
   title: "Algunos de los productos con stock disponible.",
   cta: { label: "Ver catálogo completo", href: "#contacto" },
@@ -240,7 +310,7 @@ export const catalogPreview = {
 };
 
 export const process = {
-  num: "05",
+  num: "06",
   eyebrow: "Proceso comercial",
   title: "De la consulta a la entrega, sin fricciones.",
   steps: [
@@ -252,7 +322,7 @@ export const process = {
 };
 
 export const contactSection = {
-  num: "06",
+  num: "08",
   eyebrow: "Contacto",
   title: "Cotizá tu próximo proyecto IT.",
   lead: "Respondé el formulario y un asesor comercial te contacta. Cotización formal en 24 hs hábiles.",

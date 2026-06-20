@@ -1,4 +1,5 @@
-import { whyBartez } from "../../constants";
+import Image from "next/image";
+import { whyBartez, whyImage } from "../../constants";
 import { Reveal } from "../motion";
 import { CheckCircle2 } from "lucide-react";
 
@@ -25,13 +26,27 @@ export function WhyBartez() {
           </ul>
         </Reveal>
 
-        <Reveal delay={0.1} className="grid gap-4 sm:grid-cols-2">
-          {whyBartez.stats.map((s, i) => (
-            <div key={s.label} className={`rounded-2xl border border-slate-200 p-7 transition-all hover:border-brand/40 hover:shadow-card ${i === 0 ? "bg-ink text-white sm:col-span-2" : "bg-slate-50"}`}>
-              <div className={`font-display text-[40px] font-bold leading-none ${i === 0 ? "text-gradient" : "text-brand"}`}>{s.value}</div>
-              <div className={`mt-2 text-[14px] uppercase tracking-[0.08em] ${i === 0 ? "text-slate-300" : "text-slate-500"}`}>{s.label}</div>
-            </div>
-          ))}
+        <Reveal delay={0.1} className="relative">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-3xl ring-1 ring-slate-200">
+            <Image
+              src={whyImage.src}
+              alt={whyImage.alt}
+              fill
+              sizes="(max-width: 768px) 100vw, 45vw"
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink/60 via-transparent to-transparent" aria-hidden />
+          </div>
+
+          {/* stat flotante */}
+          <div className="absolute -left-4 bottom-8 hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-card sm:block">
+            <div className="font-display text-[34px] font-bold leading-none text-brand">{whyBartez.stats[0].value}</div>
+            <div className="mt-1 text-[13px] text-slate-500">{whyBartez.stats[0].label}</div>
+          </div>
+          <div className="absolute -right-3 top-8 hidden rounded-2xl border border-white/10 bg-ink/90 px-4 py-3 text-white backdrop-blur sm:block">
+            <div className="font-display text-[16px] font-bold">Atención B2B</div>
+            <div className="text-[12px] text-slate-300">dedicada y directa</div>
+          </div>
         </Reveal>
       </div>
     </section>

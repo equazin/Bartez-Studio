@@ -3,7 +3,7 @@ import { Linkedin, Instagram } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="bg-ink py-16 text-slate-400">
+    <footer className="bg-ink pb-28 pt-16 text-slate-400 md:pb-16">
       <div className="mx-auto max-w-[1200px] px-7">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
