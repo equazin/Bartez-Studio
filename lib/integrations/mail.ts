@@ -20,6 +20,20 @@ const tipoLabel: Record<Lead["tipoConsulta"], string> = {
   cuenta: "Cuenta corporativa",
 };
 
+function itemsBlock(lead: Lead): string {
+  if (!lead.items || lead.items.length === 0) return "";
+  const rows = lead.items
+    .map(
+      (it) =>
+        `<tr><td style="padding:2px 8px">• ${it.label}${it.variant ? ` <i>(${it.variant})</i>` : ""}</td><td style="padding:2px 8px"><b>${it.qty ?? 1}</b> u.</td></tr>`
+    )
+    .join("");
+  return `<tr><td valign="top"><b>Pedido</b></td><td>
+    <table style="font-size:13px;border-collapse:collapse">${rows}</table>
+    ${lead.urgencia ? `<div style="margin-top:6px;font-size:12px;color:#475569">Urgencia: ${lead.urgencia}</div>` : ""}
+  </td></tr>`;
+}
+
 function internalHtml(lead: Lead): string {
   return `<h2 style="font-family:Arial">Nuevo lead web — ${lead.empresa}</h2>
   <table style="font-family:Arial;font-size:14px;border-collapse:collapse">
@@ -27,8 +41,9 @@ function internalHtml(lead: Lead): string {
     <tr><td><b>Contacto</b></td><td>${lead.nombre}</td></tr>
     <tr><td><b>Email</b></td><td>${lead.email}</td></tr>
     <tr><td><b>Teléfono</b></td><td>${lead.telefono || "-"}</td></tr>
-    <tr><td><b>Tipo</b></td><td>${tipoLabel[lead.tipoConsulta]}</td></tr>
+    <tr><td><b>Tipo</b></td><td>${tipoLabel[lead.tipoConsulta]}${lead.origen ? ` · ${lead.origen}` : ""}</td></tr>
     <tr><td><b>Agendar reunión</b></td><td>${lead.agendarReunion ? "Sí" : "No"}</td></tr>
+    ${itemsBlock(lead)}
     <tr><td valign="top"><b>Mensaje</b></td><td>${(lead.mensaje || "-").replace(/</g, "&lt;")}</td></tr>
   </table>`;
 }

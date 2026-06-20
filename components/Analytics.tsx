@@ -1,16 +1,29 @@
 "use client";
 
+import { useEffect } from "react";
 import Script from "next/script";
 
 /**
- * GA4 + Meta Pixel — placeholders activados por env públicas:
+ * Analítica: GA4 + Meta Pixel + Microsoft Clarity (heatmaps).
+ * Activadas por env públicas (si faltan, no renderizan nada):
  *  - NEXT_PUBLIC_GA4_ID
  *  - NEXT_PUBLIC_META_PIXEL_ID
- * Si no están seteadas, no renderiza nada (sin impacto en performance).
+ *  - NEXT_PUBLIC_CLARITY_ID
  */
 export function Analytics() {
   const ga = process.env.NEXT_PUBLIC_GA4_ID;
   const pixel = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+  const clarity = process.env.NEXT_PUBLIC_CLARITY_ID;
+
+  // Tracking declarativo: cualquier elemento con [data-track] dispara un evento al click.
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      const el = (e.target as HTMLElement)?.closest("[data-track]");
+      if (el) track((el as HTMLElement).dataset.track || "cta_click", { label: (el as HTMLElement).innerText?.slice(0, 40) });
+    };
+    document.addEventListener("click", onClick);
+    return () => document.removeEventListener("click", onClick);
+  }, []);
 
   return (
     <>
@@ -32,15 +45,29 @@ export function Analytics() {
           'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','${pixel}');fbq('track','PageView');`}
         </Script>
       )}
+      {clarity && (
+        <Script id="ms-clarity" strategy="afterInteractive">
+          {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,'clarity','script','${clarity}');`}
+        </Script>
+      )}
     </>
   );
 }
 
-/** Helper de tracking de conversión (usado en /gracias y submits). */
-export function trackConversion(event: string, params?: Record<string, unknown>) {
+/** Evento genérico → GA4 + Meta Pixel. */
+export function track(event: string, params?: Record<string, unknown>) {
   if (typeof window === "undefined") return;
   // @ts-expect-error gtag inyectado por GA4
   if (window.gtag) window.gtag("event", event, params);
   // @ts-expect-error fbq inyectado por Meta Pixel
-  if (window.fbq) window.fbq("track", "Lead", params);
+  if (window.fbq) window.fbq("trackCustom", event, params);
+}
+
+/** Conversión (lead). Mantiene compatibilidad con /gracias. */
+export function trackConversion(event: string, params?: Record<string, unknown>) {
+  track(event, params);
+  // @ts-expect-error fbq estándar de Lead
+  if (typeof window !== "undefined" && window.fbq) window.fbq("track", "Lead", params);
 }

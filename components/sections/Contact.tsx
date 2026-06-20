@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowRight, MapPin, Phone, Mail, Clock, Loader2 } from "lucide-react";
 import { contactSection, contact, company } from "../../constants";
@@ -24,6 +24,20 @@ export function Contact() {
   const [error, setError] = useState("");
 
   const update = (k: string, v: string | boolean) => setForm((f) => ({ ...f, [k]: v }));
+
+  // Prefill cuando el cliente clickea "Cotizar" en un producto del catálogo.
+  useEffect(() => {
+    const onQuote = (e: Event) => {
+      const product = (e as CustomEvent<string>).detail;
+      setForm((f) => ({
+        ...f,
+        tipoConsulta: "cotizacion",
+        mensaje: `Quiero cotizar: ${product}${f.mensaje ? `\n${f.mensaje}` : ""}`,
+      }));
+    };
+    window.addEventListener("bartez:quote", onQuote);
+    return () => window.removeEventListener("bartez:quote", onQuote);
+  }, []);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();

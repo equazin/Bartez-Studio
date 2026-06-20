@@ -39,11 +39,18 @@ export const mondaySink: LeadSink = {
       const set = (env: string | undefined, value: unknown) => {
         if (env) colVals[env] = value;
       };
+      const itemsText = lead.items?.length
+        ? "Pedido: " +
+          lead.items.map((it) => `${it.label}${it.variant ? ` (${it.variant})` : ""} x${it.qty ?? 1}`).join("; ") +
+          (lead.urgencia ? ` | Urgencia: ${lead.urgencia}` : "")
+        : "";
+      const mensaje = [itemsText, lead.mensaje].filter(Boolean).join("\n");
+
       set(process.env.MONDAY_COL_EMPRESA, lead.empresa);
       set(process.env.MONDAY_COL_EMAIL, { email: lead.email, text: lead.email });
       set(process.env.MONDAY_COL_TELEFONO, lead.telefono || "");
       set(process.env.MONDAY_COL_TIPO, { label: tipoLabel[lead.tipoConsulta] });
-      set(process.env.MONDAY_COL_MENSAJE, lead.mensaje || "");
+      set(process.env.MONDAY_COL_MENSAJE, mensaje);
       set(process.env.MONDAY_COL_ESTADO, { label: "Nuevo" });
 
       const query = `mutation ($board: ID!, $group: String, $name: String!, $cols: JSON!) {

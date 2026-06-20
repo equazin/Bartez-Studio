@@ -1,10 +1,17 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight, ChevronLeft, ChevronRight, PackageCheck } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, PackageCheck, FileText } from "lucide-react";
 import { catalogPreview } from "../../constants";
 import { SectionHeading } from "../SectionHeading";
 import { Button } from "../ui/Button";
+import { track } from "../Analytics";
+
+function quoteProduct(label: string) {
+  track("quote_product", { product: label });
+  window.dispatchEvent(new CustomEvent("bartez:quote", { detail: label }));
+  window.location.hash = "#contacto";
+}
 
 export function CatalogPreview() {
   const [loading, setLoading] = useState(true);
@@ -52,6 +59,13 @@ export function CatalogPreview() {
                   <span className={`mt-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[12px] font-semibold ${p.stock ? "bg-emerald/10 text-emerald" : "bg-slate-100 text-slate-500"}`}>
                     <PackageCheck size={13} /> {p.stock ? "Stock disponible" : "A pedido"}
                   </span>
+                  <button
+                    type="button"
+                    onClick={() => quoteProduct(`${p.brand} ${p.model}`)}
+                    className="mt-4 flex w-full items-center justify-center gap-1.5 rounded-lg border border-slate-200 py-2 text-[13px] font-semibold text-brand transition-colors hover:border-brand hover:bg-brand hover:text-white"
+                  >
+                    <FileText size={14} /> Cotizar
+                  </button>
                 </article>
               ))}
         </div>

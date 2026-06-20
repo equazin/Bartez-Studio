@@ -10,6 +10,7 @@ import { Industries } from "../components/sections/Industries";
 import { Testimonial } from "../components/sections/Testimonial";
 import { CatalogPreview } from "../components/sections/CatalogPreview";
 import { Process } from "../components/sections/Process";
+import { QuoteBuilder } from "../components/sections/QuoteBuilder";
 import { Faq } from "../components/sections/Faq";
 import { Contact } from "../components/sections/Contact";
 import { Payments } from "../components/sections/Payments";
@@ -35,6 +36,7 @@ export default function Home() {
         <CatalogPreview />
         <Process />
         <Testimonial />
+        <QuoteBuilder />
         <Faq />
         <Contact />
         <Downloads />

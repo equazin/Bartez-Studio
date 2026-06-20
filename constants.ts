@@ -53,10 +53,11 @@ export const nav = {
     { label: "Soluciones", href: "#soluciones" },
     { label: "Servicios", href: "#servicios" },
     { label: "Catálogo", href: "#catalogo" },
+    { label: "Cotizá", href: "#cotiza" },
     { label: "Nosotros", href: "#nosotros" },
     { label: "Contacto", href: "#contacto" },
   ],
-  cta: { label: "Solicitar cotización", href: "#contacto" },
+  cta: { label: "Solicitar cotización", href: "#cotiza" },
 };
 
 export const hero = {
@@ -64,7 +65,7 @@ export const hero = {
   title: "El partner tecnológico de tu empresa.",
   subtitle:
     "Distribución mayorista de hardware IT y servicios profesionales: servidores, notebooks corporativas, redes, infraestructura, soporte e implementación. Todo con stock real, precios mayoristas y respaldo de ingeniería.",
-  ctaPrimary: { label: "Pedí tu cotización", href: "#contacto" },
+  ctaPrimary: { label: "Pedí tu cotización", href: "#cotiza" },
   ctaSecondary: { label: "Ver soluciones", href: "#soluciones" },
   stats: [
     { value: "+14.000", label: "productos en catálogo" },
@@ -236,7 +237,7 @@ export const whyImage = {
 };
 
 export const faq = {
-  num: "07",
+  num: "08",
   eyebrow: "Preguntas frecuentes",
   title: "Lo que las empresas suelen consultar.",
   items: [
@@ -321,8 +322,26 @@ export const process = {
   ],
 };
 
+export const quote = {
+  num: "07",
+  eyebrow: "Cotización",
+  title: "Armá tu cotización en 2 minutos.",
+  desc: "Seleccioná lo que necesitás, indicá cantidades y te enviamos una propuesta formal en 24 hs hábiles.",
+  categories: [
+    { id: "servidores", label: "Servidores y storage", icon: "Server" },
+    { id: "notebooks", label: "Notebooks corporativas", icon: "Laptop", variants: ["Essential", "Pro", "Elite"] },
+    { id: "redes", label: "Infraestructura de red", icon: "Network" },
+    { id: "workstations", label: "Workstations y PCs", icon: "MonitorSmartphone", variants: ["Estándar", "Avanzada", "Pro"] },
+    { id: "perifericos", label: "Periféricos y monitores", icon: "Keyboard" },
+    { id: "cctv", label: "Videovigilancia / CCTV", icon: "Cctv" },
+    { id: "servicios", label: "Servicios IT (instalación / soporte)", icon: "Wrench" },
+  ],
+  urgencias: ["Lo antes posible", "Este mes", "Próximos 3 meses", "Sólo estoy cotizando"],
+  steps: ["Qué necesitás", "Cantidades", "Tus datos"],
+};
+
 export const contactSection = {
-  num: "08",
+  num: "09",
   eyebrow: "Contacto",
   title: "Cotizá tu próximo proyecto IT.",
   lead: "Respondé el formulario y un asesor comercial te contacta. Cotización formal en 24 hs hábiles.",
