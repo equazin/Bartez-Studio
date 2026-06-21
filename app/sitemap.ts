@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { company, verticals, articles } from "../constants";
+import { company, verticals, articles, legalPages } from "../constants";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = company.url;
@@ -18,6 +18,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(a.date),
       changeFrequency: "monthly" as const,
       priority: 0.6,
+    })),
+    ...legalPages.map((p) => ({
+      url: `${base}/legales/${p.slug}`,
+      lastModified: new Date(p.updated),
+      changeFrequency: "yearly" as const,
+      priority: 0.3,
     })),
   ];
 }
