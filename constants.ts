@@ -150,7 +150,7 @@ export const solutions = {
       title: "Estaciones y PCs armadas",
       desc: "Equipos a medida para ingeniería, diseño y producción.",
       cta: "Ver más",
-      href: "#cotiza",
+      href: "/soluciones/workstations-pcs",
     },
     {
       id: "perifericos",
@@ -159,7 +159,7 @@ export const solutions = {
       title: "Periféricos corporativos",
       desc: "Monitores, docks y accesorios homologados por marca.",
       cta: "Ver más",
-      href: "#cotiza",
+      href: "/soluciones/perifericos-corporativos",
     },
     {
       id: "cctv",
@@ -645,6 +645,90 @@ export const verticals: Vertical[] = [
       { q: "¿Sirve para varias sucursales?", a: "Sí, podemos unificar el monitoreo de varias ubicaciones en una sola plataforma." },
     ],
     related: ["redes-infraestructura", "servidores"],
+  },
+  {
+    slug: "workstations-pcs",
+    navLabel: "Estaciones y PCs armadas",
+    icon: "MonitorSmartphone",
+    image: "/photos/products/desktop.jpg",
+    eyebrow: "Estaciones de trabajo y PCs",
+    h1: "Workstations y PCs armadas a la medida de tu trabajo.",
+    intro:
+      "Estaciones de trabajo y PCs corporativas armadas para ingeniería, diseño, CAD y producción. Componentes de marca, ensamble probado y garantía, con el respaldo de un mayorista.",
+    metaTitle: "Workstations y PCs armadas para empresas | Bartez Tecnología",
+    metaDescription:
+      "Workstations Dell Precision y PCs corporativas armadas a medida para ingeniería, diseño y CAD. Distribuidor mayorista en Rosario con Factura A y garantía. Cotizá tu equipo.",
+    keywords: ["workstation Dell Precision", "PC armada corporativa", "estación de trabajo CAD", "PC a medida empresas"],
+    bullets: [
+      { title: "Armado a medida", desc: "Configuramos cada equipo según la tarea: CAD, render, oficina o producción." },
+      { title: "Componentes de marca", desc: "Procesadores Intel/AMD, RAM y discos de primeras marcas." },
+      { title: "Rendimiento garantizado", desc: "Equipos dimensionados para que el software pesado no te frene." },
+      { title: "Ensamble y testing", desc: "Armado y pruebas de estrés antes de entregar." },
+      { title: "Garantía", desc: "Cobertura y posventa sobre el equipo completo." },
+      { title: "Escalable", desc: "Equipos que se pueden ampliar a futuro sin reemplazar todo." },
+    ],
+    capabilities: [
+      { icon: "DraftingCompass", title: "Configuración a medida", desc: "Elegimos los componentes ideales según tu software y presupuesto." },
+      { icon: "Wrench", title: "Ensamble y testing", desc: "Armado profesional y pruebas de estabilidad antes de la entrega." },
+      { icon: "ShieldCheck", title: "Garantía integral", desc: "Garantía sobre el equipo completo, gestionada por nosotros." },
+      { icon: "Headset", title: "Soporte", desc: "Asistencia ante cualquier inconveniente del equipo." },
+    ],
+    products: [
+      { brand: "Dell", model: "Precision 3680 Tower", image: "/photos/products/tower.jpg", badge: "Stock disponible" },
+      { brand: "Bartez", model: "PC corporativa armada", image: "/photos/products/desktop.jpg", badge: "A medida" },
+      { brand: "Dell", model: "Monitor UltraSharp U2724D", image: "/photos/products/monitor.jpg", badge: "Stock disponible" },
+    ],
+    brands: ["Dell", "HP", "Intel", "AMD"],
+    models: ["Dell Precision 3680", "HP Z2 Tower", "PC armada a medida", "All-in-One corporativa"],
+    faqs: [
+      { q: "¿Arman PCs a medida?", a: "Sí. Definimos los componentes según el software y la tarea (CAD, render, oficina) y armamos el equipo con testing previo." },
+      { q: "¿Las PCs armadas tienen garantía?", a: "Sí, ofrecemos garantía sobre el equipo completo y gestionamos la posventa." },
+      { q: "¿Sirven para diseño e ingeniería?", a: "Sí, configuramos workstations con GPU y RAM adecuadas para CAD, 3D y video." },
+      { q: "¿Se pueden ampliar después?", a: "Sí, armamos equipos escalables para sumar RAM, discos o GPU más adelante." },
+    ],
+    related: ["servidores", "perifericos-corporativos"],
+  },
+  {
+    slug: "perifericos-corporativos",
+    navLabel: "Periféricos corporativos",
+    icon: "Keyboard",
+    image: "/photos/products/peripherals.jpg",
+    eyebrow: "Periféricos y accesorios",
+    h1: "Periféricos y accesorios corporativos para equipar tu oficina.",
+    intro:
+      "Monitores, teclados, mouse, docks, headsets y todo el accesorio corporativo homologado por marca. Compra por volumen para equipar puestos de trabajo completos a precio mayorista.",
+    metaTitle: "Periféricos y accesorios corporativos mayorista | Bartez Tecnología",
+    metaDescription:
+      "Monitores, teclados, mouse, docks y headsets corporativos. Distribuidor mayorista en Rosario con precios por volumen, Factura A y garantía. Cotizá tus accesorios.",
+    keywords: ["periféricos corporativos", "monitores empresas", "docks notebook", "headsets oficina mayorista"],
+    bullets: [
+      { title: "Puestos completos", desc: "Equipamos cada estación: monitor, teclado, mouse, dock y headset." },
+      { title: "Marcas homologadas", desc: "Accesorios compatibles y recomendados por cada fabricante." },
+      { title: "Precio por volumen", desc: "Condiciones mayoristas para equipar muchos puestos a la vez." },
+      { title: "Ergonomía", desc: "Opciones ergonómicas para el confort de tu equipo." },
+      { title: "Garantía", desc: "Garantía oficial y gestión de cambios." },
+      { title: "Stock y reposición", desc: "Reposición continua de los accesorios de uso diario." },
+    ],
+    capabilities: [
+      { icon: "DraftingCompass", title: "Armado del puesto", desc: "Definimos el kit de accesorios ideal por tipo de puesto." },
+      { icon: "Boxes", title: "Provisión por volumen", desc: "Abastecemos cantidades grandes con la misma agilidad." },
+      { icon: "ShieldCheck", title: "Garantía y cambios", desc: "Gestión de garantía oficial y reposición." },
+      { icon: "Headset", title: "Asesoramiento", desc: "Te recomendamos el accesorio correcto para cada necesidad." },
+    ],
+    products: [
+      { brand: "Dell", model: "Monitor UltraSharp U2724D", image: "/photos/products/monitor.jpg", badge: "Stock disponible" },
+      { brand: "Logitech", model: "Combo teclado + mouse", image: "/photos/products/peripherals.jpg", badge: "Stock disponible" },
+      { brand: "Jabra", model: "Headset VoIP", image: "/photos/products/headset.jpg", badge: "Stock disponible" },
+    ],
+    brands: ["Dell", "HP", "Logitech", "Kingston"],
+    models: ["Monitores Dell UltraSharp", "Docks WD19 / WD22", "Teclado + mouse corporativo", "Headsets VoIP"],
+    faqs: [
+      { q: "¿Venden accesorios por volumen?", a: "Sí, equipamos puestos completos y abastecemos cantidades grandes con precio mayorista." },
+      { q: "¿Qué incluye un puesto de trabajo?", a: "Habitualmente monitor, teclado, mouse, dock y headset; armamos el kit según tu necesidad." },
+      { q: "¿Los accesorios tienen garantía?", a: "Sí, garantía oficial de marca y gestión de cambios por nuestra parte." },
+      { q: "¿Hacen reposición continua?", a: "Sí, mantenemos stock para reponer los accesorios de uso diario de tu empresa." },
+    ],
+    related: ["notebooks-corporativas", "workstations-pcs"],
   },
 ];
 
