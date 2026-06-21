@@ -25,32 +25,21 @@ export function Hero() {
 
       <div className="relative z-10 mx-auto grid max-w-[1200px] items-center gap-12 px-7 pb-20 pt-32 md:grid-cols-[1.05fr_.95fr] md:pt-40">
         <div>
-          {/* Entrada por CSS (no gated por JS) para no demorar el LCP */}
-          <span
-            className="inline-flex animate-fade-up items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-[12.5px] font-medium text-sky"
-          >
+          {/* Hero estático (pinta al instante → mejor LCP). Los reveals viven en las secciones de abajo. */}
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-[12.5px] font-medium text-sky">
             <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulseline" />
             {hero.eyebrow}
           </span>
 
-          <h1
-            className="mt-6 animate-fade-up font-display text-[clamp(38px,5vw,64px)] font-bold leading-[1.04] tracking-[-0.02em] text-balance"
-            style={{ animationDelay: "60ms" }}
-          >
+          <h1 className="mt-6 font-display text-[clamp(38px,5vw,64px)] font-bold leading-[1.04] tracking-[-0.02em] text-balance">
             El partner <span className="text-gradient">tecnológico</span> de tu empresa.
           </h1>
 
-          <p
-            className="mt-6 max-w-[52ch] animate-fade-up text-[clamp(15px,1.3vw,18px)] leading-relaxed text-slate-300"
-            style={{ animationDelay: "120ms" }}
-          >
+          <p className="mt-6 max-w-[52ch] text-[clamp(15px,1.3vw,18px)] leading-relaxed text-slate-300">
             {hero.subtitle}
           </p>
 
-          <div
-            className="mt-8 flex animate-fade-up flex-wrap gap-3.5"
-            style={{ animationDelay: "180ms" }}
-          >
+          <div className="mt-8 flex flex-wrap gap-3.5">
             <Button href={hero.ctaPrimary.href} variant="primary" arrow>
               {hero.ctaPrimary.label}
             </Button>
