@@ -64,7 +64,7 @@ export function CatalogPreview() {
                   </div>
                   <div className="mt-5 text-[11px] font-semibold uppercase tracking-[0.12em] text-brand">{p.category}</div>
                   <h3 className="mt-1.5 text-[16px] font-semibold text-ink">{p.model}</h3>
-                  <span className={`mt-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[12px] font-semibold ${p.stock ? "bg-emerald/10 text-emerald" : "bg-slate-100 text-slate-500"}`}>
+                  <span className={`mt-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[12px] font-semibold ${p.stock ? "bg-emerald/10 text-green-700" : "bg-slate-100 text-slate-500"}`}>
                     <PackageCheck size={13} /> {p.stock ? "Stock disponible" : "A pedido"}
                   </span>
                   <button

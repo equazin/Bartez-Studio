@@ -59,7 +59,7 @@ function DownloadCard({ id, title, desc }: { id: string; title: string; desc: st
       </div>
 
       {state === "done" ? (
-        <div className="mt-5 flex items-center gap-2 rounded-xl bg-emerald/10 px-4 py-3 text-[14px] font-medium text-emerald">
+        <div className="mt-5 flex items-center gap-2 rounded-xl bg-emerald/10 px-4 py-3 text-[14px] font-medium text-green-700">
           <CheckCircle2 size={18} />
           {url ? (
             <span>Listo. Si no se abrió, <a href={url} target="_blank" rel="noopener" className="underline">descargá acá</a>.</span>

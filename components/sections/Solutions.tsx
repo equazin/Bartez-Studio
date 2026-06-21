@@ -24,7 +24,7 @@ export function Solutions() {
                   <span className="grid h-12 w-12 place-items-center rounded-xl bg-slate-100 text-brand transition-colors group-hover:bg-brand group-hover:text-white">
                     <Icon name={c.icon} className="h-6 w-6" />
                   </span>
-                  <span className="rounded-full bg-emerald/10 px-2.5 py-1 text-[11px] font-semibold text-emerald">{c.category}</span>
+                  <span className="rounded-full bg-emerald/10 px-2.5 py-1 text-[11px] font-semibold text-green-700">{c.category}</span>
                 </div>
                 <h3 className="font-display text-[20px] font-bold text-ink">{c.title}</h3>
                 <p className="mt-2 flex-1 text-[14.5px] leading-relaxed text-slate-600">{c.desc}</p>

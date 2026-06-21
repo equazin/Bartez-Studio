@@ -81,7 +81,7 @@ export default function VerticalPage({ params }: { params: { slug: string } }) {
             <span className="text-[12px] font-semibold uppercase tracking-[0.14em] text-slate-400">Marcas oficiales:</span>
             {partners.brands.map((b) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={b.name} src={b.logo} alt={b.name} className="h-6 w-auto opacity-60 transition-opacity hover:opacity-100" />
+              <img key={b.name} src={b.logo} alt={b.name} width={96} height={28} loading="lazy" className="h-6 w-auto opacity-60 transition-opacity hover:opacity-100" />
             ))}
           </div>
         </section>
@@ -117,7 +117,7 @@ export default function VerticalPage({ params }: { params: { slug: string } }) {
                   <div className="p-6">
                     <h3 className="text-[16px] font-semibold text-ink">{p.model}</h3>
                     {p.badge && (
-                      <span className={`mt-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[12px] font-semibold ${p.badge.includes("Stock") ? "bg-emerald/10 text-emerald" : "bg-slate-100 text-slate-500"}`}>
+                      <span className={`mt-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[12px] font-semibold ${p.badge.includes("Stock") ? "bg-emerald/10 text-green-700" : "bg-slate-100 text-slate-500"}`}>
                         <PackageCheck size={13} /> {p.badge}
                       </span>
                     )}

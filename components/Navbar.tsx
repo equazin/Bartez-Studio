@@ -38,7 +38,7 @@ export function Navbar() {
       {/* Main nav */}
       <div className={`border-b transition-all ${scrolled ? "border-slate-200 bg-white/90 backdrop-blur-md" : "border-transparent bg-white"}`}>
         <nav className="mx-auto flex h-[64px] max-w-[1200px] items-center justify-between px-7" aria-label="Principal">
-          <a href="#top" className="flex items-center gap-2.5" aria-label="Bartez Tecnología inicio">
+          <a href="/#top" title="Bartez Tecnología — inicio" className="flex items-center gap-2.5">
             <span className="grid h-9 w-9 place-items-center rounded-lg bg-gradient-to-br from-brand to-accent font-display text-[18px] font-bold text-white">B</span>
             <span className="font-display text-[19px] font-bold tracking-tight text-ink">
               Bartez<span className="font-medium text-brand"> Tecnología</span>

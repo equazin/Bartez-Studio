@@ -33,39 +33,31 @@ export function Hero() {
 
       <div className="relative z-10 mx-auto grid max-w-[1200px] items-center gap-12 px-7 pb-20 pt-32 md:grid-cols-[1.05fr_.95fr] md:pt-40">
         <div>
-          <motion.span
-            initial={reduce ? false : { opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-[12.5px] font-medium text-sky"
+          {/* Entrada por CSS (no gated por JS) para no demorar el LCP */}
+          <span
+            className="inline-flex animate-fade-up items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-[12.5px] font-medium text-sky"
           >
             <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulseline" />
             {hero.eyebrow}
-          </motion.span>
+          </span>
 
-          <motion.h1
-            initial={reduce ? false : { opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.05 }}
-            className="mt-6 font-display text-[clamp(38px,5vw,64px)] font-bold leading-[1.04] tracking-[-0.02em] text-balance"
+          <h1
+            className="mt-6 animate-fade-up font-display text-[clamp(38px,5vw,64px)] font-bold leading-[1.04] tracking-[-0.02em] text-balance"
+            style={{ animationDelay: "60ms" }}
           >
             El partner <span className="text-gradient">tecnológico</span> de tu empresa.
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            initial={reduce ? false : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.12 }}
-            className="mt-6 max-w-[52ch] text-[clamp(15px,1.3vw,18px)] leading-relaxed text-slate-300"
+          <p
+            className="mt-6 max-w-[52ch] animate-fade-up text-[clamp(15px,1.3vw,18px)] leading-relaxed text-slate-300"
+            style={{ animationDelay: "120ms" }}
           >
             {hero.subtitle}
-          </motion.p>
+          </p>
 
-          <motion.div
-            initial={reduce ? false : { opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.18 }}
-            className="mt-8 flex flex-wrap gap-3.5"
+          <div
+            className="mt-8 flex animate-fade-up flex-wrap gap-3.5"
+            style={{ animationDelay: "180ms" }}
           >
             <Button href={hero.ctaPrimary.href} variant="primary" arrow>
               {hero.ctaPrimary.label}

@@ -6,6 +6,7 @@ export function Pillars() {
   return (
     <section className="bg-slate-50 py-20">
       <div className="mx-auto max-w-[1200px] px-7">
+        <h2 className="sr-only">{pillars.title}</h2>
         <div className="grid gap-5 md:grid-cols-3">
           {pillars.items.map((p, i) => (
             <Reveal
