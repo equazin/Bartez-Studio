@@ -11,7 +11,8 @@ import Script from "next/script";
  *  - NEXT_PUBLIC_CLARITY_ID
  */
 export function Analytics() {
-  const ga = process.env.NEXT_PUBLIC_GA4_ID;
+  // GA4 de Bartez (fallback hardcodeado para garantizar la medición aunque falte el env)
+  const ga = process.env.NEXT_PUBLIC_GA4_ID || "G-5GHLRGMEZT";
   const pixel = process.env.NEXT_PUBLIC_META_PIXEL_ID;
   const clarity = process.env.NEXT_PUBLIC_CLARITY_ID;
 

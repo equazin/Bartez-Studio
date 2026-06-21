@@ -1,18 +1,17 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
-import type { ReactNode } from "react";
+import { createElement, useEffect, useRef, useState, type ReactNode } from "react";
 
 /**
- * Reveal — aparición sutil on-scroll tipo Apple product page.
+ * Reveal — aparición sutil on-scroll (CSS + IntersectionObserver, sin framer-motion).
+ * Mantiene la misma API que antes para no tocar las secciones.
  * Respeta prefers-reduced-motion.
  */
 export function Reveal({
   children,
   delay = 0,
-  y = 22,
-  className,
-  as = "div",
+  className = "",
+  as: Tag = "div",
 }: {
   children: ReactNode;
   delay?: number;
@@ -20,17 +19,36 @@ export function Reveal({
   className?: string;
   as?: "div" | "section" | "li" | "article";
 }) {
-  const reduce = useReducedMotion();
-  const MotionTag = motion[as] as typeof motion.div;
-  return (
-    <MotionTag
-      className={className}
-      initial={reduce ? false : { opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.6, delay, ease: [0.2, 0.7, 0.2, 1] }}
-    >
-      {children}
-    </MotionTag>
+  const ref = useRef<HTMLElement | null>(null);
+  const [shown, setShown] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setShown(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShown(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "0px 0px -80px 0px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  return createElement(
+    Tag,
+    {
+      ref,
+      className: `${className} reveal${shown ? " reveal-in" : ""}`,
+      style: { transitionDelay: `${delay}s` },
+    },
+    children
   );
 }

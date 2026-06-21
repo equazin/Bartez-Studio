@@ -1,7 +1,5 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { Server, Laptop, Network, Cloud, Cctv, HardDrive, ShieldCheck, Clock } from "lucide-react";
 import { hero } from "../../constants";
 import { Button } from "../ui/Button";
@@ -15,15 +13,9 @@ const nodes = [
 ];
 
 export function Hero() {
-  const ref = useRef<HTMLElement>(null);
-  const reduce = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const yVisual = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : -50]);
-
   return (
     <section
       id="top"
-      ref={ref}
       className="relative overflow-hidden bg-ink text-white"
     >
       {/* fondo tech */}
@@ -78,7 +70,7 @@ export function Hero() {
         </div>
 
         {/* Visual: topología de infraestructura */}
-        <motion.div style={{ y: yVisual }} className="relative">
+        <div className="relative">
           <div className="relative aspect-square rounded-3xl border border-white/10 bg-gradient-to-br from-navy/80 to-ink p-4 shadow-card">
             <div className="absolute inset-4 rounded-2xl bg-grid-tech [background-size:28px_28px] opacity-40" aria-hidden />
 
@@ -132,7 +124,7 @@ export function Hero() {
               <div className="text-slate-500">respuesta 24 hs</div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
