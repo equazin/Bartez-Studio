@@ -98,3 +98,26 @@ El botón de WhatsApp arma automáticamente el mensaje con lo que el cliente sel
 - **Paquete "Tráfico/SEO"**: D1 blog + D2 landings por vertical + D3 páginas por marca.
 
 > Recomendación: arrancar por el **Paquete Conversión** con el **Quote Builder (A1)** como estrella.
+
+---
+
+## 🛠️ PENDIENTE: Panel de administración (CMS) para editar el sitio
+
+**Objetivo:** que puedan editar desde un panel —sin tocar código— imágenes, textos, productos del catálogo, las landings por vertical y el blog.
+
+Hoy todo el contenido vive en `constants.ts` (rápido y versionado, pero requiere un dev para editar). Para un panel propio, las opciones recomendadas:
+
+| Opción | Qué es | Pros | Contras |
+|---|---|---|---|
+| **Sanity** (recomendado) | CMS headless hosteado, con editor visual. Studio embebido en `/studio`. | Editor muy amigable, free tier generoso, rápido de montar. | Contenido fuera del repo (en Sanity). |
+| **Payload CMS** | CMS self-hosted (Node + DB) en el mismo Vercel. | Control total, datos propios, free. | Necesita base de datos y más setup. |
+| **TinaCMS / Decap** | CMS sobre Git (los cambios se commitean al repo). | Gratis, contenido en el repo. | Editores necesitan cuenta de GitHub; menos amigable. |
+| **Supabase + admin propio** | Reusar el Supabase del portal nexus + UI de admin. | Aprovecha infra existente. | Más desarrollo a medida. |
+
+**Alcance del trabajo (cualquier opción):**
+1. Modelar el contenido (productos, verticales, artículos, textos, imágenes) como esquemas del CMS.
+2. Migrar el contenido actual de `constants.ts` al CMS.
+3. Refactorizar los componentes para leer del CMS (en build o runtime).
+4. Auth del panel + gestión de imágenes (upload).
+
+> Es un proyecto en sí (varios días). Cuando lo quieras encarar, mi recomendación es **Sanity** por la relación esfuerzo/usabilidad. Avisá y lo planificamos.
