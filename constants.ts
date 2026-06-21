@@ -45,19 +45,19 @@ export const topbar = {
     { icon: "ReceiptText", text: "Responsable Inscripto · Factura A" },
     { icon: "Headset", text: "Atención B2B dedicada" },
   ],
-  cta: { label: "Abrí tu cuenta corporativa", href: "#contacto" },
+  cta: { label: "Abrí tu cuenta corporativa", href: "/#contacto" },
 };
 
 export const nav = {
   links: [
-    { label: "Soluciones", href: "#soluciones" },
-    { label: "Servicios", href: "#servicios" },
-    { label: "Catálogo", href: "#catalogo" },
-    { label: "Cotizá", href: "#cotiza" },
-    { label: "Nosotros", href: "#nosotros" },
-    { label: "Contacto", href: "#contacto" },
+    { label: "Soluciones", href: "/#soluciones" },
+    { label: "Servicios", href: "/#servicios" },
+    { label: "Catálogo", href: "/#catalogo" },
+    { label: "Cotizá", href: "/#cotiza" },
+    { label: "Recursos", href: "/recursos" },
+    { label: "Contacto", href: "/#contacto" },
   ],
-  cta: { label: "Solicitar cotización", href: "#cotiza" },
+  cta: { label: "Solicitar cotización", href: "/#cotiza" },
 };
 
 export const hero = {
@@ -123,14 +123,16 @@ export const solutions = {
       title: "Servidores y storage",
       desc: "Dell PowerEdge, almacenamiento y virtualización para tu datacenter.",
       cta: "Ver más",
+      href: "/soluciones/servidores",
     },
     {
       id: "notebooks",
       category: "Movilidad",
       icon: "Laptop",
       title: "Notebooks corporativas",
-      desc: "Gamas Essential · Pro · Elite para cada equipo de trabajo.",
+      desc: "Lenovo, HP y Dell de gama corporativa para cada equipo de trabajo.",
       cta: "Cotizá tu fleet",
+      href: "/soluciones/notebooks-corporativas",
     },
     {
       id: "redes",
@@ -139,6 +141,7 @@ export const solutions = {
       title: "Infraestructura de red",
       desc: "Switches, access points y firewalls gestionados.",
       cta: "Ver más",
+      href: "/soluciones/redes-infraestructura",
     },
     {
       id: "workstations",
@@ -147,6 +150,7 @@ export const solutions = {
       title: "Estaciones y PCs armadas",
       desc: "Equipos a medida para ingeniería, diseño y producción.",
       cta: "Ver más",
+      href: "#cotiza",
     },
     {
       id: "perifericos",
@@ -155,6 +159,7 @@ export const solutions = {
       title: "Periféricos corporativos",
       desc: "Monitores, docks y accesorios homologados por marca.",
       cta: "Ver más",
+      href: "#cotiza",
     },
     {
       id: "cctv",
@@ -163,6 +168,7 @@ export const solutions = {
       title: "Videovigilancia y CCTV",
       desc: "Cámaras, NVR y soluciones de monitoreo para tu planta.",
       cta: "Ver más",
+      href: "/soluciones/videovigilancia-cctv",
     },
   ],
 };
@@ -313,6 +319,8 @@ export const catalogPreview = {
     { brand: "Cisco", model: "Catalyst 9200", category: "Switch", stock: true, image: "/photos/products/switch.jpg" },
     { brand: "Dell", model: "UltraSharp U2724D", category: "Monitor", stock: true, image: "/photos/products/monitor.jpg" },
     { brand: "APC", model: "Smart-UPS 1500VA", category: "Energía", stock: true, image: "/photos/products/ups.jpg" },
+    { brand: "Ubiquiti", model: "UniFi Access Point", category: "Red", stock: true, image: "/photos/products/router.jpg" },
+    { brand: "Dell", model: "Precision 3680 Tower", category: "Workstation", stock: true, image: "/photos/products/tower.jpg" },
   ],
 };
 
@@ -398,18 +406,18 @@ export const footer = {
     {
       title: "Empresa",
       links: [
-        { label: "Nosotros", href: "#nosotros" },
-        { label: "Proceso comercial", href: "#proceso" },
-        { label: "Contacto", href: "#contacto" },
+        { label: "Nosotros", href: "/#nosotros" },
+        { label: "Recursos", href: "/recursos" },
+        { label: "Contacto", href: "/#contacto" },
       ],
     },
     {
       title: "Soluciones",
       links: [
-        { label: "Servidores y storage", href: "#soluciones" },
-        { label: "Notebooks corporativas", href: "#soluciones" },
-        { label: "Infraestructura de red", href: "#soluciones" },
-        { label: "Videovigilancia", href: "#soluciones" },
+        { label: "Servidores y storage", href: "/soluciones/servidores" },
+        { label: "Notebooks corporativas", href: "/soluciones/notebooks-corporativas" },
+        { label: "Infraestructura de red", href: "/soluciones/redes-infraestructura" },
+        { label: "Videovigilancia y CCTV", href: "/soluciones/videovigilancia-cctv" },
       ],
     },
     {
@@ -444,3 +452,208 @@ export const seo = {
   ],
   ogImage: "/opengraph-image",
 };
+
+// ============================================================
+// Landings por vertical (SEO / Google Ads) — /soluciones/[slug]
+// ============================================================
+export type Vertical = {
+  slug: string;
+  navLabel: string;
+  icon: string;
+  image: string;
+  eyebrow: string;
+  h1: string;
+  intro: string;
+  metaTitle: string;
+  metaDescription: string;
+  keywords: string[];
+  bullets: { title: string; desc: string }[];
+  brands: string[];
+  models: string[];
+  faqs: { q: string; a: string }[];
+};
+
+export const verticals: Vertical[] = [
+  {
+    slug: "servidores",
+    navLabel: "Servidores y storage",
+    icon: "Server",
+    image: "/photos/products/server.jpg",
+    eyebrow: "Servidores y storage",
+    h1: "Servidores y storage para empresas, con asesoramiento de ingeniería.",
+    intro:
+      "Distribuimos servidores, almacenamiento y soluciones de virtualización de marcas oficiales, dimensionados a la medida de tu operación. Stock real, precios mayoristas y soporte de implementación.",
+    metaTitle: "Servidores corporativos mayorista | Bartez Tecnología Rosario",
+    metaDescription:
+      "Servidores Dell PowerEdge, storage y virtualización para empresas. Distribuidor mayorista en Rosario con stock real, Factura A y entrega a todo el país. Pedí tu cotización.",
+    keywords: ["servidores Dell PowerEdge", "storage empresas", "servidor corporativo mayorista", "virtualización Rosario"],
+    bullets: [
+      { title: "Dimensionamiento técnico", desc: "Relevamos tu carga de trabajo y proponemos la configuración correcta." },
+      { title: "Marcas oficiales", desc: "Dell PowerEdge, HPE ProLiant y storage con garantía de fábrica." },
+      { title: "Implementación", desc: "Instalación, virtualización y puesta en marcha con técnicos certificados." },
+      { title: "Continuidad", desc: "Stock real y reposición para que tu datacenter nunca pare." },
+    ],
+    brands: ["Dell", "HP", "Intel", "Kingston"],
+    models: ["Dell PowerEdge R760", "Dell PowerEdge R360", "HPE ProLiant DL360", "Storage / NAS corporativo"],
+    faqs: [
+      { q: "¿Asesoran sobre qué servidor necesito?", a: "Sí. Relevamos tu operación (usuarios, virtualización, bases de datos) y te proponemos la configuración óptima antes de cotizar." },
+      { q: "¿Incluye instalación?", a: "Ofrecemos el servicio de implementación y virtualización con técnicos certificados, opcional a la compra del equipo." },
+    ],
+  },
+  {
+    slug: "notebooks-corporativas",
+    navLabel: "Notebooks corporativas",
+    icon: "Laptop",
+    image: "/photos/products/laptop1.jpg",
+    eyebrow: "Notebooks corporativas",
+    h1: "Notebooks corporativas para todo tu equipo, con precio mayorista.",
+    intro:
+      "Equipá tu empresa con notebooks de gama corporativa de Lenovo, HP y Dell. Cotizamos fleets completos con condiciones B2B, financiación y entrega a todo el país.",
+    metaTitle: "Notebooks corporativas mayorista | Bartez Tecnología",
+    metaDescription:
+      "Notebooks corporativas Lenovo ThinkPad, HP ProBook y Dell Latitude para empresas. Cotizá tu fleet con precios mayoristas, Factura A y garantía oficial. Rosario, envíos a todo el país.",
+    keywords: ["notebooks corporativas", "ThinkPad empresas", "fleet de notebooks", "Dell Latitude mayorista"],
+    bullets: [
+      { title: "Fleets a medida", desc: "Cotizamos desde 5 hasta cientos de equipos con la misma agilidad." },
+      { title: "Gama profesional", desc: "Lenovo ThinkPad, HP ProBook y Dell Latitude, durabilidad de negocio." },
+      { title: "Financiación B2B", desc: "Cuenta corriente y condiciones corporativas para renovar tu parque." },
+      { title: "Garantía oficial", desc: "Gestión de garantía y posventa con respaldo del fabricante." },
+    ],
+    brands: ["Lenovo", "HP", "Dell", "Intel"],
+    models: ["Lenovo ThinkPad T14", "HP ProBook 460", "Dell Latitude 5550", "Dell Latitude 3550"],
+    faqs: [
+      { q: "¿Cotizan fleets grandes de notebooks?", a: "Sí, es uno de nuestros fuertes. Contanos cantidad y perfil de uso y te armamos la propuesta con precio por volumen." },
+      { q: "¿Ofrecen financiación?", a: "Sí, trabajamos con cuenta corriente y condiciones corporativas según evaluación crediticia." },
+    ],
+  },
+  {
+    slug: "redes-infraestructura",
+    navLabel: "Redes e infraestructura",
+    icon: "Network",
+    image: "/photos/products/switch.jpg",
+    eyebrow: "Infraestructura de red",
+    h1: "Infraestructura de red empresarial, de la cotización a la implementación.",
+    intro:
+      "Switches, access points, firewalls y cableado para construir o ampliar la red de tu empresa. Productos de marcas líderes con asesoramiento e implementación.",
+    metaTitle: "Infraestructura de red empresarial mayorista | Bartez Tecnología",
+    metaDescription:
+      "Switches Cisco, access points, firewalls y networking para empresas. Distribuidor mayorista en Rosario con asesoramiento, implementación y Factura A. Cotizá tu proyecto de red.",
+    keywords: ["switches Cisco Catalyst", "access points empresas", "firewall corporativo", "infraestructura de red Rosario"],
+    bullets: [
+      { title: "Diseño de red", desc: "Proyectamos la topología según tu planta, usuarios y crecimiento." },
+      { title: "Networking pro", desc: "Switches Cisco, access points y firewalls gestionados." },
+      { title: "Implementación", desc: "Instalación, configuración y puesta a punto de la red." },
+      { title: "Soporte", desc: "Mantenimiento y soporte para mantener la red estable." },
+    ],
+    brands: ["Cisco", "HP"],
+    models: ["Cisco Catalyst 9200", "Access points WiFi 6", "Firewalls / UTM", "Switches gestionables"],
+    faqs: [
+      { q: "¿Hacen el proyecto de red completo?", a: "Sí: diseño, provisión de equipos e implementación. Podés tomar todo o solo la parte que necesites." },
+      { q: "¿Trabajan con varias marcas?", a: "Sí, te recomendamos la mejor opción según presupuesto y requerimiento, sin atarte a una sola marca." },
+    ],
+  },
+  {
+    slug: "videovigilancia-cctv",
+    navLabel: "Videovigilancia / CCTV",
+    icon: "Cctv",
+    image: "/photos/datacenter.jpg",
+    eyebrow: "Videovigilancia y CCTV",
+    h1: "Videovigilancia y CCTV para proteger tu empresa.",
+    intro:
+      "Cámaras IP, grabadores NVR y soluciones de monitoreo para oficinas, plantas y depósitos. Te asesoramos en el diseño y la implementación del sistema.",
+    metaTitle: "Cámaras de seguridad y CCTV para empresas | Bartez Tecnología",
+    metaDescription:
+      "Cámaras IP, NVR y videovigilancia para empresas. Distribuidor mayorista en Rosario con asesoramiento e instalación. Factura A y entrega a todo el país. Cotizá tu sistema CCTV.",
+    keywords: ["cámaras de seguridad empresas", "CCTV corporativo", "videovigilancia IP", "NVR mayorista Rosario"],
+    bullets: [
+      { title: "Relevamiento", desc: "Definimos cantidad de cámaras y cobertura según tu predio." },
+      { title: "Equipos confiables", desc: "Cámaras IP, NVR y almacenamiento de marcas reconocidas." },
+      { title: "Instalación", desc: "Montaje, configuración y acceso remoto al monitoreo." },
+      { title: "Escalable", desc: "Soluciones que crecen con tu operación, de 4 a decenas de cámaras." },
+    ],
+    brands: ["Intel", "Kingston"],
+    models: ["Cámaras IP corporativas", "Grabadores NVR", "Almacenamiento para CCTV", "Monitoreo remoto"],
+    faqs: [
+      { q: "¿Incluye la instalación de las cámaras?", a: "Sí, ofrecemos el servicio de instalación y configuración, además de la provisión de los equipos." },
+      { q: "¿Se puede ver el monitoreo desde el celular?", a: "Sí, configuramos el acceso remoto para que veas las cámaras desde la app en tu teléfono o PC." },
+    ],
+  },
+];
+
+// ============================================================
+// Casos de éxito (placeholder editable — reemplazar por reales)
+// ============================================================
+export const cases = {
+  num: "—",
+  eyebrow: "Casos de éxito",
+  title: "Empresas que ya confían en Bartez.",
+  desc: "Algunos proyectos representativos. (Datos de ejemplo — reemplazar por casos reales.)",
+  items: [
+    { sector: "Logística", initials: "LG", metric: "120", metricLabel: "notebooks renovadas", result: "Recambio completo del parque en 10 días, con una sola Factura A y financiación a 90 días." },
+    { sector: "Industria", initials: "IN", metric: "99,9%", metricLabel: "uptime del datacenter", result: "Provisión e implementación de servidores y storage para virtualizar la operación de planta." },
+    { sector: "Retail", initials: "RT", metric: "8", metricLabel: "sucursales conectadas", result: "Infraestructura de red y CCTV unificada en todas las sucursales, con soporte centralizado." },
+  ],
+};
+
+// ============================================================
+// Blog / Recursos (SEO) — /recursos y /recursos/[slug]
+// ============================================================
+export type Article = {
+  slug: string;
+  title: string;
+  excerpt: string;
+  date: string;
+  readingTime: string;
+  cover: string;
+  metaDescription: string;
+  body: { h?: string; p?: string }[];
+};
+
+export const articles: Article[] = [
+  {
+    slug: "como-elegir-servidor-para-tu-empresa",
+    title: "Cómo elegir el servidor correcto para tu empresa",
+    excerpt: "Procesador, RAM, almacenamiento y virtualización: una guía práctica para no comprar de más ni de menos.",
+    date: "2026-06-15",
+    readingTime: "5 min",
+    cover: "/photos/products/server.jpg",
+    metaDescription:
+      "Guía práctica para elegir el servidor corporativo correcto: CPU, RAM, storage, RAID y virtualización. Dimensioná tu inversión IT con criterio.",
+    body: [
+      { p: "Comprar un servidor es una inversión que tu empresa va a usar durante años. Elegir bien evita pagar de más por capacidad que no usás, o quedarte corto y tener que reinvertir antes de tiempo." },
+      { h: "1. Empezá por la carga de trabajo" },
+      { p: "Antes de mirar modelos, definí qué va a correr el servidor: archivos compartidos, una base de datos, un ERP, virtualización de varios sistemas, etc. La cantidad de usuarios simultáneos y las aplicaciones críticas determinan todo el resto." },
+      { h: "2. Procesador y memoria" },
+      { p: "Para la mayoría de las PyMEs, un procesador de la línea Intel Xeon de gama media y entre 32 y 64 GB de RAM cubren cómodamente. Si vas a virtualizar varios servidores en uno solo, priorizá RAM: es lo primero que se agota." },
+      { h: "3. Almacenamiento y RAID" },
+      { p: "Combiná discos SSD para el sistema y las aplicaciones con discos de mayor capacidad para datos. Configurá RAID para tener tolerancia a fallas: si un disco muere, no perdés información ni se detiene la operación." },
+      { h: "4. Pensá en la continuidad" },
+      { p: "Un buen servidor sin respaldo de energía es media solución. Sumá una UPS para cubrir cortes y picos, y definí una política de backups. La continuidad operativa vale más que cualquier ahorro inicial." },
+      { h: "¿Necesitás ayuda para dimensionarlo?" },
+      { p: "En Bartez relevamos tu operación y te proponemos la configuración exacta antes de cotizar, con marcas oficiales y precios mayoristas. Escribinos y lo definimos juntos." },
+    ],
+  },
+  {
+    slug: "renovar-fleet-de-notebooks-corporativas",
+    title: "Renovar el fleet de notebooks: qué tener en cuenta",
+    excerpt: "Gamas, garantía, financiación y logística: cómo encarar el recambio de notebooks de toda la empresa sin dolores de cabeza.",
+    date: "2026-06-10",
+    readingTime: "4 min",
+    cover: "/photos/products/laptop1.jpg",
+    metaDescription:
+      "Cómo renovar el parque de notebooks corporativas: elegir gama, garantía, financiación B2B y logística. Guía para compras IT de empresas.",
+    body: [
+      { p: "Renovar las notebooks de una empresa no es comprar 50 equipos iguales: es un proyecto de compras que conviene planificar para optimizar costo, garantía y tiempos de entrega." },
+      { h: "1. Definí gamas por perfil de usuario" },
+      { p: "No todos necesitan lo mismo. Administrativos con ofimática rinden bien con una gama Essential; usuarios de diseño o ingeniería necesitan más potencia. Segmentar por perfil baja el costo total sin resignar productividad." },
+      { h: "2. Priorizá la línea corporativa" },
+      { p: "Las líneas profesionales (Lenovo ThinkPad, HP ProBook, Dell Latitude) están pensadas para uso intensivo, con mejor durabilidad, teclados y soporte que las líneas de consumo. A la larga, salen más baratas." },
+      { h: "3. Garantía y posventa" },
+      { p: "Verificá que los equipos tengan garantía oficial y que tu proveedor gestione la posventa. Un equipo parado sin respaldo te cuesta más que la diferencia de precio." },
+      { h: "4. Financiación y logística" },
+      { p: "Renovar todo de una vez impacta el flujo de caja. Buscá condiciones B2B, cuenta corriente y una única Factura A. Y coordiná la entrega para no frenar la operación." },
+      { h: "Cotizá tu recambio con Bartez" },
+      { p: "Cotizamos fleets completos con precio por volumen, garantía oficial y entrega a todo el país. Contanos cantidad y perfiles y te armamos la propuesta." },
+    ],
+  },
+];

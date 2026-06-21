@@ -7,11 +7,11 @@ import { hero } from "../../constants";
 import { Button } from "../ui/Button";
 
 const nodes = [
-  { icon: Laptop, label: "Notebooks", x: 8, y: 12 },
-  { icon: Network, label: "Redes", x: 78, y: 8 },
-  { icon: Cloud, label: "Cloud", x: 84, y: 62 },
-  { icon: Cctv, label: "CCTV", x: 60, y: 90 },
-  { icon: HardDrive, label: "Storage", x: 6, y: 72 },
+  { icon: Laptop, label: "Notebooks", x: 8, y: 8 },
+  { icon: Network, label: "Redes", x: 80, y: 8 },
+  { icon: Cloud, label: "Cloud", x: 82, y: 68 },
+  { icon: Cctv, label: "CCTV", x: 54, y: 90 },
+  { icon: HardDrive, label: "Storage", x: 8, y: 68 },
 ];
 
 export function Hero() {
@@ -125,15 +125,15 @@ export function Hero() {
             ))}
           </div>
 
-          {/* badges flotantes */}
-          <div className="absolute -left-4 top-16 flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-ink shadow-lg">
+          {/* badges flotantes (z-30 para quedar sobre los nodos; centrados en cada lado, zona libre) */}
+          <div className="absolute -left-4 top-[44%] z-30 flex -translate-y-1/2 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-ink shadow-lg">
             <ShieldCheck className="h-5 w-5 text-emerald" />
             <div className="text-[12px] leading-tight">
               <div className="font-semibold">Garantía oficial</div>
               <div className="text-slate-500">marcas líderes</div>
             </div>
           </div>
-          <div className="absolute -right-3 bottom-10 flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-ink shadow-lg">
+          <div className="absolute -right-3 top-[58%] z-30 flex -translate-y-1/2 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-ink shadow-lg">
             <Clock className="h-5 w-5 text-brand" />
             <div className="text-[12px] leading-tight">
               <div className="font-semibold">Soporte B2B</div>

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { solutions } from "../../constants";
 import { Icon } from "../icons";
 import { Reveal } from "../motion";
@@ -12,8 +13,8 @@ export function Solutions() {
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {solutions.cards.map((c, i) => (
             <Reveal as="article" delay={(i % 3) * 0.07} key={c.id}>
-              <a
-                href="#cotiza"
+              <Link
+                href={c.href}
                 className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white p-7 shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:border-brand/40 hover:shadow-card"
                 aria-label={`${c.title} — ${c.cta}`}
               >
@@ -31,7 +32,7 @@ export function Solutions() {
                   {c.cta}
                   <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
                 </span>
-              </a>
+              </Link>
             </Reveal>
           ))}
         </div>

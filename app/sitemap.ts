@@ -1,13 +1,23 @@
 import type { MetadataRoute } from "next";
-import { company } from "../constants";
+import { company, verticals, articles } from "../constants";
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const base = company.url;
+  const now = new Date();
   return [
-    {
-      url: company.url,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 1,
-    },
+    { url: base, lastModified: now, changeFrequency: "weekly", priority: 1 },
+    { url: `${base}/recursos`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
+    ...verticals.map((v) => ({
+      url: `${base}/soluciones/${v.slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    })),
+    ...articles.map((a) => ({
+      url: `${base}/recursos/${a.slug}`,
+      lastModified: new Date(a.date),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
   ];
 }

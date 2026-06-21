@@ -7,6 +7,7 @@ import { Services } from "../components/sections/Services";
 import { Showcase } from "../components/sections/Showcase";
 import { WhyBartez } from "../components/sections/WhyBartez";
 import { Industries } from "../components/sections/Industries";
+import { Cases } from "../components/sections/Cases";
 import { Testimonial } from "../components/sections/Testimonial";
 import { CatalogPreview } from "../components/sections/CatalogPreview";
 import { Process } from "../components/sections/Process";
@@ -33,6 +34,7 @@ export default function Home() {
         <Showcase />
         <WhyBartez />
         <Industries />
+        <Cases />
         <CatalogPreview />
         <Process />
         <Testimonial />
