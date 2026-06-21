@@ -456,6 +456,7 @@ export const seo = {
 // ============================================================
 // Landings por vertical (SEO / Google Ads) — /soluciones/[slug]
 // ============================================================
+export type VProduct = { brand: string; model: string; image: string; badge?: string };
 export type Vertical = {
   slug: string;
   navLabel: string;
@@ -468,9 +469,12 @@ export type Vertical = {
   metaDescription: string;
   keywords: string[];
   bullets: { title: string; desc: string }[];
+  capabilities: { icon: string; title: string; desc: string }[];
+  products: VProduct[];
   brands: string[];
   models: string[];
   faqs: { q: string; a: string }[];
+  related: string[];
 };
 
 export const verticals: Vertical[] = [
@@ -482,7 +486,7 @@ export const verticals: Vertical[] = [
     eyebrow: "Servidores y storage",
     h1: "Servidores y storage para empresas, con asesoramiento de ingeniería.",
     intro:
-      "Distribuimos servidores, almacenamiento y soluciones de virtualización de marcas oficiales, dimensionados a la medida de tu operación. Stock real, precios mayoristas y soporte de implementación.",
+      "Distribuimos servidores, almacenamiento y soluciones de virtualización de marcas oficiales, dimensionados a la medida de tu operación. Stock real, precios mayoristas y soporte de implementación de punta a punta.",
     metaTitle: "Servidores corporativos mayorista | Bartez Tecnología Rosario",
     metaDescription:
       "Servidores Dell PowerEdge, storage y virtualización para empresas. Distribuidor mayorista en Rosario con stock real, Factura A y entrega a todo el país. Pedí tu cotización.",
@@ -490,15 +494,31 @@ export const verticals: Vertical[] = [
     bullets: [
       { title: "Dimensionamiento técnico", desc: "Relevamos tu carga de trabajo y proponemos la configuración correcta." },
       { title: "Marcas oficiales", desc: "Dell PowerEdge, HPE ProLiant y storage con garantía de fábrica." },
-      { title: "Implementación", desc: "Instalación, virtualización y puesta en marcha con técnicos certificados." },
-      { title: "Continuidad", desc: "Stock real y reposición para que tu datacenter nunca pare." },
+      { title: "Virtualización", desc: "Consolidá varios servidores en uno con VMware, Hyper-V o Proxmox." },
+      { title: "Implementación", desc: "Instalación, configuración y puesta en marcha con técnicos certificados." },
+      { title: "Continuidad", desc: "Stock real, UPS y políticas de backup para que nunca pares." },
+      { title: "Escalabilidad", desc: "Equipos que crecen con tu empresa, sin rehacer la inversión." },
+    ],
+    capabilities: [
+      { icon: "DraftingCompass", title: "Relevamiento", desc: "Analizamos usuarios, aplicaciones y cargas para definir la configuración exacta." },
+      { icon: "Wrench", title: "Instalación y virtualización", desc: "Montaje en rack, hipervisor y migración de servicios sin frenar la operación." },
+      { icon: "ShieldCheck", title: "Garantía oficial", desc: "Gestión de garantía y reemplazo con respaldo del fabricante." },
+      { icon: "Headset", title: "Soporte y monitoreo", desc: "Mantenimiento preventivo y soporte ante incidentes." },
+    ],
+    products: [
+      { brand: "Dell", model: "PowerEdge R760", image: "/photos/products/server.jpg", badge: "Stock disponible" },
+      { brand: "Synology", model: "Storage / NAS corporativo", image: "/photos/products/storage.jpg", badge: "Stock disponible" },
+      { brand: "APC", model: "Smart-UPS 1500VA", image: "/photos/products/ups.jpg", badge: "Stock disponible" },
     ],
     brands: ["Dell", "HP", "Intel", "Kingston"],
     models: ["Dell PowerEdge R760", "Dell PowerEdge R360", "HPE ProLiant DL360", "Storage / NAS corporativo"],
     faqs: [
       { q: "¿Asesoran sobre qué servidor necesito?", a: "Sí. Relevamos tu operación (usuarios, virtualización, bases de datos) y te proponemos la configuración óptima antes de cotizar." },
       { q: "¿Incluye instalación?", a: "Ofrecemos el servicio de implementación y virtualización con técnicos certificados, opcional a la compra del equipo." },
+      { q: "¿Trabajan con varias marcas?", a: "Sí, principalmente Dell y HPE. Te recomendamos la mejor opción según presupuesto y requerimiento." },
+      { q: "¿Ofrecen financiación?", a: "Sí, con cuenta corriente y condiciones corporativas según evaluación crediticia, y siempre con Factura A." },
     ],
+    related: ["redes-infraestructura", "notebooks-corporativas"],
   },
   {
     slug: "notebooks-corporativas",
@@ -508,7 +528,7 @@ export const verticals: Vertical[] = [
     eyebrow: "Notebooks corporativas",
     h1: "Notebooks corporativas para todo tu equipo, con precio mayorista.",
     intro:
-      "Equipá tu empresa con notebooks de gama corporativa de Lenovo, HP y Dell. Cotizamos fleets completos con condiciones B2B, financiación y entrega a todo el país.",
+      "Equipá tu empresa con notebooks de gama corporativa de Lenovo, HP y Dell. Cotizamos fleets completos con condiciones B2B, financiación, configuración y entrega a todo el país.",
     metaTitle: "Notebooks corporativas mayorista | Bartez Tecnología",
     metaDescription:
       "Notebooks corporativas Lenovo ThinkPad, HP ProBook y Dell Latitude para empresas. Cotizá tu fleet con precios mayoristas, Factura A y garantía oficial. Rosario, envíos a todo el país.",
@@ -516,15 +536,31 @@ export const verticals: Vertical[] = [
     bullets: [
       { title: "Fleets a medida", desc: "Cotizamos desde 5 hasta cientos de equipos con la misma agilidad." },
       { title: "Gama profesional", desc: "Lenovo ThinkPad, HP ProBook y Dell Latitude, durabilidad de negocio." },
+      { title: "Configuración previa", desc: "Imagen corporativa, software y dominio listos antes de entregar." },
       { title: "Financiación B2B", desc: "Cuenta corriente y condiciones corporativas para renovar tu parque." },
       { title: "Garantía oficial", desc: "Gestión de garantía y posventa con respaldo del fabricante." },
+      { title: "Logística nacional", desc: "Entrega coordinada a una o varias sucursales del país." },
+    ],
+    capabilities: [
+      { icon: "DraftingCompass", title: "Asesoramiento por perfil", desc: "Definimos la gama ideal según el uso de cada equipo de trabajo." },
+      { icon: "Wrench", title: "Preparación de equipos", desc: "Imagen, software y configuración corporativa lista para usar." },
+      { icon: "ShieldCheck", title: "Garantía y posventa", desc: "Gestionamos la garantía oficial y los reemplazos por vos." },
+      { icon: "Boxes", title: "Renovación programada", desc: "Plan de recambio del parque para no improvisar." },
+    ],
+    products: [
+      { brand: "Lenovo", model: "ThinkPad T14 Gen 5", image: "/photos/products/laptop1.jpg", badge: "Stock disponible" },
+      { brand: "HP", model: "ProBook 460 G11", image: "/photos/products/laptop2.jpg", badge: "Stock disponible" },
+      { brand: "Dell", model: "Monitor UltraSharp + dock", image: "/photos/products/monitor.jpg", badge: "Stock disponible" },
     ],
     brands: ["Lenovo", "HP", "Dell", "Intel"],
     models: ["Lenovo ThinkPad T14", "HP ProBook 460", "Dell Latitude 5550", "Dell Latitude 3550"],
     faqs: [
       { q: "¿Cotizan fleets grandes de notebooks?", a: "Sí, es uno de nuestros fuertes. Contanos cantidad y perfil de uso y te armamos la propuesta con precio por volumen." },
+      { q: "¿Preparan los equipos antes de entregar?", a: "Sí, podemos entregar las notebooks con imagen corporativa, software y configuración de dominio listos." },
       { q: "¿Ofrecen financiación?", a: "Sí, trabajamos con cuenta corriente y condiciones corporativas según evaluación crediticia." },
+      { q: "¿Entregan al interior del país?", a: "Sí, tenemos cobertura nacional y coordinamos la entrega a una o varias sucursales." },
     ],
+    related: ["servidores", "redes-infraestructura"],
   },
   {
     slug: "redes-infraestructura",
@@ -534,33 +570,49 @@ export const verticals: Vertical[] = [
     eyebrow: "Infraestructura de red",
     h1: "Infraestructura de red empresarial, de la cotización a la implementación.",
     intro:
-      "Switches, access points, firewalls y cableado para construir o ampliar la red de tu empresa. Productos de marcas líderes con asesoramiento e implementación.",
+      "Switches, access points, firewalls y cableado para construir o ampliar la red de tu empresa. Productos de marcas líderes con diseño, provisión e implementación.",
     metaTitle: "Infraestructura de red empresarial mayorista | Bartez Tecnología",
     metaDescription:
       "Switches Cisco, access points, firewalls y networking para empresas. Distribuidor mayorista en Rosario con asesoramiento, implementación y Factura A. Cotizá tu proyecto de red.",
     keywords: ["switches Cisco Catalyst", "access points empresas", "firewall corporativo", "infraestructura de red Rosario"],
     bullets: [
       { title: "Diseño de red", desc: "Proyectamos la topología según tu planta, usuarios y crecimiento." },
-      { title: "Networking pro", desc: "Switches Cisco, access points y firewalls gestionados." },
+      { title: "Networking pro", desc: "Switches Cisco, access points WiFi 6 y firewalls gestionados." },
+      { title: "Cableado estructurado", desc: "Tendido, certificación y orden del cableado de tu edificio." },
+      { title: "Seguridad perimetral", desc: "Firewalls/UTM para proteger la red y el acceso remoto." },
       { title: "Implementación", desc: "Instalación, configuración y puesta a punto de la red." },
-      { title: "Soporte", desc: "Mantenimiento y soporte para mantener la red estable." },
+      { title: "Soporte", desc: "Mantenimiento y monitoreo para mantener la red estable." },
     ],
-    brands: ["Cisco", "HP"],
+    capabilities: [
+      { icon: "DraftingCompass", title: "Diseño y relevamiento", desc: "Definimos topología, equipos y cobertura WiFi de tu predio." },
+      { icon: "Wrench", title: "Instalación y cableado", desc: "Montaje de racks, cableado estructurado y configuración." },
+      { icon: "ShieldCheck", title: "Seguridad de red", desc: "Firewalls, VLANs y políticas de acceso para proteger tu red." },
+      { icon: "Headset", title: "Soporte gestionado", desc: "Monitoreo y soporte para que la red no se caiga." },
+    ],
+    products: [
+      { brand: "Cisco", model: "Catalyst 9200", image: "/photos/products/switch.jpg", badge: "Stock disponible" },
+      { brand: "Ubiquiti", model: "UniFi Access Point", image: "/photos/products/router.jpg", badge: "Stock disponible" },
+      { brand: "Dell", model: "Rack y gabinetes", image: "/photos/products/storage.jpg", badge: "A pedido" },
+    ],
+    brands: ["Cisco", "HP", "Ubiquiti"],
     models: ["Cisco Catalyst 9200", "Access points WiFi 6", "Firewalls / UTM", "Switches gestionables"],
     faqs: [
       { q: "¿Hacen el proyecto de red completo?", a: "Sí: diseño, provisión de equipos e implementación. Podés tomar todo o solo la parte que necesites." },
       { q: "¿Trabajan con varias marcas?", a: "Sí, te recomendamos la mejor opción según presupuesto y requerimiento, sin atarte a una sola marca." },
+      { q: "¿Incluye cableado estructurado?", a: "Sí, ofrecemos el tendido, la certificación y el orden del cableado además de los equipos activos." },
+      { q: "¿Dan soporte después de instalar?", a: "Sí, ofrecemos planes de soporte y monitoreo para mantener la red estable." },
     ],
+    related: ["servidores", "videovigilancia-cctv"],
   },
   {
     slug: "videovigilancia-cctv",
     navLabel: "Videovigilancia / CCTV",
     icon: "Cctv",
-    image: "/photos/datacenter.jpg",
+    image: "/photos/cctv.jpg",
     eyebrow: "Videovigilancia y CCTV",
     h1: "Videovigilancia y CCTV para proteger tu empresa.",
     intro:
-      "Cámaras IP, grabadores NVR y soluciones de monitoreo para oficinas, plantas y depósitos. Te asesoramos en el diseño y la implementación del sistema.",
+      "Cámaras IP, grabadores NVR y soluciones de monitoreo para oficinas, plantas y depósitos. Te asesoramos en el diseño, la provisión y la implementación del sistema completo.",
     metaTitle: "Cámaras de seguridad y CCTV para empresas | Bartez Tecnología",
     metaDescription:
       "Cámaras IP, NVR y videovigilancia para empresas. Distribuidor mayorista en Rosario con asesoramiento e instalación. Factura A y entrega a todo el país. Cotizá tu sistema CCTV.",
@@ -569,20 +621,37 @@ export const verticals: Vertical[] = [
       { title: "Relevamiento", desc: "Definimos cantidad de cámaras y cobertura según tu predio." },
       { title: "Equipos confiables", desc: "Cámaras IP, NVR y almacenamiento de marcas reconocidas." },
       { title: "Instalación", desc: "Montaje, configuración y acceso remoto al monitoreo." },
+      { title: "Acceso remoto", desc: "Mirá tus cámaras desde el celular o la PC, donde estés." },
+      { title: "Grabación segura", desc: "Almacenamiento dimensionado para los días de grabación que necesites." },
       { title: "Escalable", desc: "Soluciones que crecen con tu operación, de 4 a decenas de cámaras." },
     ],
-    brands: ["Intel", "Kingston"],
+    capabilities: [
+      { icon: "DraftingCompass", title: "Proyecto a medida", desc: "Definimos cantidad, tipo y ubicación de cámaras según tu predio." },
+      { icon: "Wrench", title: "Instalación", desc: "Montaje, cableado y configuración del sistema completo." },
+      { icon: "Cloud", title: "Acceso remoto", desc: "Configuramos el monitoreo desde la app en tu celular o PC." },
+      { icon: "Headset", title: "Mantenimiento", desc: "Soporte y mantenimiento para que el sistema no falle." },
+    ],
+    products: [
+      { brand: "Hikvision", model: "Cámara IP exterior", image: "/photos/products/cctv.jpg", badge: "Stock disponible" },
+      { brand: "Synology", model: "Grabador NVR / almacenamiento", image: "/photos/products/storage.jpg", badge: "Stock disponible" },
+      { brand: "Dahua", model: "Kit de monitoreo", image: "/photos/products/cctv.jpg", badge: "A pedido" },
+    ],
+    brands: ["Hikvision", "Dahua", "Intel"],
     models: ["Cámaras IP corporativas", "Grabadores NVR", "Almacenamiento para CCTV", "Monitoreo remoto"],
     faqs: [
       { q: "¿Incluye la instalación de las cámaras?", a: "Sí, ofrecemos el servicio de instalación y configuración, además de la provisión de los equipos." },
       { q: "¿Se puede ver el monitoreo desde el celular?", a: "Sí, configuramos el acceso remoto para que veas las cámaras desde la app en tu teléfono o PC." },
+      { q: "¿Cuántos días de grabación quedan guardados?", a: "Dimensionamos el almacenamiento según los días de grabación que necesites, desde una semana hasta varios meses." },
+      { q: "¿Sirve para varias sucursales?", a: "Sí, podemos unificar el monitoreo de varias ubicaciones en una sola plataforma." },
     ],
+    related: ["redes-infraestructura", "servidores"],
   },
 ];
 
 // ============================================================
 // Casos de éxito (placeholder editable — reemplazar por reales)
 // ============================================================
+
 export const cases = {
   num: "—",
   eyebrow: "Casos de éxito",

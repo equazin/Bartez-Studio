@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { ArrowRight, Check, MessageCircle, ArrowLeft } from "lucide-react";
-import { verticals, company, contact } from "../../../constants";
+import { ArrowRight, Check, MessageCircle, ArrowLeft, PackageCheck } from "lucide-react";
+import { verticals, company, contact, partners } from "../../../constants";
 import { Navbar } from "../../../components/Navbar";
 import { Footer } from "../../../components/Footer";
 import { WhatsAppFloat } from "../../../components/WhatsAppFloat";
 import { MobileCTA } from "../../../components/MobileCTA";
+import { Process } from "../../../components/sections/Process";
 import { Icon } from "../../../components/icons";
 
 export function generateStaticParams() {
@@ -30,6 +31,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 export default function VerticalPage({ params }: { params: { slug: string } }) {
   const v = verticals.find((x) => x.slug === params.slug);
   if (!v) notFound();
+  const related = v.related.map((s) => verticals.find((x) => x.slug === s)).filter(Boolean) as typeof verticals;
 
   const wa = `https://wa.me/${contact.whatsappNumber}?text=${encodeURIComponent(`Hola, quiero cotizar ${v.navLabel}.`)}`;
   const jsonLd = {
@@ -67,21 +69,31 @@ export default function VerticalPage({ params }: { params: { slug: string } }) {
               </div>
             </div>
             <div className="relative aspect-[4/3] overflow-hidden rounded-3xl ring-1 ring-white/10">
-              <Image src={v.image} alt={v.navLabel} fill sizes="(max-width:768px) 100vw, 45vw" className="object-cover" />
+              <Image src={v.image} alt={v.navLabel} fill sizes="(max-width:768px) 100vw, 45vw" className="object-cover" priority />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent" aria-hidden />
             </div>
           </div>
         </section>
 
-        {/* Bullets */}
+        {/* Trust bar */}
+        <section className="border-b border-slate-200 bg-white py-8">
+          <div className="mx-auto flex max-w-[1200px] flex-wrap items-center justify-center gap-x-12 gap-y-5 px-7">
+            <span className="text-[12px] font-semibold uppercase tracking-[0.14em] text-slate-400">Marcas oficiales:</span>
+            {partners.brands.map((b) => (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img key={b.name} src={b.logo} alt={b.name} className="h-6 w-auto opacity-60 transition-opacity hover:opacity-100" />
+            ))}
+          </div>
+        </section>
+
+        {/* Value / bullets */}
         <section className="bg-white py-20">
           <div className="mx-auto max-w-[1200px] px-7">
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <h2 className="max-w-[20ch] font-display text-[clamp(24px,3.2vw,38px)] font-bold leading-tight text-ink">Por qué comprar {v.navLabel.toLowerCase()} en Bartez</h2>
+            <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {v.bullets.map((b) => (
                 <div key={b.title} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft">
-                  <span className="mb-4 inline-grid h-11 w-11 place-items-center rounded-xl bg-brand/10 text-brand">
-                    <Check size={20} strokeWidth={2.5} />
-                  </span>
+                  <span className="mb-4 inline-grid h-11 w-11 place-items-center rounded-xl bg-brand/10 text-brand"><Check size={20} strokeWidth={2.5} /></span>
                   <h3 className="font-display text-[16px] font-bold text-ink">{b.title}</h3>
                   <p className="mt-1.5 text-[14px] leading-relaxed text-slate-600">{b.desc}</p>
                 </div>
@@ -90,26 +102,53 @@ export default function VerticalPage({ params }: { params: { slug: string } }) {
           </div>
         </section>
 
-        {/* Modelos + marcas */}
+        {/* Featured products */}
         <section className="bg-slate-50 py-20">
           <div className="mx-auto max-w-[1200px] px-7">
-            <h2 className="font-display text-[clamp(24px,3vw,34px)] font-bold text-ink">Marcas y modelos que trabajamos</h2>
-            <div className="mt-8 grid gap-4 sm:grid-cols-2">
-              {v.models.map((m) => (
-                <div key={m} className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-4">
-                  <span className="grid h-9 w-9 flex-none place-items-center rounded-lg bg-brand/10 text-brand"><Icon name={v.icon} className="h-5 w-5" /></span>
-                  <span className="text-[15px] font-semibold text-ink">{m}</span>
-                </div>
-              ))}
-            </div>
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              <span className="text-[13px] font-semibold uppercase tracking-[0.1em] text-slate-400">Marcas oficiales:</span>
-              {v.brands.map((b) => (
-                <span key={b} className="rounded-full bg-white px-3 py-1 text-[13px] font-semibold text-slate-600 ring-1 ring-slate-200">{b}</span>
+            <h2 className="font-display text-[clamp(24px,3vw,34px)] font-bold text-ink">Productos destacados</h2>
+            <p className="mt-2 text-[16px] text-slate-600">Algunos de los equipos que trabajamos en esta línea. Consultanos por el modelo que necesites.</p>
+            <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {v.products.map((p, i) => (
+                <article key={i} className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft transition-all hover:-translate-y-1 hover:border-brand/40 hover:shadow-card">
+                  <div className="relative h-44 overflow-hidden bg-gradient-to-b from-slate-100 to-slate-50">
+                    <Image src={p.image} alt={`${p.brand} ${p.model}`} fill sizes="(max-width:768px) 100vw, 33vw" className="object-cover transition-transform duration-300 group-hover:scale-105" />
+                    <span className="absolute left-3 top-3 rounded-md bg-white/90 px-2 py-0.5 text-[11px] font-bold text-ink shadow-sm backdrop-blur">{p.brand}</span>
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-[16px] font-semibold text-ink">{p.model}</h3>
+                    {p.badge && (
+                      <span className={`mt-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[12px] font-semibold ${p.badge.includes("Stock") ? "bg-emerald/10 text-emerald" : "bg-slate-100 text-slate-500"}`}>
+                        <PackageCheck size={13} /> {p.badge}
+                      </span>
+                    )}
+                    <Link href="/#cotiza" className="mt-4 flex w-full items-center justify-center gap-1.5 rounded-lg border border-slate-200 py-2 text-[13px] font-semibold text-brand transition-colors hover:border-brand hover:bg-brand hover:text-white">
+                      Cotizar
+                    </Link>
+                  </div>
+                </article>
               ))}
             </div>
           </div>
         </section>
+
+        {/* Qué incluye / capabilities */}
+        <section className="bg-white py-20">
+          <div className="mx-auto max-w-[1200px] px-7">
+            <h2 className="font-display text-[clamp(24px,3vw,34px)] font-bold text-ink">Qué incluye el servicio</h2>
+            <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {v.capabilities.map((c) => (
+                <div key={c.title} className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
+                  <span className="mb-4 inline-grid h-11 w-11 place-items-center rounded-xl bg-ink text-white"><Icon name={c.icon} className="h-5 w-5" /></span>
+                  <h3 className="font-display text-[16px] font-bold text-ink">{c.title}</h3>
+                  <p className="mt-1.5 text-[14px] leading-relaxed text-slate-600">{c.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Proceso */}
+        <Process />
 
         {/* FAQ */}
         <section className="bg-white py-20">
@@ -125,6 +164,27 @@ export default function VerticalPage({ params }: { params: { slug: string } }) {
             </div>
           </div>
         </section>
+
+        {/* Verticales relacionadas */}
+        {related.length > 0 && (
+          <section className="bg-slate-50 py-20">
+            <div className="mx-auto max-w-[1200px] px-7">
+              <h2 className="mb-8 font-display text-[clamp(22px,2.6vw,30px)] font-bold text-ink">Otras soluciones</h2>
+              <div className="grid gap-5 sm:grid-cols-2">
+                {related.map((r) => (
+                  <Link key={r.slug} href={`/soluciones/${r.slug}`} className="group flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-6 transition-all hover:-translate-y-1 hover:border-brand/40 hover:shadow-card">
+                    <span className="grid h-12 w-12 flex-none place-items-center rounded-xl bg-brand/10 text-brand"><Icon name={r.icon} className="h-6 w-6" /></span>
+                    <div className="flex-1">
+                      <h3 className="font-display text-[17px] font-bold text-ink">{r.navLabel}</h3>
+                      <p className="text-[13.5px] text-slate-500">Ver soluciones</p>
+                    </div>
+                    <ArrowRight size={18} className="text-brand transition-transform group-hover:translate-x-1" />
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* CTA band */}
         <section className="bg-ink py-16 text-white">
