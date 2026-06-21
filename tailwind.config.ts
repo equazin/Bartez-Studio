@@ -9,14 +9,15 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Enterprise IT palette
-        ink: "#0A1A33", // navy profundo (hero / footer)
-        navy: "#0F2747", // navy secundario
-        brand: "#1D4ED8", // azul royal (CTAs / marca)
-        "brand-bright": "#2563EB",
-        accent: "#06B6D4", // cian tech
-        sky: "#38BDF8",
+        // Paleta Verde Bartez (oscuro) — remapeo de los tokens del sitio
+        ink: "#0A2818", // verde profundo (hero / footer / secciones oscuras)
+        navy: "#0C3520", // verde secundario (cards sobre oscuro)
+        brand: "#14532D", // verde principal (CTAs / acentos sobre claro)
+        "brand-bright": "#16A34A", // hover
+        accent: "#22C55E", // verde acento (chips, líneas, detalles)
+        sky: "#4ADE80", // verde claro (texto/acento sobre oscuro)
         emerald: "#10B981", // stock / éxito
+        bronce: "#B8956A", // detalle editorial (números, divisores)
       },
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
@@ -30,7 +31,7 @@ const config: Config = {
       boxShadow: {
         soft: "0 1px 2px rgba(15,23,42,.06)",
         card: "0 24px 50px -28px rgba(15,39,71,.45)",
-        glow: "0 14px 34px -12px rgba(29,78,216,.55)",
+        glow: "0 14px 34px -12px rgba(34,197,94,.5)",
         ring: "0 0 0 1px rgba(226,232,240,1)",
       },
       backgroundImage: {

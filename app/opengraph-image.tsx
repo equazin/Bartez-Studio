@@ -17,7 +17,7 @@ export default function OG() {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: "72px",
-          background: "linear-gradient(135deg,#0F2747 0%,#0A1A33 60%,#070f1f 100%)",
+          background: "linear-gradient(135deg,#0C3520 0%,#0A2818 60%,#061a10 100%)",
           color: "#fff",
           fontFamily: "sans-serif",
         }}
@@ -28,7 +28,7 @@ export default function OG() {
               width: 56,
               height: 56,
               borderRadius: 14,
-              background: "linear-gradient(135deg,#2563EB,#06B6D4)",
+              background: "linear-gradient(135deg,#22C55E,#14532D)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -40,7 +40,7 @@ export default function OG() {
             B
           </div>
           <div style={{ fontSize: 30, fontWeight: 700 }}>
-            Bartez <span style={{ color: "#38BDF8", fontWeight: 500 }}>Tecnología</span>
+            Bartez <span style={{ color: "#7CE0A0", fontWeight: 500 }}>Tecnología</span>
           </div>
         </div>
 
@@ -53,7 +53,7 @@ export default function OG() {
           </div>
         </div>
 
-        <div style={{ display: "flex", gap: 30, color: "#38BDF8", fontSize: 22 }}>
+        <div style={{ display: "flex", gap: 30, color: "#7CE0A0", fontSize: 22 }}>
           <span>+14.000 productos</span>
           <span>·</span>
           <span>Cotización en 24 hs</span>

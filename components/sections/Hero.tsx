@@ -97,8 +97,8 @@ export function Hero() {
               ))}
               <defs>
                 <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0" stopColor="#38BDF8" stopOpacity="0.9" />
-                  <stop offset="1" stopColor="#06B6D4" stopOpacity="0.2" />
+                  <stop offset="0" stopColor="#4ADE80" stopOpacity="0.9" />
+                  <stop offset="1" stopColor="#22C55E" stopOpacity="0.2" />
                 </linearGradient>
               </defs>
             </svg>

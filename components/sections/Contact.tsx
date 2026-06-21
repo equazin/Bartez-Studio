@@ -146,7 +146,7 @@ export function Contact() {
       </div>
 
       <style>{`.field-input{font-family:inherit;font-size:14.5px;width:100%;padding:11px 14px;border-radius:12px;border:1px solid #e2e8f0;background:#fff;color:#0f172a;transition:.2s}
-      .field-input:focus{outline:none;border-color:#1d4ed8;box-shadow:0 0 0 3px rgba(29,78,216,.15)}`}</style>
+      .field-input:focus{outline:none;border-color:#14532d;box-shadow:0 0 0 3px rgba(34,197,94,.18)}`}</style>
     </section>
   );
 }
