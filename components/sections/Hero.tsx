@@ -65,7 +65,7 @@ export function Hero() {
             <Button href={hero.ctaSecondary.href} variant="ghost-light">
               {hero.ctaSecondary.label}
             </Button>
-          </motion.div>
+          </div>
 
           <div className="mt-12 grid max-w-md grid-cols-2 gap-x-8 gap-y-5 sm:grid-cols-4">
             {hero.stats.map((s) => (
