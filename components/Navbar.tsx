@@ -71,7 +71,7 @@ export function Navbar() {
           href={whatsappLinks.quote}
           target="_blank"
           rel="noopener noreferrer"
-          className="hidden min-h-12 items-center gap-2 rounded-md bg-[#16c95f] px-5 text-[14px] font-bold text-white transition-colors hover:bg-[#12b955] lg:inline-flex"
+          className="hidden min-h-12 items-center gap-2 rounded-md border border-[#74f5a9] bg-[#22dc6c] px-5 text-[14px] font-extrabold text-[#02170b] shadow-[0_8px_24px_rgba(34,220,108,0.16)] transition-colors hover:bg-[#4ade80] lg:inline-flex"
           data-track="navbar_whatsapp_quote"
         >
           <MessageCircle size={17} /> Cotizar por WhatsApp

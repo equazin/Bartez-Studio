@@ -38,14 +38,14 @@ export function Hero() {
               href={whatsappLinks.quote}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-14 items-center justify-center gap-2.5 rounded-md bg-[#16c95f] px-6 text-[15px] font-bold text-white transition-colors hover:bg-[#12b955] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#22c55e]"
+              className="inline-flex min-h-14 items-center justify-center gap-2.5 rounded-md border border-[#74f5a9] bg-[#22dc6c] px-6 text-[15px] font-extrabold text-[#02170b] shadow-[0_10px_30px_rgba(34,220,108,0.2)] transition hover:border-[#a7f3c4] hover:bg-[#4ade80] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-white"
               data-track="hero_whatsapp_quote"
             >
               <MessageCircle size={20} strokeWidth={2.1} /> Cotizar por WhatsApp
             </a>
             <a
               href="#soluciones"
-              className="inline-flex min-h-14 items-center justify-center gap-2 rounded-md border border-white/30 bg-black/15 px-6 text-[15px] font-bold text-white transition-colors hover:border-white/60 hover:bg-white/10"
+              className="inline-flex min-h-14 items-center justify-center gap-2 rounded-md border border-white/60 bg-white/[0.08] px-6 text-[15px] font-bold text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)] transition hover:border-white hover:bg-white hover:text-[#02170b]"
             >
               Ver soluciones <ArrowRight size={17} />
             </a>
