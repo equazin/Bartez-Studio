@@ -56,7 +56,7 @@ const services = [
 
 const reasons = [
   "Asesoramiento técnico personalizado, sin venderte lo que no necesitás",
-  "Productos de primera línea con garantía oficial de fábrica",
+  "Productos de marcas líderes y acompañamiento en la gestión de garantías",
   "Factura A en todas las operaciones — Responsable Inscripto",
   "Cobertura nacional — coordinamos entregas a cualquier sede",
   "Condiciones B2B: cuenta corriente y plazos acordes a tu operación",
@@ -64,7 +64,7 @@ const reasons = [
 ];
 
 const stats = [
-  { label: "30+ años de experiencia" },
+  { label: "18 años en el rubro" },
   { label: "Cobertura nacional" },
   { label: "Factura A" },
 ];
@@ -101,7 +101,7 @@ export default function EmpresasPage() {
 
             <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
               <Link
-                href="/#cotiza"
+                href={whatsappHref}
                 className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-bold text-ink transition-all hover:scale-[1.02]"
               >
                 Pedir cotización <ArrowRight size={17} />
@@ -172,7 +172,7 @@ export default function EmpresasPage() {
                   ¿Por qué las empresas eligen Bartez?
                 </h2>
                 <p className="mt-5 text-[16px] leading-relaxed text-slate-400">
-                  Más de 30 años de experiencia en el mercado IT argentino nos
+                  Dieciocho años de experiencia en el mercado IT argentino nos
                   permiten entender la realidad de cada empresa y proponer
                   soluciones que realmente funcionen.
                 </p>
@@ -209,7 +209,7 @@ export default function EmpresasPage() {
             </p>
             <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
               <Link
-                href="/#cotiza"
+                href={whatsappHref}
                 className="inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-bold text-ink transition-all hover:scale-[1.02]"
               >
                 Solicitar asesoramiento <ArrowRight size={17} />

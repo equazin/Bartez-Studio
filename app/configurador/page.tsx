@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
 import { 
@@ -14,13 +13,12 @@ import {
   ArrowRight, 
   ArrowLeft, 
   Check, 
-  Send, 
   MessageCircle,
   FileText,
   type LucideIcon
 } from "lucide-react";
-import { contact } from "../../constants";
 import { track } from "../../components/Analytics";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 interface Profile {
   id: string;
@@ -68,8 +66,8 @@ const profiles: Profile[] = [
   },
   {
     id: "gamer",
-    name: "Gaming y Alto Desempeño",
-    description: "Estaciones de trabajo de alto procesamiento gráfico y exigencia de hardware.",
+    name: "Workstations y Alto Desempeño",
+    description: "Estaciones para diseño, ingeniería, renderizado y cargas de alto procesamiento gráfico.",
     icon: Gamepad2,
     recommendation: {
       cpu: "Intel Core i7 / AMD Ryzen 7 3D V-Cache",
@@ -96,26 +94,11 @@ const profiles: Profile[] = [
   }
 ];
 
-const inputClass =
-  "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-[14px] text-slate-900 outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/15";
-
 export default function Configurador() {
-  const router = useRouter();
   const [step, setStep] = useState(1);
   const [selectedProfile, setSelectedProfile] = useState<string>("");
   const [quantity, setQuantity] = useState<string>("1-5");
   const [intensity, setIntensity] = useState<string>("Moderada");
-  const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-
-  // Form de contacto en el configurador
-  const [form, setForm] = useState({
-    nombre: "",
-    email: "",
-    empresa: "",
-    telefono: "",
-  });
-
   const profileData = profiles.find(p => p.id === selectedProfile);
 
   const handleNext = () => {
@@ -127,60 +110,19 @@ export default function Configurador() {
     setStep(prev => prev - 1);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!profileData || !form.nombre || !form.email || !form.empresa) return;
-
-    setSubmitting(true);
-    track("configurator_lead_submitted", {
-      profile: selectedProfile,
-      quantity,
-      intensity,
-      empresa: form.empresa,
-    });
-
-    const message = `Consulta del Configurador de Soluciones Bartez.\n` +
-      `Perfil seleccionado: ${profileData.name}\n` +
-      `Escala solicitada: ${quantity} unidades\n` +
-      `Intensidad de uso: ${intensity}\n` +
-      `Especificación propuesta:\n` +
-      `- CPU: ${profileData.recommendation.cpu}\n` +
-      `- RAM: ${profileData.recommendation.ram}\n` +
-      `- Almacenamiento: ${profileData.recommendation.storage}\n` +
-      `- GPU/Gráficos: ${profileData.recommendation.gpu}`;
-
-    try {
-      await fetch("/api/lead", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          empresa: form.empresa,
-          nombre: form.nombre,
-          email: form.email,
-          telefono: form.telefono,
-          tipoConsulta: "configurador",
-          mensaje: message,
-          necesidad: `Configurador - ${profileData.name}`,
-          escala: quantity,
-          urgencia: "Inmediata",
-          canalPreferido: "email",
-          origen: "solution-configurator",
-        }),
-      });
-      setSubmitted(true);
-      setTimeout(() => {
-        router.push("/gracias");
-      }, 1500);
-    } catch {
-      setSubmitting(false);
-    }
-  };
-
   const whatsappHref = profileData 
-    ? `https://wa.me/${contact.whatsappNumber}?text=${encodeURIComponent(
-        `Hola, armé una configuración en su web para el perfil "${profileData.name}" (${quantity} unidades). Me gustaría recibir un presupuesto formal.`
-      )}`
-    : `https://wa.me/${contact.whatsappNumber}`;
+    ? buildWhatsAppUrl("quote", [
+        "Origen: configurador IT de la web",
+        `Perfil: ${profileData.name}`,
+        `Cantidad estimada: ${quantity} unidades`,
+        `Nivel de exigencia: ${intensity}`,
+        `CPU sugerida: ${profileData.recommendation.cpu}`,
+        `RAM sugerida: ${profileData.recommendation.ram}`,
+        `Almacenamiento sugerido: ${profileData.recommendation.storage}`,
+        `Gráficos sugeridos: ${profileData.recommendation.gpu}`,
+        `Marcas a evaluar: ${profileData.recommendation.brands.join(", ")}`,
+      ])
+    : buildWhatsAppUrl("quote");
 
   return (
     <>
@@ -409,86 +351,19 @@ export default function Configurador() {
                   </div>
                 </div>
 
-                {/* Formulario de captura */}
-                <div>
-                  <h3 className="font-display text-[18px] font-bold text-ink">
-                    ¿Solicitar cotización formal?
-                  </h3>
-                  <p className="mt-1 text-[12.5px] text-slate-500">
-                    Completá tus datos para que un comercial te envíe el presupuesto de esta configuración en 24hs.
+                <div className="flex flex-col justify-center rounded-xl border border-emerald/20 bg-emerald/5 p-6">
+                  <h3 className="font-display text-[20px] font-bold text-ink">Cotizá esta recomendación</h3>
+                  <p className="mt-2 text-[13.5px] leading-relaxed text-slate-600">
+                    Enviaremos el perfil, la cantidad y las especificaciones sugeridas en un mensaje de WhatsApp. Allí podés sumar marca, presupuesto o fecha de entrega.
                   </p>
-
-                  <form onSubmit={handleSubmit} className="mt-5 space-y-3.5">
-                    <label className="block">
-                      <span className="mb-1 block text-[12px] font-semibold text-slate-600">Nombre completo</span>
-                      <input
-                        required
-                        value={form.nombre}
-                        onChange={e => setForm(prev => ({ ...prev, nombre: e.target.value }))}
-                        className={inputClass}
-                        placeholder="Juan Pérez"
-                      />
-                    </label>
-
-                    <label className="block">
-                      <span className="mb-1 block text-[12px] font-semibold text-slate-600">Email Corporativo</span>
-                      <input
-                        required
-                        type="email"
-                        value={form.email}
-                        onChange={e => setForm(prev => ({ ...prev, email: e.target.value }))}
-                        className={inputClass}
-                        placeholder="jperez@empresa.com"
-                      />
-                    </label>
-
-                    <label className="block">
-                      <span className="mb-1 block text-[12px] font-semibold text-slate-600">Empresa / Razón Social</span>
-                      <input
-                        required
-                        value={form.empresa}
-                        onChange={e => setForm(prev => ({ ...prev, empresa: e.target.value }))}
-                        className={inputClass}
-                        placeholder="Empresa S.A."
-                      />
-                    </label>
-
-                    <label className="block">
-                      <span className="mb-1 block text-[12px] font-semibold text-slate-600">Teléfono de contacto</span>
-                      <input
-                        value={form.telefono}
-                        onChange={e => setForm(prev => ({ ...prev, telefono: e.target.value }))}
-                        className={inputClass}
-                        placeholder="+54 9 ..."
-                      />
-                    </label>
-
-                    <button
-                      type="submit"
-                      disabled={submitting || submitted}
-                      className="w-full mt-5 inline-flex items-center justify-center gap-2 rounded-lg bg-ink px-5 py-3 text-[14px] font-bold text-white transition-colors hover:bg-brand disabled:opacity-60"
-                    >
-                      {submitting ? (
-                        "Procesando..."
-                      ) : (
-                        <>
-                          <Send size={15} /> Solicitar Cotización B2B
-                        </>
-                      )}
-                    </button>
-                  </form>
-
-                  <div className="mt-4 flex items-center justify-center gap-3 text-[12px] text-slate-400">
-                    <span>o también podés</span>
-                  </div>
-
                   <a
                     href={whatsappHref}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full mt-3 inline-flex items-center justify-center gap-2 rounded-lg border border-emerald/50 bg-emerald/5 px-5 py-3 text-[13.5px] font-bold text-emerald transition hover:bg-emerald hover:text-white"
+                    onClick={() => track("configurator_whatsapp_started", { profile: selectedProfile, quantity, intensity })}
+                    className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-ink px-5 py-3.5 text-[14px] font-bold text-white transition-colors hover:bg-brand"
                   >
-                    <MessageCircle size={16} /> Consultar vía WhatsApp
+                    <MessageCircle size={17} /> Cotizar por WhatsApp
                   </a>
 
                   <div className="mt-6 pt-4 border-t border-slate-100">

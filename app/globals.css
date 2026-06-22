@@ -9,12 +9,14 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
 }
 
 body {
   background: #030c07;
   color: #f8fafc; /* slate-50 */
   -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
 }
 
 ::selection {

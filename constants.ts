@@ -1,6 +1,6 @@
 /**
  * constants.ts — Fuente única de verdad de contenido comercial de Bartez Tecnología.
- * Editá este archivo para cambiar textos, datos de contacto, productos y partners
+ * Editá este archivo para cambiar textos, datos de contacto, productos y marcas
  * SIN tocar componentes.
  *
  * Referencias de benchmark B2B IT consultadas para estructura/copy/conversión:
@@ -12,9 +12,9 @@
 export const company = {
   name: "Bartez Tecnología",
   shortName: "Bartez",
-  tagline: "Tecnología que mueve empresas.",
+  tagline: "Distribución IT para empresas y revendedores.",
   description:
-    "Comercializamos y distribuimos tecnología para brindar soluciones a canales corporativos, gamers, organizaciones privadas y públicas, y hogares en diferentes puntos de Argentina. Más de 30 años de experiencia profesional nos permiten ofrecer productos de primera línea con asesoramiento personalizado.",
+    "Distribuimos equipamiento, infraestructura y soluciones tecnológicas para empresas, organismos y revendedores en toda Argentina. Dieciocho años de experiencia y atención comercial directa por WhatsApp.",
   legalName: "Bartez Tecnología — Responsable Inscripto",
   cuit: "20-21774424-6",
   taxCondition: "Responsable Inscripto · Factura A",
@@ -25,8 +25,9 @@ export const company = {
   geo: { lat: -32.9481114, lng: -60.6717758 }, // 9 de Julio 3418, Echesortu, Rosario (geocodificado)
   url: "https://bartez.com.ar",
   founded: "2008",
-  experienceYears: "30+",
-  channels: ["Corporativo", "Gamer", "Sector público", "Hogares"],
+  experienceYears: "18",
+  clients: "10.000+",
+  channels: ["Empresas", "Revendedores", "Sector público", "Educación"],
 };
 
 export const contact = {
@@ -44,7 +45,7 @@ export const contact = {
 };
 
 export const partners = {
-  title: "Partners y marcas oficiales",
+  title: "Marcas que trabajamos",
   brands: [
     { name: "Dell", logo: "/logos/dell.svg" },
     { name: "Lenovo", logo: "/logos/lenovo.svg" },
@@ -61,10 +62,10 @@ export const faq = {
   eyebrow: "Preguntas frecuentes",
   title: "Lo que más nos consultan.",
   items: [
-    { q: "¿Qué tipo de clientes atienden?", a: "Trabajamos con empresas corporativas, organismos públicos y privados, canales gamer y hogares en diferentes puntos de Argentina. Más de 30 años de experiencia nos permite adaptarnos a cada necesidad con un asesoramiento personalizado." },
+    { q: "¿Qué tipo de clientes atienden?", a: "Trabajamos con empresas, organismos públicos y privados, instituciones educativas y revendedores en diferentes puntos de Argentina. Dieciocho años en el rubro nos permiten adaptarnos a cada necesidad con asesoramiento personalizado." },
     { q: "¿Trabajan en todo el país?", a: "Sí. Distribuimos y coordinamos proyectos en distintas localidades de Argentina. Desde Rosario gestionamos operaciones a nivel nacional." },
     { q: "¿Emiten Factura A?", a: "Sí. Bartez es Responsable Inscripto y emite Factura A para empresas y organismos." },
-    { q: "¿Cómo arman una solución?", a: "Primero relevamos el problema, la escala, la urgencia y el entorno actual. Con ese contexto, un especialista con más de 30 años de experiencia propone el alcance adecuado y los productos de primera línea que mejor se adaptan." },
+    { q: "¿Cómo arman una solución?", a: "Primero relevamos el problema, la escala, la urgencia y el entorno actual. Con ese contexto, nuestro equipo propone el alcance y las alternativas tecnológicas que mejor se adaptan." },
     { q: "¿Puedo consultar sin saber exactamente qué necesito?", a: "Sí. No necesitás llegar con modelos ni cantidades definidas. El equipo puede ayudarte a traducir tu necesidad en una solución tecnológica concreta." },
     { q: "¿Trabajan con revendedores o distribuidores?", a: "Sí. Contamos con un canal de distribución activo. Si sos revendedor y querés sumar los productos Bartez a tu oferta, visitá nuestra sección de Revendedores o escribinos directamente." },
     { q: "¿Ofrecen financiación?", a: "Sí. Trabajamos con cuenta corriente y condiciones comerciales acordes a cada cliente. Factura A en todas las operaciones." },
@@ -78,9 +79,9 @@ export const cookie = {
 };
 
 export const seo = {
-  title: "Bartez Tecnología — Distribuidora IT con más de 30 años de experiencia",
+  title: "Bartez Tecnología — Distribución IT para empresas y revendedores",
   description:
-    "Comercializamos y distribuimos tecnología para empresas, organismos públicos, canales gamer y hogares en Argentina. Más de 30 años de experiencia. Asesoramiento personalizado, productos de primera línea y cobertura nacional desde Rosario.",
+    "Equipamiento, infraestructura y soluciones IT para empresas, organismos y revendedores. Dieciocho años en el rubro, más de 10.000 clientes y cobertura nacional desde Rosario.",
   keywords: [
     "distribuidora IT Argentina",
     "soluciones IT para empresas",
@@ -124,28 +125,28 @@ export const verticals: Vertical[] = [
     eyebrow: "Servidores y storage",
     h1: "Servidores y storage para empresas, con asesoramiento de ingeniería.",
     intro:
-      "Distribuimos servidores, almacenamiento y soluciones de virtualización de marcas oficiales, dimensionados a la medida de tu operación. Planificación de continuidad, condiciones comerciales y soporte de implementación de punta a punta.",
+      "Distribuimos servidores, almacenamiento y soluciones de virtualización de marcas líderes, dimensionados a la medida de tu operación. Planificación de continuidad, condiciones comerciales y soporte de implementación de punta a punta.",
     metaTitle: "Soluciones de servidores corporativos | Bartez Tecnología",
     metaDescription:
       "Servidores, storage y virtualización para empresas con relevamiento, dimensionamiento e implementación desde Rosario.",
     keywords: ["servidores Dell PowerEdge", "storage empresas", "servidor corporativo mayorista", "virtualización Rosario"],
     bullets: [
       { title: "Dimensionamiento técnico", desc: "Relevamos tu carga de trabajo y proponemos la configuración correcta." },
-      { title: "Marcas oficiales", desc: "Dell PowerEdge, HPE ProLiant y storage con garantía de fábrica." },
+      { title: "Marcas que trabajamos", desc: "Dell PowerEdge, HPE ProLiant y alternativas de storage según disponibilidad." },
       { title: "Virtualización", desc: "Consolidá varios servidores en uno con VMware, Hyper-V o Proxmox." },
-      { title: "Implementación", desc: "Instalación, configuración y puesta en marcha con técnicos certificados." },
+      { title: "Implementación", desc: "Instalación, configuración y puesta en marcha con alcance acordado." },
       { title: "Continuidad", desc: "Planificación de continuidad, UPS y políticas de backup para que nunca pares." },
       { title: "Escalabilidad", desc: "Equipos que crecen con tu empresa, sin rehacer la inversión." },
     ],
     capabilities: [
       { icon: "DraftingCompass", title: "Relevamiento", desc: "Analizamos usuarios, aplicaciones y cargas para definir la configuración exacta." },
       { icon: "Wrench", title: "Instalación y virtualización", desc: "Montaje en rack, hipervisor y migración de servicios sin frenar la operación." },
-      { icon: "ShieldCheck", title: "Garantía oficial", desc: "Gestión de garantía y reemplazo con respaldo del fabricante." },
+      { icon: "ShieldCheck", title: "Garantía y posventa", desc: "Te orientamos según las condiciones aplicables de cada fabricante." },
       { icon: "Headset", title: "Soporte y monitoreo", desc: "Mantenimiento preventivo y soporte ante incidentes." },
     ],
     faqs: [
       { q: "¿Asesoran sobre qué servidor necesito?", a: "Sí. Relevamos tu operación (usuarios, virtualización, bases de datos) y te proponemos la configuración adecuada antes de preparar una propuesta." },
-      { q: "¿Incluye instalación?", a: "Ofrecemos el servicio de implementación y virtualización con técnicos certificados, opcional a la compra del equipo." },
+      { q: "¿Incluye instalación?", a: "Podemos cotizar servicios de implementación y virtualización como alcance adicional a la compra del equipo." },
       { q: "¿Trabajan con varias marcas?", a: "Sí, principalmente Dell y HPE. Te recomendamos la mejor opción según presupuesto y requerimiento." },
       { q: "¿Ofrecen financiación?", a: "Sí, con cuenta corriente y condiciones corporativas según evaluación crediticia, y siempre con Factura A." },
     ],
@@ -169,13 +170,13 @@ export const verticals: Vertical[] = [
       { title: "Gama profesional", desc: "Lenovo ThinkPad, HP ProBook y Dell Latitude, durabilidad de negocio." },
       { title: "Configuración previa", desc: "Imagen corporativa, software y dominio listos antes de entregar." },
       { title: "Planificación comercial", desc: "El alcance comercial se prepara después de relevar el parque y el cronograma." },
-      { title: "Garantía oficial", desc: "Gestión de garantía y posventa con respaldo del fabricante." },
+      { title: "Garantía y posventa", desc: "Acompañamiento según las condiciones informadas para cada producto." },
       { title: "Logística nacional", desc: "Entrega coordinada a una o varias sucursales del país." },
     ],
     capabilities: [
       { icon: "DraftingCompass", title: "Asesoramiento por perfil", desc: "Definimos la gama ideal según el uso de cada equipo de trabajo." },
       { icon: "Wrench", title: "Preparación de equipos", desc: "Imagen, software y configuración corporativa lista para usar." },
-      { icon: "ShieldCheck", title: "Garantía y posventa", desc: "Gestionamos la garantía oficial y los reemplazos por vos." },
+      { icon: "ShieldCheck", title: "Garantía y posventa", desc: "Te acompañamos en la gestión y el seguimiento de cada caso." },
       { icon: "Boxes", title: "Renovación programada", desc: "Plan de recambio del parque para no improvisar." },
     ],
     faqs: [
@@ -309,19 +310,19 @@ export const verticals: Vertical[] = [
       { title: "Marcas homologadas", desc: "Accesorios compatibles y recomendados por cada fabricante." },
       { title: "Estandarización por escala", desc: "Criterios comunes para equipar muchos puestos de manera consistente." },
       { title: "Ergonomía", desc: "Opciones ergonómicas para el confort de tu equipo." },
-      { title: "Garantía", desc: "Garantía oficial y gestión de cambios." },
+      { title: "Garantía", desc: "Condiciones según cada producto y acompañamiento en cambios." },
       { title: "Continuidad y reposición", desc: "Reposición continua de los accesorios de uso diario." },
     ],
     capabilities: [
       { icon: "DraftingCompass", title: "Armado del puesto", desc: "Definimos el kit de accesorios ideal por tipo de puesto." },
       { icon: "Boxes", title: "Provisión por volumen", desc: "Abastecemos cantidades grandes con la misma agilidad." },
-      { icon: "ShieldCheck", title: "Garantía y cambios", desc: "Gestión de garantía oficial y reposición." },
+      { icon: "ShieldCheck", title: "Garantía y cambios", desc: "Acompañamiento en la gestión de garantías y reposiciones." },
       { icon: "Headset", title: "Asesoramiento", desc: "Te recomendamos el accesorio correcto para cada necesidad." },
     ],
     faqs: [
       { q: "¿Venden accesorios por volumen?", a: "Sí, equipamos puestos completos y abastecemos cantidades grandes con criterio técnico y comercial." },
       { q: "¿Qué incluye un puesto de trabajo?", a: "Habitualmente monitor, teclado, mouse, dock y headset; armamos el kit según tu necesidad." },
-      { q: "¿Los accesorios tienen garantía?", a: "Sí, garantía oficial de marca y gestión de cambios por nuestra parte." },
+      { q: "¿Los accesorios tienen garantía?", a: "Las condiciones dependen del producto y fabricante. Te informamos el alcance antes de la compra y acompañamos la gestión." },
       { q: "¿Hacen reposición continua?", a: "Sí, planificamos la reposición para reponer los accesorios de uso diario de tu empresa." },
     ],
     related: ["notebooks-corporativas", "workstations-pcs"],
@@ -382,7 +383,7 @@ export const articles: Article[] = [
       { h: "2. Priorizá la línea corporativa" },
       { p: "Las líneas profesionales (Lenovo ThinkPad, HP ProBook, Dell Latitude) están pensadas para uso intensivo, con mejor durabilidad, teclados y soporte que las líneas de consumo. A la larga, salen más baratas." },
       { h: "3. Garantía y posventa" },
-      { p: "Verificá que los equipos tengan garantía oficial y que tu proveedor gestione la posventa. Un equipo parado sin respaldo te cuesta más que la diferencia de precio." },
+      { p: "Verificá las condiciones de garantía de cada equipo y que tu proveedor acompañe la posventa. Un equipo parado sin seguimiento cuesta más que una diferencia inicial de precio." },
       { h: "4. Financiación y logística" },
       { p: "Renovar todo de una vez impacta el flujo de caja. Buscá condiciones B2B, cuenta corriente y una única Factura A. Y coordiná la entrega para no frenar la operación." },
       { h: "Planificá tu recambio con Bartez" },

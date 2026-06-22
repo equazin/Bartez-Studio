@@ -7,13 +7,13 @@ import {
   CheckCircle2, 
   MessageCircle 
 } from "lucide-react";
-import { verticals, company, contact } from "../../../constants";
+import { verticals, company } from "../../../constants";
 import { getDynamicPartners } from "../../../lib/db-content";
 import { Navbar } from "../../../components/Navbar";
 import { Footer } from "../../../components/Footer";
-import { Assistant } from "../../../components/Assistant";
 import { Process } from "../../../components/sections/Process";
 import { Icon } from "../../../components/icons";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 export function generateStaticParams() {
   return verticals.map((vertical) => ({ slug: vertical.slug }));
@@ -47,7 +47,7 @@ export default async function VerticalPage({
     .map((relatedSlug) => verticals.find((item) => item.slug === relatedSlug))
     .filter(Boolean) as typeof verticals;
     
-  const whatsappHref = `https://wa.me/${contact.whatsappNumber}?text=${encodeURIComponent(`Hola, necesito asesoramiento sobre ${vertical.navLabel}.`)}`;
+  const whatsappHref = buildWhatsAppUrl("quote", [`Solución de interés: ${vertical.navLabel}`, "Origen: página de solución"]);
   
   const faqJsonLd = {
     "@context": "https://schema.org",
@@ -92,12 +92,10 @@ export default async function VerticalPage({
                 {vertical.intro}
               </p>
               <div className="mt-8 flex flex-col gap-3.5 sm:flex-row">
-                <Link href="/#cotiza" className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14px] font-bold text-ink transition hover:scale-[1.02]">
-                  Recibir asesoramiento <ArrowRight size={16} />
-                </Link>
-                <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/20 bg-white/5 px-6 py-3.5 text-[14px] font-semibold text-white transition hover:bg-white/10">
-                  <MessageCircle size={16} /> Contactar por WhatsApp
+                <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14px] font-bold text-ink transition hover:scale-[1.02]">
+                  <MessageCircle size={17} /> Cotizar por WhatsApp
                 </a>
+                <Link href="/rfq" className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/20 bg-white/5 px-6 py-3.5 text-[14px] font-semibold text-white transition hover:bg-white/10">Ya tengo modelos y cantidades <ArrowRight size={16} /></Link>
               </div>
             </div>
             <div className="relative min-h-[380px] lg:min-h-[480px] rounded-3xl overflow-hidden border border-white/10 shadow-glow bg-[#0A2215]">
@@ -203,15 +201,14 @@ export default async function VerticalPage({
           <div className="mx-auto flex max-w-[900px] flex-col items-center px-6 text-center">
             <h2 className="font-display text-[clamp(28px,4vw,44px)] font-bold tracking-[-0.04em]">Hablemos de lo que necesita tu empresa.</h2>
             <p className="mt-4 max-w-[50ch] text-[15px] leading-relaxed text-slate-350">Un especialista puede ayudarte a definir el alcance antes de preparar una propuesta. Respondemos en <strong>24 hs hábiles</strong> (Lun–Vie 9 a 18 hs).</p>
-            <Link href="/#cotiza" className="mt-8 inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14px] font-bold text-ink transition hover:scale-[1.02]">
-              Contános tu desafío <ArrowRight size={17} />
-            </Link>
+            <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="mt-8 inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14px] font-bold text-ink transition hover:scale-[1.02]">
+              <MessageCircle size={17} /> Contanos tu desafío por WhatsApp
+            </a>
           </div>
         </section>
 
       </main>
       <Footer />
-      <Assistant />
     </>
   );
 }

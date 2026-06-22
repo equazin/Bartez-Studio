@@ -27,7 +27,7 @@ export function ResellerBanner() {
                 <span className="text-accent">Trabajemos juntos.</span>
               </h2>
               <p className="mt-3 max-w-[52ch] text-[14px] leading-relaxed text-slate-300">
-                Sumate al canal de distribución de Bartez. Más de 30 años de experiencia, marcas oficiales y condiciones comerciales pensadas para que tu negocio crezca.
+                Sumate al canal de distribución de Bartez. Dieciocho años en el rubro, marcas líderes y condiciones comerciales pensadas para que tu negocio crezca.
               </p>
 
               {/* Highlights */}

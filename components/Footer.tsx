@@ -3,13 +3,12 @@ import Link from "next/link";
 import { company, contact } from "../constants";
 
 const navLinks = [
-  { label: "Soluciones", href: "/#soluciones" },
-  { label: "Configurador IT", href: "/configurador" },
-  { label: "Cotización Masiva (RFQ)", href: "/rfq" },
-  { label: "Descargas", href: "/descargas" },
+  { label: "Empresas", href: "/empresas" },
   { label: "Revendedores", href: "/revendedores" },
+  { label: "Gobierno", href: "/gobierno" },
+  { label: "Educación", href: "/educacion" },
+  { label: "Marcas", href: "/marcas" },
   { label: "Quiénes somos", href: "/quienes-somos" },
-  { label: "Contacto", href: "/contacto" },
 ];
 
 export function Footer() {
@@ -22,7 +21,7 @@ export function Footer() {
             <Image src="/brand/bartez-logo.png" alt="Bartez" width={200} height={50} className="h-8 w-auto brightness-0 invert" />
           </Link>
           <p className="mt-5 max-w-[38ch] text-[13px] leading-relaxed text-slate-300">
-            Comercializamos y distribuimos tecnología de primera línea para empresas, organismos, canales gamer y hogares en toda Argentina.
+            Distribución de equipamiento, infraestructura y soluciones IT para empresas, organismos y revendedores en toda Argentina.
           </p>
           <div className="mt-5 flex gap-3">
             <a
@@ -56,8 +55,15 @@ export function Footer() {
         </div>
 
         <div>
-          <h2 className="text-[12px] font-semibold uppercase tracking-[0.13em] text-slate-400">Contacto</h2>
+          <h2 className="text-[12px] font-semibold uppercase tracking-[0.13em] text-slate-400">Compras y soporte</h2>
           <ul className="mt-4 grid gap-2.5 text-[13.5px] text-slate-300">
+            <li><Link href="/rfq" className="hover:text-white">Cotización masiva (RFQ)</Link></li>
+            <li><Link href="/catalogo" className="hover:text-white">Catálogo de soluciones</Link></li>
+            <li><Link href="/comparador" className="hover:text-white">Comparador orientativo</Link></li>
+            <li><Link href="/configurador" className="hover:text-white">Configurador IT</Link></li>
+            <li><Link href="/garantias-rma" className="hover:text-white">Garantías y RMA</Link></li>
+            <li><Link href="/ayuda" className="hover:text-white">Centro de ayuda</Link></li>
+            <li><Link href="/recursos" className="hover:text-white">Recursos</Link></li>
             <li><a href={`mailto:${contact.email}`} className="hover:text-white">{contact.email}</a></li>
             <li><a href={`tel:${contact.phoneDisplay.replace(/\s/g, "")}`} className="hover:text-white">{contact.phoneDisplay}</a></li>
             <li>{company.address}</li>
@@ -68,10 +74,11 @@ export function Footer() {
         <div>
           <h2 className="text-[12px] font-semibold uppercase tracking-[0.13em] text-slate-400">Empresa</h2>
           <ul className="mt-4 grid gap-2.5 text-[13.5px] text-slate-300">
-            <li>Distribuidora IT · Desde {company.founded}</li>
+            <li>Distribuidora IT · 18 años en el rubro</li>
+            <li>Más de 10.000 clientes</li>
             <li>{company.legalName}</li>
             <li>CUIT: {company.cuit}</li>
-            <li className="mt-2 text-[12px] text-slate-400">Canales: Corporativo · Gamer · Público · Hogares</li>
+            <li className="mt-2 text-[12px] text-slate-400">Empresas · Revendedores · Gobierno · Educación</li>
           </ul>
         </div>
       </div>

@@ -19,7 +19,7 @@ import { contact } from "../../constants";
 export const metadata: Metadata = {
   title: "Garantías y RMA — Bartez Tecnología",
   description:
-    "Conocé la política de garantías y el proceso de RMA de Bartez Tecnología. Cómo reclamar, tiempos de resolución y qué cubre la garantía oficial de cada fabricante.",
+    "Conocé cómo acompaña Bartez las consultas de garantía y el proceso de RMA según las condiciones aplicables a cada producto y fabricante.",
 };
 
 const steps = [
@@ -78,7 +78,7 @@ const faqs = [
   { q: "¿Necesito el packaging original?", a: "No es obligatorio para la mayoría de los fabricantes, pero sí recomendamos conservarlo para mayor protección durante el traslado." },
   { q: "¿Pierdo mis datos durante una garantía?", a: "Posiblemente, según el tipo de reparación. Siempre recomendamos hacer un backup completo antes de cualquier gestión técnica." },
   { q: "¿Qué pasa si el equipo ya no está en garantía?", a: "Podemos orientarte en opciones de reparación o upgrade. Contactanos igualmente y evaluamos juntos la mejor solución." },
-  { q: "¿La garantía es válida en todo el país?", a: "Sí. La garantía oficial de fábrica es válida en todo el territorio nacional. Coordinamos la logística desde cualquier punto." },
+  { q: "¿Puedo iniciar una gestión desde cualquier punto del país?", a: "Sí. Revisamos cada caso y coordinamos los pasos de diagnóstico y logística según el producto, el fabricante y la ubicación." },
 ];
 
 export default function GarantiasRmaPage() {
@@ -97,7 +97,7 @@ export default function GarantiasRmaPage() {
               Tu compra está respaldada. Siempre.
             </h1>
             <p className="mt-6 max-w-[56ch] text-[clamp(15px,1.4vw,17px)] leading-relaxed text-slate-400">
-              Todo lo que vendemos tiene garantía oficial de fábrica. Si algo falla, estamos para acompañarte en el proceso de resolución — sin vueltas y con información clara en cada paso.
+              Si un producto presenta una falla, te ayudamos a identificar el procedimiento aplicable y acompañamos el seguimiento con información clara en cada paso.
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
               <a

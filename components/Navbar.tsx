@@ -2,47 +2,85 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { ChevronDown, Menu, MessageCircle, X } from "lucide-react";
 import { useState } from "react";
+import { whatsappLinks } from "@/lib/whatsapp";
 
-const links = [
-  { label: "Soluciones", href: "/#soluciones" },
-  { label: "Marcas", href: "/marcas" },
+const primaryLinks = [
+  { label: "Empresas", href: "/empresas" },
   { label: "Revendedores", href: "/revendedores" },
-  { label: "Quiénes somos", href: "/quienes-somos" },
-  { label: "Contacto", href: "/contacto" },
+  { label: "Marcas", href: "/marcas" },
+  { label: "Nosotros", href: "/quienes-somos" },
+];
+
+const solutionLinks = [
+  { label: "Catálogo de soluciones", href: "/catalogo" },
+  { label: "Notebooks corporativas", href: "/soluciones/notebooks-corporativas" },
+  { label: "Servidores y almacenamiento", href: "/soluciones/servidores" },
+  { label: "Redes e infraestructura", href: "/soluciones/redes-infraestructura" },
+  { label: "Servicios administrados", href: "/servicios-administrados" },
+  { label: "Soporte corporativo", href: "/soporte-corporativo" },
+  { label: "Cloud y licenciamiento", href: "/cloud-licenciamiento" },
+  { label: "Ciberseguridad", href: "/ciberseguridad" },
+  { label: "Renting y leasing", href: "/renting-leasing" },
+  { label: "Gobierno", href: "/gobierno" },
+  { label: "Educación", href: "/educacion" },
+  { label: "Garantías y RMA", href: "/garantias-rma" },
+  { label: "Centro de ayuda", href: "/ayuda" },
+  { label: "Recursos", href: "/recursos" },
 ];
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-[#030c07]/80 backdrop-blur-md">
-      <div className="mx-auto flex h-20 max-w-[1200px] items-center justify-between px-6">
-        <Link href="/#top" className="flex items-center gap-2.5" aria-label="Bartez Tecnología — inicio">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#030c07]/95 backdrop-blur-md">
+      <div className="mx-auto flex h-20 max-w-[1320px] min-w-0 items-center justify-between gap-5 px-5 sm:px-6">
+        <Link href="/#top" className="flex min-w-0 items-center gap-2.5" aria-label="Bartez Tecnología — inicio">
           <Image src="/brand/bartez-isologo.png" alt="" width={50} height={50} priority className="size-9 flex-none" />
-          <Image src="/brand/bartez-logo.png" alt="Bartez" width={200} height={50} priority className="h-7 w-auto sm:h-8 brightness-0 invert" />
+          <Image src="/brand/bartez-logo.png" alt="Bartez" width={200} height={50} priority className="h-7 w-auto brightness-0 invert sm:h-8" />
         </Link>
 
-        <nav className="hidden items-center gap-8 lg:flex" aria-label="Navegación principal">
-          {links.map((link) => (
-            <a key={link.href} href={link.href} className="text-[14px] font-medium text-slate-300 transition-colors hover:text-accent">
+        <nav className="hidden items-center gap-7 lg:flex" aria-label="Navegación principal">
+          <Link href="/empresas" className="text-[14px] font-medium text-slate-300 transition-colors hover:text-accent">
+            Empresas
+          </Link>
+
+          <div className="group relative">
+            <Link href="/#soluciones" className="flex items-center gap-1.5 py-7 text-[14px] font-medium text-slate-300 transition-colors hover:text-accent">
+              Soluciones <ChevronDown size={14} />
+            </Link>
+            <div className="invisible absolute left-1/2 top-[72px] w-[720px] -translate-x-1/2 translate-y-2 border border-white/10 bg-[#06140d] p-3 opacity-0 shadow-2xl transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+              <div className="grid grid-cols-3">
+                {solutionLinks.map((link) => (
+                  <Link key={link.href} href={link.href} className="border-b border-white/5 px-4 py-3 text-[13.5px] font-medium text-slate-300 transition-colors hover:bg-white/5 hover:text-accent">
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {primaryLinks.slice(1).map((link) => (
+            <Link key={link.href} href={link.href} className="text-[14px] font-medium text-slate-300 transition-colors hover:text-accent">
               {link.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
-        <Link
-          href="/#cotiza"
-          className="hidden rounded-lg bg-accent px-5 py-3 text-[13.5px] font-bold text-ink transition-all hover:scale-[1.02] lg:inline-flex"
-          data-track="navbar_guided_consultation"
+        <a
+          href={whatsappLinks.quote}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hidden items-center gap-2 rounded-lg bg-accent px-5 py-3 text-[13.5px] font-bold text-ink transition-all hover:scale-[1.02] lg:inline-flex"
+          data-track="navbar_whatsapp_quote"
         >
-          Contanos qué necesitás
-        </Link>
+          <MessageCircle size={17} /> Cotizar por WhatsApp
+        </a>
 
         <button
           type="button"
-          className="grid size-10 place-items-center text-white lg:hidden"
+          className="grid size-10 flex-none place-items-center rounded-lg border border-white/10 text-white lg:hidden"
           onClick={() => setOpen((current) => !current)}
           aria-label={open ? "Cerrar menú" : "Abrir menú"}
           aria-expanded={open}
@@ -51,20 +89,29 @@ export function Navbar() {
         </button>
       </div>
 
-      {open && (
-        <nav className="border-t border-white/10 bg-[#030c07] px-6 py-5 lg:hidden" aria-label="Navegación móvil">
-          <div className="mx-auto flex max-w-[1200px] flex-col gap-4">
-            {links.map((link) => (
-              <a key={link.href} href={link.href} onClick={() => setOpen(false)} className="py-1 text-[15px] font-medium text-slate-200 hover:text-accent">
+      {open ? (
+        <nav className="max-h-[calc(100vh-80px)] overflow-y-auto border-t border-white/10 bg-[#030c07] px-5 py-5 lg:hidden" aria-label="Navegación móvil">
+          <div className="mx-auto flex max-w-[1200px] flex-col">
+            <Link href="/empresas" onClick={() => setOpen(false)} className="border-b border-white/10 py-3 text-[15px] font-semibold text-white">Empresas</Link>
+            <span className="pt-5 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Soluciones y segmentos</span>
+            <div className="grid sm:grid-cols-2">
+              {solutionLinks.map((link) => (
+                <Link key={link.href} href={link.href} onClick={() => setOpen(false)} className="border-b border-white/5 py-3 text-[14px] font-medium text-slate-300 hover:text-accent sm:pr-4">
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+            {primaryLinks.slice(1).map((link) => (
+              <Link key={link.href} href={link.href} onClick={() => setOpen(false)} className="border-b border-white/10 py-3 text-[15px] font-semibold text-white">
                 {link.label}
-              </a>
+              </Link>
             ))}
-            <Link href="/#cotiza" onClick={() => setOpen(false)} className="mt-2 rounded-lg bg-accent px-5 py-3 text-center text-[14px] font-bold text-ink">
-              Contanos qué necesitás
-            </Link>
+            <a href={whatsappLinks.quote} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)} className="mt-5 inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-5 py-3.5 text-[14px] font-bold text-ink">
+              <MessageCircle size={18} /> Cotizar por WhatsApp
+            </a>
           </div>
         </nav>
-      )}
+      ) : null}
     </header>
   );
 }

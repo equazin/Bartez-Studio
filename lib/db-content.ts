@@ -3,6 +3,7 @@ import { getDb } from "./db.ts";
 import { partners as staticPartners, articles as staticArticles } from "../constants.ts";
 
 export type DynamicBrand = { name: string; logo: string };
+export type DynamicClient = { name: string; logo: string };
 export type DynamicArticle = {
   slug: string;
   title: string;
@@ -34,22 +35,20 @@ function articleBody(value: unknown) {
 }
 
 export async function getDynamicPartners(): Promise<DynamicBrand[]> {
-  if (!hasDatabase()) return staticPartners.brands;
+  return staticPartners.brands;
+}
+
+export async function getDynamicClients(): Promise<DynamicClient[]> {
+  if (!hasDatabase()) return [];
   try {
     const clients = await getDb().clientLogo.findMany({
       where: { active: true },
       orderBy: { displayOrder: "asc" },
     });
-    const combined = [
-      ...clients.map((client) => ({ name: client.name, logo: client.logoUrl })),
-      ...staticPartners.brands,
-    ];
-    return combined.filter((brand, index) =>
-      combined.findIndex((candidate) => candidate.name.toLowerCase() === brand.name.toLowerCase()) === index
-    );
+    return clients.map((client) => ({ name: client.name, logo: client.logoUrl }));
   } catch (error) {
-    console.error("[content] No se pudieron cargar logos dinámicos.", error);
-    return staticPartners.brands;
+    console.error("[content] No se pudieron cargar logos de clientes.", error);
+    return [];
   }
 }
 

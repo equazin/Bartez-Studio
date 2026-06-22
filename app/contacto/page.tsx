@@ -12,6 +12,8 @@ import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
 import { company, contact } from "../../constants";
 import { Map } from "../../components/Map";
+import { ContactWhatsAppForm } from "@/components/ContactWhatsAppForm";
+import { whatsappLinks } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "Contacto — Bartez Tecnología",
@@ -25,7 +27,7 @@ const channels = [
     title: "WhatsApp",
     value: contact.phoneDisplay,
     sub: "Respuesta rápida en horario comercial",
-    href: `https://wa.me/${contact.whatsappNumber}?text=${encodeURIComponent("Hola, quiero consultar sobre tecnología.")}`,
+    href: whatsappLinks.general,
     cta: "Escribir por WhatsApp",
     accent: "bg-[#082214] border-white/5 hover:border-emerald/40 text-white",
     iconColor: "text-emerald-400",
@@ -51,18 +53,6 @@ const channels = [
     iconColor: "text-violet-400",
   },
 ];
-
-const topics = [
-  { label: "Cotización de equipos", href: "/#cotiza" },
-  { label: "Programa de revendedores", href: "/revendedores" },
-  { label: "Garantía / RMA", href: "/garantias-rma" },
-  { label: "Instituciones educativas", href: "/educacion" },
-  { label: "Sector público / gobierno", href: "/gobierno" },
-  { label: "Canal corporativo", href: "/empresas" },
-];
-
-const darkInputClass = 
-  "w-full rounded-xl border border-white/10 bg-[#06140d] px-4 py-3 text-[14px] text-white outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/15 placeholder-slate-500";
 
 export default function ContactoPage() {
   return (
@@ -115,65 +105,7 @@ export default function ContactoPage() {
                 <h2 className="font-display text-[22px] font-bold text-white">Mandanos tu consulta</h2>
                 <p className="mt-2 text-[13.5px] text-slate-400">Sin compromiso. Respondemos en 24 hs hábiles.</p>
 
-                <form
-                  className="mt-7 grid gap-4 sm:grid-cols-2"
-                  aria-label="Formulario de contacto"
-                >
-                  <label>
-                    <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-350">Nombre</span>
-                    <input
-                      className={darkInputClass}
-                      placeholder="Tu nombre"
-                    />
-                  </label>
-                  <label>
-                    <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-350">Empresa</span>
-                    <input
-                      className={darkInputClass}
-                      placeholder="Nombre de la empresa"
-                    />
-                  </label>
-                  <label className="sm:col-span-2">
-                    <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-350">Email</span>
-                    <input
-                      type="email"
-                      className={darkInputClass}
-                      placeholder="nombre@empresa.com"
-                    />
-                  </label>
-                  <label className="sm:col-span-2">
-                    <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-350">¿Sobre qué querés consultar?</span>
-                    <select className={darkInputClass}>
-                      <option value="" className="bg-[#030c07] text-white">Seleccioná un tema</option>
-                      {topics.map((t) => (
-                        <option key={t.label} value={t.label} className="bg-[#030c07] text-white">{t.label}</option>
-                      ))}
-                      <option value="otro" className="bg-[#030c07] text-white">Otro</option>
-                    </select>
-                  </label>
-                  <label className="sm:col-span-2">
-                    <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-350">Mensaje</span>
-                    <textarea
-                      rows={4}
-                      className={`${darkInputClass} resize-none`}
-                      placeholder="Contanos qué necesitás..."
-                    />
-                  </label>
-                  <div className="sm:col-span-2 pt-2">
-                    <a
-                      href={`mailto:${contact.email}?subject=Consulta%20desde%20web`}
-                      className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-bold text-ink transition hover:scale-[1.02]"
-                    >
-                      Enviar consulta <ArrowRight size={16} />
-                    </a>
-                    <p className="mt-4 text-center text-[11.5px] text-slate-450">
-                      O escribinos directo a{" "}
-                      <a href={`mailto:${contact.email}`} className="font-semibold text-accent hover:underline">
-                        {contact.email}
-                      </a>
-                    </p>
-                  </div>
-                </form>
+                <ContactWhatsAppForm />
               </div>
 
               {/* Datos + Mapa */}
@@ -222,7 +154,7 @@ export default function ContactoPage() {
                     <span className="font-semibold text-white">toda la Argentina.</span>
                   </p>
                   <Link
-                    href="/#cotiza"
+                    href={whatsappLinks.quote}
                     className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-bold text-accent hover:underline"
                   >
                     Solicitar presupuesto <ArrowRight size={13} />

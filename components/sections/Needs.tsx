@@ -5,6 +5,8 @@ import {
   Laptop,
   Network,
   Server,
+  ShieldCheck,
+  Cloud,
   type LucideIcon,
 } from "lucide-react";
 
@@ -35,8 +37,20 @@ const needs: Array<{
   {
     title: "Implementar soporte y servicios IT",
     description: "Asistencia técnica, implementación y continuidad para tu operación.",
-    href: "/#cotiza",
+    href: "/servicios-administrados",
     icon: Headphones,
+  },
+  {
+    title: "Reforzar ciberseguridad",
+    description: "Capas de protección para redes, accesos, endpoints y respaldos.",
+    href: "/ciberseguridad",
+    icon: ShieldCheck,
+  },
+  {
+    title: "Ordenar cloud y licencias",
+    description: "Productividad, renovaciones, backup y servicios cloud para tu organización.",
+    href: "/cloud-licenciamiento",
+    icon: Cloud,
   },
 ];
 

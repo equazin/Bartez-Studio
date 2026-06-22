@@ -1,21 +1,19 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
 import {
   ArrowLeft,
   ArrowRight,
   Check,
   Headphones,
   Laptop,
-  Loader2,
   MessageCircle,
   Network,
   Server,
   type LucideIcon,
 } from "lucide-react";
-import { contact } from "../../constants";
 import { track } from "../Analytics";
+import { buildWhatsAppUrl, whatsappLinks } from "@/lib/whatsapp";
 
 const needs: Array<{
   id: string;
@@ -57,11 +55,9 @@ const needs: Array<{
 
 const scales = ["Hasta 10 personas", "11 a 50 personas", "51 a 200 personas", "Más de 200 personas"];
 const urgencies = ["Lo antes posible", "Durante este mes", "Próximos 3 meses", "Estoy evaluando opciones"];
-const channels = ["Email", "WhatsApp", "Teléfono"];
 const inputClass = "w-full rounded-xl border border-white/10 bg-[#030c07] px-4 py-3 text-[14px] text-white outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/15 placeholder-slate-500";
 
 export function QuoteBuilder() {
-  const router = useRouter();
   const [step, setStep] = useState(0);
   const [need, setNeed] = useState("");
   const [form, setForm] = useState({
@@ -72,12 +68,9 @@ export function QuoteBuilder() {
     nombre: "",
     email: "",
     telefono: "",
-    canalPreferido: "Email",
     mensaje: "",
-    website: "",
-    consent: false,
   });
-  const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "error">("idle");
   const [error, setError] = useState("");
 
   const selectedNeed = useMemo(() => needs.find((item) => item.id === need), [need]);
@@ -100,66 +93,36 @@ export function QuoteBuilder() {
     setStep((current) => Math.min(2, current + 1));
   }
 
-  async function submit(event: React.FormEvent<HTMLFormElement>) {
+  function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!selectedNeed || !form.consent) {
+    if (!selectedNeed || !form.nombre.trim()) {
       setStatus("error");
-      setError("Confirmá que podemos usar estos datos para responder tu consulta.");
+      setError("Completá tu nombre para preparar la consulta.");
       return;
     }
 
-    setStatus("loading");
+    setStatus("idle");
     setError("");
-    const message = [
+    const details = [
+      "Origen: consulta guiada de la web",
       `Necesidad: ${selectedNeed.label}`,
+      `Empresa: ${form.empresa}`,
+      form.cuit ? `CUIT: ${form.cuit}` : "",
       `Escala: ${form.escala}`,
       `Urgencia: ${form.urgencia}`,
-      `Canal preferido: ${form.canalPreferido}`,
+      `Contacto: ${form.nombre}`,
+      form.telefono ? `Teléfono: ${form.telefono}` : "",
+      form.email ? `Email: ${form.email}` : "",
       form.mensaje ? `Contexto adicional: ${form.mensaje}` : "",
-    ]
-      .filter(Boolean)
-      .join("\n");
+    ];
 
-    try {
-      const response = await fetch("/api/lead", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          empresa: form.empresa,
-          nombre: form.nombre,
-          email: form.email,
-          telefono: form.telefono,
-          tipoConsulta: "asesoramiento",
-          mensaje: message,
-          necesidad: selectedNeed.label,
-          escala: form.escala,
-          urgencia: form.urgencia,
-          canalPreferido: form.canalPreferido.toLowerCase(),
-          origen: "guided-consultation",
-          website: form.website,
-        }),
-      });
-      const data = await response.json();
-      if (!response.ok || !data.ok) {
-        setStatus("error");
-        setError(data?.error || "No pudimos enviar la consulta. Probá nuevamente.");
-        return;
-      }
-      track("guided_consultation_completed", {
-        need: need,
-        preferred_channel: form.canalPreferido,
-      });
-      router.push("/gracias");
-    } catch {
-      setStatus("error");
-      setError("No pudimos conectarnos. Podés continuar por WhatsApp.");
-    }
+    track("guided_consultation_completed", { need, preferred_channel: "whatsapp" });
+    window.open(buildWhatsAppUrl("quote", details), "_blank", "noopener,noreferrer");
   }
 
-  const whatsappText = selectedNeed
-    ? `Hola, vengo de la web. Necesito asesoramiento para: ${selectedNeed.label}. Empresa: ${form.empresa || "a confirmar"}.`
-    : contact.whatsappMessage;
-  const whatsappHref = `https://wa.me/${contact.whatsappNumber}?text=${encodeURIComponent(whatsappText)}`;
+  const whatsappHref = selectedNeed
+    ? buildWhatsAppUrl("quote", [`Necesidad: ${selectedNeed.label}`, form.empresa ? `Empresa: ${form.empresa}` : ""])
+    : whatsappLinks.quote;
 
   return (
     <section id="cotiza" className="scroll-mt-24 bg-[#030c07] py-20 text-white md:py-28">
@@ -169,7 +132,7 @@ export function QuoteBuilder() {
             Contanos qué necesita tu empresa.
           </h2>
           <p className="mt-6 max-w-[38ch] text-[16px] leading-relaxed text-slate-400">
-            Respondé unas preguntas breves y un especialista te contactará con una propuesta adecuada a tu contexto en <strong>24 hs hábiles</strong> (Lun–Vie 9 a 18 hs).
+            Respondé unas preguntas breves y te preparamos un mensaje completo para conversar con un especialista por WhatsApp.
           </p>
           <a
             href={whatsappHref}
@@ -272,40 +235,29 @@ export function QuoteBuilder() {
 
           {step === 2 && (
             <form onSubmit={submit} noValidate>
-              <h3 className="font-display text-[22px] font-bold text-white">¿Cómo te contactamos?</h3>
-              <p className="mt-2 text-[13.5px] text-slate-400">Un asesor utilizará estos datos únicamente para responder tu consulta.</p>
-              <input type="text" name="website" tabIndex={-1} autoComplete="off" value={form.website} onChange={(event) => update("website", event.target.value)} className="hidden" aria-hidden />
+              <h3 className="font-display text-[22px] font-bold text-white">Prepará tu consulta</h3>
+              <p className="mt-2 text-[13.5px] text-slate-400">Estos datos se incorporan al mensaje que vas a enviar por WhatsApp.</p>
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
                 <label>
                   <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-350 font-display">Nombre</span>
                   <input required value={form.nombre} onChange={(event) => update("nombre", event.target.value)} className={inputClass} placeholder="Tu nombre" />
                 </label>
                 <label>
-                  <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-350 font-display">Email corporativo</span>
-                  <input required type="email" value={form.email} onChange={(event) => update("email", event.target.value)} className={inputClass} placeholder="nombre@empresa.com" />
+                  <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-350 font-display">Email corporativo (opcional)</span>
+                  <input type="email" value={form.email} onChange={(event) => update("email", event.target.value)} className={inputClass} placeholder="nombre@empresa.com" />
                 </label>
                 <label>
                   <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-350 font-display">Teléfono (opcional)</span>
                   <input value={form.telefono} onChange={(event) => update("telefono", event.target.value)} className={inputClass} placeholder="+54 9 ..." />
                 </label>
-                <label>
-                  <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-350 font-display">Canal preferido</span>
-                  <select value={form.canalPreferido} onChange={(event) => update("canalPreferido", event.target.value)} className={inputClass}>
-                    {channels.map((channel) => <option key={channel} className="bg-[#030c07]">{channel}</option>)}
-                  </select>
-                </label>
               </div>
-              <label className="mt-5 flex items-start gap-3 text-[12.5px] leading-relaxed text-slate-400">
-                <input type="checkbox" checked={form.consent} onChange={(event) => update("consent", event.target.checked)} className="mt-0.5 size-4 accent-accent" />
-                <span>Acepto que Bartez utilice estos datos para contactarme y responder esta consulta.</span>
-              </label>
               {status === "error" && <p role="alert" className="mt-4 rounded-lg bg-red-950/40 border border-red-500/20 px-4 py-3 text-[13px] text-red-200">{error}</p>}
               <button
                 type="submit"
-                disabled={status === "loading" || !form.nombre || !form.email || !form.consent}
+                disabled={!form.nombre}
                 className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-bold text-ink transition-all hover:scale-[1.02] hover:bg-[#10b981] disabled:cursor-not-allowed disabled:opacity-50"
               >
-                {status === "loading" ? <><Loader2 size={17} className="animate-spin" /> Enviando...</> : <>Recibir asesoramiento <ArrowRight size={17} /></>}
+                <MessageCircle size={18} /> Continuar por WhatsApp <ArrowRight size={17} />
               </button>
             </form>
           )}

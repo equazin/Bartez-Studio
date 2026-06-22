@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, Clock } from "lucide-react";
+import { ArrowLeft, Clock, MessageCircle } from "lucide-react";
 import { getDynamicArticleBySlug } from "../../../lib/db-content";
 import { articles, company } from "../../../constants";
 import { Navbar } from "../../../components/Navbar";
 import { Footer } from "../../../components/Footer";
-import { Assistant } from "../../../components/Assistant";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 export const revalidate = 3600;
 
@@ -80,15 +80,14 @@ export default async function Articulo({ params }: { params: Promise<{ slug: str
             <div className="my-12 rounded-2xl border border-slate-200 bg-slate-50 p-7 text-center">
               <h3 className="font-display text-[20px] font-bold text-ink">¿Querés evaluar este escenario?</h3>
               <p className="mt-2 text-[15px] text-slate-600">Contanos tu contexto y un especialista te ayuda a definir el alcance.</p>
-              <Link href="/#cotiza" className="mt-5 inline-flex items-center gap-2 rounded-full bg-brand px-7 py-3.5 text-[15px] font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-brand-bright hover:shadow-glow">
-                Recibir asesoramiento <ArrowRight size={18} />
-              </Link>
+              <a href={buildWhatsAppUrl("quote", [`Artículo consultado: ${a.title}`])} target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex items-center gap-2 rounded-full bg-brand px-7 py-3.5 text-[15px] font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-brand-bright hover:shadow-glow">
+                <MessageCircle size={18} /> Consultar por WhatsApp
+              </a>
             </div>
           </div>
         </article>
       </main>
       <Footer />
-      <Assistant />
     </>
   );
 }

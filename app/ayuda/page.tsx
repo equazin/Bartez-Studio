@@ -1,0 +1,13 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { ArrowRight, HelpCircle, MessageCircle, ShieldCheck } from "lucide-react";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
+import { faq } from "@/constants";
+import { whatsappLinks } from "@/lib/whatsapp";
+
+export const metadata: Metadata = { title: "Centro de ayuda — Bartez Tecnología", description: "Preguntas frecuentes, garantías, RMA y canales de atención de Bartez." };
+
+export default function AyudaPage() {
+  return <><Navbar /><main className="min-h-screen bg-[#030c07] pb-24 pt-32 text-white"><div className="mx-auto max-w-[1000px] px-6"><h1 className="font-display text-[clamp(38px,5vw,60px)] font-bold tracking-[-0.05em]">Centro de ayuda</h1><p className="mt-4 max-w-[60ch] text-[15px] leading-relaxed text-slate-400">Información comercial y de soporte para avanzar con claridad. Si tu caso depende de un modelo u operación específica, escribinos por WhatsApp.</p><div className="mt-10 grid gap-5 sm:grid-cols-2"><Link href="/garantias-rma" className="border border-white/10 bg-[#06140d] p-6 transition hover:border-accent/40"><ShieldCheck className="text-accent" size={24} /><h2 className="mt-4 font-display text-[19px] font-bold">Garantías y RMA</h2><p className="mt-2 text-[13px] leading-relaxed text-slate-400">Pasos e información necesaria para iniciar una consulta.</p><span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-bold text-accent">Ver guía <ArrowRight size={15} /></span></Link><Link href="/descargas" className="border border-white/10 bg-[#06140d] p-6 transition hover:border-accent/40"><HelpCircle className="text-accent" size={24} /><h2 className="mt-4 font-display text-[19px] font-bold">Documentación y recursos</h2><p className="mt-2 text-[13px] leading-relaxed text-slate-400">Catálogos, brochure y materiales disponibles.</p><span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-bold text-accent">Ver recursos <ArrowRight size={15} /></span></Link></div><section className="mt-14"><h2 className="font-display text-[28px] font-bold">Preguntas frecuentes</h2><div className="mt-6 divide-y divide-white/10 border-t border-white/10">{faq.items.map((item) => <article key={item.q} className="py-6"><h3 className="font-display text-[16px] font-bold">{item.q}</h3><p className="mt-2 max-w-[75ch] text-[13.5px] leading-relaxed text-slate-400">{item.a}</p></article>)}</div></section><a href={whatsappLinks.general} target="_blank" rel="noopener noreferrer" className="mt-10 inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-3 text-[14px] font-bold text-ink"><MessageCircle size={17} /> Hacer otra consulta</a></div></main><Footer /></>;
+}

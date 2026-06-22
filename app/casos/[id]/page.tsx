@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
-import { Assistant } from "../../../components/Assistant";
 import { Footer } from "../../../components/Footer";
 import { Navbar } from "../../../components/Navbar";
 import { company } from "../../../constants";
@@ -68,7 +67,6 @@ export default async function CasePage({ params }: { params: Promise<{ id: strin
         </article>
       </main>
       <Footer />
-      <Assistant />
     </>
   );
 }

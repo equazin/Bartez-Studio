@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  ArrowRight,
   CheckCircle2,
   ExternalLink,
   Laptop,
@@ -13,14 +12,16 @@ import {
   Cpu,
   HardDrive,
   Monitor,
+  MessageCircle,
 } from "lucide-react";
 import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
+import { whatsappLinks } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
-  title: "Marcas y Partners Oficiales — Bartez Tecnología",
+  title: "Marcas que trabajamos — Bartez Tecnología",
   description:
-    "Distribuimos tecnología de primera línea de Dell, Lenovo, HP, Cisco, Intel, AMD y Kingston. Conocé el portfolio de marcas oficiales que respalda a Bartez Tecnología.",
+    "Conocé las marcas de tecnología que trabajamos para empresas, organismos y revendedores: Dell, Lenovo, HP, Cisco, Intel, AMD, Kingston y más.",
 };
 
 const brands = [
@@ -113,7 +114,7 @@ const brands = [
     logo: "/logos/kingston.svg",
     category: "RAM · SSDs · Memorias Flash",
     description:
-      "Memorias RAM, SSDs y storage flash de máxima confiabilidad para upgrades corporativos. Compatible con todos los fabricantes. Garantía de por vida en líneas Kingston y HyperX.",
+      "Memorias RAM, SSDs y storage flash para upgrades corporativos. Consultanos compatibilidad, disponibilidad y las condiciones de garantía aplicables a cada línea.",
     products: [
       { icon: HardDrive, label: "RAM DDR4 / DDR5" },
       { icon: HardDrive, label: "SSDs SATA / NVMe" },
@@ -124,11 +125,11 @@ const brands = [
   },
 ];
 
-const whyPartners = [
-  { title: "Garantía oficial de fábrica", desc: "Todos los productos que distribuimos tienen respaldo directo del fabricante." },
-  { title: "Stock disponible", desc: "Accedemos a stock de las principales líneas para responder con agilidad." },
-  { title: "Soporte técnico certificado", desc: "Nuestro equipo está capacitado en los productos que ofrecemos." },
-  { title: "Precios de canal", desc: "Condiciones comerciales competitivas gracias a nuestra relación directa con los fabricantes." },
+const whyBrands = [
+  { title: "Portfolio para cada necesidad", desc: "Combinamos líneas corporativas, infraestructura, componentes y periféricos." },
+  { title: "Disponibilidad a consultar", desc: "Confirmamos alternativas y plazos al momento de cada cotización." },
+  { title: "Asesoramiento especializado", desc: "Te ayudamos a comparar familias y dimensionar la opción adecuada." },
+  { title: "Condiciones B2B", desc: "Preparamos propuestas por volumen para empresas, organismos y revendedores." },
 ];
 
 export default function MarcasPage() {
@@ -140,24 +141,21 @@ export default function MarcasPage() {
         {/* Hero */}
         <section className="bg-[#030c07] py-20 md:py-28 relative">
           <div className="mx-auto max-w-[1200px] px-6">
-            <div className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-3.5 py-1.5 mb-6">
-              <Package className="size-3.5 text-accent animate-pulse" />
-              <span className="text-[12px] font-bold tracking-wide text-accent">Partners y marcas oficiales</span>
-            </div>
             <h1 className="max-w-[700px] font-display text-[clamp(38px,5.5vw,66px)] font-extrabold leading-[0.98] tracking-[-0.05em] text-balance text-white">
-              Las mejores marcas del mundo,{" "}
-              <span className="text-accent">con el respaldo de Bartez.</span>
+              Marcas que trabajamos para cada proyecto.
             </h1>
             <p className="mt-7 max-w-[56ch] text-[clamp(15px,1.4vw,17px)] leading-relaxed text-slate-400">
-              Distribuimos tecnología de primera línea de los fabricantes más reconocidos del mercado. Más de 30 años de relaciones comerciales nos permiten ofrecer las mejores condiciones con garantía oficial.
+              Trabajamos con fabricantes reconocidos en equipamiento, infraestructura, redes y componentes. Consultanos disponibilidad, alternativas y condiciones para tu empresa o canal.
             </p>
             <div className="mt-10 flex flex-col gap-3.5 sm:flex-row sm:items-center">
-              <Link
-                href="/#cotiza"
+              <a
+                href={whatsappLinks.quote}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-bold text-ink transition hover:scale-[1.02]"
               >
-                Consultá disponibilidad <ArrowRight size={16} />
-              </Link>
+                <MessageCircle size={17} /> Consultar disponibilidad
+              </a>
               <Link
                 href="/revendedores"
                 className="inline-flex items-center gap-2 rounded-lg border border-white/20 bg-white/5 px-5 py-3.5 text-[14px] font-semibold text-white transition hover:bg-white/10"
@@ -168,11 +166,11 @@ export default function MarcasPage() {
           </div>
         </section>
 
-        {/* Por qué trabajar con marcas oficiales */}
+        {/* Cómo trabajamos el portfolio */}
         <section className="bg-[#06140d] border-y border-white/5 py-14">
           <div className="mx-auto max-w-[1200px] px-6">
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {whyPartners.map((item) => (
+              {whyBrands.map((item) => (
                 <div key={item.title} className="flex gap-3 rounded-2xl bg-[#082214] p-5 border border-white/5">
                   <CheckCircle2 className="mt-0.5 size-5 flex-none text-accent" strokeWidth={1.8} />
                   <div>
@@ -249,12 +247,14 @@ export default function MarcasPage() {
                 </p>
               </div>
               <div className="flex flex-col gap-3 sm:flex-row">
-                <Link
-                  href="/#cotiza"
+                <a
+                  href={whatsappLinks.quote}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-bold text-ink transition hover:scale-[1.02]"
                 >
-                  Pedir cotización <ArrowRight size={16} />
-                </Link>
+                  <MessageCircle size={17} /> Pedir cotización
+                </a>
                 <Link
                   href="/revendedores"
                   className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/20 bg-white/5 px-6 py-3.5 text-[14.5px] font-semibold text-white transition hover:bg-white/10"

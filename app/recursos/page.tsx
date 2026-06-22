@@ -5,7 +5,6 @@ import { ArrowRight, Clock } from "lucide-react";
 import { getDynamicArticles } from "../../lib/db-content";
 import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
-import { Assistant } from "../../components/Assistant";
 
 export const revalidate = 3600;
 
@@ -52,7 +51,6 @@ export default async function Recursos() {
         </section>
       </main>
       <Footer />
-      <Assistant />
     </>
   );
 }

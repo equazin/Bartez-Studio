@@ -103,7 +103,7 @@ export default function EducacionPage() {
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
               <Link
-                href="/#cotiza"
+                href={whatsappHref}
                 className="inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-bold text-ink transition-all hover:scale-[1.02]"
               >
                 Pedir cotización institucional <ArrowRight size={16} />
@@ -121,7 +121,7 @@ export default function EducacionPage() {
             {/* Stats */}
             <div className="mt-10 flex flex-wrap gap-x-10 gap-y-4 border-t border-white/5 pt-8">
               {[
-                { num: "30+", label: "años de experiencia" },
+                { num: "18", label: "años en el rubro" },
                 { num: "2008", label: "distribuyendo desde" },
                 { num: "ARG", label: "cobertura nacional" },
               ].map((s) => (
@@ -197,13 +197,13 @@ export default function EducacionPage() {
                   ¿Por qué las instituciones eligen Bartez?
                 </h2>
                 <p className="mt-4 text-[15px] leading-relaxed text-slate-400">
-                  Más de 30 años de experiencia en el mercado IT argentino y un conocimiento profundo de las necesidades del sector educativo.
+                  Dieciocho años de experiencia en el mercado IT argentino y conocimiento de las necesidades del sector educativo.
                 </p>
               </div>
               <div className="grid gap-4">
                 {[
                   "Presupuestos formales para procesos de compra institucional",
-                  "Productos con garantía oficial de fábrica — Dell, Lenovo, HP, Cisco",
+                  "Productos de marcas líderes y orientación sobre garantías — Dell, Lenovo, HP, Cisco",
                   "Factura A en todas las operaciones",
                   "Cobertura nacional — entrega a cualquier punto del país",
                   "Asesoramiento técnico especializado sin costo",
@@ -232,7 +232,7 @@ export default function EducacionPage() {
                 </p>
               </div>
               <div className="flex flex-col gap-3 sm:flex-row">
-                <Link href="/#cotiza" className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14px] font-bold text-ink transition-all hover:scale-[1.02]">
+                <Link href={whatsappHref} className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14px] font-bold text-ink transition-all hover:scale-[1.02]">
                   Solicitar presupuesto <ArrowRight size={15} />
                 </Link>
                 <a

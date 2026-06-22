@@ -1,52 +1,43 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
 import { 
-  Send, 
+  MessageCircle,
   Clock, 
   Clipboard, 
   Briefcase,
   AlertCircle
 } from "lucide-react";
 import { track } from "../../components/Analytics";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 const inputClass =
   "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-[14px] text-slate-900 outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/15";
 
 export default function Rfq() {
-  const router = useRouter();
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [error, setError] = useState("");
-
   const [form, setForm] = useState({
     nombre: "",
     email: "",
     empresa: "",
     cuit: "",
     telefono: "",
-    cantidad: "10-50",
+    provincia: "",
+    entrega: "",
+    cantidad: "10-30",
     plazo: "30 días",
-    pago: "Transferencia",
+    pago: "A convenir",
+    sustituciones: "Sí, acepto alternativas equivalentes",
     detalle: "",
-    consent: false,
   });
 
   const update = (key: string, value: string | boolean) => {
     setForm(prev => ({ ...prev, [key]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.consent) {
-      setError("Tenés que aceptar los términos de tratamiento de datos.");
-      return;
-    }
-
-    setStatus("loading");
-    setError("");
 
     track("rfq_submitted", {
       empresa: form.empresa,
@@ -54,48 +45,23 @@ export default function Rfq() {
       plazo: form.plazo,
     });
 
-    const detailedMessage = `Solicitud de Cotización Masiva (RFQ) Bartez.\n` +
-      `Cantidad Solicitada: ${form.cantidad}\n` +
-      `Plazo Requerido: ${form.plazo}\n` +
-      `Forma de Pago Preferida: ${form.pago}\n` +
-      `CUIT / Razón Social: ${form.cuit}\n` +
-      `Especificaciones y Modelos:\n` +
-      `${form.detalle}`;
+    const details = [
+      "Origen: formulario RFQ de la web",
+      `Empresa: ${form.empresa}`,
+      form.cuit ? `CUIT: ${form.cuit}` : "",
+      `Contacto: ${form.nombre}`,
+      `Teléfono: ${form.telefono}`,
+      form.email ? `Email: ${form.email}` : "",
+      form.provincia ? `Provincia / localidad: ${form.provincia}` : "",
+      form.entrega ? `Lugar de entrega: ${form.entrega}` : "",
+      `Volumen requerido: ${form.cantidad}`,
+      `Plazo esperado: ${form.plazo}`,
+      `Condición de pago preferida: ${form.pago}`,
+      `Sustituciones: ${form.sustituciones}`,
+      `Detalle técnico:\n${form.detalle}`,
+    ];
 
-    try {
-      const response = await fetch("/api/lead", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          empresa: form.empresa,
-          nombre: form.nombre,
-          email: form.email,
-          telefono: form.telefono,
-          tipoConsulta: "rfq-masivo",
-          mensaje: detailedMessage,
-          necesidad: `RFQ Masivo - ${form.cantidad} uds`,
-          escala: form.cantidad,
-          urgencia: form.plazo,
-          canalPreferido: "email",
-          origen: "rfq-page",
-        }),
-      });
-
-      const data = await response.json();
-      if (!response.ok || !data.ok) {
-        setStatus("error");
-        setError(data?.error || "Error al procesar la cotización masiva. Por favor intente de nuevo.");
-        return;
-      }
-
-      setStatus("success");
-      setTimeout(() => {
-        router.push("/gracias");
-      }, 1500);
-    } catch {
-      setStatus("error");
-      setError("Ocurrió un problema de conexión al enviar el formulario.");
-    }
+    window.open(buildWhatsAppUrl("rfq", details), "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -184,6 +150,28 @@ export default function Rfq() {
                   </label>
 
                   <label className="block">
+                    <span className="mb-1 block text-[12.5px] font-semibold text-slate-600">Provincia y localidad</span>
+                    <input
+                      required
+                      value={form.provincia}
+                      onChange={e => update("provincia", e.target.value)}
+                      className={inputClass}
+                      placeholder="Ej: Rosario, Santa Fe"
+                    />
+                  </label>
+
+                  <label className="block">
+                    <span className="mb-1 block text-[12.5px] font-semibold text-slate-600">Lugar de entrega</span>
+                    <input
+                      required
+                      value={form.entrega}
+                      onChange={e => update("entrega", e.target.value)}
+                      className={inputClass}
+                      placeholder="Dirección, sucursal o múltiples sedes"
+                    />
+                  </label>
+
+                  <label className="block">
                     <span className="mb-1 block text-[12.5px] font-semibold text-slate-600">Email Corporativo</span>
                     <input
                       required
@@ -259,10 +247,22 @@ export default function Rfq() {
                       onChange={e => update("pago", e.target.value)}
                       className={inputClass}
                     >
-                      <option value="Transferencia">Transferencia bancaria directa</option>
-                      <option value="Cheques">Cheques diferidos (30/60 días)</option>
-                      <option value="Cuenta Corriente">Cuenta corriente comercial</option>
-                      <option value="Acuerdo B2B">A convenir con el comercial</option>
+                      <option value="A convenir">A convenir con el comercial</option>
+                      <option value="Transferencia">Transferencia bancaria</option>
+                      <option value="Evaluar alternativas">Necesito evaluar alternativas</option>
+                    </select>
+                  </label>
+
+                  <label className="block sm:col-span-2">
+                    <span className="mb-1 block text-[12.5px] font-semibold text-slate-600">¿Aceptás alternativas equivalentes?</span>
+                    <select
+                      value={form.sustituciones}
+                      onChange={e => update("sustituciones", e.target.value)}
+                      className={inputClass}
+                    >
+                      <option>Sí, acepto alternativas equivalentes</option>
+                      <option>Solo los modelos indicados</option>
+                      <option>Consultar antes de reemplazar</option>
                     </select>
                   </label>
                 </div>
@@ -281,40 +281,13 @@ export default function Rfq() {
                   />
                 </label>
 
-                <label className="flex items-start gap-3 text-[12.5px] leading-relaxed text-slate-600 pt-2">
-                  <input
-                    required
-                    type="checkbox"
-                    checked={form.consent}
-                    onChange={e => update("consent", e.target.checked)}
-                    className="mt-0.5 size-4 accent-brand flex-none"
-                  />
-                  <span>
-                    Acepto que Bartez Tecnología almacene y procese mis datos comerciales para la generación del presupuesto formal.
-                  </span>
-                </label>
-
-                {status === "error" && (
-                  <div className="rounded-lg bg-red-50 px-4 py-3 text-[13px] text-red-700">
-                    {error}
-                  </div>
-                )}
-
                 <button
                   type="submit"
-                  disabled={status === "loading" || status === "success"}
                   className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-ink px-6 py-3.5 text-[14.5px] font-bold text-white transition-colors hover:bg-brand disabled:opacity-60"
                 >
-                  {status === "loading" ? (
-                    "Enviando solicitud..."
-                  ) : status === "success" ? (
-                    "¡Solicitud enviada correctamente!"
-                  ) : (
-                    <>
-                      <Send size={16} /> Enviar Solicitud de Cotización (RFQ)
-                    </>
-                  )}
+                  <MessageCircle size={17} /> Continuar RFQ por WhatsApp
                 </button>
+                <p className="text-center text-[11.5px] leading-relaxed text-slate-500">WhatsApp abrirá el detalle completo para que puedas revisarlo antes de enviarlo.</p>
               </form>
             </div>
 

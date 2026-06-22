@@ -17,6 +17,7 @@ import {
 import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
 import { contact } from "../../constants";
+import { whatsappLinks } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "Tecnología para el Sector Público — Bartez Tecnología",
@@ -42,8 +43,8 @@ const offerings = [
   },
   {
     icon: Package,
-    title: "Equipamiento certificado",
-    desc: "Productos de marcas reconocidas con garantía oficial. Dell, Lenovo, HP, Cisco y más.",
+    title: "Equipamiento para cada requerimiento",
+    desc: "Productos de marcas reconocidas y acompañamiento según las condiciones de garantía de cada fabricante.",
   },
   {
     icon: Globe,
@@ -131,7 +132,7 @@ export default function GobiernoPage() {
 
             <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
               <Link
-                href="/#cotiza"
+                href={whatsappLinks.government}
                 className="inline-flex justify-center items-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-bold text-ink transition-all hover:scale-[1.02]"
               >
                 Solicitar cotización <ArrowRight size={17} />
@@ -258,7 +259,7 @@ export default function GobiernoPage() {
             </p>
             <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
               <Link
-                href="/#cotiza"
+                href={whatsappLinks.government}
                 className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-bold text-ink transition-all hover:scale-[1.02]"
               >
                 Solicitar presupuesto <ArrowRight size={17} />

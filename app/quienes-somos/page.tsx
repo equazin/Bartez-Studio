@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Building2, CheckCircle2, Gamepad2, Globe, Home, Landmark } from "lucide-react";
+import { ArrowRight, Building2, CheckCircle2, Globe, Landmark, School, Store } from "lucide-react";
 import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
 import { company } from "../../constants";
+import { whatsappLinks } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "Quiénes somos — Bartez Tecnología",
   description:
-    "Conocé la historia, misión y valores de Bartez Tecnología. Más de 30 años de experiencia distribuyendo tecnología para empresas, organismos y hogares en toda Argentina desde Rosario.",
+    "Conocé la historia, misión y valores de Bartez Tecnología. Dieciocho años en el rubro distribuyendo tecnología para empresas, organismos y revendedores en toda Argentina desde Rosario.",
 };
 
 const channels = [
@@ -19,10 +20,10 @@ const channels = [
       "Empresas de todos los rubros que necesitan equipamiento, infraestructura y soluciones IT con asesoramiento técnico y condiciones B2B.",
   },
   {
-    icon: Gamepad2,
-    title: "Canal gamer",
+    icon: Store,
+    title: "Revendedores e integradores",
     description:
-      "Equipos, periféricos y componentes para entusiastas y profesionales del gaming, con productos de primera línea y asesoramiento especializado.",
+      "Tiendas, integradores y profesionales IT que necesitan atención de canal, variedad de marcas y respuesta comercial.",
   },
   {
     icon: Landmark,
@@ -31,15 +32,15 @@ const channels = [
       "Organismos gubernamentales, instituciones educativas y organizaciones privadas con necesidades de equipamiento masivo y condiciones institucionales.",
   },
   {
-    icon: Home,
-    title: "Hogares",
+    icon: School,
+    title: "Educación",
     description:
-      "Particulares que buscan tecnología de calidad con el respaldo del asesoramiento profesional que nos diferencia en el mercado.",
+      "Escuelas, institutos y universidades con necesidades de equipamiento, conectividad e infraestructura tecnológica.",
   },
 ];
 
 const values = [
-  { title: "Conocimiento profesional", desc: "Más de 30 años de experiencia acumulada nos permiten entender cada necesidad y proponer la solución correcta." },
+  { title: "Conocimiento profesional", desc: "Dieciocho años en el rubro nos permiten entender cada necesidad y proponer alternativas adecuadas." },
   { title: "Productos de primera línea", desc: "Trabajamos con marcas reconocidas mundialmente: Dell, Lenovo, HP, Cisco, Intel, AMD y Kingston, entre otros." },
   { title: "Asesoramiento personalizado", desc: "Cada cliente recibe atención dedicada. No vendemos productos, diseñamos soluciones adaptadas a cada contexto." },
   { title: "Cobertura nacional", desc: "Desde Rosario gestionamos distribución y proyectos en diferentes puntos de Argentina." },
@@ -60,14 +61,14 @@ export default function QuienesSomosPage() {
             </div>
             <h1 className="max-w-[700px] font-display text-[clamp(40px,6vw,70px)] font-extrabold leading-[0.98] tracking-[-0.05em] text-balance text-white">
               Distribuyendo tecnología{" "}
-              <span className="text-accent">desde 2008.</span>
+              <span className="text-accent">hace 18 años.</span>
             </h1>
             <p className="mt-7 max-w-[58ch] text-[clamp(16px,1.5vw,18px)] leading-relaxed text-slate-400">
               {company.description}
             </p>
             <div className="mt-10 flex flex-wrap items-center gap-x-10 gap-y-5 border-t border-white/15 pt-8">
               <div>
-                <span className="block font-display text-[42px] font-bold leading-none text-accent">30+</span>
+                <span className="block font-display text-[42px] font-bold leading-none text-accent">18</span>
                 <span className="mt-1 block text-[12px] text-slate-405">años de experiencia</span>
               </div>
               <div>
@@ -75,8 +76,8 @@ export default function QuienesSomosPage() {
                 <span className="mt-1 block text-[12px] text-slate-405">año de fundación</span>
               </div>
               <div>
-                <span className="block font-display text-[42px] font-bold leading-none text-accent">4</span>
-                <span className="mt-1 block text-[12px] text-slate-405">canales atendidos</span>
+                <span className="block font-display text-[42px] font-bold leading-none text-accent">10.000+</span>
+                <span className="mt-1 block text-[12px] text-slate-405">clientes</span>
               </div>
               <div>
                 <span className="block font-display text-[42px] font-bold leading-none text-accent">ARG</span>
@@ -97,17 +98,17 @@ export default function QuienesSomosPage() {
                 </h2>
                 <div className="mt-6 space-y-4 text-[16px] leading-relaxed text-slate-400">
                   <p>
-                    Somos una empresa dedicada a comercializar y distribuir tecnología con el fin de brindar soluciones a diversos canales: el corporativo, gamer, organizaciones privadas y públicas, y hogares en diferentes puntos de Argentina.
+                    Somos una empresa dedicada a comercializar y distribuir tecnología para empresas, revendedores, organizaciones públicas e instituciones educativas en distintos puntos de Argentina.
                   </p>
                   <p>
-                    Nuestra ventaja competitiva es brindar valor agregado a nuestros clientes a través de un conocimiento profesional adquirido por más de 30 años de experiencia, ya que les proveemos productos de primera línea con un asesoramiento personalizado.
+                    Nuestra ventaja competitiva es combinar dieciocho años de experiencia en el rubro con asesoramiento personalizado y una atención comercial cercana.
                   </p>
                   <p>
                     Desde el año 2008 ofrecemos soluciones completas y a medida de las necesidades de nuestros clientes, adaptándonos a cada contexto con la misma dedicación y profesionalismo.
                   </p>
                 </div>
                 <Link
-                  href="/#cotiza"
+                  href={whatsappLinks.general}
                   className="mt-8 inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-bold text-ink transition hover:scale-[1.02]"
                 >
                   Consultanos <ArrowRight size={16} />
@@ -170,7 +171,7 @@ export default function QuienesSomosPage() {
               Contanos tu necesidad y un especialista te contactará con una propuesta concreta en 24 hs hábiles.
             </p>
             <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-              <Link href="/#cotiza" className="inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-bold text-ink transition hover:scale-[1.02]">
+              <Link href={whatsappLinks.general} className="inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-bold text-ink transition hover:scale-[1.02]">
                 Contanos qué necesitás <ArrowRight size={16} />
               </Link>
               <Link href="/revendedores" className="inline-flex items-center gap-2 rounded-lg border border-white/20 bg-white/5 px-6 py-3.5 text-[14.5px] font-semibold text-white transition hover:bg-white/10">

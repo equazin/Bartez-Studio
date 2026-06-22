@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { ArrowRight, BadgeCheck, CheckCircle2, Gift, Handshake, MessageCircle, Package, Percent, Star, Users } from "lucide-react";
 import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
-import { contact } from "../../constants";
+import { ResellerWhatsAppForm } from "@/components/ResellerWhatsAppForm";
+import { whatsappLinks } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "Revendedores y Canal IT — Bartez Tecnología",
@@ -18,13 +19,13 @@ const benefits = [
   },
   {
     icon: Package,
-    title: "Stock disponible en marcas líderes",
-    desc: "Dell, Lenovo, HP, Cisco, Kingston y más — equipamiento para todos los segmentos y presupuestos.",
+    title: "Disponibilidad en marcas líderes",
+    desc: "Consultamos alternativas de Dell, Lenovo, HP, Cisco, Kingston y más según cada pedido.",
   },
   {
     icon: BadgeCheck,
-    title: "Productos con garantía oficial",
-    desc: "Todo lo que ofrecemos tiene respaldo de fábrica y posventa gestionada.",
+    title: "Acompañamiento en garantías",
+    desc: "Te orientamos según las condiciones informadas por cada fabricante y producto.",
   },
   {
     icon: Users,
@@ -38,8 +39,8 @@ const benefits = [
   },
   {
     icon: Star,
-    title: "Más de 30 años de trayectoria",
-    desc: "Respaldados por décadas de experiencia en el mercado IT argentino.",
+    title: "18 años en el rubro",
+    desc: "Experiencia comercial y técnica aplicada al mercado IT argentino.",
   },
 ];
 
@@ -70,13 +71,11 @@ const faqs = [
   { q: "¿Qué tipos de revendedores trabajan con Bartez?", a: "Trabajamos con tiendas de informática, integradores de sistemas, empresas de servicios IT, distribuidores regionales y profesionales independientes que revenden tecnología a empresas u hogares." },
   { q: "¿Hay un mínimo de compra para ser revendedor?", a: "No tenemos un mínimo rígido para ingresar al canal. Las condiciones se acuerdan según el perfil, volumen estimado y tipo de productos. Consultanos sin compromiso." },
   { q: "¿Ofrecen soporte técnico para revendedores?", a: "Sí. Tenés acceso a soporte comercial y orientación técnica para que puedas asesorar correctamente a tus clientes." },
-  { q: "¿Cómo se gestionan las garantías?", a: "Gestionamos las garantías directamente con los fabricantes. El revendedor tiene un canal de soporte dedicado para gestionar cambios y reclamos." },
+  { q: "¿Cómo se gestionan las garantías?", a: "Te informamos las condiciones aplicables a cada producto y acompañamos el inicio y seguimiento del caso cuando corresponde." },
   { q: "¿Emiten Factura A?", a: "Sí. Somos Responsable Inscripto y todas las operaciones se documentan con Factura A." },
 ];
 
-const whatsappHref = `https://wa.me/${contact.whatsappNumber}?text=${encodeURIComponent("Hola, soy revendedor y quiero conocer las condiciones del canal Bartez.")}`;
-const darkInputClass = 
-  "w-full rounded-xl border border-white/10 bg-[#06140d] px-4 py-3 text-[14px] text-white outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/15 placeholder-slate-500";
+const whatsappHref = whatsappLinks.reseller;
 
 export default function RevendedoresPage() {
   return (
@@ -96,7 +95,7 @@ export default function RevendedoresPage() {
               <span className="text-accent">primera línea.</span>
             </h1>
             <p className="mt-7 max-w-[56ch] text-[clamp(16px,1.5vw,18px)] leading-relaxed text-slate-400">
-              Sumate al canal de distribución de Bartez. Condiciones comerciales competitivas, marcas líderes del mercado y más de 30 años de respaldo para que tu negocio crezca.
+              Sumate al canal de distribución de Bartez. Condiciones comerciales competitivas, marcas líderes y 18 años de experiencia para acompañar el crecimiento de tu negocio.
             </p>
             <div className="mt-9 flex flex-col gap-3.5 sm:flex-row sm:items-center">
               <a
@@ -126,7 +125,7 @@ export default function RevendedoresPage() {
                 Por qué distribuir con Bartez.
               </h2>
               <p className="mt-4 text-[16px] leading-relaxed text-slate-450">
-                Más de 30 años de experiencia en el mercado IT argentino nos permiten ofrecerte condiciones reales para que tu negocio de reventa sea rentable.
+                Dieciocho años de experiencia en el mercado IT argentino nos permiten entender la dinámica del canal y ofrecer una atención comercial directa.
               </p>
             </div>
 
@@ -190,72 +189,7 @@ export default function RevendedoresPage() {
               <h3 className="font-display text-[20px] font-bold text-white">Contanos sobre tu negocio</h3>
               <p className="mt-2 text-[13.5px] text-slate-400">Sin compromiso. Evaluamos cada consulta de forma personalizada.</p>
 
-              <form
-                className="mt-7 grid gap-4 sm:grid-cols-2"
-                action="/#cotiza"
-                method="GET"
-                aria-label="Formulario de registro de revendedores"
-              >
-                <label className="sm:col-span-2">
-                  <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-350">Empresa o razón social</span>
-                  <input
-                    required
-                    name="empresa"
-                    className={darkInputClass}
-                    placeholder="Nombre de la empresa"
-                  />
-                </label>
-                <label>
-                  <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-350">Nombre</span>
-                  <input
-                    required
-                    name="nombre"
-                    className={darkInputClass}
-                    placeholder="Tu nombre"
-                  />
-                </label>
-                <label>
-                  <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-350">Teléfono / WhatsApp</span>
-                  <input
-                    required
-                    name="telefono"
-                    className={darkInputClass}
-                    placeholder="+54 9 ..."
-                  />
-                </label>
-                <label className="sm:col-span-2">
-                  <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-350">Email corporativo</span>
-                  <input
-                    required
-                    type="email"
-                    name="email"
-                    className={darkInputClass}
-                    placeholder="nombre@empresa.com"
-                  />
-                </label>
-                <label className="sm:col-span-2">
-                  <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-350">Contanos sobre tu negocio</span>
-                  <textarea
-                    name="mensaje"
-                    rows={3}
-                    className={`${darkInputClass} resize-none`}
-                    placeholder="¿Qué tipo de productos distribuís? ¿Cuál es tu mercado principal? ¿Volumen estimado?"
-                  />
-                </label>
-
-                <div className="sm:col-span-2 pt-2">
-                  <a
-                    href={`mailto:${contact.email}?subject=Consulta%20de%20revendedor&body=Hola%2C%20quiero%20conocer%20las%20condiciones%20del%20canal%20Bartez.`}
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-bold text-ink transition hover:scale-[1.02]"
-                  >
-                    Enviar consulta <ArrowRight size={17} />
-                  </a>
-                  <p className="mt-4 text-center text-[11.5px] text-slate-550">
-                    O escribinos directo a{" "}
-                    <a href={`mailto:${contact.email}`} className="font-semibold text-accent hover:underline">{contact.email}</a>
-                  </p>
-                </div>
-              </form>
+              <ResellerWhatsAppForm />
             </div>
           </div>
         </section>
