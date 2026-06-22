@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
-    "test": "node --no-warnings --experimental-strip-types tests/run.mjs"
+    "test": "node --no-warnings --import tsx --test"
   },
   "dependencies": {
     "@ai-sdk/react": "^3.0.210",

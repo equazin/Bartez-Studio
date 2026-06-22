@@ -14,11 +14,12 @@ test("accepts a valid lead", () => {
   assert.equal(result.success, true);
 });
 
-test("rejects invalid, bot and catalog submissions", () => {
+test("rejects invalid and catalog submissions, but accepts honeypot website field", () => {
   assert.equal(leadSchema.safeParse({ empresa: "x" }).success, false);
+  // El honeypot ahora debe validar bien en el schema para que la API responda silenciosamente
   assert.equal(
     downloadSchema.safeParse({ email: "a@b.com", resource: "brochure", website: "spam" }).success,
-    false,
+    true,
   );
   assert.equal(
     downloadSchema.safeParse({ email: "a@b.com", resource: "catalogo" }).success,

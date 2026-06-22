@@ -90,3 +90,29 @@ Además, verificar en desktop y móvil:
 - Fallback a WhatsApp.
 - Consentimiento antes de crear el lead.
 - Ausencia de textos o controles con apariencia de e-commerce.
+
+## Gestión del Repositorio y CI/CD
+
+### Convención de Ramas
+Para mantener el historial ordenado, se utiliza la siguiente nomenclatura de ramas:
+- `feat/nombre-feature`: Para nuevas funcionalidades o componentes.
+- `fix/nombre-bug`: Para correcciones de errores.
+- `refactor/nombre-cambio`: Para mejoras en el código sin cambios funcionales.
+- `claude/descripcion`: Para ramas generadas por la IA.
+
+### Integración Continua (CI)
+El repositorio cuenta con un workflow de GitHub Actions (`.github/workflows/ci.yml`) que se ejecuta automáticamente en cada push a `main` o ramas `claude/**`, y en cada Pull Request.
+El workflow valida:
+1. `npm ci` (instalación limpia de dependencias).
+2. `npm run lint` (estilo y calidad del código).
+3. `npm run typecheck` (verificación de tipos de TypeScript).
+4. `npm test` (suite de pruebas unitarias y de integración).
+5. `npm run build` (compilación del proyecto Next.js).
+
+### Reglas de Branch Protection en GitHub
+Para garantizar la estabilidad de la rama principal, se recomienda configurar las siguientes reglas de protección para la rama `main` en GitHub (**Settings > Branches > Add rule**):
+- **Branch name pattern**: `main`
+- **Require a pull request before merging**: Activar (requerir al menos 1 aprobación).
+- **Require status checks to pass before merging**: Activar y buscar el check `verify` de GitHub Actions. Esto impide mergear código que rompa builds o tests.
+- **Require conversation resolution before merging**: Activar para asegurar que todos los comentarios en el PR estén resueltos.
+- **Restrict who can push to matching branches**: Evitar pushes directos de desarrolladores individuales (todo debe pasar por PR).

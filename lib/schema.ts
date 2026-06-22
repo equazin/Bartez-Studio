@@ -21,7 +21,7 @@ export const leadSchema = z.object({
   canalPreferido: z.enum(["email", "whatsapp", "teléfono", "telefono"]).optional(),
   resumenIA: z.string().max(4000).optional(),
   origen: z.string().max(40).optional(),
-  website: z.string().max(0).optional(),
+  website: z.string().optional(),
 });
 
 export type Lead = z.infer<typeof leadSchema>;
@@ -30,7 +30,7 @@ export const downloadSchema = z.object({
   email: z.string().email("Email corporativo inválido"),
   empresa: z.string().min(2).optional().or(z.literal("")),
   resource: z.literal("brochure"),
-  website: z.string().max(0).optional(),
+  website: z.string().optional(),
 });
 
 export type DownloadLead = z.infer<typeof downloadSchema>;
