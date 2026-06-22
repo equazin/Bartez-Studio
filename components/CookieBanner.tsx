@@ -18,7 +18,7 @@ export function CookieBanner() {
   if (consent) return null;
 
   return (
-    <div className="fixed inset-x-3 bottom-3 z-[55] mx-auto max-w-[560px] rounded-2xl border border-white/10 bg-ink/95 p-4 text-white shadow-2xl backdrop-blur md:left-6 md:right-auto">
+    <div className="fixed inset-x-3 bottom-3 z-[45] mx-auto max-w-[560px] rounded-2xl border border-white/10 bg-[#062014] p-4 text-white shadow-2xl md:left-6 md:right-auto">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <p className="text-[13px] text-slate-300">{cookie.text}</p>
         <div className="flex flex-none gap-2">

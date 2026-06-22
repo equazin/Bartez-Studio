@@ -56,18 +56,18 @@ const needs: Array<{
 
 export function Needs() {
   return (
-    <section id="soluciones" className="scroll-mt-24 bg-[#030c07] py-20 md:py-28">
-      <div className="mx-auto grid max-w-[1200px] gap-10 px-6 lg:grid-cols-[280px_1fr] lg:gap-16">
-        <div className="lg:pt-5">
-          <h2 className="font-display text-[clamp(30px,4vw,46px)] font-bold leading-[1.05] tracking-[-0.035em] text-white">
-            ¿Qué necesitás resolver?
+    <section id="soluciones" className="scroll-mt-24 bg-[#030c07] py-20 md:py-24">
+      <div className="mx-auto max-w-[1320px] px-6 lg:px-8">
+        <div className="grid gap-5 border-b border-white/10 pb-10 lg:grid-cols-[1fr_.85fr] lg:items-end lg:gap-20">
+          <h2 className="max-w-[700px] font-display text-[clamp(34px,4vw,50px)] font-bold leading-[1.05] tracking-[-0.04em] text-white">
+            Soluciones para cada necesidad
           </h2>
-          <p className="mt-5 max-w-[30ch] text-[16px] leading-relaxed text-slate-400">
-            Elegí el desafío principal y te ayudamos a encontrar el camino adecuado.
+          <p className="max-w-[54ch] text-[16px] leading-relaxed text-slate-400">
+            Acompañamos a empresas, organismos públicos y revendedores con soluciones tecnológicas confiables y escalables.
           </p>
         </div>
 
-        <div className="border-t border-white/10">
+        <div className="mt-8 border-t border-white/10">
           {needs.map((need) => (
             <Link
               key={need.title}

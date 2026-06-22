@@ -16,9 +16,8 @@ export function Footer() {
     <footer className="bg-[#062014] text-white">
       <div className="mx-auto grid max-w-[1200px] gap-10 px-6 py-12 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div>
-          <Link href="/" className="inline-flex items-center gap-3" aria-label="Bartez — inicio">
-            <Image src="/brand/bartez-isologo.png" alt="" width={50} height={50} className="size-10" />
-            <Image src="/brand/bartez-logo.png" alt="Bartez" width={200} height={50} className="h-8 w-auto brightness-0 invert" />
+          <Link href="/" className="inline-flex items-center" aria-label="Bartez — inicio">
+            <Image src="/brand/bartez-logo-oficial-blanco.png" alt="Bartez Tecnología — Distribuidor mayorista" width={272} height={60} className="h-14 w-auto" />
           </Link>
           <p className="mt-5 max-w-[38ch] text-[13px] leading-relaxed text-slate-300">
             Distribución de equipamiento, infraestructura y soluciones IT para empresas, organismos y revendedores en toda Argentina.

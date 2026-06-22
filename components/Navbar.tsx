@@ -34,11 +34,10 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#030c07]/95 backdrop-blur-md">
-      <div className="mx-auto flex h-20 max-w-[1320px] min-w-0 items-center justify-between gap-5 px-5 sm:px-6">
-        <Link href="/#top" className="flex min-w-0 items-center gap-2.5" aria-label="Bartez Tecnología — inicio">
-          <Image src="/brand/bartez-isologo.png" alt="" width={50} height={50} priority className="size-9 flex-none" />
-          <Image src="/brand/bartez-logo.png" alt="Bartez" width={200} height={50} priority className="h-7 w-auto brightness-0 invert sm:h-8" />
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#020a06]">
+      <div className="mx-auto flex h-[88px] max-w-[1320px] min-w-0 items-center justify-between gap-5 px-5 sm:px-6">
+        <Link href="/#top" className="flex min-w-0 items-center" aria-label="Bartez Tecnología — inicio">
+          <Image src="/brand/bartez-logo-oficial-blanco.png" alt="Bartez Tecnología — Distribuidor mayorista" width={272} height={60} priority className="h-12 w-auto sm:h-[54px]" />
         </Link>
 
         <nav className="hidden items-center gap-7 lg:flex" aria-label="Navegación principal">
@@ -50,7 +49,7 @@ export function Navbar() {
             <Link href="/#soluciones" className="flex items-center gap-1.5 py-7 text-[14px] font-medium text-slate-300 transition-colors hover:text-accent">
               Soluciones <ChevronDown size={14} />
             </Link>
-            <div className="invisible absolute left-1/2 top-[72px] w-[720px] -translate-x-1/2 translate-y-2 border border-white/10 bg-[#06140d] p-3 opacity-0 shadow-2xl transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+            <div className="invisible absolute left-1/2 top-[76px] w-[720px] -translate-x-1/2 translate-y-2 border border-white/10 bg-[#06140d] p-3 opacity-0 shadow-2xl transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
               <div className="grid grid-cols-3">
                 {solutionLinks.map((link) => (
                   <Link key={link.href} href={link.href} className="border-b border-white/5 px-4 py-3 text-[13.5px] font-medium text-slate-300 transition-colors hover:bg-white/5 hover:text-accent">
@@ -72,7 +71,7 @@ export function Navbar() {
           href={whatsappLinks.quote}
           target="_blank"
           rel="noopener noreferrer"
-          className="hidden items-center gap-2 rounded-lg bg-accent px-5 py-3 text-[13.5px] font-bold text-ink transition-all hover:scale-[1.02] lg:inline-flex"
+          className="hidden min-h-12 items-center gap-2 rounded-md bg-[#16c95f] px-5 text-[14px] font-bold text-white transition-colors hover:bg-[#12b955] lg:inline-flex"
           data-track="navbar_whatsapp_quote"
         >
           <MessageCircle size={17} /> Cotizar por WhatsApp
@@ -90,7 +89,7 @@ export function Navbar() {
       </div>
 
       {open ? (
-        <nav className="max-h-[calc(100vh-80px)] overflow-y-auto border-t border-white/10 bg-[#030c07] px-5 py-5 lg:hidden" aria-label="Navegación móvil">
+        <nav className="max-h-[calc(100vh-88px)] overflow-y-auto border-t border-white/10 bg-[#030c07] px-5 py-5 lg:hidden" aria-label="Navegación móvil">
           <div className="mx-auto flex max-w-[1200px] flex-col">
             <Link href="/empresas" onClick={() => setOpen(false)} className="border-b border-white/10 py-3 text-[15px] font-semibold text-white">Empresas</Link>
             <span className="pt-5 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Soluciones y segmentos</span>

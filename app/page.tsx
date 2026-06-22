@@ -24,7 +24,6 @@ export default function Home() {
         <Hero />
         {/* 2. TrustBar: marcas en color + 4 badges de credibilidad */}
         <TrustBar />
-        <ClientLogos />
         {/* 3. Selector de necesidades por canal */}
         <Needs />
         {/* 4. Quiénes somos: experiencia, canales y propuesta */}
@@ -33,6 +32,7 @@ export default function Home() {
         <Process />
         {/* 6. Mini-casos de experiencia real */}
         <Experience />
+        <ClientLogos />
         {/* 8. Banner de captación de revendedores */}
         <ResellerBanner />
         {/* 9. Catálogo como lead magnet */}
