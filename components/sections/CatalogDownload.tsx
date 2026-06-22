@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { ArrowRight, Download, FileText, Lock, Loader2 } from "lucide-react";
 import { track } from "../Analytics";
 
@@ -110,9 +111,9 @@ export function CatalogDownload() {
                 </a>
                 <p className="mt-4 text-[12px] text-slate-400">
                   ¿Necesitás asesoramiento?{" "}
-                  <a href="/#cotiza" className="font-semibold text-brand hover:underline">
+                  <Link href="/#cotiza" className="font-semibold text-brand hover:underline">
                     Escribinos
-                  </a>
+                  </Link>
                 </p>
               </div>
             ) : (
@@ -167,9 +168,9 @@ export function CatalogDownload() {
 
                 <p className="text-center text-[11.5px] text-slate-400">
                   También podés{" "}
-                  <a href="/#cotiza" className="font-semibold text-brand hover:underline">
+                  <Link href="/#cotiza" className="font-semibold text-brand hover:underline">
                     pedir una cotización personalizada
-                  </a>
+                  </Link>
                 </p>
               </form>
             )}

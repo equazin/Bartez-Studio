@@ -5,10 +5,8 @@ import { useRouter } from "next/navigation";
 import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
 import { 
-  FileText, 
   Send, 
   Clock, 
-  HelpCircle, 
   Clipboard, 
   Briefcase,
   AlertCircle
@@ -36,7 +34,7 @@ export default function Rfq() {
     consent: false,
   });
 
-  const update = (key: string, value: any) => {
+  const update = (key: string, value: string | boolean) => {
     setForm(prev => ({ ...prev, [key]: value }));
   };
 
@@ -94,7 +92,7 @@ export default function Rfq() {
       setTimeout(() => {
         router.push("/gracias");
       }, 1500);
-    } catch (err) {
+    } catch {
       setStatus("error");
       setError("Ocurrió un problema de conexión al enviar el formulario.");
     }

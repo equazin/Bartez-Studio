@@ -95,7 +95,7 @@ export function Testimonials() {
               ))}
             </div>
             <blockquote className="font-display text-[clamp(17px,1.8vw,21px)] font-medium leading-[1.5] text-slate-100">
-              "{current.quote}"
+              &ldquo;{current.quote}&rdquo;
             </blockquote>
             <div className="mt-8 flex items-center gap-4 border-t border-white/15 pt-6">
               <div className="grid size-11 place-items-center rounded-full bg-brand/20 font-display text-[17px] font-bold text-accent">
@@ -131,7 +131,7 @@ export function Testimonials() {
                   </span>
                 </div>
                 <p className="mt-1.5 text-[12px] leading-relaxed text-slate-500 line-clamp-2">
-                  "{t.quote}"
+                  &ldquo;{t.quote}&rdquo;
                 </p>
               </button>
             ))}

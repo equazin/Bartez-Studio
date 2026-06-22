@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Award, Building2, CheckCircle2, Gamepad2, Globe, Home, Landmark } from "lucide-react";
+import { ArrowRight, Building2, CheckCircle2, Gamepad2, Globe, Home, Landmark } from "lucide-react";
 import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
 import { company } from "../../constants";

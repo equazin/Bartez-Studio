@@ -130,12 +130,12 @@ export default function GobiernoPage() {
             </p>
 
             <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <a
+              <Link
                 href="/#cotiza"
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-semibold text-ink transition-all hover:-translate-y-0.5"
+                className="inline-flex justify-center items-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-semibold text-ink transition-all hover:-translate-y-0.5"
               >
                 Solicitar cotización <ArrowRight size={17} />
-              </a>
+              </Link>
               <Link
                 href="/contacto"
                 className="inline-flex items-center gap-2 rounded-lg border border-white/30 px-5 py-3.5 text-[14px] font-semibold text-white transition-colors hover:border-accent hover:text-accent"
@@ -257,12 +257,12 @@ export default function GobiernoPage() {
               del sector público. Respondemos en 24-48 hs hábiles.
             </p>
             <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-              <a
+              <Link
                 href="/#cotiza"
                 className="inline-flex items-center gap-2 rounded-lg bg-ink px-6 py-3.5 text-[14.5px] font-semibold text-white transition-all hover:bg-brand hover:-translate-y-0.5"
               >
                 Solicitar presupuesto <ArrowRight size={17} />
-              </a>
+              </Link>
               <a
                 href={`mailto:${contact.email}?subject=Cotizaci%C3%B3n%20sector%20p%C3%BAblico`}
                 className="inline-flex items-center gap-2 rounded-lg border border-slate-300 px-5 py-3.5 text-[14px] font-semibold text-slate-700 transition-colors hover:border-brand hover:text-brand"

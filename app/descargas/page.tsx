@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
 import { 
+  type LucideIcon,
   Download, 
   FileText, 
   Lock, 
@@ -26,7 +28,7 @@ interface Resource {
   category: string;
   description: string;
   fileSize: string;
-  icon: any;
+  icon: LucideIcon;
   fileUrl: string;
 }
 
@@ -116,7 +118,7 @@ export default function Descargas() {
         }),
       });
       setUnlocked(true);
-    } catch (err) {
+    } catch {
       // Dejar ingresar incluso si la API de leads falla para no arruinar UX
       setUnlocked(true);
     } finally {
@@ -217,12 +219,12 @@ export default function Descargas() {
                   </p>
                   <div className="mt-5 border-t border-slate-200/60 pt-4">
                     <span className="text-[12px] text-slate-400 block">¿Buscás equipar tu empresa?</span>
-                    <a 
+                    <Link 
                       href="/#cotiza" 
                       className="mt-2 inline-flex items-center gap-1 text-[13px] font-bold text-brand hover:underline"
                     >
                       Solicitar presupuesto a medida <ArrowRight size={13} />
-                    </a>
+                    </Link>
                   </div>
                 </div>
               ) : (

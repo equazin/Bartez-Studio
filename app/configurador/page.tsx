@@ -16,7 +16,8 @@ import {
   Check, 
   Send, 
   MessageCircle,
-  FileText
+  FileText,
+  type LucideIcon
 } from "lucide-react";
 import { contact } from "../../constants";
 import { track } from "../../components/Analytics";
@@ -25,7 +26,7 @@ interface Profile {
   id: string;
   name: string;
   description: string;
-  icon: any;
+  icon: LucideIcon;
   recommendation: {
     cpu: string;
     ram: string;
@@ -170,7 +171,7 @@ export default function Configurador() {
       setTimeout(() => {
         router.push("/gracias");
       }, 1500);
-    } catch (err) {
+    } catch {
       setSubmitting(false);
     }
   };

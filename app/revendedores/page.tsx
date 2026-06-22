@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { ArrowRight, BadgeCheck, CheckCircle2, Gift, Handshake, MessageCircle, Package, Percent, Star, Users } from "lucide-react";
 import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";

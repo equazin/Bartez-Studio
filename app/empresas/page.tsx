@@ -100,12 +100,12 @@ export default function EmpresasPage() {
             </p>
 
             <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <a
+              <Link
                 href="/#cotiza"
                 className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-semibold text-ink transition-all hover:-translate-y-0.5"
               >
                 Pedir cotización <ArrowRight size={17} />
-              </a>
+              </Link>
               <Link
                 href="/marcas"
                 className="inline-flex items-center gap-2 rounded-lg border border-white/30 px-5 py-3.5 text-[14px] font-semibold text-white transition-colors hover:border-accent hover:text-accent"
@@ -208,12 +208,12 @@ export default function EmpresasPage() {
               hábiles.
             </p>
             <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-              <a
+              <Link
                 href="/#cotiza"
                 className="inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-semibold text-ink transition-all hover:-translate-y-0.5"
               >
                 Solicitar asesoramiento <ArrowRight size={17} />
-              </a>
+              </Link>
               <a
                 href={whatsappHref}
                 target="_blank"
