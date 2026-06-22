@@ -1,10 +1,10 @@
-import type { Lead } from "../schema";
-import type { IntegrationResult, LeadSink } from "./types";
-import { apolloSink } from "./apollo";
-import { mondaySink } from "./monday";
-import { mailSink } from "./mail";
-import { calendarSink } from "./calendar";
-import { archiveSink } from "./archive";
+import type { Lead } from "../schema.ts";
+import type { IntegrationResult, LeadSink } from "./types.ts";
+import { apolloSink } from "./apollo.ts";
+import { mondaySink } from "./monday.ts";
+import { mailSink } from "./mail.ts";
+import { calendarSink } from "./calendar.ts";
+import { archiveSink } from "./archive.ts";
 import { createHash } from "node:crypto";
 
 /**

@@ -1,39 +1,33 @@
-import { NextResponse } from "next/server";
-import { prisma } from "../../../../lib/db";
+import { adminOk, adminServerError, authorizeAdminRequest, invalidAdminInput, readAdminJson } from "../../../../lib/admin-api.ts";
+import { invalidatePublicContent } from "../../../../lib/admin-content.ts";
+import { clientCreateSchema } from "../../../../lib/admin-schema.ts";
+import { getDb } from "../../../../lib/db.ts";
 
 export const runtime = "nodejs";
 
-export async function GET() {
+export async function GET(request: Request) {
+  const auth = await authorizeAdminRequest(request);
+  if (auth.response) return auth.response;
   try {
-    const clients = await prisma.clientLogo.findMany({
-      orderBy: { displayOrder: "asc" },
-    });
-    return NextResponse.json({ ok: true, clients });
-  } catch (err) {
-    return NextResponse.json({ ok: false, error: (err as Error).message }, { status: 500 });
+    const clients = await getDb().clientLogo.findMany({ orderBy: [{ displayOrder: "asc" }, { id: "desc" }] });
+    return adminOk({ clients });
+  } catch (error) {
+    return adminServerError("listar logos", error);
   }
 }
 
-export async function POST(req: Request) {
+export async function POST(request: Request) {
+  const auth = await authorizeAdminRequest(request, { mutation: true });
+  if (auth.response) return auth.response;
+  const body = await readAdminJson(request);
+  if (!body.ok) return body.response;
+  const parsed = clientCreateSchema.safeParse(body.data);
+  if (!parsed.success) return invalidAdminInput(parsed.error.issues);
   try {
-    const body = await req.json();
-    const { name, logoUrl, displayOrder, active } = body;
-
-    if (!name || !logoUrl) {
-      return NextResponse.json({ ok: false, error: "Nombre y logo URL son requeridos" }, { status: 400 });
-    }
-
-    const client = await prisma.clientLogo.create({
-      data: {
-        name,
-        logoUrl,
-        displayOrder: displayOrder !== undefined ? parseInt(displayOrder, 10) : 0,
-        active: active !== undefined ? active : true,
-      },
-    });
-
-    return NextResponse.json({ ok: true, client });
-  } catch (err) {
-    return NextResponse.json({ ok: false, error: (err as Error).message }, { status: 500 });
+    const client = await getDb().clientLogo.create({ data: parsed.data });
+    invalidatePublicContent("clients");
+    return adminOk({ client });
+  } catch (error) {
+    return adminServerError("crear logo", error);
   }
 }

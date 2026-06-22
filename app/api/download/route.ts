@@ -1,7 +1,7 @@
-import { NextResponse } from "next/server";
-import { downloadSchema } from "../../../lib/schema";
-import { processLead } from "../../../lib/integrations";
-import { checkRateLimit } from "../../../lib/rate-limit";
+import { NextResponse } from "next/server.js";
+import { downloadSchema } from "../../../lib/schema.ts";
+import { processLead } from "../../../lib/integrations/index.ts";
+import { checkRateLimit } from "../../../lib/rate-limit.ts";
 
 export const runtime = "nodejs";
 

@@ -12,7 +12,7 @@ test("mailSink sends notifications and auto-replies via Resend", async () => {
   process.env.RESEND_API_KEY = "mock-resend-key";
   process.env.MAIL_FROM = "Bartez <ventas@bartez.com.ar>";
 
-  const calls: { url: string; body: any }[] = [];
+  const calls: { url: string; body: unknown }[] = [];
 
   try {
     global.fetch = async (url, options) => {
@@ -34,12 +34,12 @@ test("mailSink sends notifications and auto-replies via Resend", async () => {
     assert.equal(calls.length, 2);
     // Notification mail
     assert.equal(calls[0].url, "https://api.resend.com/emails");
-    assert.equal(calls[0].body.to, "ventas@bartez.com.ar");
-    assert.match(calls[0].body.subject, /Nuevo lead web/);
+    assert.equal((calls[0].body as { to: string }).to, "ventas@bartez.com.ar");
+    assert.match((calls[0].body as { subject: string }).subject, /Nuevo lead web/);
     // Auto-reply mail
     assert.equal(calls[1].url, "https://api.resend.com/emails");
-    assert.equal(calls[1].body.to, "test@company.com");
-    assert.match(calls[1].body.subject, /Recibimos tu consulta/);
+    assert.equal((calls[1].body as { to: string }).to, "test@company.com");
+    assert.match((calls[1].body as { subject: string }).subject, /Recibimos tu consulta/);
   } finally {
     global.fetch = originalFetch;
     process.env.MAIL_PROVIDER = originalEnvProvider;
@@ -58,7 +58,7 @@ test("mailSink sends notifications via Brevo", async () => {
   process.env.BREVO_API_KEY = "mock-brevo-key";
   process.env.MAIL_FROM = "Bartez <ventas@bartez.com.ar>";
 
-  const calls: { url: string; body: any }[] = [];
+  const calls: { url: string; body: unknown }[] = [];
 
   try {
     global.fetch = async (url, options) => {
@@ -79,9 +79,9 @@ test("mailSink sends notifications via Brevo", async () => {
     assert.equal(result.ok, true);
     assert.equal(calls.length, 2);
     assert.equal(calls[0].url, "https://api.brevo.com/v3/smtp/email");
-    assert.equal(calls[0].body.to[0].email, "ventas@bartez.com.ar");
+    assert.equal((calls[0].body as { to: Array<{ email: string }> }).to[0].email, "ventas@bartez.com.ar");
     assert.equal(calls[1].url, "https://api.brevo.com/v3/smtp/email");
-    assert.equal(calls[1].body.to[0].email, "test@company.com");
+    assert.equal((calls[1].body as { to: Array<{ email: string }> }).to[0].email, "test@company.com");
   } finally {
     global.fetch = originalFetch;
     process.env.MAIL_PROVIDER = originalEnvProvider;

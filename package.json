@@ -5,10 +5,13 @@
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
+    "vercel-build": "prisma migrate deploy && prisma generate && next build",
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
-    "test": "node --no-warnings --import tsx --test"
+    "test": "node --no-warnings --experimental-strip-types tests/run.mjs",
+    "db:migrate": "prisma migrate deploy",
+    "db:generate": "prisma generate"
   },
   "dependencies": {
     "@ai-sdk/react": "^3.0.210",

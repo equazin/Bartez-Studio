@@ -1,0 +1,10 @@
+await import("./rate-limit.test.ts");
+await import("./schema.test.ts");
+await import("./ai.test.ts");
+await import("./api-chat.test.ts");
+await import("./api-lead.test.ts");
+await import("./integrations/apollo.test.ts");
+await import("./integrations/mail.test.ts");
+await import("./integrations/monday.test.ts");
+await import("./db-fallback.test.ts");
+await import("./admin-auth.test.ts");

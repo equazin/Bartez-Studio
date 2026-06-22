@@ -11,6 +11,8 @@ import { Footer } from "../components/Footer";
 import { Assistant } from "../components/Assistant";
 import { CookieBanner } from "../components/CookieBanner";
 
+export const revalidate = 3600;
+
 export default function Home() {
   return (
     <>

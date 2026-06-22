@@ -1,5 +1,5 @@
-import type { Lead } from "../schema";
-import type { IntegrationResult, LeadSink } from "./types";
+import type { Lead } from "../schema.ts";
+import type { IntegrationResult, LeadSink } from "./types.ts";
 
 /**
  * monday.com adapter — crea un item en el board "Leads Web Bartez".

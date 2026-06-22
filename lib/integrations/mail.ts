@@ -1,6 +1,6 @@
-import type { Lead } from "../schema";
-import type { IntegrationResult, LeadSink } from "./types";
-import { contact, company } from "../../constants";
+import type { Lead } from "../schema.ts";
+import type { IntegrationResult, LeadSink } from "./types.ts";
+import { contact, company } from "../../constants.ts";
 
 /**
  * Mail adapter — notificación interna + autorespuesta HTML branded.

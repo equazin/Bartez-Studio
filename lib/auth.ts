@@ -1,22 +1,11 @@
-import { SignJWT, jwtVerify } from "jose";
+import { cookies } from "next/headers";
+import { ADMIN_COOKIE_NAME, verifyToken } from "./auth-token.ts";
 
-const SECRET = new TextEncoder().encode(
-  process.env.ADMIN_JWT_SECRET || "default-jwt-secret-should-be-changed-in-prod-12345678"
-);
+export { ADMIN_COOKIE_NAME, signToken, tokenFromCookieHeader, verifyToken } from "./auth-token.ts";
+export type { AdminSession } from "./auth-token.ts";
 
-export async function signToken(payload: { username: string }) {
-  return await new SignJWT(payload)
-    .setProtectedHeader({ alg: "HS256" })
-    .setIssuedAt()
-    .setExpirationTime("6h") // Sesión válida por 6 horas
-    .sign(SECRET);
-}
-
-export async function verifyToken(token: string) {
-  try {
-    const { payload } = await jwtVerify(token, SECRET);
-    return payload as { username: string };
-  } catch {
-    return null;
-  }
+export async function getAdminSession() {
+  const store = await cookies();
+  const token = store.get(ADMIN_COOKIE_NAME)?.value;
+  return token ? verifyToken(token) : null;
 }

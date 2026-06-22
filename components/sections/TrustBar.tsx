@@ -12,18 +12,11 @@ export async function TrustBar() {
   const brands = await getDynamicPartners();
 
   return (
-    <section className="border-y border-slate-200 bg-slate-50/70 py-8" aria-label="Marcas y cobertura">
+    <section className="border-y border-slate-200 bg-slate-50/70 py-8" aria-label="Clientes, marcas y cobertura">
       <div className="mx-auto flex max-w-[1200px] flex-col gap-8 px-6 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex flex-wrap items-center gap-x-9 gap-y-5">
-          {brands.slice(0, 7).map((brand) => (
-            <Image
-              key={brand.name}
-              src={brand.logo}
-              alt={brand.name}
-              width={96}
-              height={28}
-              className="h-5 w-auto grayscale opacity-55 md:h-6"
-            />
+          {brands.slice(0, 9).map((brand) => (
+            <Image key={brand.name} src={brand.logo} alt={brand.name} width={96} height={28} className="h-5 w-auto grayscale opacity-55 md:h-6" />
           ))}
         </div>
         <div className="grid gap-4 border-slate-200 sm:grid-cols-3 lg:border-l lg:pl-8">

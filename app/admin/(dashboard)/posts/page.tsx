@@ -1,22 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { 
-  FileText, 
-  Plus, 
-  Trash2, 
-  Edit, 
-  Eye, 
-  Check, 
-  X, 
-  Upload, 
-  MoveUp, 
-  MoveDown,
-  Loader,
-  AlertCircle
-} from "lucide-react";
-
-type BodyBlock = { p: string } | { h: string };
+import Link from "next/link";
+import { useCallback, useEffect, useState } from "react";
+import { ArrowDown, ArrowLeft, ArrowUp, Eye, FileText, GripVertical, Pencil, Plus, Save, Trash2, X } from "lucide-react";
+import type { BodyBlock } from "../../../../lib/admin-schema";
+import { AdminAlert, AdminButton, AdminField, AdminInput, AdminPanel, AdminSpinner, AdminTextarea, AdminToggle, ConfirmDialog, StatusBadge } from "../../../../components/admin/AdminUI";
+import { ImageUpload } from "../../../../components/admin/ImageUpload";
 
 type Post = {
   id: number;
@@ -27,518 +16,245 @@ type Post = {
   cover: string;
   metaDescription: string;
   readingTime: string;
-  body: any; // BodyBlock[]
+  body: BodyBlock[];
   published: boolean;
+  updatedAt: string;
+};
+
+const emptyPost: Omit<Post, "id" | "slug" | "updatedAt"> = {
+  title: "",
+  excerpt: "",
+  date: new Date().toISOString().slice(0, 10),
+  cover: "/photos/products/server.jpg",
+  metaDescription: "",
+  readingTime: "5 min",
+  body: [{ p: "" }],
+  published: true,
 };
 
 export default function AdminPosts() {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  
-  // Form/Editor state
-  const [editingPost, setEditingPost] = useState<Partial<Post> | null>(null);
+  const [editing, setEditing] = useState<Partial<Post> | null>(null);
   const [isNew, setIsNew] = useState(false);
-  const [formError, setFormError] = useState<string | null>(null);
-  const [saving, setSaving] = useState(false);
-  const [uploadingCover, setUploadingCover] = useState(false);
-
-  // Blocks for body
   const [blocks, setBlocks] = useState<BodyBlock[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+  const [deleteTarget, setDeleteTarget] = useState<Post | null>(null);
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
-
-  const fetchPosts = async () => {
+  const load = useCallback(async () => {
     setLoading(true);
+    setError("");
     try {
-      const res = await fetch("/api/admin/posts");
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
+      const response = await fetch("/api/admin/posts", { cache: "no-store" });
+      const data = await response.json();
+      if (!response.ok || !data.ok) throw new Error(data.error || "No pudimos cargar los artículos.");
       setPosts(data.posts);
-    } catch (err) {
-      setError((err as Error).message);
+    } catch (loadError) {
+      setError((loadError as Error).message);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const handleEdit = (post: Post) => {
-    setEditingPost(post);
-    setIsNew(false);
-    // Parse body blocks
-    setBlocks(Array.isArray(post.body) ? post.body : []);
-    setFormError(null);
-  };
+  useEffect(() => { const timer = window.setTimeout(() => void load(), 0); return () => window.clearTimeout(timer); }, [load]);
 
-  const handleCreateNew = () => {
-    setEditingPost({
-      title: "",
-      excerpt: "",
-      date: new Date().toISOString().split("T")[0],
-      cover: "/photos/products/server.jpg",
-      metaDescription: "",
-      readingTime: "5 min",
-      published: true,
-    });
+  function createPost() {
+    setEditing(emptyPost);
+    setBlocks(emptyPost.body);
     setIsNew(true);
-    setBlocks([{ p: "Empezá a escribir tu artículo acá..." }]);
-    setFormError(null);
-  };
+    setError("");
+  }
 
-  const handleCancel = () => {
-    setEditingPost(null);
+  function editPost(post: Post) {
+    setEditing(post);
+    setBlocks(Array.isArray(post.body) ? post.body : []);
+    setIsNew(false);
+    setError("");
+  }
+
+  function cancel() {
+    setEditing(null);
     setBlocks([]);
-    setFormError(null);
-  };
+    setError("");
+  }
 
-  const handleSave = async () => {
-    if (!editingPost) return;
-    setFormError(null);
+  function update<K extends keyof Post>(key: K, value: Post[K]) {
+    setEditing((current) => current ? { ...current, [key]: value } : current);
+  }
+
+  function updateBlock(index: number, value: string) {
+    setBlocks((current) => current.map((block, blockIndex) =>
+      blockIndex !== index ? block : "p" in block ? { p: value } : { h: value }
+    ));
+  }
+
+  function moveBlock(index: number, offset: -1 | 1) {
+    setBlocks((current) => {
+      const target = index + offset;
+      if (target < 0 || target >= current.length) return current;
+      const next = [...current];
+      [next[index], next[target]] = [next[target], next[index]];
+      return next;
+    });
+  }
+
+  async function save() {
+    if (!editing) return;
     setSaving(true);
-
-    const payload = {
-      title: editingPost.title,
-      excerpt: editingPost.excerpt,
-      date: editingPost.date,
-      cover: editingPost.cover,
-      metaDescription: editingPost.metaDescription,
-      readingTime: editingPost.readingTime,
-      published: editingPost.published,
-      bodyContent: blocks,
-    };
-
+    setError("");
     try {
-      const url = isNew ? "/api/admin/posts" : `/api/admin/posts/${editingPost.id}`;
-      const method = isNew ? "POST" : "PUT";
-
-      const res = await fetch(url, {
-        method,
+      const response = await fetch(isNew ? "/api/admin/posts" : `/api/admin/posts/${editing.id}`, {
+        method: isNew ? "POST" : "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          title: editing.title,
+          excerpt: editing.excerpt,
+          date: editing.date,
+          cover: editing.cover,
+          metaDescription: editing.metaDescription,
+          readingTime: editing.readingTime,
+          published: editing.published,
+          bodyContent: blocks,
+        }),
       });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
-
-      setEditingPost(null);
-      fetchPosts();
-    } catch (err) {
-      setFormError((err as Error).message);
+      const data = await response.json();
+      if (!response.ok || !data.ok) throw new Error(data.issues?.[0]?.message || data.error || "No pudimos guardar.");
+      cancel();
+      await load();
+    } catch (saveError) {
+      setError((saveError as Error).message);
     } finally {
       setSaving(false);
     }
-  };
+  }
 
-  const handleDelete = async (id: number) => {
-    if (!confirm("¿Estás seguro de que querés eliminar este artículo?")) return;
-    try {
-      const res = await fetch(`/api/admin/posts/${id}`, { method: "DELETE" });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
-      fetchPosts();
-    } catch (err) {
-      alert(`Error al eliminar: ${(err as Error).message}`);
+  async function remove() {
+    if (!deleteTarget) return;
+    const response = await fetch(`/api/admin/posts/${deleteTarget.id}`, { method: "DELETE" });
+    const data = await response.json();
+    if (!response.ok || !data.ok) {
+      setError(data.error || "No pudimos eliminar el artículo.");
+      return;
     }
-  };
+    setDeleteTarget(null);
+    if (editing?.id === deleteTarget.id) cancel();
+    await load();
+  }
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setUploadingCover(true);
-    setFormError(null);
-
-    try {
-      const res = await fetch(`/api/admin/upload?filename=${encodeURIComponent(file.name)}`, {
-        method: "POST",
-        body: file,
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
-
-      setEditingPost(curr => curr ? { ...curr, cover: data.url } : null);
-    } catch (err) {
-      setFormError(`Error al subir la imagen: ${(err as Error).message}`);
-    } finally {
-      setUploadingCover(false);
-    }
-  };
-
-  // Block management
-  const addBlock = (type: "p" | "h") => {
-    if (type === "p") {
-      setBlocks(curr => [...curr, { p: "" }]);
-    } else {
-      setBlocks(curr => [...curr, { h: "" }]);
-    }
-  };
-
-  const updateBlock = (index: number, val: string) => {
-    setBlocks(curr => curr.map((b, idx) => {
-      if (idx !== index) return b;
-      return "p" in b ? { p: val } : { h: val };
-    }));
-  };
-
-  const removeBlock = (index: number) => {
-    setBlocks(curr => curr.filter((_, idx) => idx !== index));
-  };
-
-  const moveBlock = (index: number, direction: "up" | "down") => {
-    if (direction === "up" && index === 0) return;
-    if (direction === "down" && index === blocks.length - 1) return;
-
-    const newBlocks = [...blocks];
-    const targetIdx = direction === "up" ? index - 1 : index + 1;
-    const temp = newBlocks[index];
-    newBlocks[index] = newBlocks[targetIdx];
-    newBlocks[targetIdx] = temp;
-    setBlocks(newBlocks);
-  };
-
-  if (loading && posts.length === 0) {
+  if (editing) {
     return (
-      <div className="flex flex-col items-center justify-center py-24 gap-4">
-        <Loader size={36} className="animate-spin text-accent" />
-        <span className="text-slate-400">Cargando artículos...</span>
+      <div className="mx-auto max-w-[1180px]">
+        <div className="flex flex-col gap-5 border-b border-slate-200 pb-6 md:flex-row md:items-end md:justify-between">
+          <div>
+            <button onClick={cancel} className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-brand"><ArrowLeft className="size-4" /> Artículos</button>
+            <h1 className="mt-3 font-display text-[clamp(28px,4vw,38px)] font-bold tracking-[-0.04em] text-ink">{isNew ? "Nuevo artículo" : "Editar artículo"}</h1>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {!isNew && editing.slug && editing.published ? (
+              <AdminButton asChild variant="secondary"><Link href={`/recursos/${editing.slug}`} target="_blank"><Eye />Vista previa</Link></AdminButton>
+            ) : null}
+            <AdminButton variant="secondary" onClick={cancel}><X />Cancelar</AdminButton>
+            <AdminButton onClick={() => void save()} disabled={saving}><Save />{saving ? "Guardando…" : "Guardar cambios"}</AdminButton>
+          </div>
+        </div>
+
+        {error ? <div className="mt-5"><AdminAlert>{error}</AdminAlert></div> : null}
+
+        <div className="mt-6 grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_340px]">
+          <AdminPanel className="p-5 sm:p-6">
+            <div className="flex flex-col gap-5">
+              <AdminField label="Título" htmlFor="post-title" hint={`${editing.title?.length || 0} / 120`}>
+                <AdminInput id="post-title" value={editing.title || ""} onChange={(event) => update("title", event.target.value)} maxLength={120} />
+              </AdminField>
+              <AdminField label="Resumen" htmlFor="post-excerpt" hint={`${editing.excerpt?.length || 0} / 320`}>
+                <AdminTextarea id="post-excerpt" value={editing.excerpt || ""} onChange={(event) => update("excerpt", event.target.value)} maxLength={320} rows={3} />
+              </AdminField>
+
+              <div className="border-t border-slate-200 pt-5">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div><h2 className="text-[14px] font-bold text-ink">Contenido</h2><p className="mt-1 text-[12px] text-slate-500">Ordená párrafos y subtítulos.</p></div>
+                  <div className="flex gap-2">
+                    <AdminButton variant="secondary" size="sm" onClick={() => setBlocks((current) => [...current, { p: "" }])}><Plus />Párrafo</AdminButton>
+                    <AdminButton variant="secondary" size="sm" onClick={() => setBlocks((current) => [...current, { h: "" }])}><Plus />Subtítulo</AdminButton>
+                  </div>
+                </div>
+                <div className="mt-4 flex flex-col gap-2">
+                  {blocks.map((block, index) => {
+                    const paragraph = "p" in block;
+                    return (
+                      <div key={index} className="grid grid-cols-[32px_minmax(0,1fr)_auto] items-start gap-2 rounded-[10px] border border-slate-200 bg-slate-50 p-2.5 focus-within:border-brand">
+                        <span className="grid size-8 place-items-center text-slate-400"><GripVertical className="size-4" /></span>
+                        {paragraph ? (
+                          <AdminTextarea aria-label={`Párrafo ${index + 1}`} value={block.p} onChange={(event) => updateBlock(index, event.target.value)} className="min-h-20 border-0 bg-transparent p-2 shadow-none focus:ring-0" placeholder="Escribí el párrafo…" />
+                        ) : (
+                          <AdminInput aria-label={`Subtítulo ${index + 1}`} value={block.h} onChange={(event) => updateBlock(index, event.target.value)} className="border-0 bg-transparent shadow-none focus:ring-0" placeholder="Escribí el subtítulo…" />
+                        )}
+                        <div className="flex flex-col">
+                          <button className="grid size-7 place-items-center rounded text-slate-500 hover:bg-white" onClick={() => moveBlock(index, -1)} disabled={index === 0} aria-label="Mover arriba"><ArrowUp className="size-3.5" /></button>
+                          <button className="grid size-7 place-items-center rounded text-slate-500 hover:bg-white" onClick={() => moveBlock(index, 1)} disabled={index === blocks.length - 1} aria-label="Mover abajo"><ArrowDown className="size-3.5" /></button>
+                          <button className="grid size-7 place-items-center rounded text-red-600 hover:bg-red-50" onClick={() => setBlocks((current) => current.filter((_, itemIndex) => itemIndex !== index))} aria-label="Eliminar bloque"><Trash2 className="size-3.5" /></button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </AdminPanel>
+
+          <div className="flex flex-col gap-5">
+            <AdminPanel className="p-5">
+              <h2 className="font-display text-[16px] font-bold text-ink">Publicación</h2>
+              <div className="mt-5 flex flex-col gap-4">
+                <AdminToggle id="post-published" label="Visible en el sitio" checked={Boolean(editing.published)} onCheckedChange={(value) => update("published", value)} />
+                <AdminField label="Fecha" htmlFor="post-date"><AdminInput id="post-date" type="date" value={editing.date || ""} onChange={(event) => update("date", event.target.value)} /></AdminField>
+                <AdminField label="Tiempo de lectura" htmlFor="post-reading"><AdminInput id="post-reading" value={editing.readingTime || ""} onChange={(event) => update("readingTime", event.target.value)} maxLength={30} /></AdminField>
+              </div>
+            </AdminPanel>
+            <AdminPanel className="p-5">
+              <h2 className="font-display text-[16px] font-bold text-ink">SEO e imagen</h2>
+              <div className="mt-5 flex flex-col gap-4">
+                <AdminField label="Meta descripción" htmlFor="post-meta" hint={`${editing.metaDescription?.length || 0} / 180`}><AdminTextarea id="post-meta" value={editing.metaDescription || ""} onChange={(event) => update("metaDescription", event.target.value)} maxLength={180} rows={4} /></AdminField>
+                <AdminField label="Imagen de portada" htmlFor="post-cover"><ImageUpload value={editing.cover} onChange={(url) => update("cover", url)} label="Subir portada" /></AdminField>
+              </div>
+            </AdminPanel>
+            {!isNew ? <AdminButton variant="danger" onClick={() => setDeleteTarget(editing as Post)}><Trash2 />Eliminar artículo</AdminButton> : null}
+          </div>
+        </div>
+        <ConfirmDialog open={Boolean(deleteTarget)} onOpenChange={(open) => !open && setDeleteTarget(null)} title="Eliminar artículo" description="Esta acción elimina el artículo de forma permanente y lo retira del sitio público." onConfirm={() => void remove()} />
       </div>
     );
   }
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div className="flex items-center justify-between border-b border-white/5 pb-5">
-        <div>
-          <h1 className="font-display text-[26px] font-bold text-white tracking-tight">Artículos (Recursos)</h1>
-          <p className="mt-1.5 text-[14px] text-slate-400">Administrá las guías técnicas expuestas en la sección de blog/recursos.</p>
-        </div>
-        {!editingPost && (
-          <button
-            onClick={handleCreateNew}
-            className="flex items-center gap-2 rounded-xl bg-accent px-4 py-2.5 text-[13.5px] font-semibold text-[#050F0A] hover:bg-sky transition-colors active:scale-95"
-          >
-            <Plus size={16} /> Crear Artículo
-          </button>
-        )}
+    <div className="mx-auto max-w-[1180px]">
+      <div className="flex flex-col gap-5 border-b border-slate-200 pb-7 sm:flex-row sm:items-end sm:justify-between">
+        <div><h1 className="font-display text-[clamp(30px,4vw,42px)] font-bold tracking-[-0.04em] text-ink">Artículos</h1><p className="mt-2 text-[14.5px] text-slate-600">Guías y recursos publicados en el sitio.</p></div>
+        <AdminButton onClick={createPost}><Plus />Nuevo artículo</AdminButton>
       </div>
-
-      {error && (
-        <div className="flex items-center gap-2.5 rounded-xl border border-red-500/20 bg-red-500/5 p-4 text-[14px] text-red-400">
-          <AlertCircle size={16} className="shrink-0" />
-          <span>Error: {error}</span>
-        </div>
-      )}
-
-      {/* Editor view */}
-      {editingPost ? (
-        <div className="rounded-2xl border border-white/5 bg-[#0C2014] p-8 space-y-6">
-          <div className="flex items-center justify-between border-b border-white/5 pb-4">
-            <h2 className="text-[17px] font-bold text-white">
-              {isNew ? "Crear nuevo artículo" : "Editar artículo"}
-            </h2>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={handleCancel}
-                className="flex items-center gap-1.5 rounded-xl border border-white/10 hover:bg-white/5 px-4 py-2 text-[13px] font-semibold text-slate-300 transition-colors"
-              >
-                <X size={15} /> Cancelar
-              </button>
-              <button
-                onClick={handleSave}
-                disabled={saving}
-                className="flex items-center gap-1.5 rounded-xl bg-accent text-[#050F0A] hover:bg-sky px-4 py-2 text-[13px] font-semibold transition-colors disabled:opacity-55"
-              >
-                {saving ? <Loader size={15} className="animate-spin text-[#050F0A]" /> : <Check size={15} />} Guardar Cambios
-              </button>
-            </div>
-          </div>
-
-          {formError && (
-            <div className="flex items-center gap-2.5 rounded-xl border border-red-500/20 bg-red-500/5 p-4 text-[14px] text-red-400">
-              <AlertCircle size={16} />
-              <span>{formError}</span>
-            </div>
-          )}
-
-          {/* Form fields */}
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <label className="text-[13px] font-medium text-slate-300">Título del Artículo</label>
-                <input
-                  type="text"
-                  value={editingPost.title || ""}
-                  onChange={e => setEditingPost(curr => ({ ...curr, title: e.target.value }))}
-                  placeholder="ej: Cómo configurar tu servidor..."
-                  className="w-full rounded-xl border border-white/5 bg-[#08180E] px-4 py-2.5 text-[14px] text-white outline-none focus:border-accent/40 focus:ring-1 focus:ring-accent/40"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[13px] font-medium text-slate-300">Fecha de publicación</label>
-                <input
-                  type="date"
-                  value={editingPost.date || ""}
-                  onChange={e => setEditingPost(curr => ({ ...curr, date: e.target.value }))}
-                  className="w-full rounded-xl border border-white/5 bg-[#08180E] px-4 py-2.5 text-[14px] text-white outline-none focus:border-accent/40 focus:ring-1 focus:ring-accent/40"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[13px] font-medium text-slate-300">Tiempo de lectura</label>
-                <input
-                  type="text"
-                  value={editingPost.readingTime || ""}
-                  onChange={e => setEditingPost(curr => ({ ...curr, readingTime: e.target.value }))}
-                  placeholder="ej: 5 min"
-                  className="w-full rounded-xl border border-white/5 bg-[#08180E] px-4 py-2.5 text-[14px] text-white outline-none focus:border-accent/40"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[13px] font-medium text-slate-300">Meta Descripción (SEO)</label>
-                <textarea
-                  value={editingPost.metaDescription || ""}
-                  onChange={e => setEditingPost(curr => ({ ...curr, metaDescription: e.target.value }))}
-                  rows={2}
-                  placeholder="Escribí una meta descripción de 150 caracteres para Google..."
-                  className="w-full rounded-xl border border-white/5 bg-[#08180E] px-4 py-2.5 text-[14.5px] text-white outline-none focus:border-accent/40 resize-none"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <label className="text-[13px] font-medium text-slate-300">Resumen corto (Excerpt)</label>
-                <textarea
-                  value={editingPost.excerpt || ""}
-                  onChange={e => setEditingPost(curr => ({ ...curr, excerpt: e.target.value }))}
-                  rows={2}
-                  placeholder="Se muestra en las tarjetas de la grilla del blog..."
-                  className="w-full rounded-xl border border-white/5 bg-[#08180E] px-4 py-2.5 text-[14.5px] text-white outline-none focus:border-accent/40 resize-none"
-                />
-              </div>
-
-              {/* Cover upload */}
-              <div className="space-y-2">
-                <label className="text-[13px] font-medium text-slate-300">Imagen de portada</label>
-                <div className="flex gap-4 items-center">
-                  <div className="relative h-20 w-32 rounded-xl bg-slate-800 overflow-hidden border border-white/10 shrink-0">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={editingPost.cover || ""} alt="Portada preview" className="h-full w-full object-cover" />
-                  </div>
-                  <div className="relative flex-1">
-                    <input
-                      type="file"
-                      id="cover-upload"
-                      accept="image/*"
-                      onChange={handleFileUpload}
-                      className="hidden"
-                      disabled={uploadingCover}
-                    />
-                    <label
-                      htmlFor="cover-upload"
-                      className="flex items-center justify-center gap-2 rounded-xl border border-dashed border-white/15 hover:border-accent/40 hover:bg-accent/5 p-4 text-[13.5px] text-slate-300 cursor-pointer transition-all"
-                    >
-                      {uploadingCover ? (
-                        <>
-                          <Loader size={16} className="animate-spin text-accent" />
-                          <span>Subiendo imagen...</span>
-                        </>
-                      ) : (
-                        <>
-                          <Upload size={16} className="text-slate-400" />
-                          <span>Subir nueva imagen</span>
-                        </>
-                      )}
-                    </label>
-                  </div>
+      {error ? <div className="mt-5"><AdminAlert>{error}</AdminAlert></div> : null}
+      <AdminPanel className="mt-6 overflow-hidden">
+        {loading ? <div className="grid min-h-48 place-items-center"><AdminSpinner label="Cargando artículos…" /></div> : posts.length === 0 ? (
+          <div className="grid min-h-56 place-items-center p-8 text-center"><div><FileText className="mx-auto size-8 text-slate-300" /><p className="mt-4 text-[14px] font-semibold text-ink">No hay artículos todavía.</p><AdminButton className="mt-5" onClick={createPost}><Plus />Crear el primero</AdminButton></div></div>
+        ) : (
+          <div>
+            <div className="hidden grid-cols-[minmax(0,1fr)_150px_120px_90px] gap-4 border-b border-slate-200 bg-slate-50 px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500 md:grid"><span>Contenido</span><span>Fecha</span><span>Estado</span><span className="text-right">Acciones</span></div>
+            {posts.map((post) => (
+              <div key={post.id} className="grid gap-3 border-b border-slate-100 px-5 py-4 last:border-0 md:grid-cols-[minmax(0,1fr)_150px_120px_90px] md:items-center md:gap-4">
+                <div className="min-w-0"><p className="truncate text-[13.5px] font-semibold text-ink">{post.title}</p><p className="mt-1 truncate text-[11.5px] text-slate-500">/recursos/{post.slug}</p></div>
+                <time className="text-[12px] text-slate-500">{new Date(post.date).toLocaleDateString("es-AR")}</time>
+                <div><StatusBadge active={post.published} /></div>
+                <div className="flex justify-end gap-1">
+                  <AdminButton variant="ghost" size="icon" onClick={() => editPost(post)} aria-label="Editar"><Pencil /></AdminButton>
+                  <AdminButton variant="ghost" size="icon" onClick={() => setDeleteTarget(post)} aria-label="Eliminar"><Trash2 /></AdminButton>
                 </div>
               </div>
-
-              <div className="flex items-center gap-3 pt-4">
-                <input
-                  type="checkbox"
-                  id="published-chk"
-                  checked={editingPost.published || false}
-                  onChange={e => setEditingPost(curr => curr ? { ...curr, published: e.target.checked } : null)}
-                  className="h-4 w-4 accent-accent rounded"
-                />
-                <label htmlFor="published-chk" className="text-[14.5px] font-medium text-slate-200 cursor-pointer select-none">
-                  Publicado (visible en el sitio web)
-                </label>
-              </div>
-            </div>
+            ))}
           </div>
-
-          {/* Block builder for body content */}
-          <div className="space-y-4 pt-6 border-t border-white/5">
-            <div className="flex items-center justify-between">
-              <h3 className="text-[15.5px] font-semibold text-white">Contenido del artículo</h3>
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => addBlock("p")}
-                  className="flex items-center gap-1.5 rounded-lg border border-sky/20 bg-sky/5 hover:bg-sky/15 text-[12.5px] font-semibold text-sky px-3 py-1.5 transition-colors"
-                >
-                  <Plus size={14} /> Párrafo
-                </button>
-                <button
-                  type="button"
-                  onClick={() => addBlock("h")}
-                  className="flex items-center gap-1.5 rounded-lg border border-accent/20 bg-accent/5 hover:bg-accent/15 text-[12.5px] font-semibold text-accent px-3 py-1.5 transition-colors"
-                >
-                  <Plus size={14} /> Subtítulo
-                </button>
-              </div>
-            </div>
-
-            {/* Block list */}
-            <div className="space-y-3.5 max-h-[500px] overflow-y-auto pr-2">
-              {blocks.length === 0 ? (
-                <div className="text-center py-8 border border-dashed border-white/5 rounded-xl text-slate-500 text-[13.5px]">
-                  El artículo no tiene bloques de contenido. Añadí un párrafo o subtítulo arriba.
-                </div>
-              ) : (
-                blocks.map((block, idx) => {
-                  const isParagraph = "p" in block;
-                  const value = isParagraph ? block.p : block.h;
-                  return (
-                    <div key={idx} className="flex gap-3.5 items-start p-3 bg-[#08180E] rounded-xl border border-white/5 hover:border-white/10 group">
-                      <div className="flex flex-col text-[11px] font-bold px-2 py-1 rounded bg-slate-800 tracking-wide select-none">
-                        {isParagraph ? "PÁRRAFO" : "SUBTÍTULO"}
-                      </div>
-                      
-                      <div className="flex-1">
-                        {isParagraph ? (
-                          <textarea
-                            value={value}
-                            onChange={e => updateBlock(idx, e.target.value)}
-                            rows={3}
-                            placeholder="Escribí el texto de este párrafo..."
-                            className="w-full bg-transparent text-[14.5px] leading-relaxed text-slate-200 outline-none resize-none placeholder:text-slate-700"
-                          />
-                        ) : (
-                          <input
-                            type="text"
-                            value={value}
-                            onChange={e => updateBlock(idx, e.target.value)}
-                            placeholder="Escribí el título de esta sección..."
-                            className="w-full bg-transparent text-[15.5px] font-bold text-white outline-none placeholder:text-slate-700"
-                          />
-                        )}
-                      </div>
-
-                      {/* Reorder and Delete controls */}
-                      <div className="flex items-center gap-1 opacity-20 group-hover:opacity-100 transition-opacity">
-                        <button
-                          type="button"
-                          onClick={() => moveBlock(idx, "up")}
-                          disabled={idx === 0}
-                          className="p-1 hover:bg-white/5 text-slate-400 rounded disabled:opacity-20"
-                        >
-                          <MoveUp size={15} />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => moveBlock(idx, "down")}
-                          disabled={idx === blocks.length - 1}
-                          className="p-1 hover:bg-white/5 text-slate-400 rounded disabled:opacity-20"
-                        >
-                          <MoveDown size={15} />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => removeBlock(idx)}
-                          className="p-1 hover:bg-red-500/10 text-red-400 rounded"
-                        >
-                          <Trash2 size={15} />
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })
-              )}
-            </div>
-          </div>
-        </div>
-      ) : (
-        /* List view */
-        <div className="rounded-2xl border border-white/5 bg-[#0C2014] overflow-hidden shadow-soft">
-          {posts.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-20 text-center">
-              <FileText size={48} className="text-slate-700 mb-4" />
-              <h3 className="text-[16px] font-semibold text-slate-300">No hay artículos publicados</h3>
-              <p className="mt-1 text-[13.5px] text-slate-500 max-w-[32ch]">
-                Creá tu primer artículo técnico para que aparezca en la sección de blog/recursos.
-              </p>
-              <button
-                onClick={handleCreateNew}
-                className="mt-5 flex items-center gap-2 rounded-xl bg-accent px-4 py-2.5 text-[13.5px] font-semibold text-[#050F0A] hover:bg-sky transition-colors"
-              >
-                <Plus size={16} /> Crear primer artículo
-              </button>
-            </div>
-          ) : (
-            <div className="divide-y divide-white/5">
-              {posts.map((post) => (
-                <div key={post.id} className="flex items-center gap-5 p-6 hover:bg-white/[0.01] transition-colors">
-                  {/* cover preview */}
-                  <div className="relative h-16 w-24 rounded-lg bg-slate-800 overflow-hidden border border-white/10 shrink-0">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={post.cover} alt={post.title} className="h-full w-full object-cover" />
-                  </div>
-
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-3.5">
-                      <span className="text-[12px] text-slate-500">{post.date}</span>
-                      <span className="text-[12px] text-slate-500">• {post.readingTime}</span>
-                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wide ${
-                        post.published 
-                          ? "bg-emerald/10 text-emerald border border-emerald/20" 
-                          : "bg-amber-500/10 text-amber-400 border border-amber-500/20"
-                      }`}>
-                        {post.published ? "PUBLICADO" : "BORRADOR"}
-                      </span>
-                    </div>
-                    <h3 className="mt-1.5 text-[16px] font-semibold text-white truncate">{post.title}</h3>
-                    <p className="mt-1 text-[13.5px] text-slate-400 truncate">{post.excerpt}</p>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <a
-                      href={`/recursos/${post.slug}`}
-                      target="_blank"
-                      className="p-2 hover:bg-white/5 text-slate-400 hover:text-slate-200 rounded-xl transition-colors"
-                      title="Ver en la web"
-                    >
-                      <Eye size={17} />
-                    </a>
-                    <button
-                      onClick={() => handleEdit(post)}
-                      className="p-2 hover:bg-white/5 text-slate-400 hover:text-slate-200 rounded-xl transition-colors"
-                      title="Editar"
-                    >
-                      <Edit size={17} />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(post.id)}
-                      className="p-2 hover:bg-red-500/10 text-red-400 hover:text-red-300 rounded-xl transition-colors"
-                      title="Eliminar"
-                    >
-                      <Trash2 size={17} />
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
+        )}
+      </AdminPanel>
+      <ConfirmDialog open={Boolean(deleteTarget)} onOpenChange={(open) => !open && setDeleteTarget(null)} title="Eliminar artículo" description="Esta acción elimina el artículo de forma permanente." onConfirm={() => void remove()} />
     </div>
   );
 }

@@ -4,8 +4,8 @@ import {
   streamText,
   type UIMessage,
 } from "ai";
-import { ASSISTANT_INSTRUCTIONS } from "../../../lib/ai/knowledge";
-import { checkRateLimit } from "../../../lib/rate-limit";
+import { ASSISTANT_INSTRUCTIONS } from "../../../lib/ai/knowledge.ts";
+import { checkRateLimit } from "../../../lib/rate-limit.ts";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;

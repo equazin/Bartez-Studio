@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, CheckCircle2, MessageCircle } from "lucide-react";
+import { ArrowRight, CheckCircle2, MessageCircle } from "lucide-react";
 import { verticals, company, contact } from "../../../constants";
 import { getDynamicPartners } from "../../../lib/db-content";
 import { Navbar } from "../../../components/Navbar";

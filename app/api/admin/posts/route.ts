@@ -1,62 +1,40 @@
-import { NextResponse } from "next/server";
-import { prisma } from "../../../../lib/db";
+import { randomUUID } from "node:crypto";
+import { adminOk, adminServerError, authorizeAdminRequest, invalidAdminInput, readAdminJson } from "../../../../lib/admin-api.ts";
+import { generateSlug, invalidatePublicContent } from "../../../../lib/admin-content.ts";
+import { postCreateSchema } from "../../../../lib/admin-schema.ts";
+import { getDb } from "../../../../lib/db.ts";
 
 export const runtime = "nodejs";
 
-// Helper para sanitizar y generar slugs
-function generateSlug(title: string) {
-  return title
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "") // Eliminar tildes
-    .replace(/[^a-z0-9\s-]/g, "") // Eliminar caracteres especiales
-    .trim()
-    .replace(/\s+/g, "-") // Reemplazar espacios por guiones
-    .replace(/-+/g, "-"); // Colapsar guiones repetidos
-}
-
-export async function GET() {
+export async function GET(request: Request) {
+  const auth = await authorizeAdminRequest(request);
+  if (auth.response) return auth.response;
   try {
-    const posts = await prisma.post.findMany({
-      orderBy: { createdAt: "desc" },
-    });
-    return NextResponse.json({ ok: true, posts });
-  } catch (err) {
-    return NextResponse.json({ ok: false, error: (err as Error).message }, { status: 500 });
+    const posts = await getDb().post.findMany({ orderBy: { createdAt: "desc" } });
+    return adminOk({ posts });
+  } catch (error) {
+    return adminServerError("listar artículos", error);
   }
 }
 
-export async function POST(req: Request) {
+export async function POST(request: Request) {
+  const auth = await authorizeAdminRequest(request, { mutation: true });
+  if (auth.response) return auth.response;
+  const body = await readAdminJson(request);
+  if (!body.ok) return body.response;
+  const parsed = postCreateSchema.safeParse(body.data);
+  if (!parsed.success) return invalidAdminInput(parsed.error.issues);
+
   try {
-    const body = await req.json();
-    const { title, excerpt, date, cover, metaDescription, readingTime, bodyContent, published } = body;
-
-    if (!title || !excerpt || !date || !cover || !metaDescription || !readingTime || !bodyContent) {
-      return NextResponse.json({ ok: false, error: "Faltan campos requeridos" }, { status: 400 });
-    }
-
-    const slug = generateSlug(title);
-    
-    // Verificar unicidad de slug
-    const existing = await prisma.post.findUnique({ where: { slug } });
-    const finalSlug = existing ? `${slug}-${Date.now().toString().slice(-4)}` : slug;
-
-    const post = await prisma.post.create({
-      data: {
-        slug: finalSlug,
-        title,
-        excerpt,
-        date,
-        cover,
-        metaDescription,
-        readingTime,
-        body: bodyContent, // Array de párrafos/encabezados [{p: "..."}, {h: "..."}]
-        published: published !== undefined ? published : true,
-      },
-    });
-
-    return NextResponse.json({ ok: true, post });
-  } catch (err) {
-    return NextResponse.json({ ok: false, error: (err as Error).message }, { status: 500 });
+    const db = getDb();
+    const baseSlug = generateSlug(parsed.data.title);
+    const existing = await db.post.findUnique({ where: { slug: baseSlug }, select: { id: true } });
+    const slug = existing ? `${baseSlug}-${randomUUID().slice(0, 6)}` : baseSlug;
+    const { bodyContent, ...data } = parsed.data;
+    const post = await db.post.create({ data: { ...data, slug, body: bodyContent } });
+    invalidatePublicContent("posts", slug);
+    return adminOk({ post });
+  } catch (error) {
+    return adminServerError("crear artículo", error);
   }
 }

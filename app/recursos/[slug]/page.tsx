@@ -9,6 +9,8 @@ import { Navbar } from "../../../components/Navbar";
 import { Footer } from "../../../components/Footer";
 import { Assistant } from "../../../components/Assistant";
 
+export const revalidate = 3600;
+
 export function generateStaticParams() {
   return articles.map((a) => ({ slug: a.slug }));
 }

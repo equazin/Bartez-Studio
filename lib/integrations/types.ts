@@ -1,4 +1,4 @@
-import type { Lead } from "../schema";
+import type { Lead } from "../schema.ts";
 
 export type IntegrationResult = {
   name: string;

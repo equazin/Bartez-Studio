@@ -1,46 +1,38 @@
-import { NextResponse } from "next/server";
-import { prisma } from "../../../../../lib/db";
+import { adminOk, adminServerError, authorizeAdminRequest, invalidAdminInput, readAdminJson } from "../../../../../lib/admin-api.ts";
+import { invalidatePublicContent } from "../../../../../lib/admin-content.ts";
+import { adminIdSchema, clientUpdateSchema } from "../../../../../lib/admin-schema.ts";
+import { getDb } from "../../../../../lib/db.ts";
 
 export const runtime = "nodejs";
 
-export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const auth = await authorizeAdminRequest(request, { mutation: true });
+  if (auth.response) return auth.response;
+  const id = adminIdSchema.safeParse((await params).id);
+  if (!id.success) return invalidAdminInput(id.error.issues);
+  const body = await readAdminJson(request);
+  if (!body.ok) return body.response;
+  const parsed = clientUpdateSchema.safeParse(body.data);
+  if (!parsed.success) return invalidAdminInput(parsed.error.issues);
   try {
-    const { id } = await params;
-    const clientId = parseInt(id, 10);
-    if (isNaN(clientId)) {
-      return NextResponse.json({ ok: false, error: "ID inválido" }, { status: 400 });
-    }
-
-    const body = await req.json();
-    const { name, logoUrl, displayOrder, active } = body;
-
-    const client = await prisma.clientLogo.update({
-      where: { id: clientId },
-      data: {
-        name,
-        logoUrl,
-        displayOrder: displayOrder !== undefined ? parseInt(displayOrder, 10) : undefined,
-        active: active !== undefined ? active : undefined,
-      },
-    });
-
-    return NextResponse.json({ ok: true, client });
-  } catch (err) {
-    return NextResponse.json({ ok: false, error: (err as Error).message }, { status: 500 });
+    const client = await getDb().clientLogo.update({ where: { id: id.data }, data: parsed.data });
+    invalidatePublicContent("clients");
+    return adminOk({ client });
+  } catch (error) {
+    return adminServerError("actualizar logo", error);
   }
 }
 
-export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const auth = await authorizeAdminRequest(request, { mutation: true });
+  if (auth.response) return auth.response;
+  const id = adminIdSchema.safeParse((await params).id);
+  if (!id.success) return invalidAdminInput(id.error.issues);
   try {
-    const { id } = await params;
-    const clientId = parseInt(id, 10);
-    if (isNaN(clientId)) {
-      return NextResponse.json({ ok: false, error: "ID inválido" }, { status: 400 });
-    }
-
-    await prisma.clientLogo.delete({ where: { id: clientId } });
-    return NextResponse.json({ ok: true });
-  } catch (err) {
-    return NextResponse.json({ ok: false, error: (err as Error).message }, { status: 500 });
+    await getDb().clientLogo.delete({ where: { id: id.data } });
+    invalidatePublicContent("clients");
+    return adminOk();
+  } catch (error) {
+    return adminServerError("eliminar logo", error);
   }
 }

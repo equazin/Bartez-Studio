@@ -17,9 +17,10 @@ model Post {
   cover           String
   metaDescription String
   readingTime     String
-  body            Json     // Array of objects (p: text or h: title)
+  body            Json
   published       Boolean  @default(true)
   createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model ClientLogo {
@@ -28,6 +29,8 @@ model ClientLogo {
   logoUrl      String
   displayOrder Int      @default(0)
   active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model SuccessCase {
@@ -37,7 +40,9 @@ model SuccessCase {
   logoUrl     String?
   coverImage  String
   description String
-  metrics     Json     // Array of strings (e.g., ["+15% rendimiento", "100% uptime"])
-  content     String   // MD or plain text body
+  metrics     Json
+  content     String
   active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

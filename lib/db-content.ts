@@ -1,11 +1,8 @@
-import { prisma } from "./db";
-import { partners as staticPartners, articles as staticArticles } from "../constants";
+import { bodyBlockSchema } from "./admin-schema.ts";
+import { getDb } from "./db.ts";
+import { partners as staticPartners, articles as staticArticles } from "../constants.ts";
 
-export type DynamicBrand = {
-  name: string;
-  logo: string;
-};
-
+export type DynamicBrand = { name: string; logo: string };
 export type DynamicArticle = {
   slug: string;
   title: string;
@@ -16,74 +13,6 @@ export type DynamicArticle = {
   readingTime: string;
   body: { p?: string; h?: string }[];
 };
-
-export async function getDynamicPartners(): Promise<DynamicBrand[]> {
-  try {
-    // Si no está configurada la base de datos, Prisma fallará al conectarse
-    const clients = await prisma.clientLogo.findMany({
-      where: { active: true },
-      orderBy: { displayOrder: "asc" },
-    });
-    
-    if (clients.length > 0) {
-      return clients.map(c => ({ name: c.name, logo: c.logoUrl }));
-    }
-  } catch (err) {
-    // Falla de base de datos silenciosa (fallback a estático)
-  }
-  return staticPartners.brands;
-}
-
-export async function getDynamicArticles(): Promise<DynamicArticle[]> {
-  try {
-    const posts = await prisma.post.findMany({
-      where: { published: true },
-      orderBy: { date: "desc" },
-    });
-
-    if (posts.length > 0) {
-      return posts.map(p => ({
-        slug: p.slug,
-        title: p.title,
-        excerpt: p.excerpt,
-        date: p.date,
-        cover: p.cover,
-        metaDescription: p.metaDescription,
-        readingTime: p.readingTime,
-        body: p.body as any,
-      }));
-    }
-  } catch (err) {
-    // Fallback a estático si falla la conexión
-  }
-  return staticArticles;
-}
-
-export async function getDynamicArticleBySlug(slug: string): Promise<DynamicArticle | null> {
-  try {
-    const post = await prisma.post.findFirst({
-      where: { slug, published: true },
-    });
-
-    if (post) {
-      return {
-        slug: post.slug,
-        title: post.title,
-        excerpt: post.excerpt,
-        date: post.date,
-        cover: post.cover,
-        metaDescription: post.metaDescription,
-        readingTime: post.readingTime,
-        body: post.body as any,
-      };
-    }
-  } catch (err) {
-    // Fallback a estático
-  }
-  
-  return (staticArticles.find(a => a.slug === slug) as DynamicArticle) || null;
-}
-
 export type DynamicSuccessCase = {
   id: number;
   title: string;
@@ -95,23 +24,122 @@ export type DynamicSuccessCase = {
   content: string;
 };
 
-export async function getDynamicSuccessCases(): Promise<DynamicSuccessCase[]> {
+function hasDatabase() {
+  return Boolean(process.env.POSTGRES_PRISMA_URL);
+}
+
+function articleBody(value: unknown) {
+  const parsed = bodyBlockSchema.array().safeParse(value);
+  return parsed.success ? parsed.data : [];
+}
+
+export async function getDynamicPartners(): Promise<DynamicBrand[]> {
+  if (!hasDatabase()) return staticPartners.brands;
   try {
-    const cases = await prisma.successCase.findMany({
+    const clients = await getDb().clientLogo.findMany({
+      where: { active: true },
+      orderBy: { displayOrder: "asc" },
+    });
+    const combined = [
+      ...clients.map((client) => ({ name: client.name, logo: client.logoUrl })),
+      ...staticPartners.brands,
+    ];
+    return combined.filter((brand, index) =>
+      combined.findIndex((candidate) => candidate.name.toLowerCase() === brand.name.toLowerCase()) === index
+    );
+  } catch (error) {
+    console.error("[content] No se pudieron cargar logos dinámicos.", error);
+    return staticPartners.brands;
+  }
+}
+
+export async function getDynamicArticles(): Promise<DynamicArticle[]> {
+  if (!hasDatabase()) return staticArticles;
+  try {
+    const posts = await getDb().post.findMany({
+      where: { published: true },
+      orderBy: { date: "desc" },
+    });
+    if (posts.length === 0) return staticArticles;
+    return posts.map((post) => ({
+      slug: post.slug,
+      title: post.title,
+      excerpt: post.excerpt,
+      date: post.date,
+      cover: post.cover,
+      metaDescription: post.metaDescription,
+      readingTime: post.readingTime,
+      body: articleBody(post.body),
+    }));
+  } catch (error) {
+    console.error("[content] No se pudieron cargar artículos dinámicos.", error);
+    return staticArticles;
+  }
+}
+
+export async function getDynamicArticleBySlug(slug: string): Promise<DynamicArticle | null> {
+  if (hasDatabase()) {
+    try {
+      const post = await getDb().post.findFirst({ where: { slug, published: true } });
+      if (post) {
+        return {
+          slug: post.slug,
+          title: post.title,
+          excerpt: post.excerpt,
+          date: post.date,
+          cover: post.cover,
+          metaDescription: post.metaDescription,
+          readingTime: post.readingTime,
+          body: articleBody(post.body),
+        };
+      }
+    } catch (error) {
+      console.error("[content] No se pudo cargar el artículo dinámico.", error);
+    }
+  }
+  return staticArticles.find((article) => article.slug === slug) || null;
+}
+
+export async function getDynamicSuccessCases(): Promise<DynamicSuccessCase[]> {
+  if (!hasDatabase()) return [];
+  try {
+    const cases = await getDb().successCase.findMany({
       where: { active: true },
       orderBy: { id: "desc" },
     });
-    return cases.map(c => ({
-      id: c.id,
-      title: c.title,
-      clientName: c.clientName,
-      logoUrl: c.logoUrl,
-      coverImage: c.coverImage,
-      description: c.description,
-      metrics: Array.isArray(c.metrics) ? (c.metrics as string[]) : [],
-      content: c.content,
+    return cases.map((item) => ({
+      id: item.id,
+      title: item.title,
+      clientName: item.clientName,
+      logoUrl: item.logoUrl,
+      coverImage: item.coverImage,
+      description: item.description,
+      metrics: Array.isArray(item.metrics) ? item.metrics.filter((metric): metric is string => typeof metric === "string") : [],
+      content: item.content,
     }));
-  } catch (err) {
-    return []; // Si falla, no mostramos nada (o mockup estático si hubiera, pero no había casos enconstants)
+  } catch (error) {
+    console.error("[content] No se pudieron cargar casos dinámicos.", error);
+    return [];
+  }
+}
+
+export async function getDynamicSuccessCaseById(id: number) {
+  if (!hasDatabase()) return null;
+  try {
+    const item = await getDb().successCase.findFirst({ where: { id, active: true } });
+    if (!item) return null;
+    return {
+      id: item.id,
+      title: item.title,
+      clientName: item.clientName,
+      logoUrl: item.logoUrl,
+      coverImage: item.coverImage,
+      description: item.description,
+      metrics: Array.isArray(item.metrics) ? item.metrics.filter((metric): metric is string => typeof metric === "string") : [],
+      content: item.content,
+    } satisfies DynamicSuccessCase;
+  } catch (error) {
+    console.error("[content] No se pudo cargar el caso.", error);
+    return null;
   }
 }

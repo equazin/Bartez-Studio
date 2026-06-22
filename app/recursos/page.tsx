@@ -7,6 +7,8 @@ import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
 import { Assistant } from "../../components/Assistant";
 
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: "Recursos para decisiones de tecnología | Bartez Tecnología",
   description:

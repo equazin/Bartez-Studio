@@ -5,6 +5,13 @@ const nextConfig = {
   experimental: { mcpServer: false },
   images: {
     formats: ["image/avif", "image/webp"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "*.public.blob.vercel-storage.com",
+        pathname: "/**",
+      },
+    ],
   },
   async redirects() {
     return [

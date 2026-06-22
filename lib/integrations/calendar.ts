@@ -1,5 +1,5 @@
-import type { Lead } from "../schema";
-import type { IntegrationResult, LeadSink } from "./types";
+import type { Lead } from "../schema.ts";
+import type { IntegrationResult, LeadSink } from "./types.ts";
 
 /**
  * Calendar adapter — el campo "Agendar reunión" del form.

@@ -1,50 +1,43 @@
-import { NextResponse } from "next/server";
-import { prisma } from "../../../../../lib/db";
+import type { Prisma } from "@prisma/client";
+import { adminOk, adminServerError, authorizeAdminRequest, invalidAdminInput, readAdminJson } from "../../../../../lib/admin-api.ts";
+import { invalidatePublicContent } from "../../../../../lib/admin-content.ts";
+import { adminIdSchema, postUpdateSchema } from "../../../../../lib/admin-schema.ts";
+import { getDb } from "../../../../../lib/db.ts";
 
 export const runtime = "nodejs";
 
-export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const auth = await authorizeAdminRequest(request, { mutation: true });
+  if (auth.response) return auth.response;
+  const id = adminIdSchema.safeParse((await params).id);
+  if (!id.success) return invalidAdminInput(id.error.issues);
+  const body = await readAdminJson(request);
+  if (!body.ok) return body.response;
+  const parsed = postUpdateSchema.safeParse(body.data);
+  if (!parsed.success) return invalidAdminInput(parsed.error.issues);
+
   try {
-    const { id } = await params;
-    const postId = parseInt(id, 10);
-    if (isNaN(postId)) {
-      return NextResponse.json({ ok: false, error: "ID inválido" }, { status: 400 });
-    }
-
-    const body = await req.json();
-    const { title, excerpt, date, cover, metaDescription, readingTime, bodyContent, published } = body;
-
-    const post = await prisma.post.update({
-      where: { id: postId },
-      data: {
-        title,
-        excerpt,
-        date,
-        cover,
-        metaDescription,
-        readingTime,
-        body: bodyContent,
-        published: published !== undefined ? published : true,
-      },
-    });
-
-    return NextResponse.json({ ok: true, post });
-  } catch (err) {
-    return NextResponse.json({ ok: false, error: (err as Error).message }, { status: 500 });
+    const { bodyContent, ...fields } = parsed.data;
+    const data: Prisma.PostUpdateInput = { ...fields };
+    if (bodyContent) data.body = bodyContent;
+    const post = await getDb().post.update({ where: { id: id.data }, data });
+    invalidatePublicContent("posts", post.slug);
+    return adminOk({ post });
+  } catch (error) {
+    return adminServerError("actualizar artículo", error);
   }
 }
 
-export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const auth = await authorizeAdminRequest(request, { mutation: true });
+  if (auth.response) return auth.response;
+  const id = adminIdSchema.safeParse((await params).id);
+  if (!id.success) return invalidAdminInput(id.error.issues);
   try {
-    const { id } = await params;
-    const postId = parseInt(id, 10);
-    if (isNaN(postId)) {
-      return NextResponse.json({ ok: false, error: "ID inválido" }, { status: 400 });
-    }
-
-    await prisma.post.delete({ where: { id: postId } });
-    return NextResponse.json({ ok: true });
-  } catch (err) {
-    return NextResponse.json({ ok: false, error: (err as Error).message }, { status: 500 });
+    const post = await getDb().post.delete({ where: { id: id.data } });
+    invalidatePublicContent("posts", post.slug);
+    return adminOk();
+  } catch (error) {
+    return adminServerError("eliminar artículo", error);
   }
 }

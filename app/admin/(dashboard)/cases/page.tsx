@@ -1,18 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { 
-  Plus, 
-  Trash2, 
-  Edit, 
-  Eye, 
-  Check, 
-  X, 
-  Upload, 
-  Loader, 
-  AlertCircle,
-  EyeOff
-} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useCallback, useEffect, useState } from "react";
+import { ArrowLeft, BriefcaseBusiness, Eye, Pencil, Plus, Save, Trash2, X } from "lucide-react";
+import { AdminAlert, AdminButton, AdminField, AdminInput, AdminPanel, AdminSpinner, AdminTextarea, AdminToggle, ConfirmDialog, StatusBadge } from "../../../../components/admin/AdminUI";
+import { ImageUpload } from "../../../../components/admin/ImageUpload";
 
 type SuccessCase = {
   id: number;
@@ -21,503 +14,195 @@ type SuccessCase = {
   logoUrl: string | null;
   coverImage: string;
   description: string;
-  metrics: any; // string[]
+  metrics: string[];
   content: string;
   active: boolean;
+  updatedAt: string;
+};
+
+const emptyCase = {
+  title: "",
+  clientName: "",
+  logoUrl: "",
+  coverImage: "/photos/datacenter.jpg",
+  description: "",
+  metrics: [] as string[],
+  content: "",
+  active: true,
 };
 
 export default function AdminCases() {
-  const [cases, setCases] = useState<SuccessCase[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  // Form state
-  const [editingCase, setEditingCase] = useState<Partial<SuccessCase> | null>(null);
-  const [isNew, setIsNew] = useState(false);
-  const [formError, setFormError] = useState<string | null>(null);
-  const [saving, setSaving] = useState(false);
-  const [uploadingCover, setUploadingCover] = useState(false);
-  const [uploadingLogo, setUploadingLogo] = useState(false);
-
-  // Metrics list state
+  const [items, setItems] = useState<SuccessCase[]>([]);
+  const [editing, setEditing] = useState<Partial<SuccessCase> | null>(null);
   const [metrics, setMetrics] = useState<string[]>([]);
-  const [newMetric, setNewMetric] = useState("");
+  const [metric, setMetric] = useState("");
+  const [isNew, setIsNew] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+  const [deleteTarget, setDeleteTarget] = useState<SuccessCase | null>(null);
 
-  useEffect(() => {
-    fetchCases();
-  }, []);
-
-  const fetchCases = async () => {
+  const load = useCallback(async () => {
     setLoading(true);
+    setError("");
     try {
-      const res = await fetch("/api/admin/cases");
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
-      setCases(data.cases);
-    } catch (err) {
-      setError((err as Error).message);
+      const response = await fetch("/api/admin/cases", { cache: "no-store" });
+      const data = await response.json();
+      if (!response.ok || !data.ok) throw new Error(data.error || "No pudimos cargar los casos.");
+      setItems(data.cases);
+    } catch (loadError) {
+      setError((loadError as Error).message);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const handleEdit = (c: SuccessCase) => {
-    setEditingCase(c);
-    setIsNew(false);
-    setMetrics(Array.isArray(c.metrics) ? c.metrics : []);
-    setFormError(null);
-  };
+  useEffect(() => { const timer = window.setTimeout(() => void load(), 0); return () => window.clearTimeout(timer); }, [load]);
 
-  const handleCreateNew = () => {
-    setEditingCase({
-      title: "",
-      clientName: "",
-      logoUrl: "",
-      coverImage: "/photos/products/server.jpg",
-      description: "",
-      content: "",
-      active: true,
-    });
+  function createItem() {
+    setEditing(emptyCase);
+    setMetrics([]);
     setIsNew(true);
-    setMetrics([]);
-    setFormError(null);
-  };
+    setError("");
+  }
 
-  const handleCancel = () => {
-    setEditingCase(null);
-    setMetrics([]);
-    setFormError(null);
-  };
+  function editItem(item: SuccessCase) {
+    setEditing(item);
+    setMetrics(Array.isArray(item.metrics) ? item.metrics : []);
+    setIsNew(false);
+    setError("");
+  }
 
-  const handleSave = async () => {
-    if (!editingCase) return;
-    setFormError(null);
+  function update<K extends keyof SuccessCase>(key: K, value: SuccessCase[K]) {
+    setEditing((current) => current ? { ...current, [key]: value } : current);
+  }
+
+  function addMetric() {
+    const clean = metric.trim();
+    if (!clean || metrics.length >= 8) return;
+    setMetrics((current) => [...current, clean]);
+    setMetric("");
+  }
+
+  async function save() {
+    if (!editing) return;
     setSaving(true);
-
-    const payload = {
-      title: editingCase.title,
-      clientName: editingCase.clientName,
-      logoUrl: editingCase.logoUrl || null,
-      coverImage: editingCase.coverImage,
-      description: editingCase.description,
-      metrics,
-      content: editingCase.content,
-      active: editingCase.active,
-    };
-
+    setError("");
     try {
-      const url = isNew ? "/api/admin/cases" : `/api/admin/cases/${editingCase.id}`;
-      const method = isNew ? "POST" : "PUT";
-
-      const res = await fetch(url, {
-        method,
+      const response = await fetch(isNew ? "/api/admin/cases" : `/api/admin/cases/${editing.id}`, {
+        method: isNew ? "POST" : "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          title: editing.title,
+          clientName: editing.clientName,
+          logoUrl: editing.logoUrl || null,
+          coverImage: editing.coverImage,
+          description: editing.description,
+          metrics,
+          content: editing.content,
+          active: editing.active,
+        }),
       });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
-
-      setEditingCase(null);
-      fetchCases();
-    } catch (err) {
-      setFormError((err as Error).message);
+      const data = await response.json();
+      if (!response.ok || !data.ok) throw new Error(data.issues?.[0]?.message || data.error || "No pudimos guardar.");
+      setEditing(null);
+      await load();
+    } catch (saveError) {
+      setError((saveError as Error).message);
     } finally {
       setSaving(false);
     }
-  };
+  }
 
-  const handleDelete = async (id: number) => {
-    if (!confirm("¿Estás seguro de que querés eliminar este caso de éxito?")) return;
-    try {
-      const res = await fetch(`/api/admin/cases/${id}`, { method: "DELETE" });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
-      fetchCases();
-    } catch (err) {
-      alert(`Error al eliminar: ${(err as Error).message}`);
+  async function toggle(item: SuccessCase) {
+    const response = await fetch(`/api/admin/cases/${item.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ active: !item.active }),
+    });
+    const data = await response.json();
+    if (!response.ok || !data.ok) setError(data.error || "No pudimos actualizar el estado.");
+    else await load();
+  }
+
+  async function remove() {
+    if (!deleteTarget) return;
+    const response = await fetch(`/api/admin/cases/${deleteTarget.id}`, { method: "DELETE" });
+    const data = await response.json();
+    if (!response.ok || !data.ok) {
+      setError(data.error || "No pudimos eliminar el caso.");
+      return;
     }
-  };
+    setDeleteTarget(null);
+    if (editing?.id === deleteTarget.id) setEditing(null);
+    await load();
+  }
 
-  const handleToggleActive = async (c: SuccessCase) => {
-    try {
-      const res = await fetch(`/api/admin/cases/${c.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ active: !c.active }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
-      fetchCases();
-    } catch (err) {
-      alert(`Error al actualizar estado: ${(err as Error).message}`);
-    }
-  };
-
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: "cover" | "logo") => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    if (type === "cover") setUploadingCover(true);
-    else setUploadingLogo(true);
-    
-    setFormError(null);
-
-    try {
-      const res = await fetch(`/api/admin/upload?filename=${encodeURIComponent(file.name)}`, {
-        method: "POST",
-        body: file,
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
-
-      setEditingCase(curr => {
-        if (!curr) return null;
-        return type === "cover" ? { ...curr, coverImage: data.url } : { ...curr, logoUrl: data.url };
-      });
-    } catch (err) {
-      setFormError(`Error al subir imagen: ${(err as Error).message}`);
-    } finally {
-      if (type === "cover") setUploadingCover(false);
-      else setUploadingLogo(false);
-    }
-  };
-
-  // Metrics management
-  const addMetric = () => {
-    if (!newMetric.trim()) return;
-    setMetrics(curr => [...curr, newMetric.trim()]);
-    setNewMetric("");
-  };
-
-  const removeMetric = (index: number) => {
-    setMetrics(curr => curr.filter((_, idx) => idx !== index));
-  };
-
-  if (loading && cases.length === 0) {
+  if (editing) {
     return (
-      <div className="flex flex-col items-center justify-center py-24 gap-4">
-        <Loader size={36} className="animate-spin text-accent" />
-        <span className="text-slate-400">Cargando casos de éxito...</span>
+      <div className="mx-auto max-w-[1180px]">
+        <div className="flex flex-col gap-5 border-b border-slate-200 pb-6 md:flex-row md:items-end md:justify-between">
+          <div><button onClick={() => setEditing(null)} className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-brand"><ArrowLeft className="size-4" /> Casos de éxito</button><h1 className="mt-3 font-display text-[clamp(28px,4vw,38px)] font-bold tracking-[-0.04em] text-ink">{isNew ? "Nuevo caso" : "Editar caso"}</h1></div>
+          <div className="flex flex-wrap gap-2">
+            {!isNew && editing.id && editing.active ? <AdminButton asChild variant="secondary"><Link href={`/casos/${editing.id}`} target="_blank"><Eye />Vista previa</Link></AdminButton> : null}
+            <AdminButton variant="secondary" onClick={() => setEditing(null)}><X />Cancelar</AdminButton>
+            <AdminButton onClick={() => void save()} disabled={saving}><Save />{saving ? "Guardando…" : "Guardar cambios"}</AdminButton>
+          </div>
+        </div>
+        {error ? <div className="mt-5"><AdminAlert>{error}</AdminAlert></div> : null}
+        <div className="mt-6 grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_340px]">
+          <AdminPanel className="p-5 sm:p-6">
+            <div className="flex flex-col gap-5">
+              <AdminField label="Título del caso" htmlFor="case-title"><AdminInput id="case-title" value={editing.title || ""} onChange={(event) => update("title", event.target.value)} maxLength={140} /></AdminField>
+              <AdminField label="Cliente" htmlFor="case-client"><AdminInput id="case-client" value={editing.clientName || ""} onChange={(event) => update("clientName", event.target.value)} maxLength={100} /></AdminField>
+              <AdminField label="Resumen" htmlFor="case-description" hint={`${editing.description?.length || 0} / 500`}><AdminTextarea id="case-description" value={editing.description || ""} onChange={(event) => update("description", event.target.value)} maxLength={500} rows={4} /></AdminField>
+              <AdminField label="Desarrollo del caso" htmlFor="case-content" hint="Separá párrafos con una línea en blanco."><AdminTextarea id="case-content" value={editing.content || ""} onChange={(event) => update("content", event.target.value)} maxLength={12000} rows={12} /></AdminField>
+              <AdminField label="Métricas verificadas" htmlFor="case-metric" hint="Máximo 8. Publicá únicamente resultados autorizados.">
+                <div className="flex gap-2"><AdminInput id="case-metric" value={metric} onChange={(event) => setMetric(event.target.value)} maxLength={100} onKeyDown={(event) => { if (event.key === "Enter") { event.preventDefault(); addMetric(); } }} /><AdminButton type="button" variant="secondary" onClick={addMetric}><Plus />Agregar</AdminButton></div>
+              </AdminField>
+              {metrics.length > 0 ? <div className="flex flex-wrap gap-2">{metrics.map((item, index) => <button key={`${item}-${index}`} onClick={() => setMetrics((current) => current.filter((_, metricIndex) => metricIndex !== index))} className="inline-flex items-center gap-1.5 rounded-md border border-emerald-200 bg-emerald-50 px-2.5 py-1.5 text-[12px] font-semibold text-brand">{item}<X className="size-3.5" /></button>)}</div> : null}
+            </div>
+          </AdminPanel>
+          <div className="flex flex-col gap-5">
+            <AdminPanel className="p-5">
+              <h2 className="font-display text-[16px] font-bold text-ink">Publicación</h2>
+              <div className="mt-5"><AdminToggle id="case-active" label="Visible en el sitio" checked={Boolean(editing.active)} onCheckedChange={(value) => update("active", value)} /></div>
+            </AdminPanel>
+            <AdminPanel className="p-5">
+              <h2 className="font-display text-[16px] font-bold text-ink">Imágenes</h2>
+              <div className="mt-5 flex flex-col gap-5">
+                <AdminField label="Portada" htmlFor="case-cover"><ImageUpload value={editing.coverImage} onChange={(url) => update("coverImage", url)} label="Subir portada" /></AdminField>
+                <AdminField label="Logo del cliente (opcional)" htmlFor="case-logo"><ImageUpload compact value={editing.logoUrl} onChange={(url) => update("logoUrl", url)} label="Subir logo" /></AdminField>
+              </div>
+            </AdminPanel>
+            {!isNew ? <AdminButton variant="danger" onClick={() => setDeleteTarget(editing as SuccessCase)}><Trash2 />Eliminar caso</AdminButton> : null}
+          </div>
+        </div>
+        <ConfirmDialog open={Boolean(deleteTarget)} onOpenChange={(open) => !open && setDeleteTarget(null)} title="Eliminar caso" description="El caso se eliminará de forma permanente y dejará de estar disponible públicamente." onConfirm={() => void remove()} />
       </div>
     );
   }
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div className="flex items-center justify-between border-b border-white/5 pb-5">
-        <div>
-          <h1 className="font-display text-[26px] font-bold text-white tracking-tight">Casos de Éxito</h1>
-          <p className="mt-1.5 text-[14px] text-slate-400">Administrá las historias reales de transformación IT y sus métricas.</p>
-        </div>
-        {!editingCase && (
-          <button
-            onClick={handleCreateNew}
-            className="flex items-center gap-2 rounded-xl bg-accent px-4 py-2.5 text-[13.5px] font-semibold text-[#050F0A] hover:bg-sky transition-colors active:scale-95"
-          >
-            <Plus size={16} /> Crear Caso de Éxito
-          </button>
-        )}
+    <div className="mx-auto max-w-[1180px]">
+      <div className="flex flex-col gap-5 border-b border-slate-200 pb-7 sm:flex-row sm:items-end sm:justify-between">
+        <div><h1 className="font-display text-[clamp(30px,4vw,42px)] font-bold tracking-[-0.04em] text-ink">Casos de éxito</h1><p className="mt-2 text-[14.5px] text-slate-600">Experiencias reales publicadas únicamente con autorización.</p></div>
+        <AdminButton onClick={createItem}><Plus />Nuevo caso</AdminButton>
       </div>
-
-      {error && (
-        <div className="flex items-center gap-2.5 rounded-xl border border-red-500/20 bg-red-500/5 p-4 text-[14px] text-red-400">
-          <AlertCircle size={16} className="shrink-0" />
-          <span>Error: {error}</span>
-        </div>
-      )}
-
-      {/* Editor view */}
-      {editingCase ? (
-        <div className="rounded-2xl border border-white/5 bg-[#0C2014] p-8 space-y-6">
-          <div className="flex items-center justify-between border-b border-white/5 pb-4">
-            <h2 className="text-[17px] font-bold text-white">
-              {isNew ? "Crear nuevo caso" : "Editar caso de éxito"}
-            </h2>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={handleCancel}
-                className="flex items-center gap-1.5 rounded-xl border border-white/10 hover:bg-white/5 px-4 py-2 text-[13px] font-semibold text-slate-300 transition-colors"
-              >
-                <X size={15} /> Cancelar
-              </button>
-              <button
-                onClick={handleSave}
-                disabled={saving}
-                className="flex items-center gap-1.5 rounded-xl bg-accent text-[#050F0A] hover:bg-sky px-4 py-2 text-[13px] font-semibold transition-colors disabled:opacity-55"
-              >
-                {saving ? <Loader size={15} className="animate-spin text-[#050F0A]" /> : <Check size={15} />} Guardar Cambios
-              </button>
-            </div>
+      {error ? <div className="mt-5"><AdminAlert>{error}</AdminAlert></div> : null}
+      <AdminPanel className="mt-6 overflow-hidden">
+        {loading ? <div className="grid min-h-48 place-items-center"><AdminSpinner label="Cargando casos…" /></div> : items.length === 0 ? (
+          <div className="grid min-h-56 place-items-center p-8 text-center"><div><BriefcaseBusiness className="mx-auto size-8 text-slate-300" /><p className="mt-4 text-[14px] font-semibold text-ink">No hay casos cargados.</p><AdminButton className="mt-5" onClick={createItem}><Plus />Crear el primero</AdminButton></div></div>
+        ) : items.map((item) => (
+          <div key={item.id} className="grid gap-4 border-b border-slate-100 px-5 py-4 last:border-0 sm:grid-cols-[96px_minmax(0,1fr)_120px_110px] sm:items-center">
+            <div className="h-16 w-24 overflow-hidden rounded-lg border border-slate-200 bg-slate-50"><Image src={item.coverImage} alt="" width={96} height={64} className="size-full object-cover" /></div>
+            <div className="min-w-0"><p className="text-[11.5px] font-bold uppercase tracking-[0.08em] text-brand">{item.clientName}</p><p className="mt-1 truncate text-[13.5px] font-semibold text-ink">{item.title}</p><p className="mt-1 truncate text-[11.5px] text-slate-500">{item.description}</p></div>
+            <button className="justify-self-start" onClick={() => void toggle(item)}><StatusBadge active={item.active} activeLabel="Publicado" inactiveLabel="Oculto" /></button>
+            <div className="flex justify-end gap-1"><AdminButton variant="ghost" size="icon" onClick={() => editItem(item)} aria-label="Editar"><Pencil /></AdminButton><AdminButton variant="ghost" size="icon" onClick={() => setDeleteTarget(item)} aria-label="Eliminar"><Trash2 /></AdminButton></div>
           </div>
-
-          {formError && (
-            <div className="flex items-center gap-2.5 rounded-xl border border-red-500/20 bg-red-500/5 p-4 text-[14px] text-red-400">
-              <AlertCircle size={16} />
-              <span>{formError}</span>
-            </div>
-          )}
-
-          {/* Form fields */}
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <label className="text-[13px] font-medium text-slate-300">Título del Caso de Éxito</label>
-                <input
-                  type="text"
-                  value={editingCase.title || ""}
-                  onChange={e => setEditingCase(curr => ({ ...curr, title: e.target.value }))}
-                  placeholder="ej: Renovación de Datacenter de Alta Disponibilidad"
-                  className="w-full rounded-xl border border-white/5 bg-[#08180E] px-4 py-2.5 text-[14px] text-white outline-none focus:border-accent/40"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[13px] font-medium text-slate-300">Nombre de la empresa cliente</label>
-                <input
-                  type="text"
-                  value={editingCase.clientName || ""}
-                  onChange={e => setEditingCase(curr => ({ ...curr, clientName: e.target.value }))}
-                  placeholder="ej: Transportes Unidos SA"
-                  className="w-full rounded-xl border border-white/5 bg-[#08180E] px-4 py-2.5 text-[14px] text-white outline-none focus:border-accent/40"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[13px] font-medium text-slate-300">Descripción corta (Resumen)</label>
-                <textarea
-                  value={editingCase.description || ""}
-                  onChange={e => setEditingCase(curr => ({ ...curr, description: e.target.value }))}
-                  rows={3}
-                  placeholder="Se muestra en la tarjeta resumen del caso de éxito..."
-                  className="w-full rounded-xl border border-white/5 bg-[#08180E] px-4 py-2.5 text-[14.5px] text-white outline-none focus:border-accent/40 resize-none"
-                />
-              </div>
-
-              {/* Cover upload */}
-              <div className="space-y-2">
-                <label className="text-[13px] font-medium text-slate-300">Imagen de portada del proyecto</label>
-                <div className="flex gap-4 items-center">
-                  <div className="relative h-20 w-32 rounded-xl bg-slate-800 overflow-hidden border border-white/10 shrink-0">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={editingCase.coverImage || ""} alt="Portada preview" className="h-full w-full object-cover" />
-                  </div>
-                  <div className="relative flex-1">
-                    <input
-                      type="file"
-                      id="case-cover-upload"
-                      accept="image/*"
-                      onChange={e => handleFileUpload(e, "cover")}
-                      className="hidden"
-                      disabled={uploadingCover}
-                    />
-                    <label
-                      htmlFor="case-cover-upload"
-                      className="flex items-center justify-center gap-2 rounded-xl border border-dashed border-white/15 hover:border-accent/40 hover:bg-accent/5 p-4 text-[13.5px] text-slate-300 cursor-pointer transition-all"
-                    >
-                      {uploadingCover ? (
-                        <>
-                          <Loader size={16} className="animate-spin text-accent" />
-                          <span>Subiendo imagen...</span>
-                        </>
-                      ) : (
-                        <>
-                          <Upload size={16} className="text-slate-400" />
-                          <span>Subir portada</span>
-                        </>
-                      )}
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              {/* Client logo upload */}
-              <div className="space-y-2">
-                <label className="text-[13px] font-medium text-slate-300">Logo del cliente (Opcional)</label>
-                <div className="flex gap-4 items-center">
-                  <div className="relative h-16 w-24 bg-white rounded-xl p-1.5 border border-white/10 flex items-center justify-center overflow-hidden shrink-0">
-                    {editingCase.logoUrl ? (
-                      /* eslint-disable-next-line @next/next/no-img-element */
-                      <img src={editingCase.logoUrl} alt="Logo preview" className="max-h-full max-w-full object-contain filter grayscale" />
-                    ) : (
-                      <span className="text-[11px] text-slate-400">Sin logo</span>
-                    )}
-                  </div>
-                  <div className="relative flex-1">
-                    <input
-                      type="file"
-                      id="case-logo-upload"
-                      accept="image/*"
-                      onChange={e => handleFileUpload(e, "logo")}
-                      className="hidden"
-                      disabled={uploadingLogo}
-                    />
-                    <label
-                      htmlFor="case-logo-upload"
-                      className="flex items-center justify-center gap-2 rounded-xl border border-dashed border-white/15 hover:border-accent/40 hover:bg-accent/5 p-4 text-[13.5px] text-slate-300 cursor-pointer transition-all"
-                    >
-                      {uploadingLogo ? (
-                        <>
-                          <Loader size={16} className="animate-spin text-accent" />
-                          <span>Subiendo logo...</span>
-                        </>
-                      ) : (
-                        <>
-                          <Upload size={16} className="text-slate-400" />
-                          <span>Subir logo</span>
-                        </>
-                      )}
-                    </label>
-                  </div>
-                </div>
-              </div>
-
-              {/* Metrics builder */}
-              <div className="space-y-3">
-                <label className="text-[13px] font-medium text-slate-300">Métricas clave destacadas</label>
-                
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={newMetric}
-                    onChange={e => setNewMetric(e.target.value)}
-                    placeholder="ej: +35% velocidad de carga, 99.99% uptime"
-                    className="flex-1 rounded-xl border border-white/5 bg-[#08180E] px-4 py-2 text-[13.5px] text-white outline-none focus:border-accent/40"
-                    onKeyDown={e => e.key === "Enter" && (e.preventDefault(), addMetric())}
-                  />
-                  <button
-                    type="button"
-                    onClick={addMetric}
-                    className="rounded-xl bg-accent text-[#050F0A] hover:bg-sky px-4 py-2 text-[13px] font-semibold transition-colors"
-                  >
-                    Agregar
-                  </button>
-                </div>
-
-                <div className="flex flex-wrap gap-2">
-                  {metrics.map((m, idx) => (
-                    <span 
-                      key={idx} 
-                      className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-[12px] text-white"
-                    >
-                      <span>{m}</span>
-                      <button 
-                        type="button" 
-                        onClick={() => removeMetric(idx)}
-                        className="text-red-400 hover:text-red-300 font-bold"
-                      >
-                        ×
-                      </button>
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[13px] font-medium text-slate-300">Desarrollo detallado del caso</label>
-                <textarea
-                  value={editingCase.content || ""}
-                  onChange={e => setEditingCase(curr => ({ ...curr, content: e.target.value }))}
-                  rows={4}
-                  placeholder="Detalles sobre el problema original, la solución implementada y los resultados..."
-                  className="w-full rounded-xl border border-white/5 bg-[#08180E] px-4 py-2.5 text-[14.5px] text-slate-200 outline-none focus:border-accent/40"
-                />
-              </div>
-
-              <div className="flex items-center gap-3 pt-2">
-                <input
-                  type="checkbox"
-                  id="case-active-chk"
-                  checked={editingCase.active || false}
-                  onChange={e => setEditingCase(curr => curr ? { ...curr, active: e.target.checked } : null)}
-                  className="h-4 w-4 accent-accent rounded"
-                />
-                <label htmlFor="case-active-chk" className="text-[14.5px] font-medium text-slate-200 cursor-pointer select-none">
-                  Caso activo (visible en la Home)
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : (
-        /* List view */
-        <div className="rounded-2xl border border-white/5 bg-[#0C2014] overflow-hidden shadow-soft">
-          {cases.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-20 text-center">
-              <Plus size={44} className="text-slate-700 mb-3.5" />
-              <h3 className="text-[16px] font-semibold text-slate-300">No hay casos de éxito</h3>
-              <p className="mt-1 text-[13.5px] text-slate-500 max-w-[32ch]">
-                Publicá historias de transformaciones e implementaciones IT reales que validen tu capacidad ante clientes nuevos.
-              </p>
-              <button
-                onClick={handleCreateNew}
-                className="mt-5 flex items-center gap-2 rounded-xl bg-accent px-4 py-2.5 text-[13.5px] font-semibold text-[#050F0A] hover:bg-sky transition-colors"
-              >
-                <Plus size={16} /> Crear primer caso
-              </button>
-            </div>
-          ) : (
-            <div className="divide-y divide-white/5">
-              {cases.map((c) => (
-                <div key={c.id} className="flex items-center gap-5 p-6 hover:bg-white/[0.01] transition-colors">
-                  {/* cover preview */}
-                  <div className="relative h-16 w-24 rounded-lg bg-slate-800 overflow-hidden border border-white/10 shrink-0">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={c.coverImage} alt={c.title} className="h-full w-full object-cover" />
-                  </div>
-
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-3">
-                      <span className="text-[12px] font-semibold text-accent uppercase tracking-wider">{c.clientName}</span>
-                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wide ${
-                        c.active 
-                          ? "bg-emerald/10 text-emerald border border-emerald/20" 
-                          : "bg-slate-700 text-slate-400"
-                      }`}>
-                        {c.active ? "ACTIVO" : "OCULTO"}
-                      </span>
-                    </div>
-                    <h3 className="mt-1.5 text-[16px] font-semibold text-white truncate">{c.title}</h3>
-                    <p className="mt-1 text-[13.5px] text-slate-400 truncate">{c.description}</p>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => handleToggleActive(c)}
-                      className={`p-2 rounded-xl border transition-all ${
-                        c.active 
-                          ? "border-emerald/20 bg-emerald/5 text-emerald hover:bg-emerald/15" 
-                          : "border-white/10 text-slate-500 hover:bg-white/5"
-                      }`}
-                      title={c.active ? "Ocultar" : "Mostrar"}
-                    >
-                      {c.active ? <Eye size={17} /> : <EyeOff size={17} />}
-                    </button>
-                    <button
-                      onClick={() => handleEdit(c)}
-                      className="p-2 hover:bg-white/5 text-slate-400 hover:text-slate-200 rounded-xl transition-colors"
-                      title="Editar"
-                    >
-                      <Edit size={17} />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(c.id)}
-                      className="p-2 hover:bg-red-500/10 text-red-400 hover:text-red-300 rounded-xl transition-colors"
-                      title="Eliminar"
-                    >
-                      <Trash2 size={17} />
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
+        ))}
+      </AdminPanel>
+      <ConfirmDialog open={Boolean(deleteTarget)} onOpenChange={(open) => !open && setDeleteTarget(null)} title="Eliminar caso" description="El caso se eliminará de forma permanente." onConfirm={() => void remove()} />
     </div>
   );
 }

@@ -7,7 +7,7 @@ test("apolloSink handle succeeds on successful account and contact creation", as
   const originalEnv = process.env.APOLLO_API_KEY;
   process.env.APOLLO_API_KEY = "mock-key";
 
-  const calls: { url: string; body: any }[] = [];
+  const calls: { url: string; body: Record<string, unknown> }[] = [];
 
   try {
     global.fetch = async (url, options) => {
