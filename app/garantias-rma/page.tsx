@@ -85,18 +85,18 @@ export default function GarantiasRmaPage() {
   return (
     <>
       <Navbar />
-      <main className="pt-20">
+      <main className="bg-[#030c07] text-white pt-20">
         {/* Hero */}
-        <section className="bg-ink py-20 text-white md:py-24">
+        <section className="bg-[#030c07] py-20 text-white md:py-24">
           <div className="mx-auto max-w-[1200px] px-6">
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 mb-6">
+            <div className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-3.5 py-1.5 mb-6">
               <Shield className="size-3.5 text-accent" />
-              <span className="text-[12px] font-semibold tracking-wide text-slate-200">Garantías y RMA · Soporte post-venta</span>
+              <span className="text-[12px] font-semibold tracking-wide text-accent">Garantías y RMA · Soporte post-venta</span>
             </div>
             <h1 className="max-w-[660px] font-display text-[clamp(36px,5vw,62px)] font-bold leading-[0.98] tracking-[-0.05em] text-balance">
               Tu compra está respaldada. Siempre.
             </h1>
-            <p className="mt-6 max-w-[56ch] text-[clamp(15px,1.4vw,17px)] leading-relaxed text-slate-300">
+            <p className="mt-6 max-w-[56ch] text-[clamp(15px,1.4vw,17px)] leading-relaxed text-slate-400">
               Todo lo que vendemos tiene garantía oficial de fábrica. Si algo falla, estamos para acompañarte en el proceso de resolución — sin vueltas y con información clara en cada paso.
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -104,13 +104,13 @@ export default function GarantiasRmaPage() {
                 href={`https://wa.me/${contact.whatsappNumber}?text=${encodeURIComponent("Hola, necesito hacer un reclamo de garantía.")}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-semibold text-ink transition-all hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-bold text-ink transition-all hover:scale-[1.02]"
               >
                 Iniciar reclamo de garantía <ArrowRight size={16} />
               </a>
               <a
                 href={`mailto:${contact.email}?subject=Reclamo%20de%20garantía`}
-                className="inline-flex items-center gap-2 rounded-lg border border-white/30 px-5 py-3.5 text-[14px] font-semibold transition-colors hover:border-white/60"
+                className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/20 bg-white/5 px-5 py-3.5 text-[14px] font-semibold text-white transition-colors hover:bg-white/10"
               >
                 Enviar por email
               </a>
@@ -119,21 +119,21 @@ export default function GarantiasRmaPage() {
         </section>
 
         {/* Garantías por marca */}
-        <section className="bg-white py-16 md:py-20">
+        <section className="bg-[#030c07] border-t border-white/5 py-16 md:py-20">
           <div className="mx-auto max-w-[1200px] px-6">
-            <h2 className="font-display text-[clamp(24px,3vw,36px)] font-bold tracking-[-0.035em] text-ink">
+            <h2 className="font-display text-[clamp(24px,3vw,36px)] font-bold tracking-[-0.035em] text-white">
               Garantías por fabricante.
             </h2>
-            <p className="mt-3 max-w-[52ch] text-[15px] leading-relaxed text-slate-500">
+            <p className="mt-3 max-w-[52ch] text-[15px] leading-relaxed text-slate-400">
               Cada marca tiene su política de garantía. Estos son los períodos y condiciones de las marcas que distribuimos.
             </p>
             <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {brands.map((b) => (
-                <div key={b.name} className="flex gap-4 rounded-2xl border border-slate-200 bg-slate-50/50 p-5">
-                  <Package className="mt-0.5 size-5 flex-none text-brand" strokeWidth={1.6} />
+                <div key={b.name} className="flex gap-4 rounded-3xl border border-white/5 bg-[#082214] p-5 hover:border-accent/40 hover:bg-[#0c2e1d] transition duration-300 shadow-glow">
+                  <Package className="mt-0.5 size-5 flex-none text-accent" strokeWidth={1.6} />
                   <div>
-                    <p className="font-display text-[15px] font-bold text-ink">{b.name}</p>
-                    <p className="mt-1 text-[13px] leading-relaxed text-slate-500">{b.warranty}</p>
+                    <p className="font-display text-[15px] font-bold text-white">{b.name}</p>
+                    <p className="mt-1 text-[13px] leading-relaxed text-slate-400">{b.warranty}</p>
                   </div>
                 </div>
               ))}
@@ -142,72 +142,72 @@ export default function GarantiasRmaPage() {
         </section>
 
         {/* Proceso RMA */}
-        <section className="bg-slate-50 py-16 md:py-20">
+        <section className="bg-[#06140d] py-16 md:py-20">
           <div className="mx-auto max-w-[1200px] px-6">
-            <h2 className="max-w-[500px] font-display text-[clamp(24px,3vw,36px)] font-bold tracking-[-0.035em] text-ink">
+            <h2 className="max-w-[500px] font-display text-[clamp(24px,3vw,36px)] font-bold tracking-[-0.035em] text-white">
               Proceso de garantía paso a paso.
             </h2>
-            <p className="mt-3 text-[15px] leading-relaxed text-slate-500">Transparencia total en cada etapa.</p>
+            <p className="mt-3 text-[15px] leading-relaxed text-slate-400">Transparencia total en cada etapa.</p>
 
             <ol className="relative mt-12 grid gap-8 md:grid-cols-4 md:gap-6">
-              <span className="absolute left-[8%] right-[8%] top-5 hidden h-px bg-brand/25 md:block" aria-hidden />
+              <span className="absolute left-[8%] right-[8%] top-5 hidden h-px bg-accent/20 md:block" aria-hidden />
               {steps.map((step) => (
                 <li key={step.num} className="relative">
-                  <span className="relative z-10 grid size-10 place-items-center rounded-full border border-brand bg-white font-display text-[13px] font-bold text-brand">
+                  <span className="relative z-10 grid size-10 place-items-center rounded-full border border-accent bg-[#030c07] font-display text-[13px] font-bold text-accent">
                     {step.num}
                   </span>
                   <div className="mt-5 flex items-center gap-2">
-                    <step.icon className="size-5 text-slate-400" strokeWidth={1.5} />
-                    <h3 className="font-display text-[15px] font-semibold text-ink">{step.title}</h3>
+                    <step.icon className="size-5 text-slate-450" strokeWidth={1.5} />
+                    <h3 className="font-display text-[15px] font-semibold text-white">{step.title}</h3>
                   </div>
-                  <p className="mt-2 text-[13px] leading-relaxed text-slate-500">{step.desc}</p>
+                  <p className="mt-2 text-[13px] leading-relaxed text-slate-400">{step.desc}</p>
                 </li>
               ))}
             </ol>
 
-            <div className="mt-10 flex flex-wrap gap-6 rounded-2xl bg-white border border-slate-200 px-6 py-5">
+            <div className="mt-10 flex flex-wrap gap-6 rounded-3xl bg-[#030c07] border border-white/5 px-6 py-5 shadow-glow">
               <div className="flex items-center gap-2.5">
-                <Clock className="size-5 text-brand" strokeWidth={1.6} />
-                <span className="text-[13.5px] font-medium text-ink">Respuesta inicial: 24 hs hábiles</span>
+                <Clock className="size-5 text-accent" strokeWidth={1.6} />
+                <span className="text-[13.5px] font-medium text-white">Respuesta inicial: 24 hs hábiles</span>
               </div>
               <div className="flex items-center gap-2.5">
-                <Truck className="size-5 text-brand" strokeWidth={1.6} />
-                <span className="text-[13.5px] font-medium text-ink">Coordinamos retiro a domicilio</span>
+                <Truck className="size-5 text-accent" strokeWidth={1.6} />
+                <span className="text-[13.5px] font-medium text-white">Coordinamos retiro a domicilio</span>
               </div>
               <div className="flex items-center gap-2.5">
-                <Wrench className="size-5 text-brand" strokeWidth={1.6} />
-                <span className="text-[13.5px] font-medium text-ink">Resolución: 5 a 15 días hábiles</span>
+                <Wrench className="size-5 text-accent" strokeWidth={1.6} />
+                <span className="text-[13.5px] font-medium text-white">Resolución: 5 a 15 días hábiles</span>
               </div>
             </div>
           </div>
         </section>
 
         {/* Qué cubre y qué no */}
-        <section className="bg-white py-16 md:py-20">
+        <section className="bg-[#030c07] border-t border-white/5 py-16 md:py-20">
           <div className="mx-auto max-w-[1200px] px-6">
             <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
               <div>
-                <h2 className="font-display text-[22px] font-bold text-ink flex items-center gap-2">
-                  <CheckCircle2 className="size-6 text-brand" strokeWidth={1.8} /> Qué cubre la garantía
+                <h2 className="font-display text-[22px] font-bold text-white flex items-center gap-2">
+                  <CheckCircle2 className="size-6 text-accent" strokeWidth={1.8} /> Qué cubre la garantía
                 </h2>
                 <ul className="mt-6 grid gap-3">
                   {covered.map((item) => (
                     <li key={item} className="flex gap-3">
-                      <CheckCircle2 className="mt-0.5 size-4.5 flex-none text-brand" strokeWidth={1.8} />
-                      <span className="text-[14px] leading-relaxed text-slate-600">{item}</span>
+                      <CheckCircle2 className="mt-0.5 size-4.5 flex-none text-accent" strokeWidth={1.8} />
+                      <span className="text-[14px] leading-relaxed text-slate-300">{item}</span>
                     </li>
                   ))}
                 </ul>
               </div>
               <div>
-                <h2 className="font-display text-[22px] font-bold text-ink flex items-center gap-2">
+                <h2 className="font-display text-[22px] font-bold text-white flex items-center gap-2">
                   <AlertCircle className="size-6 text-red-400" strokeWidth={1.8} /> Qué no cubre
                 </h2>
                 <ul className="mt-6 grid gap-3">
                   {notCovered.map((item) => (
                     <li key={item} className="flex gap-3">
                       <AlertCircle className="mt-0.5 size-4.5 flex-none text-red-400" strokeWidth={1.8} />
-                      <span className="text-[14px] leading-relaxed text-slate-600">{item}</span>
+                      <span className="text-[14px] leading-relaxed text-slate-300">{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -217,16 +217,16 @@ export default function GarantiasRmaPage() {
         </section>
 
         {/* FAQ */}
-        <section className="bg-slate-50 py-16 md:py-20">
+        <section className="bg-[#06140d] py-16 md:py-20">
           <div className="mx-auto max-w-[1200px] px-6">
-            <h2 className="font-display text-[clamp(22px,3vw,34px)] font-bold tracking-[-0.03em] text-ink">
+            <h2 className="font-display text-[clamp(22px,3vw,34px)] font-bold tracking-[-0.03em] text-white">
               Preguntas frecuentes sobre garantías
             </h2>
             <div className="mt-8 grid gap-5 md:grid-cols-2">
               {faqs.map((item) => (
-                <div key={item.q} className="rounded-2xl border border-slate-200 bg-white p-6">
-                  <h3 className="font-display text-[14.5px] font-semibold text-ink">{item.q}</h3>
-                  <p className="mt-2 text-[13.5px] leading-relaxed text-slate-600">{item.a}</p>
+                <div key={item.q} className="rounded-3xl border border-white/5 bg-[#082214] p-6 hover:border-accent/40 hover:bg-[#0c2e1d] transition duration-300 shadow-glow">
+                  <h3 className="font-display text-[14.5px] font-semibold text-white">{item.q}</h3>
+                  <p className="mt-2 text-[13.5px] leading-relaxed text-slate-400">{item.a}</p>
                 </div>
               ))}
             </div>
@@ -234,12 +234,12 @@ export default function GarantiasRmaPage() {
         </section>
 
         {/* CTA */}
-        <section className="bg-ink py-14 text-white">
+        <section className="bg-[#030c07] border-t border-white/5 py-14 text-white">
           <div className="mx-auto max-w-[1200px] px-6 text-center">
             <h2 className="font-display text-[clamp(22px,3vw,34px)] font-bold tracking-[-0.03em]">
               ¿Tenés un problema con un equipo comprado en Bartez?
             </h2>
-            <p className="mt-3 mx-auto max-w-[50ch] text-[14px] leading-relaxed text-slate-300">
+            <p className="mt-3 mx-auto max-w-[50ch] text-[14px] leading-relaxed text-slate-400">
               Escribinos y lo resolvemos. Nuestro equipo te acompaña en todo el proceso de garantía sin burocracia innecesaria.
             </p>
             <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
@@ -247,13 +247,13 @@ export default function GarantiasRmaPage() {
                 href={`https://wa.me/${contact.whatsappNumber}?text=${encodeURIComponent("Hola, necesito hacer un reclamo de garantía.")}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-semibold text-ink transition-all hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-bold text-ink transition-all hover:scale-[1.02]"
               >
                 Iniciar por WhatsApp <ArrowRight size={16} />
               </a>
               <a
                 href={`mailto:${contact.email}?subject=Reclamo%20de%20garantía`}
-                className="inline-flex items-center gap-2 rounded-lg border border-white/30 px-6 py-3.5 text-[14px] font-semibold transition-colors hover:border-white/60"
+                className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/20 bg-white/5 px-6 py-3.5 text-[14px] font-semibold text-white transition-colors hover:bg-white/10"
               >
                 {contact.email}
               </a>

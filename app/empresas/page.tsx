@@ -77,13 +77,13 @@ export default function EmpresasPage() {
   return (
     <>
       <Navbar />
-      <main className="pt-20">
+      <main className="bg-[#030c07] text-white pt-20">
         {/* Hero */}
-        <section className="bg-ink py-20 text-white md:py-28">
+        <section className="bg-[#030c07] py-20 text-white md:py-28">
           <div className="mx-auto max-w-[1200px] px-6">
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 mb-6">
-              <span className="size-2 rounded-full bg-accent" />
-              <span className="text-[12px] font-semibold tracking-wide text-slate-200">
+            <div className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-3.5 py-1.5 mb-6">
+              <span className="size-2 rounded-full bg-accent animate-pulse" />
+              <span className="text-[12px] font-semibold tracking-wide text-accent">
                 Canal Corporativo · Empresas y organizaciones
               </span>
             </div>
@@ -93,7 +93,7 @@ export default function EmpresasPage() {
               <span className="text-gradient">para tu empresa.</span>
             </h1>
 
-            <p className="mt-7 max-w-[58ch] text-[clamp(16px,1.5vw,18px)] leading-relaxed text-slate-300">
+            <p className="mt-7 max-w-[58ch] text-[clamp(16px,1.5vw,18px)] leading-relaxed text-slate-400">
               Equipamos empresas de todos los rubros con tecnología de primera
               línea. Notebooks, servidores, redes, workstations y periféricos
               con asesoramiento profesional y cobertura nacional.
@@ -102,24 +102,24 @@ export default function EmpresasPage() {
             <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
               <Link
                 href="/#cotiza"
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-semibold text-ink transition-all hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-bold text-ink transition-all hover:scale-[1.02]"
               >
                 Pedir cotización <ArrowRight size={17} />
               </Link>
               <Link
                 href="/marcas"
-                className="inline-flex items-center gap-2 rounded-lg border border-white/30 px-5 py-3.5 text-[14px] font-semibold text-white transition-colors hover:border-accent hover:text-accent"
+                className="inline-flex items-center gap-2 rounded-lg border border-white/20 bg-white/5 px-5 py-3.5 text-[14px] font-semibold text-white transition-colors hover:bg-white/10"
               >
                 Ver marcas
               </Link>
             </div>
 
             {/* Stats strip */}
-            <div className="mt-14 flex flex-wrap gap-x-10 gap-y-4 border-t border-white/10 pt-8">
+            <div className="mt-14 flex flex-wrap gap-x-10 gap-y-4 border-t border-white/5 pt-8">
               {stats.map((s) => (
                 <div key={s.label} className="flex items-center gap-2.5">
                   <span className="size-1.5 rounded-full bg-accent" />
-                  <span className="text-[13.5px] font-semibold text-slate-300">
+                  <span className="text-[13.5px] font-semibold text-slate-350">
                     {s.label}
                   </span>
                 </div>
@@ -129,13 +129,13 @@ export default function EmpresasPage() {
         </section>
 
         {/* Servicios */}
-        <section className="bg-white py-20 md:py-28">
+        <section className="bg-[#030c07] border-t border-white/5 py-20 md:py-28">
           <div className="mx-auto max-w-[1200px] px-6">
             <div className="max-w-[560px]">
-              <h2 className="font-display text-[clamp(28px,3.5vw,42px)] font-bold leading-[1.06] tracking-[-0.035em] text-ink">
+              <h2 className="font-display text-[clamp(28px,3.5vw,42px)] font-bold leading-[1.06] tracking-[-0.035em] text-white">
                 Todo lo que necesita tu empresa en un solo lugar.
               </h2>
-              <p className="mt-4 text-[16px] leading-relaxed text-slate-600">
+              <p className="mt-4 text-[16px] leading-relaxed text-slate-400">
                 Una sola fuente de equipamiento IT, con asesoramiento técnico
                 y condiciones comerciales pensadas para empresas.
               </p>
@@ -145,15 +145,15 @@ export default function EmpresasPage() {
               {services.map((s) => (
                 <div
                   key={s.title}
-                  className="rounded-2xl border border-slate-200 bg-white p-6 transition-shadow hover:shadow-card"
+                  className="rounded-3xl border border-white/5 bg-[#082214] p-6 hover:border-accent/40 hover:bg-[#0c2e1d] transition duration-300 shadow-glow"
                 >
-                  <span className="grid size-11 place-items-center rounded-xl bg-brand/8">
-                    <s.icon className="size-5 text-brand" strokeWidth={1.6} />
+                  <span className="grid size-11 place-items-center rounded-xl bg-accent/10 border border-accent/20">
+                    <s.icon className="size-5 text-accent" strokeWidth={1.6} />
                   </span>
-                  <h3 className="mt-5 font-display text-[16px] font-bold text-ink">
+                  <h3 className="mt-5 font-display text-[16px] font-bold text-white">
                     {s.title}
                   </h3>
-                  <p className="mt-2 text-[13px] leading-relaxed text-slate-500">
+                  <p className="mt-2 text-[13px] leading-relaxed text-slate-400">
                     {s.desc}
                   </p>
                 </div>
@@ -163,15 +163,15 @@ export default function EmpresasPage() {
         </section>
 
         {/* Por qué elegirnos */}
-        <section className="bg-slate-50 py-20 md:py-28">
+        <section className="bg-[#06140d] py-20 md:py-28">
           <div className="mx-auto max-w-[1200px] px-6">
             <div className="grid gap-12 lg:grid-cols-2 lg:gap-20 lg:items-center">
               {/* Left: text */}
               <div>
-                <h2 className="font-display text-[clamp(28px,3.5vw,42px)] font-bold leading-[1.06] tracking-[-0.035em] text-ink">
+                <h2 className="font-display text-[clamp(28px,3.5vw,42px)] font-bold leading-[1.06] tracking-[-0.035em] text-white">
                   ¿Por qué las empresas eligen Bartez?
                 </h2>
-                <p className="mt-5 text-[16px] leading-relaxed text-slate-600">
+                <p className="mt-5 text-[16px] leading-relaxed text-slate-400">
                   Más de 30 años de experiencia en el mercado IT argentino nos
                   permiten entender la realidad de cada empresa y proponer
                   soluciones que realmente funcionen.
@@ -183,10 +183,10 @@ export default function EmpresasPage() {
                 {reasons.map((r) => (
                   <li key={r} className="flex items-start gap-3">
                     <CheckCircle2
-                      className="mt-0.5 size-5 flex-none text-brand"
+                      className="mt-0.5 size-5 flex-none text-accent"
                       strokeWidth={1.8}
                     />
-                    <span className="text-[15px] leading-relaxed text-slate-700">
+                    <span className="text-[15px] leading-relaxed text-slate-300">
                       {r}
                     </span>
                   </li>
@@ -197,12 +197,12 @@ export default function EmpresasPage() {
         </section>
 
         {/* CTA final */}
-        <section className="bg-ink py-20 text-white md:py-28">
+        <section className="bg-[#030c07] border-t border-white/5 py-20 text-white md:py-28">
           <div className="mx-auto max-w-[1200px] px-6 text-center">
             <h2 className="font-display text-[clamp(28px,4vw,46px)] font-bold leading-[1.06] tracking-[-0.04em] text-balance">
               ¿Querés equipar tu empresa con tecnología de primera línea?
             </h2>
-            <p className="mx-auto mt-5 max-w-[52ch] text-[16px] leading-relaxed text-slate-300">
+            <p className="mx-auto mt-5 max-w-[52ch] text-[16px] leading-relaxed text-slate-400">
               Contanos cuántos usuarios, qué tipo de trabajo realizan y cuál es
               tu plazo. Un especialista te responde con una propuesta en 24 hs
               hábiles.
@@ -210,7 +210,7 @@ export default function EmpresasPage() {
             <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
               <Link
                 href="/#cotiza"
-                className="inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-semibold text-ink transition-all hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-bold text-ink transition-all hover:scale-[1.02]"
               >
                 Solicitar asesoramiento <ArrowRight size={17} />
               </Link>
@@ -218,7 +218,7 @@ export default function EmpresasPage() {
                 href={whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-lg border border-white/30 px-5 py-3.5 text-[14px] font-semibold text-white transition-colors hover:border-emerald hover:text-emerald"
+                className="inline-flex items-center gap-2 rounded-lg border border-white/20 bg-white/5 px-5 py-3.5 text-[14px] font-semibold text-white transition-colors hover:bg-white/10"
               >
                 <MessageCircle size={17} /> Hablar por WhatsApp
               </a>

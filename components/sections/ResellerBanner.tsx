@@ -9,9 +9,9 @@ const highlights = [
 
 export function ResellerBanner() {
   return (
-    <section className="bg-white py-12 md:py-16">
+    <section className="bg-[#030c07] py-12 md:py-16">
       <div className="mx-auto max-w-[1200px] px-6">
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-ink via-[#0d3520] to-[#0a2818] px-8 py-10 md:px-12 md:py-12">
+        <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-ink via-[#0d3520] to-[#0a2818] px-8 py-10 md:px-12 md:py-12">
           {/* Decoración */}
           <div className="pointer-events-none absolute -right-16 -top-16 size-56 rounded-full bg-brand/20 blur-3xl" aria-hidden />
           <div className="pointer-events-none absolute -bottom-10 left-1/3 size-40 rounded-full bg-accent/10 blur-2xl" aria-hidden />

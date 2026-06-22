@@ -25,13 +25,13 @@ export async function Experience() {
   const cases = await getDynamicSuccessCases();
 
   return (
-    <section id="experiencia" className="scroll-mt-24 bg-white py-20 md:py-28" aria-labelledby="experience-title">
+    <section id="experiencia" className="scroll-mt-24 bg-[#030c07] py-20 md:py-28" aria-labelledby="experience-title">
       <div className="mx-auto max-w-[1200px] px-6">
         <div className="max-w-[650px]">
-          <h2 id="experience-title" className="font-display text-[clamp(30px,4vw,46px)] font-bold leading-[1.06] tracking-[-0.035em] text-ink">
+          <h2 id="experience-title" className="font-display text-[clamp(30px,4vw,46px)] font-bold leading-[1.06] tracking-[-0.035em] text-white">
             Experiencia aplicada a problemas reales.
           </h2>
-          <p className="mt-4 text-[16px] leading-relaxed text-slate-600">
+          <p className="mt-4 text-[16px] leading-relaxed text-slate-400">
             {cases.length > 0
               ? "Conocé implementaciones diseñadas a la medida de cada operación."
               : "Proyectos realizados para empresas, organismos y canales en toda Argentina."}
@@ -40,43 +40,43 @@ export async function Experience() {
 
         <div className="mt-10 grid gap-5 md:grid-cols-2">
           {cases.length > 0 ? cases.map((item) => (
-            <Link key={item.id} href={`/casos/${item.id}`} className="group overflow-hidden rounded-2xl border border-slate-200 bg-white transition-colors hover:border-brand/40">
-              <div className="relative aspect-[16/8] overflow-hidden bg-slate-100">
-                <Image src={item.coverImage} alt={item.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover transition-transform duration-500 group-hover:scale-[1.025]" />
+            <Link key={item.id} href={`/casos/${item.id}`} className="group overflow-hidden rounded-3xl border border-white/5 bg-[#082214] transition-all duration-300 hover:border-accent/40 hover:bg-[#0c2e1d]">
+              <div className="relative aspect-[16/8] overflow-hidden bg-[#030c07]">
+                <Image src={item.coverImage} alt={item.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover opacity-85 transition-transform duration-500 group-hover:scale-[1.025]" />
               </div>
               <div className="p-7">
                 <div className="flex items-start gap-4">
                   <div className="min-w-0 flex-1">
-                    <span className="text-[11.5px] font-bold uppercase tracking-[0.13em] text-brand">{item.clientName}</span>
-                    <h3 className="mt-2 font-display text-[20px] font-bold leading-snug text-ink">{item.title}</h3>
+                    <span className="text-[11.5px] font-bold uppercase tracking-[0.13em] text-accent">{item.clientName}</span>
+                    <h3 className="mt-2 font-display text-[20px] font-bold leading-snug text-white">{item.title}</h3>
                   </div>
-                  <ArrowUpRight className="size-5 flex-none text-slate-400 transition-colors group-hover:text-brand" />
+                  <ArrowUpRight className="size-5 flex-none text-slate-500 transition-colors group-hover:text-accent" />
                 </div>
-                <p className="mt-4 text-[14.5px] leading-relaxed text-slate-600">{item.description}</p>
+                <p className="mt-4 text-[14.5px] leading-relaxed text-slate-400">{item.description}</p>
                 {item.metrics.length > 0 ? (
-                  <div className="mt-5 flex flex-wrap gap-2 border-t border-slate-200 pt-5">
+                  <div className="mt-5 flex flex-wrap gap-2 border-t border-white/5 pt-5">
                     {item.metrics.map((metric) => (
-                      <span key={metric} className="text-[12px] font-semibold text-brand">{metric}</span>
+                      <span key={metric} className="rounded-full bg-accent/10 border border-accent/20 px-3 py-1 text-[12px] font-semibold text-accent">{metric}</span>
                     ))}
                   </div>
                 ) : null}
               </div>
             </Link>
           )) : miniCases.map((item) => (
-            <div key={item.area} className="overflow-hidden rounded-2xl border border-slate-200 bg-white p-7">
+            <div key={item.area} className="overflow-hidden rounded-3xl border border-white/5 bg-[#082214] p-7">
               <div className="flex items-start gap-4">
-                <span className="grid size-12 flex-none place-items-center rounded-xl bg-brand/8">
-                  <item.icon className="size-6 text-brand" strokeWidth={1.4} />
+                <span className="grid size-12 flex-none place-items-center rounded-xl bg-accent/10 border border-accent/20">
+                  <item.icon className="size-6 text-accent" strokeWidth={1.4} />
                 </span>
                 <div className="min-w-0">
-                  <p className="text-[11.5px] font-bold uppercase tracking-[0.13em] text-slate-400">{item.client}</p>
-                  <h3 className="mt-1.5 font-display text-[18px] font-bold leading-snug text-ink">{item.area}</h3>
+                  <p className="text-[11.5px] font-bold uppercase tracking-[0.13em] text-slate-450">{item.client}</p>
+                  <h3 className="mt-1.5 font-display text-[18px] font-bold leading-snug text-white">{item.area}</h3>
                 </div>
               </div>
-              <p className="mt-5 text-[14px] leading-relaxed text-slate-600">{item.text}</p>
-              <div className="mt-5 flex flex-wrap gap-2 border-t border-slate-100 pt-5">
+              <p className="mt-5 text-[14px] leading-relaxed text-slate-400">{item.text}</p>
+              <div className="mt-5 flex flex-wrap gap-2 border-t border-white/5 pt-5">
                 {item.metrics.map((metric) => (
-                  <span key={metric} className="rounded-full bg-brand/8 px-3 py-1 text-[12px] font-semibold text-brand">{metric}</span>
+                  <span key={metric} className="rounded-full bg-accent/10 border border-accent/20 px-3 py-1 text-[12px] font-semibold text-accent">{metric}</span>
                 ))}
               </div>
             </div>

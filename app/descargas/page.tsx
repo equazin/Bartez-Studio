@@ -20,7 +20,7 @@ import {
 import { track } from "../../components/Analytics";
 
 const inputClass =
-  "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-[14px] text-slate-900 outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/15";
+  "w-full rounded-xl border border-white/10 bg-[#06140d] px-4 py-3 text-[14px] text-white outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/15 placeholder-slate-500";
 
 interface Resource {
   id: string;
@@ -133,18 +133,18 @@ export default function Descargas() {
   return (
     <>
       <Navbar />
-      <main className="bg-slate-50 min-h-screen pt-32 pb-24 font-sans">
+      <main className="bg-[#030c07] min-h-screen pt-32 pb-24 text-white">
         <div className="mx-auto max-w-[1100px] px-6">
           
           {/* Header */}
           <div className="text-center mb-12">
-            <span className="text-[13px] font-semibold uppercase tracking-[0.12em] text-brand">
+            <span className="text-[13px] font-semibold uppercase tracking-[0.12em] text-accent">
               Recursos Técnicos y Comerciales
             </span>
-            <h1 className="mt-3 font-display text-[clamp(30px,4.2vw,48px)] font-bold leading-tight tracking-[-0.03em] text-ink">
+            <h1 className="mt-3 font-display text-[clamp(30px,4.2vw,48px)] font-bold leading-tight tracking-[-0.03em] text-white">
               Centro de Descargas
             </h1>
-            <p className="mt-3 text-[16px] text-slate-600 max-w-[55ch] mx-auto">
+            <p className="mt-3 text-[16px] text-slate-400 max-w-[55ch] mx-auto">
               Accedé a nuestros folletos oficiales, fichas de producto e instructivos de soporte postventa en formato PDF de descarga directa.
             </p>
           </div>
@@ -153,30 +153,30 @@ export default function Descargas() {
             
             {/* Listado de archivos */}
             <div className="space-y-4">
-              <h2 className="text-[17px] font-bold text-ink mb-2">Fichas y folletos disponibles</h2>
+              <h2 className="text-[17px] font-bold text-white mb-2">Fichas y folletos disponibles</h2>
               
               {resources.map(res => {
                 const Icon = res.icon;
                 return (
                   <div 
                     key={res.id} 
-                    className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 rounded-xl border border-slate-200 bg-white shadow-soft"
+                    className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 rounded-xl border border-white/5 bg-[#082214] shadow-glow"
                   >
                     <div className="flex gap-4">
-                      <span className="flex size-12 items-center justify-center rounded-xl bg-slate-100 text-brand flex-none">
+                      <span className="flex size-12 items-center justify-center rounded-xl bg-accent/10 text-accent flex-none">
                         <Icon size={22} />
                       </span>
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="rounded-full bg-brand/10 px-2 py-0.5 text-[11px] font-semibold text-brand">
+                          <span className="rounded-full bg-accent/20 px-2 py-0.5 text-[11px] font-semibold text-accent">
                             {res.category}
                           </span>
                           <span className="text-[11.5px] text-slate-400 font-medium">
                             {res.fileSize}
                           </span>
                         </div>
-                        <h3 className="text-[15px] font-bold text-ink mt-1.5">{res.title}</h3>
-                        <p className="text-[13px] text-slate-500 mt-1 leading-normal">
+                        <h3 className="text-[15px] font-bold text-white mt-1.5">{res.title}</h3>
+                        <p className="text-[13px] text-slate-400 mt-1 leading-normal">
                           {res.description}
                         </p>
                       </div>
@@ -188,14 +188,14 @@ export default function Descargas() {
                           href={res.fileUrl}
                           download
                           onClick={() => handleDownload(res.id)}
-                          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-lg bg-brand px-4 py-2.5 text-[13px] font-bold text-white transition hover:bg-brand-bright"
+                          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-[13px] font-bold text-ink transition hover:scale-[1.02]"
                         >
                           <Download size={14} /> Descargar PDF
                         </a>
                       ) : (
                         <button
                           disabled
-                          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-lg bg-slate-100 px-4 py-2.5 text-[13px] font-semibold text-slate-400 cursor-not-allowed"
+                          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-lg bg-white/5 border border-white/10 px-4 py-2.5 text-[13px] font-semibold text-slate-500 cursor-not-allowed"
                         >
                           <Lock size={13} /> Bloqueado
                         </button>
@@ -209,31 +209,31 @@ export default function Descargas() {
             {/* Formulario lateral de desbloqueo */}
             <div>
               {unlocked ? (
-                <div className="rounded-2xl border border-brand/20 bg-emerald-50/30 p-6 text-center shadow-soft">
-                  <span className="mx-auto flex size-12 items-center justify-center rounded-full bg-brand/10 text-brand">
+                <div className="rounded-2xl border border-accent/20 bg-accent/10 p-6 text-center shadow-glow">
+                  <span className="mx-auto flex size-12 items-center justify-center rounded-full bg-accent/20 text-accent">
                     <CheckCircle2 size={24} />
                   </span>
-                  <h3 className="mt-4 font-display text-[18px] font-bold text-ink">¡Acceso concedido!</h3>
-                  <p className="mt-2 text-[13px] text-slate-600 leading-relaxed">
+                  <h3 className="mt-4 font-display text-[18px] font-bold text-white">¡Acceso concedido!</h3>
+                  <p className="mt-2 text-[13px] text-slate-300 leading-relaxed">
                     Ya podés hacer clic en los botones de descarga de la lista de la izquierda para obtener cualquiera de los archivos PDF de forma directa.
                   </p>
-                  <div className="mt-5 border-t border-slate-200/60 pt-4">
+                  <div className="mt-5 border-t border-white/10 pt-4">
                     <span className="text-[12px] text-slate-400 block">¿Buscás equipar tu empresa?</span>
                     <Link 
                       href="/#cotiza" 
-                      className="mt-2 inline-flex items-center gap-1 text-[13px] font-bold text-brand hover:underline"
+                      className="mt-2 inline-flex items-center gap-1 text-[13px] font-bold text-accent hover:underline"
                     >
                       Solicitar presupuesto a medida <ArrowRight size={13} />
                     </Link>
                   </div>
                 </div>
               ) : (
-                <div className="rounded-2xl border border-slate-200 bg-white p-6 md:p-8 shadow-soft">
+                <div className="rounded-2xl border border-white/5 bg-[#082214] p-6 md:p-8 shadow-glow">
                   <div className="flex gap-2.5 items-start">
-                    <Lock className="text-brand mt-0.5 flex-none" size={18} />
+                    <Lock className="text-accent mt-0.5 flex-none" size={18} />
                     <div>
-                      <h3 className="font-display text-[18px] font-bold text-ink">Desbloquear descargas</h3>
-                      <p className="mt-1 text-[13px] text-slate-500 leading-normal">
+                      <h3 className="font-display text-[18px] font-bold text-white">Desbloquear descargas</h3>
+                      <p className="mt-1 text-[13px] text-slate-400 leading-normal">
                         Ingresá tus datos corporativos para habilitar la descarga inmediata de todos los folletos de nuestra distribuidora.
                       </p>
                     </div>
@@ -241,7 +241,7 @@ export default function Descargas() {
 
                   <form onSubmit={handleSubmit} className="mt-6 space-y-4">
                     <label className="block">
-                      <span className="mb-1 block text-[12.5px] font-semibold text-slate-600">Nombre de contacto</span>
+                      <span className="mb-1 block text-[12.5px] font-semibold text-slate-300">Nombre de contacto</span>
                       <input
                         required
                         value={form.nombre}
@@ -252,7 +252,7 @@ export default function Descargas() {
                     </label>
 
                     <label className="block">
-                      <span className="mb-1 block text-[12.5px] font-semibold text-slate-600">Email Corporativo</span>
+                      <span className="mb-1 block text-[12.5px] font-semibold text-slate-300">Email Corporativo</span>
                       <input
                         required
                         type="email"
@@ -264,7 +264,7 @@ export default function Descargas() {
                     </label>
 
                     <label className="block">
-                      <span className="mb-1 block text-[12.5px] font-semibold text-slate-600">Empresa / Razón Social</span>
+                      <span className="mb-1 block text-[12.5px] font-semibold text-slate-300">Empresa / Razón Social</span>
                       <input
                         required
                         value={form.empresa}
@@ -275,13 +275,13 @@ export default function Descargas() {
                     </label>
 
                     {error && (
-                      <p className="text-[12.5px] text-red-600 font-semibold">{error}</p>
+                      <p className="text-[12.5px] text-red-400 font-semibold">{error}</p>
                     )}
 
                     <button
                       type="submit"
                       disabled={loading}
-                      className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-ink px-5 py-3 text-[14px] font-bold text-white transition hover:bg-brand disabled:opacity-60"
+                      className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-5 py-3 text-[14px] font-bold text-ink transition hover:scale-[1.02] disabled:opacity-60"
                     >
                       {loading ? (
                         <><Loader2 size={15} className="animate-spin" /> Procesando...</>
@@ -293,7 +293,7 @@ export default function Descargas() {
                     </button>
                   </form>
 
-                  <p className="mt-4 text-[11.5px] text-slate-400 text-center leading-normal">
+                  <p className="mt-4 text-[11.5px] text-slate-500 text-center leading-normal">
                     Tu dirección de correo será utilizada únicamente para procesar tu solicitud. Sin spam corporativo.
                   </p>
                 </div>
