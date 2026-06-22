@@ -115,4 +115,4 @@ Para garantizar la estabilidad de la rama principal, se recomienda configurar la
 - **Require a pull request before merging**: Activar (requerir al menos 1 aprobación).
 - **Require status checks to pass before merging**: Activar y buscar el check `verify` de GitHub Actions. Esto impide mergear código que rompa builds o tests.
 - **Require conversation resolution before merging**: Activar para asegurar que todos los comentarios en el PR estén resueltos.
-- **Restrict who can push to matching branches**: Evitar pushes directos de desarrolladores individuales (todo debe pasar por PR).
+- **Restrict who can push to matching branches**: Evitar pushes directos de desarrolladores individuales (todo debe pasar por PR).

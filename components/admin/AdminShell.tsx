@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Dialog } from "radix-ui";
-import { BriefcaseBusiness, ExternalLink, FileText, LayoutDashboard, LogOut, Menu, UsersRound, X } from "lucide-react";
+import { BriefcaseBusiness, ExternalLink, FileText, LayoutDashboard, LogOut, Menu, MessageSquare, UsersRound, X } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { AdminButton } from "./AdminUI";
 
@@ -13,6 +13,7 @@ const navigation = [
   { href: "/admin/posts", label: "Artículos", icon: FileText },
   { href: "/admin/clients", label: "Clientes", icon: UsersRound },
   { href: "/admin/cases", label: "Casos de éxito", icon: BriefcaseBusiness },
+  { href: "/admin/conversations", label: "WhatsApp", icon: MessageSquare },
 ];
 
 function Navigation({ pathname, close }: { pathname: string; close?: () => void }) {

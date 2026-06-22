@@ -121,7 +121,9 @@ export const mailSink: LeadSink = {
         : (t: string, s: string, h: string, r?: string) => sendResend(t, s, h, r);
 
       await send(to, `Nuevo lead web — ${lead.empresa}`, internalHtml(lead), lead.email);
-      await send(lead.email, `Recibimos tu consulta — ${company.name}`, autoReplyHtml(lead));
+      if (!lead.email.endsWith(".placeholder")) {
+        await send(lead.email, `Recibimos tu consulta — ${company.name}`, autoReplyHtml(lead));
+      }
       return { name: this.name, ok: true, detail: `Enviados vía ${provider}` };
     } catch (e) {
       return { name: this.name, ok: false, detail: (e as Error).message };
