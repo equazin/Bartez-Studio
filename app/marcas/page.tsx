@@ -36,8 +36,7 @@ const brands = [
       { icon: Monitor, label: "Workstations Precision" },
       { icon: HardDrive, label: "Storage PowerVault / EMC" },
     ],
-    color: "bg-blue-50 border-blue-100",
-    accent: "text-blue-700",
+    accent: "text-blue-400",
   },
   {
     name: "Lenovo",
@@ -51,8 +50,7 @@ const brands = [
       { icon: Server, label: "ThinkSystem / ThinkAgile" },
       { icon: Package, label: "Periféricos y accesorios" },
     ],
-    color: "bg-red-50 border-red-100",
-    accent: "text-red-700",
+    accent: "text-red-400",
   },
   {
     name: "HP",
@@ -66,8 +64,7 @@ const brands = [
       { icon: Server, label: "ProLiant (HPE)" },
       { icon: Package, label: "Impresoras LaserJet" },
     ],
-    color: "bg-sky-50 border-sky-100",
-    accent: "text-sky-700",
+    accent: "text-sky-400",
   },
   {
     name: "Cisco",
@@ -81,8 +78,7 @@ const brands = [
       { icon: Network, label: "Routers empresariales" },
       { icon: Network, label: "Access Points WiFi 6" },
     ],
-    color: "bg-teal-50 border-teal-100",
-    accent: "text-teal-700",
+    accent: "text-teal-400",
   },
   {
     name: "Intel",
@@ -96,8 +92,7 @@ const brands = [
       { icon: Package, label: "Intel NUC" },
       { icon: Package, label: "Componentes y accesorios" },
     ],
-    color: "bg-blue-50 border-blue-100",
-    accent: "text-blue-600",
+    accent: "text-blue-300",
   },
   {
     name: "AMD",
@@ -111,8 +106,7 @@ const brands = [
       { icon: Monitor, label: "Radeon GPUs" },
       { icon: Package, label: "Componentes" },
     ],
-    color: "bg-orange-50 border-orange-100",
-    accent: "text-orange-700",
+    accent: "text-orange-400",
   },
   {
     name: "Kingston",
@@ -126,8 +120,7 @@ const brands = [
       { icon: Package, label: "Memorias flash USB" },
       { icon: Package, label: "HyperX Gaming" },
     ],
-    color: "bg-red-50 border-red-100",
-    accent: "text-red-600",
+    accent: "text-red-400",
   },
 ];
 
@@ -142,31 +135,32 @@ export default function MarcasPage() {
   return (
     <>
       <Navbar />
-      <main className="pt-20">
+      <main className="bg-[#030c07] text-white pt-20">
+        
         {/* Hero */}
-        <section className="bg-ink py-20 text-white md:py-28">
+        <section className="bg-[#030c07] py-20 md:py-28 relative">
           <div className="mx-auto max-w-[1200px] px-6">
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 mb-6">
-              <Package className="size-3.5 text-accent" />
-              <span className="text-[12px] font-semibold tracking-wide text-slate-200">Partners y marcas oficiales</span>
+            <div className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-3.5 py-1.5 mb-6">
+              <Package className="size-3.5 text-accent animate-pulse" />
+              <span className="text-[12px] font-bold tracking-wide text-accent">Partners y marcas oficiales</span>
             </div>
-            <h1 className="max-w-[700px] font-display text-[clamp(38px,5.5vw,66px)] font-bold leading-[0.98] tracking-[-0.05em] text-balance">
+            <h1 className="max-w-[700px] font-display text-[clamp(38px,5.5vw,66px)] font-extrabold leading-[0.98] tracking-[-0.05em] text-balance text-white">
               Las mejores marcas del mundo,{" "}
-              <span className="text-gradient">con el respaldo de Bartez.</span>
+              <span className="text-accent">con el respaldo de Bartez.</span>
             </h1>
-            <p className="mt-7 max-w-[56ch] text-[clamp(15px,1.4vw,17px)] leading-relaxed text-slate-300">
+            <p className="mt-7 max-w-[56ch] text-[clamp(15px,1.4vw,17px)] leading-relaxed text-slate-400">
               Distribuimos tecnología de primera línea de los fabricantes más reconocidos del mercado. Más de 30 años de relaciones comerciales nos permiten ofrecer las mejores condiciones con garantía oficial.
             </p>
-            <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <div className="mt-10 flex flex-col gap-3.5 sm:flex-row sm:items-center">
               <Link
                 href="/#cotiza"
-                className="inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-semibold text-ink transition-all hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-bold text-ink transition hover:scale-[1.02]"
               >
                 Consultá disponibilidad <ArrowRight size={16} />
               </Link>
               <Link
                 href="/revendedores"
-                className="inline-flex items-center gap-2 rounded-lg border border-white/30 px-5 py-3.5 text-[14px] font-semibold transition-colors hover:border-white/60"
+                className="inline-flex items-center gap-2 rounded-lg border border-white/20 bg-white/5 px-5 py-3.5 text-[14px] font-semibold text-white transition hover:bg-white/10"
               >
                 Soy revendedor <ExternalLink size={15} />
               </Link>
@@ -175,15 +169,15 @@ export default function MarcasPage() {
         </section>
 
         {/* Por qué trabajar con marcas oficiales */}
-        <section className="bg-slate-50 py-14">
+        <section className="bg-[#06140d] border-y border-white/5 py-14">
           <div className="mx-auto max-w-[1200px] px-6">
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {whyPartners.map((item) => (
-                <div key={item.title} className="flex gap-3 rounded-2xl bg-white p-5 shadow-soft border border-slate-100">
-                  <CheckCircle2 className="mt-0.5 size-5 flex-none text-brand" strokeWidth={1.8} />
+                <div key={item.title} className="flex gap-3 rounded-2xl bg-[#082214] p-5 border border-white/5">
+                  <CheckCircle2 className="mt-0.5 size-5 flex-none text-accent" strokeWidth={1.8} />
                   <div>
-                    <h3 className="font-display text-[14px] font-semibold text-ink">{item.title}</h3>
-                    <p className="mt-1 text-[12.5px] leading-relaxed text-slate-500">{item.desc}</p>
+                    <h3 className="font-display text-[14px] font-bold text-white">{item.title}</h3>
+                    <p className="mt-1 text-[12.5px] leading-relaxed text-slate-400">{item.desc}</p>
                   </div>
                 </div>
               ))}
@@ -192,12 +186,12 @@ export default function MarcasPage() {
         </section>
 
         {/* Grid de marcas */}
-        <section className="bg-white py-20 md:py-28">
+        <section className="bg-[#030c07] py-20 md:py-28">
           <div className="mx-auto max-w-[1200px] px-6">
-            <h2 className="font-display text-[clamp(26px,3.5vw,40px)] font-bold tracking-[-0.035em] text-ink">
+            <h2 className="font-display text-[clamp(26px,3.5vw,40px)] font-bold tracking-[-0.035em] text-white">
               Nuestro portfolio de marcas
             </h2>
-            <p className="mt-3 max-w-[55ch] text-[15px] leading-relaxed text-slate-500">
+            <p className="mt-3 max-w-[55ch] text-[15px] leading-relaxed text-slate-400">
               Seleccionamos las marcas líderes en cada categoría para cubrir todos los segmentos y presupuestos.
             </p>
 
@@ -205,14 +199,14 @@ export default function MarcasPage() {
               {brands.map((brand) => (
                 <div
                   key={brand.name}
-                  className={`group rounded-2xl border p-7 transition-shadow hover:shadow-card ${brand.color}`}
+                  className="group rounded-3xl border border-white/5 bg-[#082214] p-8 hover:border-accent/30 transition duration-300 shadow-soft"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <span className={`text-[11px] font-bold uppercase tracking-[0.15em] ${brand.accent}`}>
                         {brand.category}
                       </span>
-                      <div className="mt-3 h-8">
+                      <div className="mt-3 h-8 brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
                         <Image
                           src={brand.logo}
                           alt={brand.name}
@@ -224,15 +218,15 @@ export default function MarcasPage() {
                     </div>
                   </div>
 
-                  <p className="mt-5 text-[13.5px] leading-relaxed text-slate-600">
+                  <p className="mt-5 text-[13.5px] leading-relaxed text-slate-400">
                     {brand.description}
                   </p>
 
                   <div className="mt-5 grid grid-cols-2 gap-2">
                     {brand.products.map((product) => (
-                      <div key={product.label} className="flex items-center gap-2 rounded-lg bg-white/70 px-3 py-2">
-                        <product.icon className="size-3.5 flex-none text-slate-500" strokeWidth={1.6} />
-                        <span className="text-[12px] font-medium text-slate-700">{product.label}</span>
+                      <div key={product.label} className="flex items-center gap-2 rounded-lg bg-white/5 border border-white/5 px-3 py-2">
+                        <product.icon className="size-3.5 flex-none text-slate-400" strokeWidth={1.6} />
+                        <span className="text-[12px] font-medium text-slate-350">{product.label}</span>
                       </div>
                     ))}
                   </div>
@@ -243,11 +237,11 @@ export default function MarcasPage() {
         </section>
 
         {/* CTA */}
-        <section className="bg-ink py-16 text-white">
+        <section className="bg-[#06140d] border-t border-white/5 py-16 text-white">
           <div className="mx-auto max-w-[1200px] px-6">
             <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
               <div>
-                <h2 className="font-display text-[clamp(24px,3vw,36px)] font-bold tracking-[-0.03em]">
+                <h2 className="font-display text-[clamp(24px,3vw,36px)] font-bold tracking-[-0.03em] text-white">
                   ¿Buscás un producto específico?
                 </h2>
                 <p className="mt-3 max-w-[50ch] text-[15px] leading-relaxed text-slate-300">
@@ -257,13 +251,13 @@ export default function MarcasPage() {
               <div className="flex flex-col gap-3 sm:flex-row">
                 <Link
                   href="/#cotiza"
-                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-semibold text-ink transition-all hover:-translate-y-0.5"
+                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-bold text-ink transition hover:scale-[1.02]"
                 >
                   Pedir cotización <ArrowRight size={16} />
                 </Link>
                 <Link
                   href="/revendedores"
-                  className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/30 px-6 py-3.5 text-[14.5px] font-semibold transition-colors hover:border-white/60"
+                  className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/20 bg-white/5 px-6 py-3.5 text-[14.5px] font-semibold text-white transition hover:bg-white/10"
                 >
                   Canal revendedores
                 </Link>
