@@ -1,9 +1,29 @@
 "use client";
 
 import Image from "next/image";
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useChat } from "@ai-sdk/react";
-import { DefaultChatTransport } from "ai";
+import { DefaultChatTransport, type UIMessage } from "ai";
+
+const SESSION_KEY = "bartez_assistant_messages";
+
+function loadMessages(): UIMessage[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = sessionStorage.getItem(SESSION_KEY);
+    return raw ? (JSON.parse(raw) as UIMessage[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveMessages(msgs: UIMessage[]) {
+  try {
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify(msgs));
+  } catch {
+    // sessionStorage lleno o bloqueado — ignorar silenciosamente
+  }
+}
 import {
   ArrowUp,
   Check,
@@ -35,7 +55,11 @@ const fieldClass = "w-full rounded-lg border border-slate-200 px-3 py-2.5 text-[
 
 export function Assistant() {
   const transport = useMemo(() => new DefaultChatTransport({ api: "/api/chat" }), []);
-  const { messages, sendMessage, status, error, clearError } = useChat({ transport });
+  const savedMessages = useMemo(() => loadMessages(), []);
+  const { messages, sendMessage, status, error, clearError } = useChat({
+    transport,
+    messages: savedMessages.length > 0 ? savedMessages : undefined,
+  });
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [showLeadForm, setShowLeadForm] = useState(false);
@@ -44,6 +68,15 @@ export function Assistant() {
   const [lead, setLead] = useState({ empresa: "", nombre: "", email: "", telefono: "", consent: false, website: "" });
   const conversationStarted = useRef(false);
   const isBusy = status === "streaming" || status === "submitted";
+
+  // Persistir mensajes en sessionStorage cada vez que cambian
+  const persistMessages = useCallback(() => {
+    if (messages.length > 0) saveMessages(messages);
+  }, [messages]);
+
+  useEffect(() => {
+    persistMessages();
+  }, [persistMessages]);
 
   useEffect(() => {
     const openFromPage = (event: MouseEvent) => {

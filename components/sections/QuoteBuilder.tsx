@@ -47,6 +47,12 @@ const needs: Array<{
     description: "Implementación, mantenimiento y asistencia técnica.",
     icon: Headphones,
   },
+  {
+    id: "integral",
+    label: "Necesito una solución integral",
+    description: "Equipos, infraestructura y servicios combinados, o no sé por dónde empezar.",
+    icon: MessageCircle,
+  },
 ];
 
 const scales = ["Hasta 10 personas", "11 a 50 personas", "51 a 200 personas", "Más de 200 personas"];
@@ -162,7 +168,7 @@ export function QuoteBuilder() {
             Contanos qué necesita tu empresa.
           </h2>
           <p className="mt-6 max-w-[38ch] text-[16px] leading-relaxed text-slate-300">
-            Respondé unas preguntas breves y un especialista te contactará con una propuesta adecuada a tu contexto.
+            Respondé unas preguntas breves y un especialista te contactará con una propuesta adecuada a tu contexto en <strong>24 hs hábiles</strong> (Lun–Vie 9 a 18 hs).
           </p>
           <a
             href={whatsappHref}

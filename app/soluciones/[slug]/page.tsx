@@ -36,7 +36,7 @@ export default async function VerticalPage({ params }: { params: Promise<{ slug:
     .map((relatedSlug) => verticals.find((item) => item.slug === relatedSlug))
     .filter(Boolean) as typeof verticals;
   const whatsappHref = `https://wa.me/${contact.whatsappNumber}?text=${encodeURIComponent(`Hola, necesito asesoramiento sobre ${vertical.navLabel}.`)}`;
-  const jsonLd = {
+  const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     mainEntity: vertical.faqs.map((item) => ({
@@ -45,18 +45,32 @@ export default async function VerticalPage({ params }: { params: Promise<{ slug:
       acceptedAnswer: { "@type": "Answer", text: item.a },
     })),
   };
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Inicio", item: company.url },
+      { "@type": "ListItem", position: 2, name: "Soluciones", item: `${company.url}/#soluciones` },
+      { "@type": "ListItem", position: 3, name: vertical.navLabel, item: `${company.url}/soluciones/${vertical.slug}` },
+    ],
+  };
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <Navbar />
       <main>
         <section className="bg-white pt-28 md:pt-32">
           <div className="mx-auto grid min-h-[620px] max-w-[1200px] items-center gap-12 px-6 py-14 lg:grid-cols-[.92fr_1.08fr]">
             <div>
-              <Link href="/#soluciones" className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-slate-500 transition-colors hover:text-brand">
-                <ArrowLeft size={15} /> Volver a soluciones
-              </Link>
+              <nav aria-label="Migas de pan" className="flex items-center gap-1.5 text-[13px] text-slate-500">
+                <Link href="/" className="hover:text-brand transition-colors">Inicio</Link>
+                <span aria-hidden>›</span>
+                <Link href="/#soluciones" className="hover:text-brand transition-colors">Soluciones</Link>
+                <span aria-hidden>›</span>
+                <span className="font-semibold text-ink" aria-current="page">{vertical.navLabel}</span>
+              </nav>
               <h1 className="mt-8 font-display text-[clamp(40px,5.2vw,68px)] font-bold leading-[1] tracking-[-0.05em] text-ink text-balance">
                 {vertical.h1}
               </h1>
@@ -155,9 +169,9 @@ export default async function VerticalPage({ params }: { params: Promise<{ slug:
         <section className="bg-ink py-16 text-white">
           <div className="mx-auto flex max-w-[900px] flex-col items-center px-6 text-center">
             <h2 className="font-display text-[clamp(30px,4vw,48px)] font-bold tracking-[-0.04em]">Hablemos de lo que necesita tu empresa.</h2>
-            <p className="mt-4 max-w-[50ch] text-[15px] leading-relaxed text-slate-300">Un especialista puede ayudarte a definir el alcance antes de preparar una propuesta.</p>
+            <p className="mt-4 max-w-[50ch] text-[15px] leading-relaxed text-slate-300">Un especialista puede ayudarte a definir el alcance antes de preparar una propuesta. Respondemos en <strong>24 hs hábiles</strong> (Lun–Vie 9 a 18 hs).</p>
             <Link href="/#cotiza" className="mt-7 inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3.5 text-[14px] font-semibold text-ink transition-colors hover:bg-emerald-50">
-              Contanos tu desafío <ArrowRight size={17} />
+              Contános tu desafío <ArrowRight size={17} />
             </Link>
           </div>
         </section>
