@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, Clock } from "lucide-react";
+import { getDynamicArticleBySlug } from "../../../lib/db-content";
 import { articles, company } from "../../../constants";
 import { Navbar } from "../../../components/Navbar";
 import { Footer } from "../../../components/Footer";
@@ -14,7 +15,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const a = articles.find((x) => x.slug === slug);
+  const a = await getDynamicArticleBySlug(slug);
   if (!a) return {};
   return {
     title: `${a.title} | Bartez Tecnología`,
@@ -26,7 +27,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function Articulo({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const a = articles.find((x) => x.slug === slug);
+  const a = await getDynamicArticleBySlug(slug);
   if (!a) notFound();
 
   const jsonLd = {

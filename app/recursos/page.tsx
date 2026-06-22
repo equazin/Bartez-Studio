@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Clock } from "lucide-react";
-import { articles } from "../../constants";
+import { getDynamicArticles } from "../../lib/db-content";
 import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
 import { Assistant } from "../../components/Assistant";
@@ -14,7 +14,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/recursos" },
 };
 
-export default function Recursos() {
+export default async function Recursos() {
+  const articles = await getDynamicArticles();
   return (
     <>
       <Navbar />

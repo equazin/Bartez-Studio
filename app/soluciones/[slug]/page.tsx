@@ -3,7 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, CheckCircle2, MessageCircle } from "lucide-react";
-import { verticals, company, contact, partners } from "../../../constants";
+import { verticals, company, contact } from "../../../constants";
+import { getDynamicPartners } from "../../../lib/db-content";
 import { Navbar } from "../../../components/Navbar";
 import { Footer } from "../../../components/Footer";
 import { Assistant } from "../../../components/Assistant";
@@ -32,6 +33,7 @@ export default async function VerticalPage({ params }: { params: Promise<{ slug:
   const { slug } = await params;
   const vertical = verticals.find((item) => item.slug === slug);
   if (!vertical) notFound();
+  const brands = await getDynamicPartners();
   const related = vertical.related
     .map((relatedSlug) => verticals.find((item) => item.slug === relatedSlug))
     .filter(Boolean) as typeof verticals;
@@ -92,7 +94,7 @@ export default async function VerticalPage({ params }: { params: Promise<{ slug:
 
         <section className="border-y border-slate-200 bg-slate-50/70 py-7" aria-label="Marcas con las que trabajamos">
           <div className="mx-auto flex max-w-[1200px] flex-wrap items-center justify-center gap-x-10 gap-y-5 px-6">
-            {partners.brands.slice(0, 6).map((brand) => (
+            {brands.slice(0, 6).map((brand) => (
               <Image key={brand.name} src={brand.logo} alt={brand.name} width={96} height={28} className="h-5 w-auto grayscale opacity-55" />
             ))}
           </div>

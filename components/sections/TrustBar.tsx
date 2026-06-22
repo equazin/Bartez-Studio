@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Building2, FileCheck2, MapPinned } from "lucide-react";
-import { partners } from "../../constants";
+import { getDynamicPartners } from "../../lib/db-content";
 
 const serviceProof = [
   { icon: Building2, label: "Atención B2B dedicada" },
@@ -8,12 +8,14 @@ const serviceProof = [
   { icon: MapPinned, label: "Cobertura nacional" },
 ];
 
-export function TrustBar() {
+export async function TrustBar() {
+  const brands = await getDynamicPartners();
+
   return (
     <section className="border-y border-slate-200 bg-slate-50/70 py-8" aria-label="Marcas y cobertura">
       <div className="mx-auto flex max-w-[1200px] flex-col gap-8 px-6 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex flex-wrap items-center gap-x-9 gap-y-5">
-          {partners.brands.slice(0, 5).map((brand) => (
+          {brands.slice(0, 7).map((brand) => (
             <Image
               key={brand.name}
               src={brand.logo}

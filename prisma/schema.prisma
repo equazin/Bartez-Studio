@@ -1,0 +1,43 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Post {
+  id              Int      @id @default(autoincrement())
+  slug            String   @unique
+  title           String
+  excerpt         String
+  date            String
+  cover           String
+  metaDescription String
+  readingTime     String
+  body            Json     // Array of objects (p: text or h: title)
+  published       Boolean  @default(true)
+  createdAt       DateTime @default(now())
+}
+
+model ClientLogo {
+  id           Int      @id @default(autoincrement())
+  name         String
+  logoUrl      String
+  displayOrder Int      @default(0)
+  active       Boolean  @default(true)
+}
+
+model SuccessCase {
+  id          Int      @id @default(autoincrement())
+  title       String
+  clientName  String
+  logoUrl     String?
+  coverImage  String
+  description String
+  metrics     Json     // Array of strings (e.g., ["+15% rendimiento", "100% uptime"])
+  content     String   // MD or plain text body
+  active      Boolean  @default(true)
+}
