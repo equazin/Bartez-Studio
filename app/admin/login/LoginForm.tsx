@@ -36,26 +36,26 @@ export function LoginForm() {
   }
 
   return (
-    <main className="grid min-h-screen bg-[#f7f8f5] lg:grid-cols-[1fr_.78fr]">
+    <main className="grid min-h-screen bg-white lg:grid-cols-[1fr_.72fr]">
       <section className="flex items-center justify-center px-5 py-12">
         <div className="w-full max-w-[430px]">
           <Image src="/brand/bartez-logo.png" alt="Bartez Tecnología" width={180} height={54} className="h-10 w-auto" priority />
-          <div className="mt-14">
-            <h1 className="font-display text-[clamp(34px,5vw,46px)] font-bold tracking-[-0.04em] text-ink">Acceso al panel</h1>
-            <p className="mt-3 max-w-[42ch] text-[15px] leading-relaxed text-slate-600">Gestioná artículos, logos y casos publicados en el sitio institucional.</p>
+          <div className="mt-12">
+            <h1 className="font-display text-[clamp(32px,4vw,42px)] font-bold tracking-[-0.04em] text-slate-950">Acceso al panel</h1>
+            <p className="mt-3 max-w-[42ch] text-[15px] font-medium leading-relaxed text-slate-700">Gestioná artículos, clientes y casos publicados en el sitio institucional.</p>
           </div>
 
           <form onSubmit={submit} className="mt-9 flex flex-col gap-5">
             {error ? <AdminAlert>{error}</AdminAlert> : null}
             <AdminField label="Usuario" htmlFor="admin-username">
               <div className="relative">
-                <UserRound className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
+                <UserRound className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-slate-600" />
                 <AdminInput id="admin-username" autoComplete="username" value={username} onChange={(event) => setUsername(event.target.value)} className="pl-10" required />
               </div>
             </AdminField>
             <AdminField label="Contraseña" htmlFor="admin-password">
               <div className="relative">
-                <LockKeyhole className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
+                <LockKeyhole className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-slate-600" />
                 <AdminInput id="admin-password" type="password" autoComplete="current-password" value={password} onChange={(event) => setPassword(event.target.value)} className="pl-10" required />
               </div>
             </AdminField>
@@ -64,18 +64,17 @@ export function LoginForm() {
             </AdminButton>
           </form>
 
-          <Link href="/" className="mt-8 inline-flex text-[13px] font-semibold text-slate-500 hover:text-brand">← Volver al sitio</Link>
+          <Link href="/" className="mt-8 inline-flex text-[13px] font-bold text-slate-700 hover:text-green-900">← Volver al sitio</Link>
         </div>
       </section>
 
-      <aside className="relative hidden overflow-hidden bg-[#073b2a] p-12 text-white lg:flex lg:flex-col lg:justify-between">
-        <div className="absolute inset-x-0 top-0 h-px bg-white/20" />
+      <aside className="relative hidden overflow-hidden border-l border-green-950 bg-[#064e3b] p-12 text-white lg:flex lg:flex-col lg:justify-between">
         <ShieldCheck className="size-9 text-emerald" strokeWidth={1.5} />
         <div>
-          <p className="max-w-[14ch] font-display text-[42px] font-bold leading-[1.08] tracking-[-0.045em]">Contenido institucional, bajo control.</p>
-          <p className="mt-6 max-w-[42ch] text-[14px] leading-relaxed text-emerald-50/70">Sesiones protegidas, cambios validados y publicación coordinada con el sitio público.</p>
+          <p className="max-w-[14ch] font-display text-[40px] font-bold leading-[1.08] tracking-[-0.045em]">Contenido institucional, bajo control.</p>
+          <p className="mt-6 max-w-[42ch] text-[14px] font-medium leading-relaxed text-white">Sesiones protegidas, cambios validados y publicación coordinada con el sitio público.</p>
         </div>
-        <p className="text-[11px] uppercase tracking-[0.13em] text-emerald-100/45">Bartez Tecnología · Administración</p>
+        <p className="text-[11px] font-bold uppercase tracking-[0.13em] text-green-100">Bartez Tecnología · Administración</p>
       </aside>
     </main>
   );

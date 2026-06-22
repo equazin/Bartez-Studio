@@ -56,15 +56,15 @@ export function ImageUpload({
   return (
     <div className="flex flex-col gap-3">
       <div className={compact ? "flex items-center gap-4" : "flex flex-col gap-3"}>
-        <div className={compact ? "relative grid size-20 flex-none place-items-center overflow-hidden rounded-[10px] border border-slate-200 bg-slate-50" : "relative grid aspect-[16/7] place-items-center overflow-hidden rounded-[10px] border border-slate-200 bg-slate-50"}>
-          {value ? <Image src={value} alt="" fill sizes={compact ? "80px" : "340px"} className="object-cover" /> : <ImageIcon className="size-7 text-slate-300" />}
+        <div className={compact ? "relative grid size-20 flex-none place-items-center overflow-hidden rounded-lg border border-slate-400 bg-white" : "relative grid aspect-[16/7] place-items-center overflow-hidden rounded-lg border border-dashed border-slate-400 bg-slate-50"}>
+          {value ? <Image src={value} alt="Vista previa de la imagen" fill sizes={compact ? "80px" : "680px"} className={compact ? "object-contain p-2" : "object-cover"} /> : <ImageIcon className="size-7 text-slate-500" />}
         </div>
         <div className="flex flex-col gap-2">
           <input ref={input} type="file" accept="image/png,image/jpeg,image/webp,image/avif" className="sr-only" onChange={(event) => void upload(event.target.files?.[0])} />
           <AdminButton type="button" variant="secondary" size="sm" disabled={uploading} onClick={() => input.current?.click()}>
             {uploading ? <Loader2 className="animate-spin" /> : <Upload />} {uploading ? "Subiendo…" : label}
           </AdminButton>
-          <p className="text-[11.5px] text-slate-500">PNG, JPG, WebP o AVIF · máximo 5 MB</p>
+          <p className="text-[11.5px] font-medium text-slate-600">PNG, JPG, WebP o AVIF · máximo 5 MB</p>
         </div>
       </div>
       {error ? <AdminAlert>{error}</AdminAlert> : null}

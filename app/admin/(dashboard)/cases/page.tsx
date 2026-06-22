@@ -140,9 +140,9 @@ export default function AdminCases() {
 
   if (editing) {
     return (
-      <div className="mx-auto max-w-[1180px]">
-        <div className="flex flex-col gap-5 border-b border-slate-200 pb-6 md:flex-row md:items-end md:justify-between">
-          <div><button onClick={() => setEditing(null)} className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-brand"><ArrowLeft className="size-4" /> Casos de éxito</button><h1 className="mt-3 font-display text-[clamp(28px,4vw,38px)] font-bold tracking-[-0.04em] text-ink">{isNew ? "Nuevo caso" : "Editar caso"}</h1></div>
+      <div className="mx-auto max-w-[1240px]">
+        <div className="flex flex-col gap-5 border-b border-slate-300 pb-5 md:flex-row md:items-center md:justify-between">
+          <div><button onClick={() => setEditing(null)} className="inline-flex items-center gap-1.5 text-[12.5px] font-bold text-green-800 hover:text-green-950"><ArrowLeft className="size-4" /> Volver a casos</button><h1 className="mt-2 font-display text-[clamp(26px,3vw,34px)] font-bold tracking-[-0.035em] text-slate-950">{isNew ? "Nuevo caso" : "Editar caso"}</h1></div>
           <div className="flex flex-wrap gap-2">
             {!isNew && editing.id && editing.active ? <AdminButton asChild variant="secondary"><Link href={`/casos/${editing.id}`} target="_blank"><Eye />Vista previa</Link></AdminButton> : null}
             <AdminButton variant="secondary" onClick={() => setEditing(null)}><X />Cancelar</AdminButton>
@@ -160,16 +160,16 @@ export default function AdminCases() {
               <AdminField label="Métricas verificadas" htmlFor="case-metric" hint="Máximo 8. Publicá únicamente resultados autorizados.">
                 <div className="flex gap-2"><AdminInput id="case-metric" value={metric} onChange={(event) => setMetric(event.target.value)} maxLength={100} onKeyDown={(event) => { if (event.key === "Enter") { event.preventDefault(); addMetric(); } }} /><AdminButton type="button" variant="secondary" onClick={addMetric}><Plus />Agregar</AdminButton></div>
               </AdminField>
-              {metrics.length > 0 ? <div className="flex flex-wrap gap-2">{metrics.map((item, index) => <button key={`${item}-${index}`} onClick={() => setMetrics((current) => current.filter((_, metricIndex) => metricIndex !== index))} className="inline-flex items-center gap-1.5 rounded-md border border-emerald-200 bg-emerald-50 px-2.5 py-1.5 text-[12px] font-semibold text-brand">{item}<X className="size-3.5" /></button>)}</div> : null}
+              {metrics.length > 0 ? <div className="flex flex-wrap gap-2">{metrics.map((item, index) => <button key={`${item}-${index}`} onClick={() => setMetrics((current) => current.filter((_, metricIndex) => metricIndex !== index))} className="inline-flex items-center gap-1.5 rounded-md border border-green-200 bg-green-50 px-2.5 py-1.5 text-[12px] font-semibold text-brand">{item}<X className="size-3.5" /></button>)}</div> : null}
             </div>
           </AdminPanel>
           <div className="flex flex-col gap-5">
             <AdminPanel className="p-5">
-              <h2 className="font-display text-[16px] font-bold text-ink">Publicación</h2>
+              <h2 className="font-display text-[16px] font-bold text-slate-950">Publicación</h2>
               <div className="mt-5"><AdminToggle id="case-active" label="Visible en el sitio" checked={Boolean(editing.active)} onCheckedChange={(value) => update("active", value)} /></div>
             </AdminPanel>
             <AdminPanel className="p-5">
-              <h2 className="font-display text-[16px] font-bold text-ink">Imágenes</h2>
+              <h2 className="font-display text-[16px] font-bold text-slate-950">Imágenes</h2>
               <div className="mt-5 flex flex-col gap-5">
                 <AdminField label="Portada" htmlFor="case-cover"><ImageUpload value={editing.coverImage} onChange={(url) => update("coverImage", url)} label="Subir portada" /></AdminField>
                 <AdminField label="Logo del cliente (opcional)" htmlFor="case-logo"><ImageUpload compact value={editing.logoUrl} onChange={(url) => update("logoUrl", url)} label="Subir logo" /></AdminField>
@@ -184,19 +184,19 @@ export default function AdminCases() {
   }
 
   return (
-    <div className="mx-auto max-w-[1180px]">
-      <div className="flex flex-col gap-5 border-b border-slate-200 pb-7 sm:flex-row sm:items-end sm:justify-between">
-        <div><h1 className="font-display text-[clamp(30px,4vw,42px)] font-bold tracking-[-0.04em] text-ink">Casos de éxito</h1><p className="mt-2 text-[14.5px] text-slate-600">Experiencias reales publicadas únicamente con autorización.</p></div>
+    <div className="mx-auto max-w-[1240px]">
+      <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+        <div><h1 className="font-display text-[clamp(28px,3vw,36px)] font-bold tracking-[-0.035em] text-slate-950">Casos de éxito</h1><p className="mt-2 text-[14px] font-medium text-slate-700">Experiencias reales publicadas únicamente con autorización.</p></div>
         <AdminButton onClick={createItem}><Plus />Nuevo caso</AdminButton>
       </div>
       {error ? <div className="mt-5"><AdminAlert>{error}</AdminAlert></div> : null}
       <AdminPanel className="mt-6 overflow-hidden">
         {loading ? <div className="grid min-h-48 place-items-center"><AdminSpinner label="Cargando casos…" /></div> : items.length === 0 ? (
-          <div className="grid min-h-56 place-items-center p-8 text-center"><div><BriefcaseBusiness className="mx-auto size-8 text-slate-300" /><p className="mt-4 text-[14px] font-semibold text-ink">No hay casos cargados.</p><AdminButton className="mt-5" onClick={createItem}><Plus />Crear el primero</AdminButton></div></div>
+          <div className="grid min-h-56 place-items-center p-8 text-center"><div><BriefcaseBusiness className="mx-auto size-8 text-slate-300" /><p className="mt-4 text-[14px] font-semibold text-slate-950">No hay casos cargados.</p><AdminButton className="mt-5" onClick={createItem}><Plus />Crear el primero</AdminButton></div></div>
         ) : items.map((item) => (
-          <div key={item.id} className="grid gap-4 border-b border-slate-100 px-5 py-4 last:border-0 sm:grid-cols-[96px_minmax(0,1fr)_120px_110px] sm:items-center">
-            <div className="h-16 w-24 overflow-hidden rounded-lg border border-slate-200 bg-slate-50"><Image src={item.coverImage} alt="" width={96} height={64} className="size-full object-cover" /></div>
-            <div className="min-w-0"><p className="text-[11.5px] font-bold uppercase tracking-[0.08em] text-brand">{item.clientName}</p><p className="mt-1 truncate text-[13.5px] font-semibold text-ink">{item.title}</p><p className="mt-1 truncate text-[11.5px] text-slate-500">{item.description}</p></div>
+          <div key={item.id} className="grid gap-4 border-b border-slate-200 px-5 py-4 last:border-0 sm:grid-cols-[96px_minmax(0,1fr)_120px_110px] sm:items-center">
+            <div className="h-16 w-24 overflow-hidden rounded-lg border border-slate-300 bg-slate-100"><Image src={item.coverImage} alt="" width={96} height={64} className="size-full object-cover" /></div>
+            <div className="min-w-0"><p className="text-[11.5px] font-bold uppercase tracking-[0.08em] text-green-800">{item.clientName}</p><p className="mt-1 truncate text-[13.5px] font-bold text-slate-950">{item.title}</p><p className="mt-1 truncate text-[11.5px] font-medium text-slate-600">{item.description}</p></div>
             <button className="justify-self-start" onClick={() => void toggle(item)}><StatusBadge active={item.active} activeLabel="Publicado" inactiveLabel="Oculto" /></button>
             <div className="flex justify-end gap-1"><AdminButton variant="ghost" size="icon" onClick={() => editItem(item)} aria-label="Editar"><Pencil /></AdminButton><AdminButton variant="ghost" size="icon" onClick={() => setDeleteTarget(item)} aria-label="Eliminar"><Trash2 /></AdminButton></div>
           </div>

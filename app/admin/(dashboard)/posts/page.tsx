@@ -144,11 +144,11 @@ export default function AdminPosts() {
 
   if (editing) {
     return (
-      <div className="mx-auto max-w-[1180px]">
-        <div className="flex flex-col gap-5 border-b border-slate-200 pb-6 md:flex-row md:items-end md:justify-between">
+      <div className="mx-auto max-w-[1240px]">
+        <div className="flex flex-col gap-5 border-b border-slate-300 pb-5 md:flex-row md:items-center md:justify-between">
           <div>
-            <button onClick={cancel} className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-brand"><ArrowLeft className="size-4" /> Artículos</button>
-            <h1 className="mt-3 font-display text-[clamp(28px,4vw,38px)] font-bold tracking-[-0.04em] text-ink">{isNew ? "Nuevo artículo" : "Editar artículo"}</h1>
+            <button onClick={cancel} className="inline-flex items-center gap-1.5 text-[12.5px] font-bold text-green-800 hover:text-green-950"><ArrowLeft className="size-4" /> Volver a artículos</button>
+            <h1 className="mt-2 font-display text-[clamp(26px,3vw,34px)] font-bold tracking-[-0.035em] text-slate-950">{isNew ? "Nuevo artículo" : "Editar artículo"}</h1>
           </div>
           <div className="flex flex-wrap gap-2">
             {!isNew && editing.slug && editing.published ? (
@@ -171,9 +171,9 @@ export default function AdminPosts() {
                 <AdminTextarea id="post-excerpt" value={editing.excerpt || ""} onChange={(event) => update("excerpt", event.target.value)} maxLength={320} rows={3} />
               </AdminField>
 
-              <div className="border-t border-slate-200 pt-5">
+              <div className="border-t border-slate-300 pt-5">
                 <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div><h2 className="text-[14px] font-bold text-ink">Contenido</h2><p className="mt-1 text-[12px] text-slate-500">Ordená párrafos y subtítulos.</p></div>
+                  <div><h2 className="text-[14px] font-bold text-slate-950">Contenido</h2><p className="mt-1 text-[12px] text-slate-600">Ordená párrafos y subtítulos.</p></div>
                   <div className="flex gap-2">
                     <AdminButton variant="secondary" size="sm" onClick={() => setBlocks((current) => [...current, { p: "" }])}><Plus />Párrafo</AdminButton>
                     <AdminButton variant="secondary" size="sm" onClick={() => setBlocks((current) => [...current, { h: "" }])}><Plus />Subtítulo</AdminButton>
@@ -183,7 +183,7 @@ export default function AdminPosts() {
                   {blocks.map((block, index) => {
                     const paragraph = "p" in block;
                     return (
-                      <div key={index} className="grid grid-cols-[32px_minmax(0,1fr)_auto] items-start gap-2 rounded-[10px] border border-slate-200 bg-slate-50 p-2.5 focus-within:border-brand">
+                      <div key={index} className="grid grid-cols-[32px_minmax(0,1fr)_auto] items-start gap-2 rounded-lg border border-slate-300 bg-white p-2.5 focus-within:border-green-700 focus-within:ring-2 focus-within:ring-green-700/10">
                         <span className="grid size-8 place-items-center text-slate-400"><GripVertical className="size-4" /></span>
                         {paragraph ? (
                           <AdminTextarea aria-label={`Párrafo ${index + 1}`} value={block.p} onChange={(event) => updateBlock(index, event.target.value)} className="min-h-20 border-0 bg-transparent p-2 shadow-none focus:ring-0" placeholder="Escribí el párrafo…" />
@@ -191,8 +191,8 @@ export default function AdminPosts() {
                           <AdminInput aria-label={`Subtítulo ${index + 1}`} value={block.h} onChange={(event) => updateBlock(index, event.target.value)} className="border-0 bg-transparent shadow-none focus:ring-0" placeholder="Escribí el subtítulo…" />
                         )}
                         <div className="flex flex-col">
-                          <button className="grid size-7 place-items-center rounded text-slate-500 hover:bg-white" onClick={() => moveBlock(index, -1)} disabled={index === 0} aria-label="Mover arriba"><ArrowUp className="size-3.5" /></button>
-                          <button className="grid size-7 place-items-center rounded text-slate-500 hover:bg-white" onClick={() => moveBlock(index, 1)} disabled={index === blocks.length - 1} aria-label="Mover abajo"><ArrowDown className="size-3.5" /></button>
+                          <button className="grid size-7 place-items-center rounded text-slate-600 hover:bg-white" onClick={() => moveBlock(index, -1)} disabled={index === 0} aria-label="Mover arriba"><ArrowUp className="size-3.5" /></button>
+                          <button className="grid size-7 place-items-center rounded text-slate-600 hover:bg-white" onClick={() => moveBlock(index, 1)} disabled={index === blocks.length - 1} aria-label="Mover abajo"><ArrowDown className="size-3.5" /></button>
                           <button className="grid size-7 place-items-center rounded text-red-600 hover:bg-red-50" onClick={() => setBlocks((current) => current.filter((_, itemIndex) => itemIndex !== index))} aria-label="Eliminar bloque"><Trash2 className="size-3.5" /></button>
                         </div>
                       </div>
@@ -200,12 +200,15 @@ export default function AdminPosts() {
                   })}
                 </div>
               </div>
+              <div className="border-t border-slate-300 pt-5">
+                <AdminField label="Imagen de portada" htmlFor="post-cover" hint="Formato recomendado: 1200 × 630 px."><ImageUpload value={editing.cover} onChange={(url) => update("cover", url)} label="Cambiar portada" /></AdminField>
+              </div>
             </div>
           </AdminPanel>
 
           <div className="flex flex-col gap-5">
             <AdminPanel className="p-5">
-              <h2 className="font-display text-[16px] font-bold text-ink">Publicación</h2>
+              <h2 className="font-display text-[16px] font-bold text-slate-950">Publicación</h2>
               <div className="mt-5 flex flex-col gap-4">
                 <AdminToggle id="post-published" label="Visible en el sitio" checked={Boolean(editing.published)} onCheckedChange={(value) => update("published", value)} />
                 <AdminField label="Fecha" htmlFor="post-date"><AdminInput id="post-date" type="date" value={editing.date || ""} onChange={(event) => update("date", event.target.value)} /></AdminField>
@@ -213,10 +216,9 @@ export default function AdminPosts() {
               </div>
             </AdminPanel>
             <AdminPanel className="p-5">
-              <h2 className="font-display text-[16px] font-bold text-ink">SEO e imagen</h2>
+              <h2 className="font-display text-[16px] font-bold text-slate-950">SEO</h2>
               <div className="mt-5 flex flex-col gap-4">
                 <AdminField label="Meta descripción" htmlFor="post-meta" hint={`${editing.metaDescription?.length || 0} / 180`}><AdminTextarea id="post-meta" value={editing.metaDescription || ""} onChange={(event) => update("metaDescription", event.target.value)} maxLength={180} rows={4} /></AdminField>
-                <AdminField label="Imagen de portada" htmlFor="post-cover"><ImageUpload value={editing.cover} onChange={(url) => update("cover", url)} label="Subir portada" /></AdminField>
               </div>
             </AdminPanel>
             {!isNew ? <AdminButton variant="danger" onClick={() => setDeleteTarget(editing as Post)}><Trash2 />Eliminar artículo</AdminButton> : null}
@@ -228,22 +230,22 @@ export default function AdminPosts() {
   }
 
   return (
-    <div className="mx-auto max-w-[1180px]">
-      <div className="flex flex-col gap-5 border-b border-slate-200 pb-7 sm:flex-row sm:items-end sm:justify-between">
-        <div><h1 className="font-display text-[clamp(30px,4vw,42px)] font-bold tracking-[-0.04em] text-ink">Artículos</h1><p className="mt-2 text-[14.5px] text-slate-600">Guías y recursos publicados en el sitio.</p></div>
+    <div className="mx-auto max-w-[1240px]">
+      <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+        <div><h1 className="font-display text-[clamp(28px,3vw,36px)] font-bold tracking-[-0.035em] text-slate-950">Artículos</h1><p className="mt-2 text-[14px] font-medium text-slate-700">Guías y recursos publicados en el sitio.</p></div>
         <AdminButton onClick={createPost}><Plus />Nuevo artículo</AdminButton>
       </div>
       {error ? <div className="mt-5"><AdminAlert>{error}</AdminAlert></div> : null}
       <AdminPanel className="mt-6 overflow-hidden">
         {loading ? <div className="grid min-h-48 place-items-center"><AdminSpinner label="Cargando artículos…" /></div> : posts.length === 0 ? (
-          <div className="grid min-h-56 place-items-center p-8 text-center"><div><FileText className="mx-auto size-8 text-slate-300" /><p className="mt-4 text-[14px] font-semibold text-ink">No hay artículos todavía.</p><AdminButton className="mt-5" onClick={createPost}><Plus />Crear el primero</AdminButton></div></div>
+          <div className="grid min-h-56 place-items-center p-8 text-center"><div><FileText className="mx-auto size-8 text-slate-300" /><p className="mt-4 text-[14px] font-semibold text-slate-950">No hay artículos todavía.</p><AdminButton className="mt-5" onClick={createPost}><Plus />Crear el primero</AdminButton></div></div>
         ) : (
           <div>
-            <div className="hidden grid-cols-[minmax(0,1fr)_150px_120px_90px] gap-4 border-b border-slate-200 bg-slate-50 px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500 md:grid"><span>Contenido</span><span>Fecha</span><span>Estado</span><span className="text-right">Acciones</span></div>
+            <div className="hidden grid-cols-[minmax(0,1fr)_150px_120px_90px] gap-4 border-b border-slate-300 bg-slate-100 px-5 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-slate-700 md:grid"><span>Contenido</span><span>Fecha</span><span>Estado</span><span className="text-right">Acciones</span></div>
             {posts.map((post) => (
-              <div key={post.id} className="grid gap-3 border-b border-slate-100 px-5 py-4 last:border-0 md:grid-cols-[minmax(0,1fr)_150px_120px_90px] md:items-center md:gap-4">
-                <div className="min-w-0"><p className="truncate text-[13.5px] font-semibold text-ink">{post.title}</p><p className="mt-1 truncate text-[11.5px] text-slate-500">/recursos/{post.slug}</p></div>
-                <time className="text-[12px] text-slate-500">{new Date(post.date).toLocaleDateString("es-AR")}</time>
+              <div key={post.id} className="grid gap-3 border-b border-slate-200 px-5 py-4 last:border-0 md:grid-cols-[minmax(0,1fr)_150px_120px_90px] md:items-center md:gap-4">
+                <div className="min-w-0"><p className="truncate text-[13.5px] font-bold text-slate-950">{post.title}</p><p className="mt-1 truncate text-[11.5px] text-slate-600">/recursos/{post.slug}</p></div>
+                <time className="text-[12px] font-medium text-slate-700">{new Date(post.date).toLocaleDateString("es-AR")}</time>
                 <div><StatusBadge active={post.published} /></div>
                 <div className="flex justify-end gap-1">
                   <AdminButton variant="ghost" size="icon" onClick={() => editPost(post)} aria-label="Editar"><Pencil /></AdminButton>
