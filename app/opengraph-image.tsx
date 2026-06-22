@@ -46,17 +46,17 @@ export default function OG() {
 
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ fontSize: 70, lineHeight: 1.05, letterSpacing: "-0.02em", maxWidth: 940, fontWeight: 700 }}>
-            El partner tecnológico de tu empresa.
+            Tecnología que mueve empresas.
           </div>
           <div style={{ fontSize: 27, color: "rgba(255,255,255,.75)", marginTop: 22, maxWidth: 900 }}>
-            Mayorista de hardware IT + servicios profesionales · Rosario, Argentina
+            Infraestructura, equipamiento y servicios IT · Rosario, Argentina
           </div>
         </div>
 
         <div style={{ display: "flex", gap: 30, color: "#7CE0A0", fontSize: 22 }}>
-          <span>+14.000 productos</span>
+          <span>Atención B2B</span>
           <span>·</span>
-          <span>Cotización en 24 hs</span>
+          <span>Asesoramiento técnico</span>
           <span>·</span>
           <span>Cobertura nacional</span>
         </div>

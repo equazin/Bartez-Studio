@@ -20,31 +20,40 @@ const tipoLabel: Record<Lead["tipoConsulta"], string> = {
   cuenta: "Cuenta corporativa",
 };
 
+function escapeHtml(value: unknown): string {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
 function itemsBlock(lead: Lead): string {
   if (!lead.items || lead.items.length === 0) return "";
   const rows = lead.items
     .map(
       (it) =>
-        `<tr><td style="padding:2px 8px">• ${it.label}${it.variant ? ` <i>(${it.variant})</i>` : ""}</td><td style="padding:2px 8px"><b>${it.qty ?? 1}</b> u.</td></tr>`
+        `<tr><td style="padding:2px 8px">• ${escapeHtml(it.label)}${it.variant ? ` <i>(${escapeHtml(it.variant)})</i>` : ""}</td><td style="padding:2px 8px"><b>${it.qty ?? 1}</b> u.</td></tr>`
     )
     .join("");
   return `<tr><td valign="top"><b>Pedido</b></td><td>
     <table style="font-size:13px;border-collapse:collapse">${rows}</table>
-    ${lead.urgencia ? `<div style="margin-top:6px;font-size:12px;color:#475569">Urgencia: ${lead.urgencia}</div>` : ""}
+    ${lead.urgencia ? `<div style="margin-top:6px;font-size:12px;color:#475569">Urgencia: ${escapeHtml(lead.urgencia)}</div>` : ""}
   </td></tr>`;
 }
 
 function internalHtml(lead: Lead): string {
-  return `<h2 style="font-family:Arial">Nuevo lead web — ${lead.empresa}</h2>
+  return `<h2 style="font-family:Arial">Nuevo lead web — ${escapeHtml(lead.empresa)}</h2>
   <table style="font-family:Arial;font-size:14px;border-collapse:collapse">
-    <tr><td><b>Empresa</b></td><td>${lead.empresa}</td></tr>
-    <tr><td><b>Contacto</b></td><td>${lead.nombre}</td></tr>
-    <tr><td><b>Email</b></td><td>${lead.email}</td></tr>
-    <tr><td><b>Teléfono</b></td><td>${lead.telefono || "-"}</td></tr>
-    <tr><td><b>Tipo</b></td><td>${tipoLabel[lead.tipoConsulta]}${lead.origen ? ` · ${lead.origen}` : ""}</td></tr>
+    <tr><td><b>Empresa</b></td><td>${escapeHtml(lead.empresa)}</td></tr>
+    <tr><td><b>Contacto</b></td><td>${escapeHtml(lead.nombre)}</td></tr>
+    <tr><td><b>Email</b></td><td>${escapeHtml(lead.email)}</td></tr>
+    <tr><td><b>Teléfono</b></td><td>${escapeHtml(lead.telefono || "-")}</td></tr>
+    <tr><td><b>Tipo</b></td><td>${escapeHtml(tipoLabel[lead.tipoConsulta])}${lead.origen ? ` · ${escapeHtml(lead.origen)}` : ""}</td></tr>
     <tr><td><b>Agendar reunión</b></td><td>${lead.agendarReunion ? "Sí" : "No"}</td></tr>
     ${itemsBlock(lead)}
-    <tr><td valign="top"><b>Mensaje</b></td><td>${(lead.mensaje || "-").replace(/</g, "&lt;")}</td></tr>
+    <tr><td valign="top"><b>Mensaje</b></td><td>${escapeHtml(lead.mensaje || "-")}</td></tr>
   </table>`;
 }
 
@@ -55,9 +64,9 @@ function autoReplyHtml(lead: Lead): string {
       <div style="color:#B8956A;font-size:13px">${company.tagline}</div>
     </div>
     <div style="padding:28px;color:#0F1F17;font-size:15px;line-height:1.6">
-      <p>Hola ${lead.nombre.split(" ")[0]},</p>
-      <p>Recibimos tu consulta de <b>${tipoLabel[lead.tipoConsulta]}</b> para <b>${lead.empresa}</b>.
-      Un asesor comercial te va a contactar con una cotización formal en un plazo de <b>24 hs hábiles</b>.</p>
+      <p>Hola ${escapeHtml(lead.nombre.split(" ")[0])},</p>
+      <p>Recibimos tu consulta de <b>${escapeHtml(tipoLabel[lead.tipoConsulta])}</b> para <b>${escapeHtml(lead.empresa)}</b>.
+      Un asesor comercial va a revisar el contexto y se pondrá en contacto por el canal indicado.</p>
       <p>Si es urgente, escribinos por WhatsApp al ${contact.phoneDisplay}.</p>
       <p style="margin-top:24px">Gracias por confiar en ${company.name}.</p>
       <hr style="border:none;border-top:1px solid #eee;margin:24px 0" />

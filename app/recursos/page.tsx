@@ -2,16 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Clock } from "lucide-react";
-import { articles, company } from "../../constants";
+import { articles } from "../../constants";
 import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
-import { WhatsAppFloat } from "../../components/WhatsAppFloat";
-import { MobileCTA } from "../../components/MobileCTA";
+import { Assistant } from "../../components/Assistant";
 
 export const metadata: Metadata = {
-  title: "Recursos y guías de compra IT | Bartez Tecnología",
+  title: "Recursos para decisiones de tecnología | Bartez Tecnología",
   description:
-    "Guías prácticas para comprar tecnología en tu empresa: cómo elegir servidores, renovar notebooks corporativas y más. Por Bartez Tecnología.",
+    "Guías prácticas para evaluar infraestructura, equipos y continuidad tecnológica en empresas.",
   alternates: { canonical: "/recursos" },
 };
 
@@ -23,7 +22,7 @@ export default function Recursos() {
         <section className="bg-ink pt-32 text-white md:pt-40">
           <div className="mx-auto max-w-[1200px] px-7 pb-16">
             <span className="text-[13px] font-semibold uppercase tracking-[0.12em] text-accent">Recursos</span>
-            <h1 className="mt-4 max-w-[18ch] font-display text-[clamp(32px,4.6vw,52px)] font-bold leading-[1.06] tracking-[-0.02em]">Guías de compra IT para empresas.</h1>
+            <h1 className="mt-4 max-w-[18ch] font-display text-[clamp(32px,4.6vw,52px)] font-bold leading-[1.06] tracking-[-0.02em]">Criterio para mejores decisiones IT.</h1>
             <p className="mt-5 max-w-[55ch] text-[17px] text-slate-300">Contenido práctico para tomar mejores decisiones de tecnología en tu organización.</p>
           </div>
         </section>
@@ -50,8 +49,7 @@ export default function Recursos() {
         </section>
       </main>
       <Footer />
-      <WhatsAppFloat />
-      <MobileCTA />
+      <Assistant />
     </>
   );
 }

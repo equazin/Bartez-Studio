@@ -1,24 +1,33 @@
-import { process as proc } from "../../constants";
-import { Reveal } from "../motion";
-import { SectionHeading } from "../SectionHeading";
+import { ClipboardList, FileText, MessagesSquare, Rocket } from "lucide-react";
+
+const steps = [
+  { icon: MessagesSquare, title: "Contanos el desafío", description: "Nos compartís qué necesitás resolver y cuáles son tus prioridades." },
+  { icon: ClipboardList, title: "Evaluamos la necesidad", description: "Analizamos el entorno y relevamos los requerimientos clave." },
+  { icon: FileText, title: "Presentamos la propuesta", description: "Diseñamos una solución y una propuesta de trabajo clara." },
+  { icon: Rocket, title: "Implementamos y acompañamos", description: "Coordinamos la puesta en marcha y el seguimiento." },
+];
 
 export function Process() {
   return (
-    <section id="proceso" className="scroll-mt-24 bg-slate-50 py-24">
-      <div className="mx-auto max-w-[1200px] px-7">
-        <SectionHeading num={proc.num} eyebrow={proc.eyebrow} title={proc.title} className="mb-16" />
-        <div className="relative grid gap-8 md:grid-cols-4">
-          <div className="absolute left-0 right-0 top-7 hidden h-px bg-gradient-to-r from-brand/50 via-accent/30 to-transparent md:block" aria-hidden />
-          {proc.steps.map((s, i) => (
-            <Reveal as="div" delay={i * 0.1} key={s.n} className="relative">
-              <div className="relative z-10 grid h-14 w-14 place-items-center rounded-2xl bg-brand font-display text-[18px] font-bold text-white shadow-glow">
-                {s.n}
-              </div>
-              <h3 className="mt-5 font-display text-[18px] font-bold text-ink">{s.title}</h3>
-              <p className="mt-2 text-[14.5px] leading-relaxed text-slate-600">{s.desc}</p>
-            </Reveal>
+    <section id="proceso" className="scroll-mt-24 bg-white py-20 md:py-28">
+      <div className="mx-auto max-w-[1200px] px-6">
+        <h2 className="max-w-[720px] font-display text-[clamp(30px,4vw,46px)] font-bold leading-[1.05] tracking-[-0.035em] text-ink">
+          De la consulta a la implementación.
+        </h2>
+
+        <ol className="relative mt-14 grid gap-9 md:grid-cols-4 md:gap-6">
+          <span className="absolute left-[8%] right-[8%] top-5 hidden h-px bg-brand/35 md:block" aria-hidden />
+          {steps.map((step, index) => (
+            <li key={step.title} className="relative">
+              <span className="relative z-10 grid size-10 place-items-center rounded-full border border-brand bg-white font-display text-[13px] font-bold text-brand">
+                {index + 1}
+              </span>
+              <step.icon className="mt-7 size-6 text-ink" strokeWidth={1.6} />
+              <h3 className="mt-4 font-display text-[16px] font-semibold text-ink">{step.title}</h3>
+              <p className="mt-2 max-w-[26ch] text-[13px] leading-relaxed text-slate-500">{step.description}</p>
+            </li>
           ))}
-        </div>
+        </ol>
       </div>
     </section>
   );

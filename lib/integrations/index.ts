@@ -4,21 +4,29 @@ import { apolloSink } from "./apollo";
 import { mondaySink } from "./monday";
 import { mailSink } from "./mail";
 import { calendarSink } from "./calendar";
+import { archiveSink } from "./archive";
+import { createHash } from "node:crypto";
 
 /**
  * Orquestador de captación de leads.
  * Corre todas las integraciones en paralelo, aisladas: el fallo de una
- * NO afecta a las demás. El lead nunca se pierde — siempre se loguea.
+ * NO afecta a las demás. La API sólo confirma recepción cuando al menos
+ * un destino durable conserva el lead.
  */
-const sinks: LeadSink[] = [apolloSink, mondaySink, mailSink, calendarSink];
+const sinks: LeadSink[] = [archiveSink, apolloSink, mondaySink, mailSink, calendarSink];
 
 export async function processLead(lead: Lead): Promise<{
   results: IntegrationResult[];
   anyConfigured: boolean;
+  persisted: boolean;
 }> {
   // Persistencia mínima garantizada (siempre): log estructurado.
   // En producción, reemplazar por un insert a DB/KV si se desea durabilidad.
-  console.info("[lead]", JSON.stringify({ ...lead, mensaje: lead.mensaje?.slice(0, 200) }));
+  console.info("[lead_received]", JSON.stringify({
+    id: createHash("sha256").update(lead.email.toLowerCase()).digest("hex").slice(0, 12),
+    type: lead.tipoConsulta,
+    source: lead.origen || "contact-form",
+  }));
 
   const results = await Promise.all(
     sinks.map(async (s) => {
@@ -31,5 +39,6 @@ export async function processLead(lead: Lead): Promise<{
   );
 
   const anyConfigured = sinks.some((s) => s.isConfigured());
-  return { results, anyConfigured };
+  const persisted = sinks.some((sink, index) => Boolean(sink.durable && results[index]?.ok));
+  return { results, anyConfigured, persisted };
 }

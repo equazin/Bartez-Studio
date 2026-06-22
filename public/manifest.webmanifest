@@ -7,6 +7,7 @@
   "background_color": "#0A2818",
   "theme_color": "#0A2818",
   "icons": [
-    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+    { "src": "/brand/bartez-isologo.png", "sizes": "50x50", "type": "image/png", "purpose": "any" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
   ]
 }

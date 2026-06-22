@@ -1,31 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { cookie } from "../constants";
-
-const KEY = "bartez-cookie-consent";
+import { getConsentSnapshot, saveConsent, subscribeConsent, type ConsentChoice } from "../lib/consent";
 
 export function CookieBanner() {
-  const [show, setShow] = useState(false);
+  const consent = useSyncExternalStore(subscribeConsent, getConsentSnapshot, () => "reject");
 
-  useEffect(() => {
+  const decide = (v: ConsentChoice) => {
     try {
-      if (!localStorage.getItem(KEY)) setShow(true);
+      saveConsent(v);
     } catch {
       /* noop */
     }
-  }, []);
-
-  const decide = (v: "accept" | "reject") => {
-    try {
-      localStorage.setItem(KEY, v);
-    } catch {
-      /* noop */
-    }
-    setShow(false);
   };
 
-  if (!show) return null;
+  if (consent) return null;
 
   return (
     <div className="fixed inset-x-3 bottom-3 z-[55] mx-auto max-w-[560px] rounded-2xl border border-white/10 bg-ink/95 p-4 text-white shadow-2xl backdrop-blur md:left-6 md:right-auto">

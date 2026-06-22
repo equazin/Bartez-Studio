@@ -1,24 +1,35 @@
+import Image from "next/image";
+import { Building2, FileCheck2, MapPinned } from "lucide-react";
 import { partners } from "../../constants";
+
+const serviceProof = [
+  { icon: Building2, label: "Atención B2B dedicada" },
+  { icon: FileCheck2, label: "Factura A" },
+  { icon: MapPinned, label: "Cobertura nacional" },
+];
 
 export function TrustBar() {
   return (
-    <section className="border-y border-slate-200 bg-white py-10">
-      <div className="mx-auto max-w-[1200px] px-7">
-        <p className="mb-7 text-center text-[12px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-          {partners.title}
-        </p>
-        <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
-          {partners.brands.map((b) => (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              key={b.name}
-              src={b.logo}
-              alt={`${b.name} — marca oficial distribuida por Bartez`}
+    <section className="border-y border-slate-200 bg-slate-50/70 py-8" aria-label="Marcas y cobertura">
+      <div className="mx-auto flex max-w-[1200px] flex-col gap-8 px-6 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-wrap items-center gap-x-9 gap-y-5">
+          {partners.brands.slice(0, 5).map((brand) => (
+            <Image
+              key={brand.name}
+              src={brand.logo}
+              alt={brand.name}
               width={96}
               height={28}
-              loading="lazy"
-              className="h-6 w-auto opacity-60 transition-opacity duration-300 hover:opacity-100 md:h-7"
+              className="h-5 w-auto grayscale opacity-55 md:h-6"
             />
+          ))}
+        </div>
+        <div className="grid gap-4 border-slate-200 sm:grid-cols-3 lg:border-l lg:pl-8">
+          {serviceProof.map((item) => (
+            <div key={item.label} className="flex items-center gap-2.5 text-[12.5px] font-medium text-slate-700">
+              <item.icon className="size-5 flex-none text-brand" strokeWidth={1.6} />
+              <span>{item.label}</span>
+            </div>
           ))}
         </div>
       </div>

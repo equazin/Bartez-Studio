@@ -1,19 +1,23 @@
 import { NextResponse } from "next/server";
 import { downloadSchema } from "../../../lib/schema";
 import { processLead } from "../../../lib/integrations";
+import { checkRateLimit } from "../../../lib/rate-limit";
 
 export const runtime = "nodejs";
 
-/**
- * Lead-gate de descargas: registra el lead (email) y devuelve el link del PDF
- * (hospedado en Google Drive). Los links se configuran por env:
- *  - DRIVE_BROCHURE_URL
- *  - DRIVE_CATALOGO_URL
- */
-export async function POST(req: Request) {
+/** Lead-gate del brochure institucional. */
+export async function POST(request: Request) {
+  const rateLimit = checkRateLimit(request, "download", 8);
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { ok: false, error: "Demasiados intentos. Esperá unos minutos." },
+      { status: 429, headers: { "Retry-After": String(rateLimit.retryAfter) } },
+    );
+  }
+
   let body: unknown;
   try {
-    body = await req.json();
+    body = await request.json();
   } catch {
     return NextResponse.json({ ok: false, error: "JSON inválido" }, { status: 400 });
   }
@@ -22,31 +26,30 @@ export async function POST(req: Request) {
   if (!parsed.success) {
     return NextResponse.json(
       { ok: false, error: "Datos inválidos", issues: parsed.error.flatten().fieldErrors },
-      { status: 422 }
+      { status: 422 },
     );
   }
-  if (parsed.data.website) {
-    return NextResponse.json({ ok: true, url: "" });
-  }
+  if (parsed.data.website) return NextResponse.json({ ok: true, url: "" });
 
-  const { email, empresa, resource } = parsed.data;
-
-  // Registramos como lead de descarga (reutiliza el orquestador).
-  await processLead({
-    empresa: empresa || "Descarga web",
+  const { persisted } = await processLead({
+    empresa: parsed.data.empresa || "Descarga web",
     nombre: "Descarga de recurso",
-    email,
+    email: parsed.data.email,
     telefono: "",
     tipoConsulta: "asesoramiento",
-    mensaje: `Solicitó descarga: ${resource}`,
+    mensaje: "Solicitó el brochure institucional",
     agendarReunion: false,
   });
 
-  // Prioridad: link de Drive (env) → PDF servido desde /public como fallback.
-  const url =
-    resource === "brochure"
-      ? process.env.DRIVE_BROCHURE_URL || "/brochure.pdf"
-      : process.env.DRIVE_CATALOGO_URL || "/catalogo.pdf";
+  if (!persisted) {
+    return NextResponse.json(
+      { ok: false, error: "No pudimos registrar la descarga. Intentá nuevamente." },
+      { status: 503 },
+    );
+  }
 
-  return NextResponse.json({ ok: true, url });
+  return NextResponse.json({
+    ok: true,
+    url: process.env.DRIVE_BROCHURE_URL || "/brochure.pdf",
+  });
 }

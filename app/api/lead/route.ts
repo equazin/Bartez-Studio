@@ -1,10 +1,19 @@
 import { NextResponse } from "next/server";
 import { leadSchema } from "../../../lib/schema";
 import { processLead } from "../../../lib/integrations";
+import { checkRateLimit } from "../../../lib/rate-limit";
 
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
+  const rateLimit = checkRateLimit(req, "lead", 5);
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { ok: false, error: "Demasiados intentos. Esperá unos minutos." },
+      { status: 429, headers: { "Retry-After": String(rateLimit.retryAfter) } }
+    );
+  }
+
   let body: unknown;
   try {
     body = await req.json();
@@ -25,8 +34,15 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true });
   }
 
-  const { results } = await processLead(parsed.data);
+  const { persisted } = await processLead(parsed.data);
+
+  if (!persisted) {
+    return NextResponse.json(
+      { ok: false, error: "No pudimos registrar tu consulta. Escribinos por WhatsApp." },
+      { status: 503 }
+    );
+  }
 
   // El lead siempre se considera recibido (persistido vía log + integraciones).
-  return NextResponse.json({ ok: true, results });
+  return NextResponse.json({ ok: true });
 }

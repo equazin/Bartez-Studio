@@ -14,6 +14,7 @@ const TAGS = ["lead-web-bartez", "rosario-300km"];
 
 export const apolloSink: LeadSink = {
   name: "Apollo.io",
+  durable: true,
   isConfigured() {
     return Boolean(process.env.APOLLO_API_KEY);
   },

@@ -36,6 +36,7 @@ const tipoLabel: Record<Lead["tipoConsulta"], string> = {
 
 export const mondaySink: LeadSink = {
   name: "monday.com",
+  durable: true,
   isConfigured() {
     return Boolean(process.env.MONDAY_API_TOKEN);
   },

@@ -2,3 +2,8 @@ legacy
 mockups
 docs
 *.log
+.next
+.next-*
+.npm-cache
+tmp
+public/catalogo.pdf

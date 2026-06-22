@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
+import "streamdown/styles.css";
 import "./globals.css";
 import { company, seo, contact, faq } from "../constants";
 import { Analytics } from "../components/Analytics";
@@ -44,8 +45,8 @@ export const metadata: Metadata = {
     description: seo.description,
   },
   icons: {
-    icon: "/favicon.svg",
-    apple: "/favicon.svg",
+    icon: "/brand/bartez-isologo.png",
+    apple: "/brand/bartez-isologo.png",
   },
   manifest: "/manifest.webmanifest",
 };
@@ -58,7 +59,7 @@ const jsonLd = {
       "@id": `${company.url}/#organization`,
       name: company.name,
       url: company.url,
-      logo: `${company.url}/favicon.svg`,
+      logo: `${company.url}/brand/bartez-isologo.png`,
       description: seo.description,
       sameAs: [contact.social.linkedin, contact.social.instagram],
     },
@@ -70,7 +71,6 @@ const jsonLd = {
       url: company.url,
       telephone: contact.phoneDisplay,
       email: contact.email,
-      priceRange: "$$",
       address: {
         "@type": "PostalAddress",
         streetAddress: "9 de Julio 3418",

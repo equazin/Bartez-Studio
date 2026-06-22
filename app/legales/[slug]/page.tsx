@@ -8,8 +8,9 @@ export function generateStaticParams() {
   return legalPages.map((p) => ({ slug: p.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const page = legalPages.find((p) => p.slug === params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const page = legalPages.find((p) => p.slug === slug);
   if (!page) return {};
   return {
     title: `${page.title} | ${company.name}`,
@@ -19,8 +20,9 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   };
 }
 
-export default function LegalPage({ params }: { params: { slug: string } }) {
-  const page = legalPages.find((p) => p.slug === params.slug);
+export default async function LegalPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const page = legalPages.find((p) => p.slug === slug);
   if (!page) notFound();
 
   return (

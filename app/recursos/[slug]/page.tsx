@@ -6,15 +6,15 @@ import { ArrowLeft, ArrowRight, Clock } from "lucide-react";
 import { articles, company } from "../../../constants";
 import { Navbar } from "../../../components/Navbar";
 import { Footer } from "../../../components/Footer";
-import { WhatsAppFloat } from "../../../components/WhatsAppFloat";
-import { MobileCTA } from "../../../components/MobileCTA";
+import { Assistant } from "../../../components/Assistant";
 
 export function generateStaticParams() {
   return articles.map((a) => ({ slug: a.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const a = articles.find((x) => x.slug === params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const a = articles.find((x) => x.slug === slug);
   if (!a) return {};
   return {
     title: `${a.title} | Bartez Tecnología`,
@@ -24,8 +24,9 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   };
 }
 
-export default function Articulo({ params }: { params: { slug: string } }) {
-  const a = articles.find((x) => x.slug === params.slug);
+export default async function Articulo({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const a = articles.find((x) => x.slug === slug);
   if (!a) notFound();
 
   const jsonLd = {
@@ -74,18 +75,17 @@ export default function Articulo({ params }: { params: { slug: string } }) {
             </div>
 
             <div className="my-12 rounded-2xl border border-slate-200 bg-slate-50 p-7 text-center">
-              <h3 className="font-display text-[20px] font-bold text-ink">¿Lo querés cotizar?</h3>
-              <p className="mt-2 text-[15px] text-slate-600">Te asesoramos y cotizamos en 24 hs hábiles, con precios mayoristas.</p>
+              <h3 className="font-display text-[20px] font-bold text-ink">¿Querés evaluar este escenario?</h3>
+              <p className="mt-2 text-[15px] text-slate-600">Contanos tu contexto y un especialista te ayuda a definir el alcance.</p>
               <Link href="/#cotiza" className="mt-5 inline-flex items-center gap-2 rounded-full bg-brand px-7 py-3.5 text-[15px] font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-brand-bright hover:shadow-glow">
-                Pedí tu cotización <ArrowRight size={18} />
+                Recibir asesoramiento <ArrowRight size={18} />
               </Link>
             </div>
           </div>
         </article>
       </main>
       <Footer />
-      <WhatsAppFloat />
-      <MobileCTA />
+      <Assistant />
     </>
   );
 }

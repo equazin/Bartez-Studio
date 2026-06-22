@@ -1,120 +1,92 @@
-# Bartez Tecnología — Landing institucional
+# Bartez Tecnología — sitio institucional B2B
 
-Landing one-page B2B para **Bartez Tecnología**, distribuidora mayorista de hardware IT en Rosario, Santa Fe. Vidriera comercial orientada a generar confianza institucional y **capturar leads corporativos**.
+Sitio comercial de Bartez Tecnología para orientar empresas, explicar soluciones IT y convertir consultas en oportunidades comerciales. La experiencia es institucional: no incluye catálogo, carrito, checkout ni portal de clientes.
 
-> Stack: **Next.js 14 (App Router) · TypeScript · Tailwind CSS · Framer Motion · Lucide · Zod**
-> Estética: "Apple meets editorial premium" — Inter (cuerpo) + Fraunces (display serif).
+## Stack
 
----
+- Next.js 16, React 19 y TypeScript.
+- Tailwind CSS y Lucide.
+- Vercel AI SDK 6 + AI Elements para el asistente.
+- Zod para validación.
+- Vercel como plataforma de despliegue y AI Gateway.
 
-## 🚀 Arranque rápido
+## Desarrollo
 
 ```bash
 npm install
-cp .env.example .env.local   # completá las integraciones que quieras activar
-npm run dev                  # http://localhost:3000
-npm run build && npm start   # build de producción
+cp .env.example .env.local
+npm run dev
+npm run lint
+npm run typecheck
+npm test
+npm run build
 ```
 
-Sin ninguna variable de entorno la web funciona igual: el formulario **recibe el lead y lo loguea**, y cada integración se marca `skipped` sin romper nada (patrón adapter con fallback).
+La API de leads sólo confirma éxito cuando al menos un destino durable conserva el dato: archivo HTTP, monday o Apollo.
 
----
+## Recorrido principal
 
-## 🗂️ Estructura
+1. Hero y señales de confianza.
+2. Selector de necesidades empresariales.
+3. Capacidades técnicas y proceso de trabajo.
+4. Casos reales únicamente cuando exista autorización.
+5. Consulta guiada en tres pasos: necesidad, contexto y contacto.
+6. Asistente IA con derivación explícitamente consentida al equipo comercial.
 
-```
-app/
-  layout.tsx            # metadata, fuentes, JSON-LD (Organization + LocalBusiness)
-  page.tsx              # one-page (compone todas las secciones)
-  opengraph-image.tsx   # OG 1200x630 generada dinámicamente
-  sitemap.ts robots.ts  # SEO
-  gracias/              # página post-submit + tracking de conversión (GA4 + Meta Pixel)
-  api/lead/route.ts     # form → Apollo + monday + Email (+ Calendar adapter)
-  api/download/route.ts # lead-gate de descargas → link de Drive
-components/
-  Navbar, Footer, WhatsAppFloat, CookieBanner, Map, Analytics, motion, icons, SectionHeading
-  sections/             # Hero, TrustBar, Pillars, Solutions, WhyBartez, Testimonial,
-                        # CatalogPreview, Process, Contact, Downloads, Payments
-lib/
-  schema.ts             # validación zod (lead + descarga)
-  integrations/         # apollo · monday · mail · calendar · index (orquestador)
-constants.ts            # ⭐ TODO el contenido comercial editable (textos, contacto, productos, partners)
-legacy/                 # proyecto Vite anterior archivado
-docs/                   # plan de trabajo + setup de integraciones
-mockups/                # mockup HTML de aprobación (Hero A/B)
+## Asistente IA
+
+El endpoint `POST /api/chat` usa AI SDK y Vercel AI Gateway. La base de conocimiento está en `lib/ai/knowledge.ts`.
+
+Variables:
+
+```env
+AI_GATEWAY_MODEL=openai/gpt-5.4
+# Sólo para entornos fuera de Vercel. En Vercel se usa OIDC.
+AI_GATEWAY_API_KEY=
 ```
 
-**Para editar textos, productos, datos de contacto o partners → tocá únicamente `constants.ts`.**
+El asistente:
 
----
+- Responde únicamente sobre capacidades verificadas de Bartez.
+- No confirma precios, stock, plazos, garantías ni financiación.
+- Limita longitud, cantidad de mensajes y frecuencia por dirección.
+- No envía datos al CRM automáticamente.
+- Presenta un formulario separado que requiere confirmación del visitante.
+- Ofrece WhatsApp como salida humana permanente.
 
-## 🔌 Integraciones (patrón adapter)
+## Captura de leads
 
-Cada integración vive en `lib/integrations/` e implementa `LeadSink`. El orquestador (`lib/integrations/index.ts`) las corre **en paralelo y aisladas**: si una falla, las demás siguen y el lead nunca se pierde. Para agregar/quitar una, editás el array `sinks`.
+`POST /api/lead` valida la consulta y ejecuta los destinos configurados en paralelo:
 
-| Integración | Archivo | Variables | Qué hace |
-|---|---|---|---|
-| **Apollo.io** | `apollo.ts` | `APOLLO_API_KEY` | Crea cuenta + contacto con tags `lead-web-bartez`, `rosario-300km` |
-| **monday.com** | `monday.ts` | `MONDAY_API_TOKEN`, `MONDAY_BOARD_ID`, `MONDAY_COL_*` | Crea un item en el board "Leads Web Bartez" |
-| **Email** | `mail.ts` | `MAIL_PROVIDER` (`resend`/`brevo`), `RESEND_API_KEY`/`BREVO_API_KEY`, `MAIL_FROM`, `MAIL_TO` | Notificación interna + autorespuesta HTML branded |
-| **Agenda** | `calendar.ts` | `CALENDAR_PROVIDER`, `NEXT_PUBLIC_CALCOM_BOOKING_URL` | Reunión (fallback: preferencia registrada; sin Google Calendar MCP) |
-| **Descargas** | `api/download` | `DRIVE_BROCHURE_URL`, `DRIVE_CATALOGO_URL` | Sirve los PDF de Google Drive tras capturar email |
-| **Analytics** | `Analytics.tsx` | `NEXT_PUBLIC_GA4_ID`, `NEXT_PUBLIC_META_PIXEL_ID` | GA4 + Meta Pixel + evento `generate_lead` en /gracias |
+- `LEAD_STORE_URL` / `LEAD_STORE_TOKEN`
+- Apollo
+- monday.com
+- Resend o Brevo
+- Agenda opcional
 
-### monday.com — board ya creado ✅
-Board **"Leads Web Bartez"** creado y validado (incluye un item `[EJEMPLO]` que podés borrar).
+Los leads de la consulta guiada pueden incluir necesidad, escala, urgencia, canal preferido y resumen de la conversación.
 
-- **URL:** https://nicopbenitez84s-team-company.monday.com/boards/18418630086
-- **`MONDAY_BOARD_ID`** = `18418630086`
-- **`MONDAY_GROUP_ID`** = `topics`
-- IDs de columnas (ya mapeados en `.env.example`):
+## Contenido y marca
 
-| Variable | Columna | Column ID |
-|---|---|---|
-| `MONDAY_COL_EMPRESA` | Empresa | `text_mm4gmwsf` |
-| `MONDAY_COL_EMAIL` | Email | `email_mm4gfs0f` |
-| `MONDAY_COL_TELEFONO` | Teléfono | `phone_mm4gxh5s` |
-| `MONDAY_COL_TIPO` | Tipo de consulta | `color_mm4g97d1` |
-| `MONDAY_COL_MENSAJE` | Mensaje | `long_text_mm4gda50` |
-| `MONDAY_COL_ESTADO` | Estado (Nuevo/Contactado/Cotizado/Cerrado) | `color_mm4gyw76` |
+- Datos del negocio y páginas verticales: `constants.ts`.
+- Logos: `public/brand/`.
+- Concepto visual aprobado: `docs/design/bartez-institutional-concept.png`.
+- Recursos editoriales: `/recursos`.
+- El antiguo PDF de catálogo queda bloqueado mediante redirect y no se incluye en despliegues.
 
-> Sólo falta generar el **`MONDAY_API_TOKEN`** (monday → Avatar → Developers → My access tokens) y pegarlo en `.env.local`.
-
-### Apollo / Email / Drive
-- **Apollo:** generá una API key (Settings → Integrations → API) → `APOLLO_API_KEY`. El adapter ya aplica los tags de segmentación.
-- **Email:** elegí `resend` o `brevo`, cargá la API key y verificá el remitente `MAIL_FROM`.
-- **Drive:** subí `brochure.pdf` y `catalogo.pdf`, compartilos como "cualquiera con el link" y pegá las URLs en `DRIVE_BROCHURE_URL` / `DRIVE_CATALOGO_URL`.
-
----
-
-## ☁️ Deploy a Vercel
-
-1. Importá el repo en Vercel (framework detectado: **Next.js**).
-2. En **Settings → Environment Variables** cargá las del `.env.example` que vayas a usar.
-3. Deploy. Configurá el dominio (`bartez.com.ar` o subdominio) en **Settings → Domains**.
-4. Activá **Vercel Analytics** y **Speed Insights** desde el dashboard.
+## Validación antes de producción
 
 ```bash
-# o por CLI
-npx vercel
-npx vercel --prod
+npm run lint
+npm run typecheck
+npm test
+npm run build
 ```
 
----
+Además, verificar en desktop y móvil:
 
-## ♿ Accesibilidad y performance
-- Contraste AA, `:focus-visible`, navegación por teclado, `alt`/`aria` en imágenes e íconos.
-- `next/font` con `display: swap`, imágenes lazy, `prefers-reduced-motion` respetado.
-- Animaciones Framer Motion sutiles on-scroll (`components/motion.tsx`).
-
----
-
-## 📍 Datos del negocio
-Centralizados en `constants.ts` → `company` / `contact`. **Reemplazá los placeholders** antes de publicar: CUIT, WhatsApp real, email comercial, coordenadas exactas del mapa.
-
----
-
-## 📄 Documentación adicional
-- `docs/PLAN-DE-TRABAJO.md` — plan por fases, riesgos y checklist.
-- `mockups/bartez-landing-mockup.html` — mockup de aprobación (Hero A/B).
-</content>
+- Formulario guiado completo.
+- Apertura y cierre del asistente.
+- Fallback a WhatsApp.
+- Consentimiento antes de crear el lead.
+- Ausencia de textos o controles con apariencia de e-commerce.

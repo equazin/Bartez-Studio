@@ -33,6 +33,10 @@ body {
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 @layer utilities {

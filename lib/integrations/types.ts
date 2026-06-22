@@ -10,6 +10,8 @@ export type IntegrationResult = {
 export interface LeadSink {
   /** Nombre legible de la integración */
   name: string;
+  /** true cuando el destino conserva el lead para recuperarlo luego */
+  durable?: boolean;
   /** true si está configurada (env vars presentes) */
   isConfigured(): boolean;
   /** Procesa el lead. No debe lanzar: devuelve un IntegrationResult. */

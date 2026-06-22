@@ -6,7 +6,7 @@ import { ConversionTracker } from "./tracker";
 
 export const metadata: Metadata = {
   title: "¡Gracias! Recibimos tu consulta — Bartez Tecnología",
-  description: "Tu consulta fue recibida. Un asesor comercial te contactará en 24 hs hábiles.",
+  description: "Tu consulta fue recibida. Un asesor comercial revisará el contexto y se pondrá en contacto.",
   robots: { index: false, follow: false },
 };
 
@@ -21,7 +21,7 @@ export default function Gracias() {
         </span>
         <h1 className="font-display text-[clamp(32px,5vw,50px)] font-bold leading-tight tracking-[-0.02em]">¡Gracias! Recibimos tu consulta.</h1>
         <p className="mt-5 text-[17px] text-slate-300">
-          Un asesor comercial de {company.name} te va a contactar con una cotización formal en un plazo de <b className="text-white">24 hs hábiles</b>.
+          Un asesor comercial de {company.name} va a revisar el contexto y se pondrá en contacto por el canal que elegiste.
           Te enviamos una confirmación a tu email.
         </p>
         <div className="mt-9 flex flex-wrap justify-center gap-3.5">
