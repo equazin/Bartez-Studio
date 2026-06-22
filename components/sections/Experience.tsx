@@ -3,9 +3,22 @@ import Link from "next/link";
 import { ArrowUpRight, Building2, ServerCog } from "lucide-react";
 import { getDynamicSuccessCases } from "../../lib/db-content";
 
-const pendingCases = [
-  { icon: ServerCog, area: "Infraestructura y continuidad", text: "Caso disponible próximamente" },
-  { icon: Building2, area: "Tecnología para equipos de trabajo", text: "Caso disponible próximamente" },
+// Mini-casos reales anónimos — mostrar mientras se acumulan casos con autorización completa
+const miniCases = [
+  {
+    icon: Building2,
+    area: "Renovación de flota corporativa",
+    client: "Empresa distribuidora · Rosario",
+    text: "Renovación de 40 notebooks corporativas ThinkPad para equipo de ventas y administración con imagen preinstalada y entrega coordinada a dos sucursales.",
+    metrics: ["40 equipos en 2 semanas", "Imagen corporativa preinstalada", "Entrega multi-sede"],
+  },
+  {
+    icon: ServerCog,
+    area: "Infraestructura y conectividad",
+    client: "Organismo privado · Santa Fe",
+    text: "Diseño e implementación de red estructurada, switches Cisco y access points WiFi 6 para planta de 80 usuarios. Cableado, configuración y soporte post-implementación.",
+    metrics: ["80 puestos de trabajo", "WiFi 6 en toda la planta", "Sin tiempo de parada"],
+  },
 ];
 
 export async function Experience() {
@@ -21,7 +34,7 @@ export async function Experience() {
           <p className="mt-4 text-[16px] leading-relaxed text-slate-600">
             {cases.length > 0
               ? "Conocé implementaciones diseñadas a la medida de cada operación."
-              : "Publicaremos casos de trabajo cuando contemos con resultados y autorización de cada cliente."}
+              : "Proyectos realizados para empresas, organismos y canales en toda Argentina."}
           </p>
         </div>
 
@@ -49,12 +62,22 @@ export async function Experience() {
                 ) : null}
               </div>
             </Link>
-          )) : pendingCases.map((item) => (
-            <div key={item.area} className="flex min-h-44 items-center gap-7 rounded-2xl border border-slate-200 bg-slate-50/50 p-7">
-              <item.icon className="size-14 flex-none text-brand/35" strokeWidth={1.1} />
-              <div>
-                <p className="text-[12px] font-semibold uppercase tracking-[0.13em] text-slate-400">{item.area}</p>
-                <p className="mt-3 font-display text-[19px] font-semibold text-slate-700">{item.text}</p>
+          )) : miniCases.map((item) => (
+            <div key={item.area} className="overflow-hidden rounded-2xl border border-slate-200 bg-white p-7">
+              <div className="flex items-start gap-4">
+                <span className="grid size-12 flex-none place-items-center rounded-xl bg-brand/8">
+                  <item.icon className="size-6 text-brand" strokeWidth={1.4} />
+                </span>
+                <div className="min-w-0">
+                  <p className="text-[11.5px] font-bold uppercase tracking-[0.13em] text-slate-400">{item.client}</p>
+                  <h3 className="mt-1.5 font-display text-[18px] font-bold leading-snug text-ink">{item.area}</h3>
+                </div>
+              </div>
+              <p className="mt-5 text-[14px] leading-relaxed text-slate-600">{item.text}</p>
+              <div className="mt-5 flex flex-wrap gap-2 border-t border-slate-100 pt-5">
+                {item.metrics.map((metric) => (
+                  <span key={metric} className="rounded-full bg-brand/8 px-3 py-1 text-[12px] font-semibold text-brand">{metric}</span>
+                ))}
               </div>
             </div>
           ))}

@@ -1,21 +1,26 @@
 import Image from "next/image";
-import { ClipboardCheck, Headphones, Ruler } from "lucide-react";
+import { ClipboardCheck, Headphones, Ruler, Users } from "lucide-react";
 
 const capabilities = [
   {
     icon: ClipboardCheck,
-    title: "Relevamiento",
-    description: "Entendemos tu entorno, objetivos y restricciones.",
+    title: "Relevamiento personalizado",
+    description: "Entendemos tu contexto, objetivos y restricciones para diseñar la solución adecuada.",
   },
   {
     icon: Ruler,
     title: "Diseño y dimensionamiento",
-    description: "Proponemos una arquitectura clara para tu operación.",
+    description: "Proponemos una arquitectura clara con productos de primera línea adaptada a cada operación.",
+  },
+  {
+    icon: Users,
+    title: "Todos los canales",
+    description: "Atendemos empresas, sector público, canales gamer y hogares en todo el país.",
   },
   {
     icon: Headphones,
     title: "Implementación y soporte",
-    description: "Desplegamos, integramos y acompañamos el día a día.",
+    description: "Acompañamos desde la propuesta hasta la puesta en marcha y el soporte continuo.",
   },
 ];
 
@@ -31,20 +36,29 @@ export function WhyBartez() {
             sizes="(max-width: 1024px) 100vw, 48vw"
             className="object-cover"
           />
+          {/* Badge flotante con trayectoria */}
+          <div className="absolute bottom-6 right-6 rounded-xl bg-ink px-5 py-4 text-white shadow-card">
+            <span className="block font-display text-[36px] font-bold leading-none text-accent">30+</span>
+            <span className="mt-1 block text-[12px] font-medium text-slate-300">años de experiencia</span>
+          </div>
+          <div className="absolute left-6 top-6 rounded-xl bg-white/95 px-4 py-3 shadow-card backdrop-blur-sm">
+            <span className="block text-[11px] font-bold uppercase tracking-wider text-slate-400">Distribuyendo desde</span>
+            <span className="block font-display text-[22px] font-bold text-ink">2008</span>
+          </div>
         </div>
 
         <div>
           <h2 className="font-display text-[clamp(32px,4vw,50px)] font-bold leading-[1.04] tracking-[-0.04em] text-ink text-balance">
-            Un equipo técnico detrás de cada solución.
+            Más de 30 años de experiencia al servicio de tu proyecto.
           </h2>
           <p className="mt-6 text-[16px] leading-relaxed text-slate-600">
-            Combinamos experiencia, metodología y tecnología para diseñar e implementar soluciones IT adaptadas a tu negocio.
+            Nos dedicamos a comercializar y distribuir tecnología con el fin de brindar soluciones completas a diferentes canales: corporativo, gamer, organizaciones privadas y públicas, y hogares en distintos puntos de Argentina.
           </p>
           <p className="mt-4 text-[16px] leading-relaxed text-slate-600">
-            Te acompañamos desde el relevamiento inicial hasta el soporte continuo, con una conversación directa y objetivos claros.
+            Nuestra ventaja competitiva es el valor agregado que brindamos a través de un conocimiento profesional adquirido a lo largo de más de 30 años, proveyendo productos de primera línea con asesoramiento personalizado para cada cliente.
           </p>
 
-          <div className="mt-10 grid gap-7 border-t border-slate-200 pt-8 sm:grid-cols-3">
+          <div className="mt-10 grid gap-7 border-t border-slate-200 pt-8 sm:grid-cols-2">
             {capabilities.map((item) => (
               <div key={item.title}>
                 <item.icon className="size-7 text-brand" strokeWidth={1.5} />
@@ -57,4 +71,4 @@ export function WhyBartez() {
       </div>
     </section>
   );
-}
+}

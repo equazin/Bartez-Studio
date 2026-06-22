@@ -66,6 +66,7 @@ export function QuoteBuilder() {
   const [need, setNeed] = useState("");
   const [form, setForm] = useState({
     empresa: "",
+    cuit: "",
     escala: "",
     urgencia: "",
     nombre: "",
@@ -240,8 +241,12 @@ export function QuoteBuilder() {
               <p className="mt-2 text-[13.5px] text-slate-500">No necesitamos modelos ni cantidades exactas para orientarte.</p>
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
                 <label className="sm:col-span-2">
-                  <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-600">Empresa</span>
+                  <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-600">Empresa o razón social</span>
                   <input required value={form.empresa} onChange={(event) => update("empresa", event.target.value)} className={inputClass} placeholder="Nombre de la empresa" />
+                </label>
+                <label>
+                  <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-600">CUIT (opcional)</span>
+                  <input value={form.cuit} onChange={(event) => update("cuit", event.target.value)} className={inputClass} placeholder="20-00000000-0" />
                 </label>
                 <label>
                   <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-600">Tamaño del equipo</span>

@@ -8,6 +8,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [articles, cases] = await Promise.all([getDynamicArticles(), getDynamicSuccessCases()]);
   return [
     { url: base, lastModified: now, changeFrequency: "weekly", priority: 1 },
+    { url: `${base}/quienes-somos`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
+    { url: `${base}/revendedores`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${base}/marcas`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/empresas`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
+    { url: `${base}/gobierno`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/educacion`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/garantias-rma`, lastModified: now, changeFrequency: "monthly", priority: 0.75 },
+    { url: `${base}/contacto`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${base}/configurador`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/rfq`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/descargas`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
     { url: `${base}/recursos`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
     ...verticals.map((item) => ({
       url: `${base}/soluciones/${item.slug}`,

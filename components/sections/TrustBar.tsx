@@ -1,29 +1,41 @@
 import Image from "next/image";
-import { Building2, FileCheck2, MapPinned } from "lucide-react";
+import { CalendarCheck2, FileCheck2, MapPinned, Trophy } from "lucide-react";
 import { getDynamicPartners } from "../../lib/db-content";
 
 const serviceProof = [
-  { icon: Building2, label: "Atención B2B dedicada" },
-  { icon: FileCheck2, label: "Factura A" },
-  { icon: MapPinned, label: "Cobertura nacional" },
+  { icon: CalendarCheck2, label: "Desde 2008", sub: "Trayectoria en el sector" },
+  { icon: Trophy, label: "30+ años de experiencia", sub: "Conocimiento profesional" },
+  { icon: FileCheck2, label: "Factura A", sub: "Responsable Inscripto" },
+  { icon: MapPinned, label: "Cobertura nacional", sub: "Todo Argentina" },
 ];
 
 export async function TrustBar() {
   const brands = await getDynamicPartners();
 
   return (
-    <section className="border-y border-slate-200 bg-slate-50/70 py-8" aria-label="Clientes, marcas y cobertura">
+    <section className="border-y border-slate-200 bg-slate-50/70 py-10" aria-label="Trayectoria, marcas y cobertura">
       <div className="mx-auto flex max-w-[1200px] flex-col gap-8 px-6 lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex flex-wrap items-center gap-x-9 gap-y-5">
-          {brands.slice(0, 9).map((brand) => (
-            <Image key={brand.name} src={brand.logo} alt={brand.name} width={96} height={28} className="h-5 w-auto grayscale opacity-55 md:h-6" />
-          ))}
+        {/* Logos en color completo */}
+        <div>
+          <p className="mb-4 text-[11px] font-bold uppercase tracking-[0.15em] text-slate-400">Partners y marcas oficiales</p>
+          <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+            {brands.slice(0, 9).map((brand) => (
+              <Image key={brand.name} src={brand.logo} alt={brand.name} width={96} height={28} className="h-6 w-auto md:h-7" />
+            ))}
+          </div>
         </div>
-        <div className="grid gap-4 border-slate-200 sm:grid-cols-3 lg:border-l lg:pl-8">
+
+        {/* Pruebas sociales de negocio */}
+        <div className="grid gap-4 border-slate-200 sm:grid-cols-2 lg:border-l lg:pl-10">
           {serviceProof.map((item) => (
-            <div key={item.label} className="flex items-center gap-2.5 text-[12.5px] font-medium text-slate-700">
-              <item.icon className="size-5 flex-none text-brand" strokeWidth={1.6} />
-              <span>{item.label}</span>
+            <div key={item.label} className="flex items-center gap-3">
+              <span className="grid size-9 flex-none place-items-center rounded-lg bg-brand/8 text-brand">
+                <item.icon className="size-4.5" strokeWidth={1.6} />
+              </span>
+              <div>
+                <span className="block text-[13px] font-semibold text-ink">{item.label}</span>
+                <span className="block text-[11px] text-slate-400">{item.sub}</span>
+              </div>
             </div>
           ))}
         </div>

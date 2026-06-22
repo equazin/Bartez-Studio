@@ -7,9 +7,10 @@ import { useState } from "react";
 
 const links = [
   { label: "Soluciones", href: "/#soluciones" },
-  { label: "Cómo trabajamos", href: "/#proceso" },
-  { label: "Nosotros", href: "/#nosotros" },
-  { label: "Recursos", href: "/recursos" },
+  { label: "Marcas", href: "/marcas" },
+  { label: "Revendedores", href: "/revendedores" },
+  { label: "Quiénes somos", href: "/quienes-somos" },
+  { label: "Contacto", href: "/contacto" },
 ];
 
 export function Navbar() {
