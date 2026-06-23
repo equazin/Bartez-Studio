@@ -126,7 +126,7 @@ const brands = [
   },
   {
     name: "Lyonn",
-    logo: "/logos/lyonn.svg",
+    logo: "/logos/lyonn.png",
     category: "Protección de energía · UPS · Estabilizadores",
     description:
       "Soluciones de respaldo y protección eléctrica Lyonn. UPS hogareñas e industriales, estabilizadores de tensión y baterías de reemplazo con excelente relación costo-beneficio.",
@@ -224,7 +224,7 @@ const brands = [
   },
   {
     name: "3nStar",
-    logo: "/logos/3nstar.svg",
+    logo: "/logos/3nstar.png",
     category: "Punto de Venta · POS · Lectores",
     description:
       "Hardware especializado para punto de venta. Computadoras POS todo en uno, lectores de códigos de barra, cajones de dinero e impresoras de etiquetas.",
@@ -235,6 +235,20 @@ const brands = [
       { icon: Package, label: "Cajones y accesorios" },
     ],
     accent: "text-blue-500",
+  },
+  {
+    name: "OCOM",
+    logo: "/logos/ocom.png",
+    category: "Punto de Venta · Impresoras · POS",
+    description:
+      "Equipamiento de hardware para punto de venta de OCOM Technologies. Impresoras de tickets, lectores de código de barras y terminales POS de alta fiabilidad y rendimiento.",
+    products: [
+      { icon: Monitor, label: "Terminales POS" },
+      { icon: Package, label: "Impresoras de Tickets" },
+      { icon: Package, label: "Lectores de Códigos" },
+      { icon: Package, label: "Cajones de Dinero" },
+    ],
+    accent: "text-emerald-500",
   },
   {
     name: "Ubiquiti",
@@ -266,7 +280,7 @@ const brands = [
   },
   {
     name: "GLC",
-    logo: "/logos/glc.svg",
+    logo: "/logos/glc.png",
     category: "Fibra óptica · Cableado · Conectividad",
     description:
       "Componentes para redes y cableado estructurado. Cables de red UTP/FTP, fibra óptica, patch panels, organizadores, conectores y racks de pared.",
@@ -276,7 +290,7 @@ const brands = [
       { icon: Package, label: "Patch Panels / Racks" },
       { icon: Network, label: "Conectores y fibra" },
     ],
-    accent: "text-blue-500",
+    accent: "text-orange-500",
   },
   {
     name: "WD",
@@ -391,9 +405,9 @@ export default function MarcasPage() {
 
                   <div className="mt-5 grid grid-cols-2 gap-2">
                     {brand.products.map((product) => (
-                      <div key={product.label} className="flex items-center gap-2 rounded-lg bg-slate-50 border border-slate-100 px-3 py-2">
-                        <product.icon className="size-3.5 flex-none text-[#1236d8]" strokeWidth={1.6} />
-                        <span className="text-[12px] font-medium text-slate-600">{product.label}</span>
+                      <div key={product.label} className="flex items-center gap-2 rounded-lg bg-white/5 border border-white/10 px-3 py-2">
+                        <product.icon className="size-3.5 flex-none text-accent" strokeWidth={1.6} />
+                        <span className="text-[12px] font-medium text-slate-300">{product.label}</span>
                       </div>
                     ))}
                   </div>

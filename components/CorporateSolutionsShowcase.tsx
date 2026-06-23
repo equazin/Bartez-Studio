@@ -55,7 +55,7 @@ const corporateSolutions: CorporateSolution[] = [
       { name: "Lenovo", logo: "/logos/lenovo.svg" },
       { name: "APC", logo: "/logos/apc.svg" },
       { name: "Vertiv", logo: "/logos/vertiv.svg" },
-      { name: "GLC", logo: "/logos/glc.svg" },
+      { name: "GLC", logo: "/logos/glc.png" },
     ],
   },
   {
@@ -106,7 +106,7 @@ const corporateSolutions: CorporateSolution[] = [
       { name: "Cisco", logo: "/logos/cisco.svg" },
       { name: "Aruba", logo: "/logos/aruba.svg" },
       { name: "Ubiquiti", logo: "/logos/ubiquiti.svg" },
-      { name: "GLC", logo: "/logos/glc.svg" },
+      { name: "GLC", logo: "/logos/glc.png" },
     ],
   },
   {
@@ -201,7 +201,8 @@ const corporateSolutions: CorporateSolution[] = [
       "Programa para revendedores por zona",
     ],
     brands: [
-      { name: "3nStar", logo: "/logos/3nstar.svg" },
+      { name: "3nStar", logo: "/logos/3nstar.png" },
+      { name: "OCOM", logo: "/logos/ocom.png" },
       { name: "Epson", logo: "/logos/epson.svg" },
     ],
   },
