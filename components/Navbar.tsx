@@ -6,10 +6,12 @@ import { useState } from "react";
 import { whatsappLinks } from "@/lib/whatsapp";
 
 const primaryLinks = [
+  { label: "Productos", href: "/catalogo" },
   { label: "Empresas", href: "/empresas" },
   { label: "Revendedores", href: "/revendedores" },
   { label: "Marcas", href: "/marcas" },
   { label: "Nosotros", href: "/quienes-somos" },
+  { label: "Contacto", href: "/contacto" },
 ];
 
 const solutionLinks = [
@@ -46,9 +48,9 @@ export function Navbar() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-7 lg:flex" aria-label="Navegación principal">
-          <Link href="/empresas" className="text-[13.5px] font-bold text-white/88 transition hover:text-[#8fb5ff]">
-            Empresas
+        <nav className="hidden items-center gap-6 lg:flex" aria-label="Navegación principal">
+          <Link href="/catalogo" className="text-[13.5px] font-bold text-white/88 transition hover:text-[#8fb5ff]">
+            Productos
           </Link>
 
           <div className="group relative">
@@ -97,7 +99,7 @@ export function Navbar() {
       {open ? (
         <nav className="max-h-[calc(100vh-74px)] overflow-y-auto border-t border-white/10 bg-[#04060d] px-5 py-5 lg:hidden" aria-label="Navegación móvil">
           <div className="mx-auto flex max-w-[1200px] flex-col">
-            <Link href="/empresas" onClick={() => setOpen(false)} className="border-b border-white/10 py-3 text-[15px] font-bold text-white transition hover:text-[#8fb5ff]">Empresas</Link>
+            <Link href="/catalogo" onClick={() => setOpen(false)} className="border-b border-white/10 py-3 text-[15px] font-bold text-white transition hover:text-[#8fb5ff]">Productos</Link>
             <span className="pt-5 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Soluciones y segmentos</span>
             <div className="grid sm:grid-cols-2">
               {solutionLinks.map((link) => (

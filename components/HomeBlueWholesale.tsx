@@ -23,6 +23,7 @@ import {
 import { company, contact, partners } from "@/constants";
 import { CookieBanner } from "@/components/CookieBanner";
 import { CorporateSolutionsShowcase } from "@/components/CorporateSolutionsShowcase";
+import { Navbar } from "@/components/Navbar";
 import { buildWhatsAppUrl, whatsappLinks } from "@/lib/whatsapp";
 
 const navItems = [
@@ -155,36 +156,7 @@ export function HomeBlueWholesale() {
             overflow-wrap: break-word;
           }
         `}</style>
-        <header className="sticky top-0 z-50 border-b border-white/10 bg-[#04060d] text-white shadow-[0_18px_45px_-30px_rgba(15,23,42,0.9)]">
-          <div className="mx-auto flex h-[74px] max-w-[1440px] items-center justify-between gap-6 px-6 lg:px-10">
-            <Link href="/" className="flex min-w-0 items-center gap-3" aria-label="Bartez Tecnología — inicio">
-              <span className="grid size-11 flex-none place-items-center rounded-2xl bg-gradient-to-br from-[#1236d8] via-[#006dff] to-[#0ea5ff] font-display text-[30px] font-black leading-none text-white shadow-[0_14px_28px_-18px_rgba(0,109,255,0.95)]">
-                B
-              </span>
-              <span className="leading-none">
-                <span className="block font-display text-[28px] font-black tracking-[-0.08em] text-white">BARTEZ</span>
-                <span className="mt-1 block text-[9px] font-black uppercase tracking-[0.45em] text-white/70">Tecnología</span>
-              </span>
-            </Link>
-
-            <nav className="hidden items-center gap-7 lg:flex" aria-label="Navegación principal">
-              {navItems.map((item) => (
-                <Link key={item.href} href={item.href} className="group inline-flex items-center gap-1.5 text-[13.5px] font-bold text-white/88 transition hover:text-[#8fb5ff]">
-                  {item.label}
-                  {item.hasDropdown ? <span className="text-[10px] text-white/50 transition group-hover:text-[#8fb5ff]">⌄</span> : null}
-                </Link>
-              ))}
-            </nav>
-
-            <SunsetButton href={whatsappLinks.quote} className="hidden px-5 py-3 lg:inline-flex">
-              <MessageCircle size={18} /> Cotizar por WhatsApp
-            </SunsetButton>
-
-            <a href={whatsappLinks.quote} target="_blank" rel="noopener noreferrer" className="grid size-11 place-items-center rounded-xl bg-gradient-to-r from-[#ff7a18] to-[#ffb000] text-white lg:hidden" aria-label="Cotizar por WhatsApp">
-              <MessageCircle size={20} />
-            </a>
-          </div>
-        </header>
+        <Navbar />
 
         <section className="relative overflow-hidden border-b border-slate-200 bg-white">
           <div className="absolute inset-y-0 right-0 hidden w-[52%] bg-gradient-to-br from-[#0726b8] via-[#006dff] to-[#0ea5ff] lg:block" style={{ clipPath: "polygon(18% 0, 100% 0, 100% 100%, 0 100%)" }} />

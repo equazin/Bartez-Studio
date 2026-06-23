@@ -137,15 +137,13 @@ section.bg-\[\#082214\] {
 
 .bg-\[\#030c07\] .text-slate-400,
 .bg-\[\#06140d\] .text-slate-400,
-.bg-\[\#082214\] .text-slate-400,
-.text-slate-400 {
+.bg-\[\#082214\] .text-slate-400 {
   color: #475569 !important; /* slate-600 */
 }
 
 .bg-\[\#030c07\] .text-slate-300,
 .bg-\[\#06140d\] .text-slate-300,
-.bg-\[\#082214\] .text-slate-300,
-.text-slate-300 {
+.bg-\[\#082214\] .text-slate-300 {
   color: #334155 !important; /* slate-700 */
 }
 

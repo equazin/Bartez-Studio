@@ -27,6 +27,7 @@ type CorporateSolution = {
   image: string;
   imageAlt: string;
   bullets: string[];
+  brands: { name: string; logo: string }[];
 };
 
 const corporateSolutions: CorporateSolution[] = [
@@ -34,10 +35,10 @@ const corporateSolutions: CorporateSolution[] = [
     id: "datacenter",
     icon: Server,
     label: "Infraestructura y Datacenter",
-    eyebrow: "Solución corporativa",
+    eyebrow: "SOLUCIÓN DESTACADA",
     title: "Infraestructura y Datacenter",
     description:
-      "Servidores, storage, racks, UPS y soluciones de infraestructura para garantizar rendimiento, disponibilidad y crecimiento.",
+      "Servidores, storage, racks, UPS y soluciones de infraestructura diseñadas para garantizar máximo rendimiento, disponibilidad y escalabilidad.",
     href: "/soluciones/servidores",
     image: "/photos/datacenter.jpg",
     imageAlt: "Sala de servidores para infraestructura corporativa",
@@ -45,8 +46,16 @@ const corporateSolutions: CorporateSolution[] = [
       "Servidores de última generación",
       "Storage y backup empresarial",
       "Racks, gabinetes y accesorios",
-      "Soluciones de energía UPS y PDU",
+      "Soluciones de energía (UPS y PDU)",
       "Componentes para datacenter",
+    ],
+    brands: [
+      { name: "Dell", logo: "/logos/dell.svg" },
+      { name: "HPE", logo: "/logos/hpe.svg" },
+      { name: "Lenovo", logo: "/logos/lenovo.svg" },
+      { name: "APC", logo: "/logos/apc.svg" },
+      { name: "Vertiv", logo: "/logos/vertiv.svg" },
+      { name: "GLC", logo: "/logos/glc.svg" },
     ],
   },
   {
@@ -67,6 +76,13 @@ const corporateSolutions: CorporateSolution[] = [
       "Configuración previa y logística",
       "Garantía y seguimiento comercial",
     ],
+    brands: [
+      { name: "Lenovo", logo: "/logos/lenovo.svg" },
+      { name: "Dell", logo: "/logos/dell.svg" },
+      { name: "HP", logo: "/logos/hp.svg" },
+      { name: "Kingston", logo: "/logos/kingston.svg" },
+      { name: "Epson", logo: "/logos/epson.svg" },
+    ],
   },
   {
     id: "redes",
@@ -85,6 +101,12 @@ const corporateSolutions: CorporateSolution[] = [
       "Routers, firewalls y seguridad perimetral",
       "Cableado estructurado y racks",
       "Diseño e implementación de red",
+    ],
+    brands: [
+      { name: "Cisco", logo: "/logos/cisco.svg" },
+      { name: "Aruba", logo: "/logos/aruba.svg" },
+      { name: "Ubiquiti", logo: "/logos/ubiquiti.svg" },
+      { name: "GLC", logo: "/logos/glc.svg" },
     ],
   },
   {
@@ -105,6 +127,12 @@ const corporateSolutions: CorporateSolution[] = [
       "Control de accesos y trazabilidad",
       "Instalación y puesta en marcha",
     ],
+    brands: [
+      { name: "Cisco", logo: "/logos/cisco.svg" },
+      { name: "Ubiquiti", logo: "/logos/ubiquiti.svg" },
+      { name: "WD", logo: "/logos/wd.svg" },
+      { name: "Intel", logo: "/logos/intel.svg" },
+    ],
   },
   {
     id: "cloud",
@@ -123,6 +151,10 @@ const corporateSolutions: CorporateSolution[] = [
       "Correo, colaboración y productividad",
       "Antivirus y seguridad endpoint",
       "Asesoramiento de adopción y renovación",
+    ],
+    brands: [
+      { name: "Microsoft", logo: "/logos/microsoft.svg" },
+      { name: "Eset", logo: "/logos/eset.svg" },
     ],
   },
   {
@@ -143,6 +175,12 @@ const corporateSolutions: CorporateSolution[] = [
       "Gestión de garantías y RMA",
       "Planes por criticidad operativa",
     ],
+    brands: [
+      { name: "Dell", logo: "/logos/dell.svg" },
+      { name: "Lenovo", logo: "/logos/lenovo.svg" },
+      { name: "HP", logo: "/logos/hp.svg" },
+      { name: "Microsoft", logo: "/logos/microsoft.svg" },
+    ],
   },
   {
     id: "barpos",
@@ -162,12 +200,18 @@ const corporateSolutions: CorporateSolution[] = [
       "Implementación y capacitación",
       "Programa para revendedores por zona",
     ],
+    brands: [
+      { name: "3nStar", logo: "/logos/3nstar.svg" },
+      { name: "Epson", logo: "/logos/epson.svg" },
+    ],
   },
 ];
 
 export function CorporateSolutionsShowcase() {
   const [selectedId, setSelectedId] = useState(corporateSolutions[0].id);
-  const selected = corporateSolutions.find((item) => item.id === selectedId) ?? corporateSolutions[0];
+  const selected =
+    corporateSolutions.find((item) => item.id === selectedId) ??
+    corporateSolutions[0];
 
   return (
     <section id="soluciones" className="bg-[#f7f9ff] py-16 lg:py-20">
@@ -176,10 +220,13 @@ export function CorporateSolutionsShowcase() {
           <h2 className="mx-auto max-w-[13ch] font-display text-[clamp(27px,7vw,48px)] font-black leading-tight tracking-[-0.045em] text-[#11142a] sm:max-w-none">
             Soluciones corporativas
           </h2>
-          <p className="mt-2 text-[15px] font-medium text-slate-500">Tecnología y servicios para cada necesidad de tu empresa.</p>
+          <p className="mt-2 text-[15px] font-medium text-slate-500">
+            Tecnología y servicios para cada necesidad de tu empresa.
+          </p>
         </div>
 
         <div className="mt-10 grid min-w-0 gap-5 lg:grid-cols-[310px_1fr]">
+          {/* Sidebar */}
           <div className="min-w-0 rounded-3xl border border-blue-100 bg-white p-3 shadow-[0_24px_60px_-42px_rgba(15,23,42,0.55)]">
             {corporateSolutions.map((item) => {
               const isActive = item.id === selected.id;
@@ -203,45 +250,83 @@ export function CorporateSolutionsShowcase() {
             })}
           </div>
 
-          <article className="grid min-w-0 overflow-hidden rounded-3xl border border-blue-100 bg-white shadow-[0_28px_80px_-52px_rgba(15,23,42,0.65)] lg:grid-cols-[0.88fr_1.12fr]">
-            <div className="min-w-0 p-7 lg:p-10">
-              <span className="inline-flex rounded-full bg-gradient-to-r from-[#1236d8] via-[#006dff] to-[#0ea5ff] px-3 py-1.5 text-[11px] font-black uppercase tracking-[0.08em] text-white">
-                {selected.eyebrow}
-              </span>
-              <h3 className="mt-6 max-w-[14ch] font-display text-[clamp(29px,4vw,46px)] font-black leading-[1.02] tracking-[-0.05em] text-[#11142a]">
-                {selected.title}
-              </h3>
-              <p className="mt-5 max-w-[48ch] text-[14.5px] leading-relaxed text-slate-600">{selected.description}</p>
+          {/* Content Card */}
+          <article className="grid min-w-0 rounded-3xl border border-blue-100 bg-white shadow-[0_28px_80px_-52px_rgba(15,23,42,0.65)] lg:grid-cols-[1.15fr_0.85fr]">
+            <div className="min-w-0 p-7 lg:p-10 flex flex-col justify-between">
+              <div>
+                <span className="inline-flex rounded-full bg-gradient-to-r from-[#1236d8] via-[#006dff] to-[#0ea5ff] px-3 py-1.5 text-[11px] font-black uppercase tracking-[0.08em] text-white">
+                  {selected.eyebrow}
+                </span>
+                <h3 className="mt-6 max-w-[14ch] font-display text-[clamp(29px,4vw,46px)] font-black leading-[1.02] tracking-[-0.05em] text-[#11142a]">
+                  {selected.title}
+                </h3>
+                <p className="mt-5 max-w-[48ch] text-[14.5px] leading-relaxed text-slate-600">
+                  {selected.description}
+                </p>
 
-              <ul className="mt-6 grid gap-3">
-                {selected.bullets.map((item) => (
-                  <li key={item} className="flex items-start gap-2 text-[13.5px] font-semibold text-slate-700">
-                    <CheckCircle2 size={17} className="mt-0.5 flex-none text-[#1236d8]" /> <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
+                <ul className="mt-6 grid gap-3">
+                  {selected.bullets.map((item) => (
+                    <li
+                      key={item}
+                      className="flex items-start gap-2 text-[13.5px] font-semibold text-slate-700"
+                    >
+                      <CheckCircle2
+                        size={17}
+                        className="mt-0.5 flex-none text-[#1236d8]"
+                      />{" "}
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-              <Link
-                href={selected.href}
-                className="mt-8 inline-flex items-center gap-2 rounded-xl border border-[#1236d8]/25 px-6 py-3.5 text-[14px] font-black text-[#1236d8] transition hover:bg-blue-50"
-              >
-                Ver más <ArrowRight size={17} />
-              </Link>
+              {/* Botón y Marcas en la misma sección inferior */}
+              <div className="mt-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6 pt-6 border-t border-slate-100">
+                <Link
+                  href={selected.href}
+                  className="inline-flex items-center gap-2 rounded-2xl border-2 border-[#1236d8] px-6 py-3 text-[14px] font-black text-[#1236d8] transition hover:bg-[#1236d8]/5 animate-pulse-subtle"
+                >
+                  Ver soluciones <ArrowRight size={17} />
+                </Link>
+
+                <div className="flex flex-wrap items-center gap-5 sm:gap-6">
+                  {selected.brands.map((brand) => (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img
+                      key={brand.name}
+                      src={brand.logo}
+                      alt={brand.name}
+                      className="h-6 sm:h-7 w-auto object-contain opacity-95 hover:opacity-100 transition-opacity"
+                    />
+                  ))}
+                </div>
+              </div>
             </div>
 
-            <div className="relative min-h-[330px] bg-gradient-to-br from-[#0726b8] via-[#006dff] to-[#0ea5ff] p-5 sm:min-h-[390px]">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_82%_18%,rgba(255,255,255,0.34),transparent_28%)]" />
-              <div className="absolute bottom-0 right-0 h-52 w-52 bg-[radial-gradient(circle,rgba(255,255,255,0.24)_1px,transparent_1px)] [background-size:15px_15px]" />
-              <div className="relative h-full overflow-hidden rounded-[28px] bg-[#050816] shadow-2xl">
-                <Image
-                  key={selected.image}
-                  src={selected.image}
-                  alt={selected.imageAlt}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 700px"
-                  className="object-cover opacity-90 transition duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-tr from-[#050816]/42 via-transparent to-[#38bdf8]/18" />
+            {/* Columna de la Imagen */}
+            <div className="relative p-6 lg:p-8 flex items-stretch justify-center min-h-[340px] lg:min-h-auto">
+              <div
+                className="relative w-full min-h-[280px] lg:min-h-[360px] bg-gradient-to-br from-[#1236d8] via-[#006dff] to-[#0ea5ff] p-[3px] shadow-2xl transition-all duration-300 hover:scale-[1.01]"
+                style={{
+                  clipPath: "polygon(22% 0%, 100% 0%, 100% 100%, 20% 100%, 0% 48%)",
+                }}
+              >
+                <div
+                  className="absolute inset-[3px] left-[7px] bg-[#050816] overflow-hidden"
+                  style={{
+                    clipPath: "polygon(22% 0%, 100% 0%, 100% 100%, 20% 100%, 0% 48%)",
+                  }}
+                >
+                  <Image
+                    key={selected.image}
+                    src={selected.image}
+                    alt={selected.imageAlt}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 500px"
+                    className="object-cover opacity-90 transition duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-tr from-[#050816]/40 via-transparent to-[#38bdf8]/15" />
+                </div>
               </div>
             </div>
           </article>

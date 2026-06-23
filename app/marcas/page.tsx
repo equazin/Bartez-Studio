@@ -13,6 +13,7 @@ import {
   HardDrive,
   Monitor,
   MessageCircle,
+  Cloud,
 } from "lucide-react";
 import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
@@ -37,7 +38,7 @@ const brands = [
       { icon: Monitor, label: "Workstations Precision" },
       { icon: HardDrive, label: "Storage PowerVault / EMC" },
     ],
-    accent: "text-blue-400",
+    accent: "text-blue-500",
   },
   {
     name: "Lenovo",
@@ -51,7 +52,7 @@ const brands = [
       { icon: Server, label: "ThinkSystem / ThinkAgile" },
       { icon: Package, label: "Periféricos y accesorios" },
     ],
-    accent: "text-red-400",
+    accent: "text-red-500",
   },
   {
     name: "HP",
@@ -65,7 +66,21 @@ const brands = [
       { icon: Server, label: "ProLiant (HPE)" },
       { icon: Package, label: "Impresoras LaserJet" },
     ],
-    accent: "text-sky-400",
+    accent: "text-sky-500",
+  },
+  {
+    name: "Hewlett Packard Enterprise",
+    logo: "/logos/hpe.svg",
+    category: "Servidores · Almacenamiento · Networking",
+    description:
+      "Soluciones empresariales avanzadas de Hewlett Packard Enterprise. Distribuimos servidores ProLiant Gen11, soluciones de almacenamiento modular Alletra y equipamiento de misión crítica.",
+    products: [
+      { icon: Server, label: "Servidores HPE ProLiant" },
+      { icon: HardDrive, label: "Almacenamiento Alletra" },
+      { icon: Network, label: "Switches y conectividad" },
+      { icon: Package, label: "Soporte HPE Pointnext" },
+    ],
+    accent: "text-emerald-500",
   },
   {
     name: "Cisco",
@@ -79,7 +94,49 @@ const brands = [
       { icon: Network, label: "Routers empresariales" },
       { icon: Network, label: "Access Points WiFi 6" },
     ],
-    accent: "text-teal-400",
+    accent: "text-teal-500",
+  },
+  {
+    name: "Aruba",
+    logo: "/logos/aruba.svg",
+    category: "Networking · WiFi corporativo · Switches",
+    description:
+      "Conectividad inteligente y segura para empresas de Aruba Networks (HPE). Switches Instant On, access points WiFi 6 administrables en la nube y soluciones SD-WAN.",
+    products: [
+      { icon: Network, label: "Switches Instant On" },
+      { icon: Network, label: "Access Points WiFi 6" },
+      { icon: Shield, label: "Seguridad y control ClearPass" },
+      { icon: Cloud, label: "Gestión Aruba Central" },
+    ],
+    accent: "text-orange-500",
+  },
+  {
+    name: "APC",
+    logo: "/logos/apc.svg",
+    category: "Energía · UPS · Racks · Distribución",
+    description:
+      "Sistemas de energía ininterrumpida y protección eléctrica APC by Schneider Electric. UPS Smart-UPS monofásicas y trifásicas, racks NetShelter y PDUs para datacenters.",
+    products: [
+      { icon: Cpu, label: "Smart-UPS Monofásicas" },
+      { icon: Server, label: "Sistemas trifásicos Symmetra" },
+      { icon: Package, label: "Racks y gabinetes" },
+      { icon: HardDrive, label: "PDUs de distribución" },
+    ],
+    accent: "text-red-500",
+  },
+  {
+    name: "Lyonn",
+    logo: "/logos/lyonn.svg",
+    category: "Protección de energía · UPS · Estabilizadores",
+    description:
+      "Soluciones de respaldo y protección eléctrica Lyonn. UPS hogareñas e industriales, estabilizadores de tensión y baterías de reemplazo con excelente relación costo-beneficio.",
+    products: [
+      { icon: Cpu, label: "UPS interactivos (650-2000VA)" },
+      { icon: Server, label: "UPS Online Doble Conversión" },
+      { icon: Package, label: "Estabilizadores de tensión" },
+      { icon: HardDrive, label: "Baterías selladas" },
+    ],
+    accent: "text-blue-500",
   },
   {
     name: "Intel",
@@ -93,7 +150,7 @@ const brands = [
       { icon: Package, label: "Intel NUC" },
       { icon: Package, label: "Componentes y accesorios" },
     ],
-    accent: "text-blue-300",
+    accent: "text-blue-500",
   },
   {
     name: "AMD",
@@ -107,7 +164,7 @@ const brands = [
       { icon: Monitor, label: "Radeon GPUs" },
       { icon: Package, label: "Componentes" },
     ],
-    accent: "text-orange-400",
+    accent: "text-orange-500",
   },
   {
     name: "Kingston",
@@ -121,7 +178,7 @@ const brands = [
       { icon: Package, label: "Memorias flash USB" },
       { icon: Package, label: "HyperX Gaming" },
     ],
-    accent: "text-red-400",
+    accent: "text-red-500",
   },
 ];
 
@@ -204,7 +261,7 @@ export default function MarcasPage() {
                       <span className={`text-[11px] font-bold uppercase tracking-[0.15em] ${brand.accent}`}>
                         {brand.category}
                       </span>
-                      <div className="mt-3 h-8 brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                      <div className="mt-3 h-8 grayscale contrast-125 opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:contrast-100 transition-all duration-300">
                         <Image
                           src={brand.logo}
                           alt={brand.name}
@@ -222,9 +279,9 @@ export default function MarcasPage() {
 
                   <div className="mt-5 grid grid-cols-2 gap-2">
                     {brand.products.map((product) => (
-                      <div key={product.label} className="flex items-center gap-2 rounded-lg bg-white/5 border border-white/5 px-3 py-2">
-                        <product.icon className="size-3.5 flex-none text-slate-400" strokeWidth={1.6} />
-                        <span className="text-[12px] font-medium text-slate-350">{product.label}</span>
+                      <div key={product.label} className="flex items-center gap-2 rounded-lg bg-slate-50 border border-slate-100 px-3 py-2">
+                        <product.icon className="size-3.5 flex-none text-[#1236d8]" strokeWidth={1.6} />
+                        <span className="text-[12px] font-medium text-slate-600">{product.label}</span>
                       </div>
                     ))}
                   </div>
