@@ -295,18 +295,18 @@ export default function BarposPage() {
           <div className="mx-auto grid max-w-[1200px] gap-10 px-6 lg:grid-cols-[0.85fr_1.15fr]">
             <div>
               <h2 className="font-display text-[clamp(32px,4.5vw,54px)] font-bold leading-[1.02] tracking-[-0.05em] text-white">
-                Precio: mejor por WhatsApp que fijo en web.
+                Cotización vigente y propuesta a medida.
               </h2>
               <p className="mt-5 text-[15.5px] leading-relaxed text-slate-400">
-                Para esta línea conviene trabajar el precio como cotización vigente, no como lista pública permanente. Cambian costos, configuración, instalación, zona y condiciones del canal.
+                Te confirmamos el alcance comercial según el tipo de negocio, cantidad de puestos, ubicación, instalación requerida y modalidad de compra o reventa.
               </p>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               {[
-                { icon: ShieldCheck, title: "Evita precios vencidos", text: "El flyer puede usarse en campañas con vigencia. La página debe derivar a consulta actualizada." },
-                { icon: ScanLine, title: "Permite calificar el lead", text: "No vale lo mismo un comercio con una caja que una red de sucursales o un revendedor." },
-                { icon: Headset, title: "Incluye implementación", text: "La puesta en marcha puede variar por alcance, ubicación y necesidad de capacitación." },
-                { icon: MessageCircle, title: "Cierra mejor por WhatsApp", text: "Ventas puede responder con precio, disponibilidad, condiciones y próximos pasos en el mismo hilo." },
+                { icon: ShieldCheck, title: "Precio actualizado", text: "Consultá valores vigentes, disponibilidad y alternativas comerciales para tu zona." },
+                { icon: ScanLine, title: "Alcance según tu negocio", text: "No es lo mismo una caja individual, varias sucursales o una consulta para reventa." },
+                { icon: Headset, title: "Implementación y soporte", text: "Podemos incluir puesta en marcha, capacitación inicial y acompañamiento técnico." },
+                { icon: MessageCircle, title: "Respuesta directa", text: "El equipo comercial te responde por WhatsApp con los próximos pasos y condiciones." },
               ].map((item) => (
                 <article key={item.title} className="border border-white/10 bg-[#030c07] p-6">
                   <item.icon className="text-accent" size={24} strokeWidth={1.7} />
