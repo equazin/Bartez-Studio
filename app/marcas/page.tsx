@@ -70,7 +70,7 @@ const brands = [
   },
   {
     name: "Hewlett Packard Enterprise",
-    logo: "/logos/hpe.svg",
+    logo: "/logos/hpe.png",
     category: "Servidores · Almacenamiento · Networking",
     description:
       "Soluciones empresariales avanzadas de Hewlett Packard Enterprise. Distribuimos servidores ProLiant Gen11, soluciones de almacenamiento modular Alletra y equipamiento de misión crítica.",
@@ -98,7 +98,7 @@ const brands = [
   },
   {
     name: "Aruba",
-    logo: "/logos/aruba.svg",
+    logo: "/logos/aruba.png",
     category: "Networking · WiFi corporativo · Switches",
     description:
       "Conectividad inteligente y segura para empresas de Aruba Networks (HPE). Switches Instant On, access points WiFi 6 administrables en la nube y soluciones SD-WAN.",
@@ -252,7 +252,7 @@ const brands = [
   },
   {
     name: "Ubiquiti",
-    logo: "/logos/ubiquiti.svg",
+    logo: "/logos/ubiquiti.png",
     category: "Networking · WiFi · Videovigilancia",
     description:
       "Soluciones de conectividad inalámbrica y redes. Access Points UniFi WiFi 6, switches UniFi, routers EdgeMAX y sistemas de videovigilancia UniFi Protect.",
@@ -266,7 +266,7 @@ const brands = [
   },
   {
     name: "Vertiv",
-    logo: "/logos/vertiv.svg",
+    logo: "/logos/vertiv.png",
     category: "Energía · Racks · Datacenter",
     description:
       "Infraestructura crítica y continuidad operativa. UPS Liebert para servidores, sistemas de refrigeración de precisión, racks SmartCabinet y PDUs inteligentes.",
@@ -294,7 +294,7 @@ const brands = [
   },
   {
     name: "WD",
-    logo: "/logos/wd.svg",
+    logo: "/logos/wd.png",
     category: "Discos Duros · SSDs · Almacenamiento",
     description:
       "Discos rígidos y unidades de estado sólido de alta confiabilidad. Discos WD Purple para videovigilancia 24/7, WD Red para NAS y SSDs WD Blue/Gold.",
