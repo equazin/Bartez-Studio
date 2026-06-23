@@ -49,33 +49,33 @@ export function BarposWhatsAppForm() {
       </p>
 
       <div className="mt-6 grid gap-4">
-        <label className="grid gap-2 text-[12px] font-semibold uppercase tracking-[0.12em] text-slate-500">
+        <label className="grid min-w-0 gap-2 text-[12px] font-semibold uppercase tracking-[0.12em] text-slate-500">
           Tipo de consulta
-          <select value={role} onChange={(event) => setRole(event.target.value)} className="rounded-lg border border-white/10 bg-[#030c07] px-3 py-3 text-[14px] font-medium normal-case tracking-normal text-white outline-none focus:border-accent">
+          <select value={role} onChange={(event) => setRole(event.target.value)} className="w-full min-w-0 rounded-lg border border-white/10 bg-[#030c07] px-3 py-3 text-[14px] font-medium normal-case tracking-normal text-white outline-none focus:border-accent">
             {roles.map((item) => (
               <option key={item}>{item}</option>
             ))}
           </select>
         </label>
 
-        <label className="grid gap-2 text-[12px] font-semibold uppercase tracking-[0.12em] text-slate-500">
+        <label className="grid min-w-0 gap-2 text-[12px] font-semibold uppercase tracking-[0.12em] text-slate-500">
           Rubro
-          <select value={businessType} onChange={(event) => setBusinessType(event.target.value)} className="rounded-lg border border-white/10 bg-[#030c07] px-3 py-3 text-[14px] font-medium normal-case tracking-normal text-white outline-none focus:border-accent">
+          <select value={businessType} onChange={(event) => setBusinessType(event.target.value)} className="w-full min-w-0 rounded-lg border border-white/10 bg-[#030c07] px-3 py-3 text-[14px] font-medium normal-case tracking-normal text-white outline-none focus:border-accent">
             {businessTypes.map((item) => (
               <option key={item}>{item}</option>
             ))}
           </select>
         </label>
 
-        <label className="grid gap-2 text-[12px] font-semibold uppercase tracking-[0.12em] text-slate-500">
+        <label className="grid min-w-0 gap-2 text-[12px] font-semibold uppercase tracking-[0.12em] text-slate-500">
           Localidad y provincia
-          <input value={city} onChange={(event) => setCity(event.target.value)} placeholder="Ej: Rosario, Santa Fe" className="rounded-lg border border-white/10 bg-[#030c07] px-3 py-3 text-[14px] font-medium normal-case tracking-normal text-white outline-none placeholder:text-slate-600 focus:border-accent" />
+          <input value={city} onChange={(event) => setCity(event.target.value)} placeholder="Ej: Rosario, Santa Fe" className="w-full min-w-0 rounded-lg border border-white/10 bg-[#030c07] px-3 py-3 text-[14px] font-medium normal-case tracking-normal text-white outline-none placeholder:text-slate-600 focus:border-accent" />
         </label>
 
-        <div className="grid gap-4 sm:grid-cols-2">
-          <label className="grid gap-2 text-[12px] font-semibold uppercase tracking-[0.12em] text-slate-500">
+        <div className="grid min-w-0 gap-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+          <label className="grid min-w-0 gap-2 text-[12px] font-semibold uppercase tracking-[0.12em] text-slate-500">
             Cantidad
-            <select value={quantity} onChange={(event) => setQuantity(event.target.value)} className="rounded-lg border border-white/10 bg-[#030c07] px-3 py-3 text-[14px] font-medium normal-case tracking-normal text-white outline-none focus:border-accent">
+            <select value={quantity} onChange={(event) => setQuantity(event.target.value)} className="w-full min-w-0 rounded-lg border border-white/10 bg-[#030c07] px-3 py-3 text-[14px] font-medium normal-case tracking-normal text-white outline-none focus:border-accent">
               <option>1 punto de venta</option>
               <option>2 a 3 puntos de venta</option>
               <option>4 o más puntos de venta</option>
@@ -83,9 +83,9 @@ export function BarposWhatsAppForm() {
             </select>
           </label>
 
-          <label className="grid gap-2 text-[12px] font-semibold uppercase tracking-[0.12em] text-slate-500">
+          <label className="grid min-w-0 gap-2 text-[12px] font-semibold uppercase tracking-[0.12em] text-slate-500">
             Implementación
-            <select value={needsImplementation} onChange={(event) => setNeedsImplementation(event.target.value)} className="rounded-lg border border-white/10 bg-[#030c07] px-3 py-3 text-[14px] font-medium normal-case tracking-normal text-white outline-none focus:border-accent">
+            <select value={needsImplementation} onChange={(event) => setNeedsImplementation(event.target.value)} className="w-full min-w-0 rounded-lg border border-white/10 bg-[#030c07] px-3 py-3 text-[14px] font-medium normal-case tracking-normal text-white outline-none focus:border-accent">
               <option>Sí, necesito instalación e implementación</option>
               <option>Solo quiero cotizar el equipamiento</option>
               <option>Quiero consultar condiciones para revender</option>
@@ -93,9 +93,9 @@ export function BarposWhatsAppForm() {
           </label>
         </div>
 
-        <label className="grid gap-2 text-[12px] font-semibold uppercase tracking-[0.12em] text-slate-500">
+        <label className="grid min-w-0 gap-2 text-[12px] font-semibold uppercase tracking-[0.12em] text-slate-500">
           Comentario opcional
-          <textarea value={notes} onChange={(event) => setNotes(event.target.value)} rows={4} placeholder="Ej: necesito factura A, formas de pago, entrega en zona, integración con controladora fiscal..." className="resize-none rounded-lg border border-white/10 bg-[#030c07] px-3 py-3 text-[14px] font-medium normal-case tracking-normal text-white outline-none placeholder:text-slate-600 focus:border-accent" />
+          <textarea value={notes} onChange={(event) => setNotes(event.target.value)} rows={4} placeholder="Ej: necesito factura A, formas de pago, entrega en zona, integración con controladora fiscal..." className="w-full min-w-0 resize-none rounded-lg border border-white/10 bg-[#030c07] px-3 py-3 text-[14px] font-medium normal-case tracking-normal text-white outline-none placeholder:text-slate-600 focus:border-accent" />
         </label>
       </div>
 
