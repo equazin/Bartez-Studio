@@ -122,7 +122,7 @@ const brands = [
       { icon: Package, label: "Racks y gabinetes" },
       { icon: HardDrive, label: "PDUs de distribución" },
     ],
-    accent: "text-red-500",
+    accent: "text-emerald-500",
   },
   {
     name: "Lyonn",
@@ -179,6 +179,118 @@ const brands = [
       { icon: Package, label: "HyperX Gaming" },
     ],
     accent: "text-red-500",
+  },
+  {
+    name: "Microsoft",
+    logo: "/logos/microsoft.svg",
+    category: "Sistemas Operativos · Licenciamiento · Cloud",
+    description:
+      "Soluciones de software y nube de Microsoft. Licenciamiento de Windows Server, Microsoft 365 para empresas, Office Hogar y Empresas, y servicios en la nube Azure.",
+    products: [
+      { icon: Cloud, label: "Microsoft 365" },
+      { icon: Server, label: "Windows Server" },
+      { icon: Package, label: "Licencias Office B2B" },
+      { icon: Cloud, label: "Azure Cloud Services" },
+    ],
+    accent: "text-blue-500",
+  },
+  {
+    name: "ESET",
+    logo: "/logos/eset.svg",
+    category: "Antivirus · Seguridad Endpoint",
+    description:
+      "Protección proactiva contra amenazas informáticas. Licenciamiento de ESET Endpoint Security, antivirus corporativo y administración centralizada en la nube.",
+    products: [
+      { icon: Shield, label: "Endpoint Security" },
+      { icon: Shield, label: "ESET NOD32 Antivirus" },
+      { icon: Cloud, label: "Centralized Admin" },
+      { icon: Laptop, label: "Protección Móvil" },
+    ],
+    accent: "text-teal-500",
+  },
+  {
+    name: "Epson",
+    logo: "/logos/epson.svg",
+    category: "Impresión · Proyectores · POS",
+    description:
+      "Equipamiento de impresión y proyección. Impresoras Ecotank para oficina, impresoras térmicas de tickets para punto de venta y proyectores corporativos.",
+    products: [
+      { icon: Package, label: "Impresoras Ecotank" },
+      { icon: Package, label: "Tickets POS (TM-T88)" },
+      { icon: Monitor, label: "Proyectores PowerLite" },
+      { icon: Package, label: "Repuestos y consumibles" },
+    ],
+    accent: "text-sky-500",
+  },
+  {
+    name: "3nStar",
+    logo: "/logos/3nstar.svg",
+    category: "Punto de Venta · POS · Lectores",
+    description:
+      "Hardware especializado para punto de venta. Computadoras POS todo en uno, lectores de códigos de barra, cajones de dinero e impresoras de etiquetas.",
+    products: [
+      { icon: Monitor, label: "Computadoras POS" },
+      { icon: Package, label: "Lectores de Barras" },
+      { icon: Package, label: "Impresoras Térmicas" },
+      { icon: Package, label: "Cajones y accesorios" },
+    ],
+    accent: "text-blue-500",
+  },
+  {
+    name: "Ubiquiti",
+    logo: "/logos/ubiquiti.svg",
+    category: "Networking · WiFi · Videovigilancia",
+    description:
+      "Soluciones de conectividad inalámbrica y redes. Access Points UniFi WiFi 6, switches UniFi, routers EdgeMAX y sistemas de videovigilancia UniFi Protect.",
+    products: [
+      { icon: Network, label: "UniFi Access Points" },
+      { icon: Network, label: "Switches UniFi" },
+      { icon: Network, label: "Gateways EdgeRouter" },
+      { icon: Shield, label: "UniFi Protect (CCTV)" },
+    ],
+    accent: "text-blue-500",
+  },
+  {
+    name: "Vertiv",
+    logo: "/logos/vertiv.svg",
+    category: "Energía · Racks · Datacenter",
+    description:
+      "Infraestructura crítica y continuidad operativa. UPS Liebert para servidores, sistemas de refrigeración de precisión, racks SmartCabinet y PDUs inteligentes.",
+    products: [
+      { icon: Cpu, label: "Liebert UPS Monofásica" },
+      { icon: Server, label: "SmartCabinet / Racks" },
+      { icon: Cpu, label: "Sistemas Trifásicos" },
+      { icon: HardDrive, label: "PDUs Inteligentes" },
+    ],
+    accent: "text-orange-500",
+  },
+  {
+    name: "GLC",
+    logo: "/logos/glc.svg",
+    category: "Fibra óptica · Cableado · Conectividad",
+    description:
+      "Componentes para redes y cableado estructurado. Cables de red UTP/FTP, fibra óptica, patch panels, organizadores, conectores y racks de pared.",
+    products: [
+      { icon: Network, label: "Bobinas UTP Cat5e/6" },
+      { icon: Network, label: "Cables y Patch Cords" },
+      { icon: Package, label: "Patch Panels / Racks" },
+      { icon: Network, label: "Conectores y fibra" },
+    ],
+    accent: "text-blue-500",
+  },
+  {
+    name: "WD",
+    logo: "/logos/wd.svg",
+    category: "Discos Duros · SSDs · Almacenamiento",
+    description:
+      "Discos rígidos y unidades de estado sólido de alta confiabilidad. Discos WD Purple para videovigilancia 24/7, WD Red para NAS y SSDs WD Blue/Gold.",
+    products: [
+      { icon: HardDrive, label: "WD Purple (CCTV)" },
+      { icon: HardDrive, label: "WD Red (para NAS)" },
+      { icon: HardDrive, label: "WD Gold (Server)" },
+      { icon: HardDrive, label: "SSDs NVMe / SATA" },
+    ],
+    accent: "text-blue-500",
   },
 ];
 
@@ -261,13 +373,13 @@ export default function MarcasPage() {
                       <span className={`text-[11px] font-bold uppercase tracking-[0.15em] ${brand.accent}`}>
                         {brand.category}
                       </span>
-                      <div className="mt-3 h-8 grayscale contrast-125 opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:contrast-100 transition-all duration-300">
+                      <div className="mt-4 h-14 flex items-center grayscale contrast-125 opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:contrast-100 transition-all duration-300">
                         <Image
                           src={brand.logo}
                           alt={brand.name}
-                          width={120}
-                          height={32}
-                          className="h-7 w-auto object-left"
+                          width={160}
+                          height={44}
+                          className="h-10 w-auto object-contain object-left"
                         />
                       </div>
                     </div>
