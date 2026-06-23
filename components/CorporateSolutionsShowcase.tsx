@@ -50,9 +50,9 @@ const corporateSolutions: CorporateSolution[] = [
       "Componentes para datacenter",
     ],
     brands: [
-      { name: "Dell", logo: "/logos/dell.svg" },
+      { name: "Dell", logo: "/logos/dell.png" },
       { name: "HPE", logo: "/logos/hpe.png" },
-      { name: "Lenovo", logo: "/logos/lenovo.svg" },
+      { name: "Lenovo", logo: "/logos/lenovo.png" },
       { name: "APC", logo: "/logos/apc.svg" },
       { name: "Vertiv", logo: "/logos/vertiv.png" },
       { name: "GLC", logo: "/logos/glc.png" },
@@ -77,11 +77,11 @@ const corporateSolutions: CorporateSolution[] = [
       "Garantía y seguimiento comercial",
     ],
     brands: [
-      { name: "Lenovo", logo: "/logos/lenovo.svg" },
-      { name: "Dell", logo: "/logos/dell.svg" },
-      { name: "HP", logo: "/logos/hp.svg" },
-      { name: "Kingston", logo: "/logos/kingston.svg" },
-      { name: "Epson", logo: "/logos/epson.svg" },
+      { name: "Lenovo", logo: "/logos/lenovo.png" },
+      { name: "Dell", logo: "/logos/dell.png" },
+      { name: "HP", logo: "/logos/hp.png" },
+      { name: "Kingston", logo: "/logos/kingston.png" },
+      { name: "Epson", logo: "/logos/epson.png" },
     ],
   },
   {
@@ -103,7 +103,7 @@ const corporateSolutions: CorporateSolution[] = [
       "Diseño e implementación de red",
     ],
     brands: [
-      { name: "Cisco", logo: "/logos/cisco.svg" },
+      { name: "Cisco", logo: "/logos/cisco.png" },
       { name: "Aruba", logo: "/logos/aruba.png" },
       { name: "Ubiquiti", logo: "/logos/ubiquiti.png" },
       { name: "GLC", logo: "/logos/glc.png" },
@@ -128,10 +128,10 @@ const corporateSolutions: CorporateSolution[] = [
       "Instalación y puesta en marcha",
     ],
     brands: [
-      { name: "Cisco", logo: "/logos/cisco.svg" },
+      { name: "Cisco", logo: "/logos/cisco.png" },
       { name: "Ubiquiti", logo: "/logos/ubiquiti.png" },
       { name: "WD", logo: "/logos/wd.png" },
-      { name: "Intel", logo: "/logos/intel.svg" },
+      { name: "Intel", logo: "/logos/intel.png" },
     ],
   },
   {
@@ -176,9 +176,9 @@ const corporateSolutions: CorporateSolution[] = [
       "Planes por criticidad operativa",
     ],
     brands: [
-      { name: "Dell", logo: "/logos/dell.svg" },
-      { name: "Lenovo", logo: "/logos/lenovo.svg" },
-      { name: "HP", logo: "/logos/hp.svg" },
+      { name: "Dell", logo: "/logos/dell.png" },
+      { name: "Lenovo", logo: "/logos/lenovo.png" },
+      { name: "HP", logo: "/logos/hp.png" },
       { name: "Microsoft", logo: "/logos/microsoft.svg" },
     ],
   },
@@ -203,7 +203,7 @@ const corporateSolutions: CorporateSolution[] = [
     brands: [
       { name: "3nStar", logo: "/logos/3nstar.png" },
       { name: "OCOM", logo: "/logos/ocom.png" },
-      { name: "Epson", logo: "/logos/epson.svg" },
+      { name: "Epson", logo: "/logos/epson.png" },
     ],
   },
 ];

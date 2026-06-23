@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 const brands = [
   {
     name: "Dell",
-    logo: "/logos/dell.svg",
+    logo: "/logos/dell.png",
     category: "Servidores · Notebooks · Workstations · Storage",
     description:
       "Distribuimos toda la línea de Dell para el mercado corporativo: servidores PowerEdge, notebooks Latitude y Vostro para empresas, workstations Precision y storage PowerVault.",
@@ -42,7 +42,7 @@ const brands = [
   },
   {
     name: "Lenovo",
-    logo: "/logos/lenovo.svg",
+    logo: "/logos/lenovo.png",
     category: "Notebooks · PCs · Servidores",
     description:
       "Portfolio completo Lenovo para empresas: notebooks ThinkPad (la línea más confiable del mercado corporativo), ThinkCentre para escritorio y servidores ThinkSystem.",
@@ -56,7 +56,7 @@ const brands = [
   },
   {
     name: "HP",
-    logo: "/logos/hp.svg",
+    logo: "/logos/hp.png",
     category: "Notebooks · PCs · Impresoras · Servidores",
     description:
       "HP cubre todos los segmentos: ProBook y EliteBook para empresas, ProDesk para escritorio corporativo y ProLiant para servidores. Además impresoras LaserJet para oficina.",
@@ -84,7 +84,7 @@ const brands = [
   },
   {
     name: "Cisco",
-    logo: "/logos/cisco.svg",
+    logo: "/logos/cisco.png",
     category: "Switches · Routers · Firewalls · WiFi",
     description:
       "Líderes mundiales en networking. Distribuimos switches Catalyst y Meraki, routers, firewalls Firepower/ASA y access points WiFi 6 para redes empresariales de cualquier escala.",
@@ -140,7 +140,7 @@ const brands = [
   },
   {
     name: "Intel",
-    logo: "/logos/intel.svg",
+    logo: "/logos/intel.png",
     category: "Procesadores · NUC · Componentes",
     description:
       "Procesadores Intel Core e Intel Xeon para workstations y servidores. Componentes de alta performance para ensamble de PCs y estaciones de trabajo corporativas.",
@@ -154,7 +154,7 @@ const brands = [
   },
   {
     name: "AMD",
-    logo: "/logos/amd.svg",
+    logo: "/logos/amd.png",
     category: "Procesadores · GPUs · Componentes",
     description:
       "Procesadores Ryzen para workstations y PCs de alto rendimiento. GPUs Radeon para estaciones gráficas, diseño y renderizado. La alternativa de performance para cada presupuesto.",
@@ -168,7 +168,7 @@ const brands = [
   },
   {
     name: "Kingston",
-    logo: "/logos/kingston.svg",
+    logo: "/logos/kingston.png",
     category: "RAM · SSDs · Memorias Flash",
     description:
       "Memorias RAM, SSDs y storage flash para upgrades corporativos. Consultanos compatibilidad, disponibilidad y las condiciones de garantía aplicables a cada línea.",
@@ -210,7 +210,7 @@ const brands = [
   },
   {
     name: "Epson",
-    logo: "/logos/epson.svg",
+    logo: "/logos/epson.png",
     category: "Impresión · Proyectores · POS",
     description:
       "Equipamiento de impresión y proyección. Impresoras Ecotank para oficina, impresoras térmicas de tickets para punto de venta y proyectores corporativos.",

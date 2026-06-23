@@ -47,13 +47,13 @@ export const contact = {
 export const partners = {
   title: "Marcas que trabajamos",
   brands: [
-    { name: "Dell", logo: "/logos/dell.svg" },
-    { name: "Lenovo", logo: "/logos/lenovo.svg" },
-    { name: "HP", logo: "/logos/hp.svg" },
-    { name: "Cisco", logo: "/logos/cisco.svg" },
-    { name: "Intel", logo: "/logos/intel.svg" },
-    { name: "AMD", logo: "/logos/amd.svg" },
-    { name: "Kingston", logo: "/logos/kingston.svg" },
+    { name: "Dell", logo: "/logos/dell.png" },
+    { name: "Lenovo", logo: "/logos/lenovo.png" },
+    { name: "HP", logo: "/logos/hp.png" },
+    { name: "Cisco", logo: "/logos/cisco.png" },
+    { name: "Intel", logo: "/logos/intel.png" },
+    { name: "AMD", logo: "/logos/amd.png" },
+    { name: "Kingston", logo: "/logos/kingston.png" },
   ],
 };
 
