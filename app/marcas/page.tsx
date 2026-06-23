@@ -373,13 +373,13 @@ export default function MarcasPage() {
                       <span className={`text-[11px] font-bold uppercase tracking-[0.15em] ${brand.accent}`}>
                         {brand.category}
                       </span>
-                      <div className="mt-4 h-14 flex items-center grayscale contrast-125 opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:contrast-100 transition-all duration-300">
+                      <div className="mt-4 h-16 flex items-center grayscale contrast-125 opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:contrast-100 transition-all duration-300">
                         <Image
                           src={brand.logo}
                           alt={brand.name}
-                          width={160}
-                          height={44}
-                          className="h-10 w-auto object-contain object-left"
+                          width={180}
+                          height={52}
+                          className="h-12 w-auto object-contain object-left"
                         />
                       </div>
                     </div>

@@ -288,8 +288,8 @@ export function HomeBlueWholesale() {
             <h2 className="font-display text-[24px] font-black leading-[1.05] tracking-[-0.035em] text-[#11142a]">Marcas que trabajamos</h2>
             <div className="grid grid-cols-3 items-center gap-6 sm:grid-cols-4 lg:grid-cols-7">
               {partners.brands.map((brand) => (
-                <div key={brand.name} className="flex h-12 items-center justify-center opacity-75 grayscale transition hover:opacity-100 hover:grayscale-0">
-                  <Image src={brand.logo} alt={brand.name} width={116} height={42} className="max-h-9 w-auto object-contain" />
+                <div key={brand.name} className="flex h-16 items-center justify-center opacity-75 grayscale transition hover:opacity-100 hover:grayscale-0">
+                  <Image src={brand.logo} alt={brand.name} width={130} height={48} className="max-h-12 w-auto object-contain" />
                 </div>
               ))}
             </div>
