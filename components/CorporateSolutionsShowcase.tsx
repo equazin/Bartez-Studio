@@ -215,7 +215,7 @@ export function CorporateSolutionsShowcase() {
     corporateSolutions[0];
 
   return (
-    <section id="soluciones" className="bg-[#f7f9ff] py-16 lg:py-20">
+    <section id="soluciones" className="bg-[#f7f9ff] py-14 lg:py-16">
       <div className="mx-auto w-[calc(100vw-32px)] max-w-[1320px] min-w-0 px-0 sm:w-full sm:px-6 lg:px-10">
         <div className="text-center">
           <h2 className="mx-auto max-w-[13ch] font-display text-[clamp(27px,7vw,48px)] font-black leading-tight tracking-[-0.045em] text-[#11142a] sm:max-w-none">
@@ -226,7 +226,7 @@ export function CorporateSolutionsShowcase() {
           </p>
         </div>
 
-        <div className="mt-10 grid min-w-0 gap-5 lg:grid-cols-[310px_1fr]">
+        <div className="mt-9 grid min-w-0 gap-5 lg:grid-cols-[300px_1fr]">
           {/* Sidebar */}
           <div className="min-w-0 rounded-3xl border border-blue-100 bg-white p-3 shadow-[0_24px_60px_-42px_rgba(15,23,42,0.55)]">
             {corporateSolutions.map((item) => {
@@ -252,13 +252,13 @@ export function CorporateSolutionsShowcase() {
           </div>
 
           {/* Content Card */}
-          <article className="grid min-w-0 rounded-3xl border border-blue-100 bg-white shadow-[0_28px_80px_-52px_rgba(15,23,42,0.65)] lg:grid-cols-[1.15fr_0.85fr]">
+          <article className="grid min-w-0 overflow-hidden rounded-3xl border border-blue-100 bg-white shadow-[0_28px_80px_-52px_rgba(15,23,42,0.65)] lg:grid-cols-[1.05fr_0.95fr]">
             <div className="min-w-0 p-7 lg:p-10 flex flex-col justify-between">
               <div>
                 <span className="inline-flex rounded-full bg-gradient-to-r from-[#1236d8] via-[#006dff] to-[#0ea5ff] px-3 py-1.5 text-[11px] font-black uppercase tracking-[0.08em] text-white">
                   {selected.eyebrow}
                 </span>
-                <h3 className="mt-6 max-w-[14ch] font-display text-[clamp(29px,4vw,46px)] font-black leading-[1.02] tracking-[-0.05em] text-[#11142a]">
+                <h3 className="mt-6 max-w-[14ch] font-display text-[clamp(29px,3.6vw,42px)] font-black leading-[1.02] tracking-[-0.05em] text-[#11142a]">
                   {selected.title}
                 </h3>
                 <p className="mt-5 max-w-[48ch] text-[14.5px] leading-relaxed text-slate-600">
@@ -285,9 +285,9 @@ export function CorporateSolutionsShowcase() {
               <div className="mt-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6 pt-6 border-t border-slate-100">
                 <Link
                   href={selected.href}
-                  className="inline-flex items-center gap-2 rounded-2xl border-2 border-[#1236d8] px-6 py-3 text-[14px] font-black text-[#1236d8] transition hover:bg-[#1236d8]/5 animate-pulse-subtle"
+                  className="inline-flex items-center gap-2 rounded-2xl border-2 border-[#1236d8] px-6 py-3 text-[14px] font-black text-[#1236d8] transition hover:bg-[#1236d8]/5"
                 >
-                  Ver soluciones <ArrowRight size={17} />
+                  Ver más <ArrowRight size={17} />
                 </Link>
 
                 <div className="flex flex-wrap items-center gap-5 sm:gap-6">

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ChevronDown, Menu, MessageCircle, X } from "lucide-react";
 import { useState } from "react";
 import { whatsappLinks } from "@/lib/whatsapp";
@@ -36,16 +37,17 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#04060d] text-white shadow-[0_18px_45px_-30px_rgba(15,23,42,0.9)]">
+    <header className="sticky inset-x-0 top-0 z-50 border-b border-white/10 bg-[#04060d] text-white shadow-[0_18px_45px_-30px_rgba(15,23,42,0.9)]">
       <div className="mx-auto flex h-[74px] max-w-[1320px] min-w-0 items-center justify-between gap-5 px-5 sm:px-6">
-        <Link href="/" className="flex min-w-0 items-center gap-3" aria-label="Bartez Tecnología — inicio">
-          <span className="grid size-11 flex-none place-items-center rounded-2xl bg-gradient-to-br from-[#1236d8] via-[#006dff] to-[#0ea5ff] font-display text-[30px] font-black leading-none text-white shadow-[0_14px_28px_-18px_rgba(0,109,255,0.95)]">
-            B
-          </span>
-          <span className="leading-none">
-            <span className="block font-display text-[28px] font-black tracking-[-0.08em] text-white">BARTEZ</span>
-            <span className="mt-1 block text-[9px] font-black uppercase tracking-[0.45em] text-white/70">Tecnología</span>
-          </span>
+        <Link href="/" className="flex min-w-0 items-center" aria-label="Bartez Tecnología — inicio">
+          <Image
+            src="/brand/bartez-logo.png"
+            alt="Bartez Tecnología"
+            width={180}
+            height={45}
+            className="h-10 w-auto object-contain"
+            priority
+          />
         </Link>
 
         <nav className="hidden items-center gap-6 lg:flex" aria-label="Navegación principal">
