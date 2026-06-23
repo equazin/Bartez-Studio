@@ -61,18 +61,12 @@ export async function POST(request: Request) {
   //    We return 200 immediately and process in the background to stay
   //    under Meta's 5-second deadline.
   if (parsed) {
-    const processing = handleIncomingMessage(parsed).catch((err) => {
+    try {
+      await handleIncomingMessage(parsed);
+      console.info("[wa:webhook] Mensaje procesado con éxito");
+    } catch (err) {
       console.error("[wa:webhook] Error procesando mensaje", err);
-    });
-
-    // Use waitUntil if available (Vercel edge/serverless runtimes)
-    // to keep the function alive until processing finishes.
-    const ctx = globalThis as unknown as { waitUntil?: (p: Promise<unknown>) => void };
-    if (typeof ctx.waitUntil === "function") {
-      ctx.waitUntil(processing);
     }
-    // If waitUntil is not available, the promise still runs in background
-    // because we're on Node.js runtime (not edge).
   }
 
   // 6. ALWAYS return 200 OK quickly.

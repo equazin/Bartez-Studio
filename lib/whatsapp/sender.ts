@@ -38,7 +38,12 @@ async function post(payload: Record<string, unknown>): Promise<boolean> {
     }
     return true;
   } catch (error) {
-    console.error("[whatsapp/sender] Network error", error instanceof Error ? error.message : error);
+    console.error(
+      "[whatsapp/sender] Network error",
+      error instanceof Error ? error.stack || error.message : error,
+      "cause:",
+      (error as any)?.cause
+    );
     return false;
   }
 }
