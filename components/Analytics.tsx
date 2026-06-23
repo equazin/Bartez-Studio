@@ -14,7 +14,8 @@ export function Analytics() {
   // GA4 de Bartez (fallback hardcodeado para garantizar la medición aunque falte el env)
   const ga = process.env.NEXT_PUBLIC_GA4_ID || "G-5GHLRGMEZT";
   const pixel = process.env.NEXT_PUBLIC_META_PIXEL_ID;
-  const clarity = process.env.NEXT_PUBLIC_CLARITY_ID;
+  // Microsoft Clarity de Bartez (fallback hardcodeado; el Project ID no es secreto)
+  const clarity = process.env.NEXT_PUBLIC_CLARITY_ID || "xa5i69udic";
 
   // Tracking declarativo: cualquier elemento con [data-track] dispara un evento al click.
   useEffect(() => {
