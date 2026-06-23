@@ -58,6 +58,7 @@ export function Footer() {
           <ul className="mt-4 grid gap-2.5 text-[13.5px] text-slate-300">
             <li><Link href="/rfq" className="hover:text-white">Cotización masiva (RFQ)</Link></li>
             <li><Link href="/catalogo" className="hover:text-white">Catálogo de soluciones</Link></li>
+            <li><Link href="/barpos" className="hover:text-white">BarPOS punto de venta</Link></li>
             <li><Link href="/comparador" className="hover:text-white">Comparador orientativo</Link></li>
             <li><Link href="/configurador" className="hover:text-white">Configurador IT</Link></li>
             <li><Link href="/garantias-rma" className="hover:text-white">Garantías y RMA</Link></li>

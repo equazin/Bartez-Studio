@@ -5,6 +5,7 @@ export type WhatsAppIntent =
   | "quote"
   | "rfq"
   | "reseller"
+  | "barpos"
   | "company"
   | "government"
   | "education"
@@ -16,6 +17,7 @@ const intentOpeners: Record<WhatsAppIntent, string> = {
   quote: "Hola, vengo de la web de Bartez y quiero solicitar una cotización.",
   rfq: "Hola, vengo de la web de Bartez y quiero enviar una cotización masiva (RFQ).",
   reseller: "Hola, vengo de la web de Bartez y quiero consultar por el canal de revendedores.",
+  barpos: "Hola, vengo de la web de Bartez y quiero consultar por BarPOS 4.0.",
   company: "Hola, represento a una empresa y necesito una solución tecnológica.",
   government: "Hola, represento a un organismo público y necesito asesoramiento para una compra o proyecto tecnológico.",
   education: "Hola, represento a una institución educativa y necesito cotizar equipamiento tecnológico.",
@@ -44,6 +46,7 @@ export const whatsappLinks = {
   quote: buildWhatsAppUrl("quote"),
   rfq: buildWhatsAppUrl("rfq"),
   reseller: buildWhatsAppUrl("reseller"),
+  barpos: buildWhatsAppUrl("barpos"),
   company: buildWhatsAppUrl("company"),
   government: buildWhatsAppUrl("government"),
   education: buildWhatsAppUrl("education"),

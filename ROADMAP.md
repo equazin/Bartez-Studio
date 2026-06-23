@@ -9,6 +9,7 @@ Documento vivo de implementación. Cada tarea se tacha únicamente después de q
 - [x] Usar “Marcas que trabajamos”; no comunicar “partners oficiales”.
 - [x] Comunicar **18 años de experiencia en el rubro**.
 - [x] Comunicar **más de 10.000 clientes**.
+- [x] Para BarPOS, no publicar precio fijo en la web general; derivar a **precio vigente por WhatsApp**.
 - [ ] Reemplazar testimonios por reviews reales de Google. **Pendiente de recibir las reviews.**
 - [ ] Incorporar logos de clientes destacados. **Pendiente de recibir logos y autorización.**
 - [x] Mantener la identidad visual oscura y verde de Bartez, elevando su percepción corporativa B2B.
@@ -87,6 +88,19 @@ Documento vivo de implementación. Cada tarea se tacha únicamente después de q
 - [ ] Sustituir imágenes genéricas por fotografías reales de equipo, instalaciones, depósito y proyectos.
 - [ ] Publicar casos de éxito verificables con contexto, solución y resultado.
 - [ ] Incorporar certificaciones o niveles de marca únicamente con documentación válida.
+
+## Fase 7 — Línea BarPOS 4.0
+
+- [x] Definir tratamiento comercial de BarPOS sin carrito ni portal de compra.
+- [x] Decidir no publicar precio fijo permanente y usar “consultar precio vigente por WhatsApp”.
+- [x] Crear página individual `/barpos` para BarPOS 4.0.
+- [x] Incorporar BarPOS al menú de Soluciones.
+- [x] Incorporar BarPOS al catálogo de familias y soluciones.
+- [x] Incorporar BarPOS al selector de necesidades de la home.
+- [x] Incorporar BarPOS al footer en Compras y soporte.
+- [x] Crear consulta estructurada por WhatsApp para comercios y distribuidores.
+- [x] Usar el flyer solo como referencia visual/comercial; no publicarlo como imagen final en la web.
+- [x] Agregar BarPOS al sitemap.
 
 ## Validación obligatoria
 

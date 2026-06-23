@@ -15,6 +15,7 @@ const primaryLinks = [
 
 const solutionLinks = [
   { label: "Catálogo de soluciones", href: "/catalogo" },
+  { label: "BarPOS punto de venta", href: "/barpos" },
   { label: "Notebooks corporativas", href: "/soluciones/notebooks-corporativas" },
   { label: "Servidores y almacenamiento", href: "/soluciones/servidores" },
   { label: "Redes e infraestructura", href: "/soluciones/redes-infraestructura" },

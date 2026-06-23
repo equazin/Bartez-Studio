@@ -8,9 +8,17 @@ import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = { title: "Catálogo de soluciones IT — Bartez Tecnología", description: "Explorá familias de equipamiento e infraestructura IT y consultá disponibilidad por WhatsApp." };
 
-const families = [
+const families: Array<{
+  title: string;
+  image: string;
+  use: string;
+  brands: string;
+  href: string;
+  imagePosition?: string;
+}> = [
   { title: "Notebooks corporativas", image: "/photos/products/laptop1.jpg", use: "Administración, ventas, dirección, movilidad y renovación de flotas.", brands: "Dell · Lenovo · HP", href: "/soluciones/notebooks-corporativas" },
   { title: "PCs y workstations", image: "/photos/products/desktop.jpg", use: "Oficina, diseño, ingeniería, CAD, desarrollo y alto desempeño.", brands: "Dell · Lenovo · HP · Intel · AMD", href: "/configurador" },
+  { title: "BarPOS punto de venta", image: "/photos/products/desktop.jpg", use: "Puesto de venta electrónico completo para comercios, con software, periféricos, implementación y soporte.", brands: "BarPOS · OCOM · Controladora fiscal homologada", href: "/barpos" },
   { title: "Servidores y almacenamiento", image: "/photos/products/server.jpg", use: "Virtualización, archivos, bases de datos, aplicaciones y continuidad.", brands: "Dell · HPE · Lenovo · Kingston", href: "/soluciones/servidores" },
   { title: "Redes e infraestructura", image: "/photos/products/switch.jpg", use: "Switching, WiFi, routing, segmentación y conectividad multi-sede.", brands: "Cisco y alternativas según proyecto", href: "/soluciones/redes-infraestructura" },
   { title: "Monitores y periféricos", image: "/photos/products/monitor.jpg", use: "Puestos completos, videollamadas, productividad y ergonomía.", brands: "Líneas corporativas y de uso profesional", href: "/comparador" },
@@ -40,7 +48,7 @@ export default function CatalogoPage() {
             {families.map((family) => (
               <article key={family.title} className="group overflow-hidden border border-white/10 bg-[#06140d]">
                 <div className="relative aspect-[16/7] overflow-hidden bg-[#082214]">
-                  <Image src={family.image} alt="" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover opacity-75 transition duration-500 group-hover:scale-[1.025] group-hover:opacity-90" />
+                  <Image src={family.image} alt="" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover opacity-75 transition duration-500 group-hover:scale-[1.025] group-hover:opacity-90" style={{ objectPosition: family.imagePosition ?? "center" }} />
                 </div>
                 <div className="p-6 md:p-7">
                   <h2 className="font-display text-[22px] font-bold text-white">{family.title}</h2>

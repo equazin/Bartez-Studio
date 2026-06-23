@@ -7,6 +7,7 @@ import {
   Server,
   ShieldCheck,
   Cloud,
+  Store,
   type LucideIcon,
 } from "lucide-react";
 
@@ -33,6 +34,12 @@ const needs: Array<{
     description: "Conectividad y arquitectura para crecer sin fricciones.",
     href: "/soluciones/redes-infraestructura",
     icon: Network,
+  },
+  {
+    title: "Equipar un punto de venta",
+    description: "BarPOS 4.0 para comercios: caja, software, periféricos, implementación y soporte.",
+    href: "/barpos",
+    icon: Store,
   },
   {
     title: "Implementar soporte y servicios IT",

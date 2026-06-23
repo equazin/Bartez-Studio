@@ -92,6 +92,7 @@ export const seo = {
     "servicios tecnológicos Argentina",
     "distribuidor notebooks corporativas",
     "revendedor tecnología Argentina",
+    "punto de venta electrónico BarPOS",
   ],
   ogImage: "/opengraph-image",
 };
