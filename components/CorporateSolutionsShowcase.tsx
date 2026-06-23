@@ -1,0 +1,252 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import { useState, type ComponentType } from "react";
+import {
+  ArrowRight,
+  CheckCircle2,
+  Cloud,
+  Headphones,
+  Laptop,
+  Monitor,
+  Server,
+  ShieldCheck,
+  Wifi,
+  type LucideProps,
+} from "lucide-react";
+
+type CorporateSolution = {
+  id: string;
+  icon: ComponentType<LucideProps>;
+  label: string;
+  eyebrow: string;
+  title: string;
+  description: string;
+  href: string;
+  image: string;
+  imageAlt: string;
+  bullets: string[];
+};
+
+const corporateSolutions: CorporateSolution[] = [
+  {
+    id: "datacenter",
+    icon: Server,
+    label: "Infraestructura y Datacenter",
+    eyebrow: "Solución corporativa",
+    title: "Infraestructura y Datacenter",
+    description:
+      "Servidores, storage, racks, UPS y soluciones de infraestructura para garantizar rendimiento, disponibilidad y crecimiento.",
+    href: "/soluciones/servidores",
+    image: "/photos/datacenter.jpg",
+    imageAlt: "Sala de servidores para infraestructura corporativa",
+    bullets: [
+      "Servidores de última generación",
+      "Storage y backup empresarial",
+      "Racks, gabinetes y accesorios",
+      "Soluciones de energía UPS y PDU",
+      "Componentes para datacenter",
+    ],
+  },
+  {
+    id: "equipamiento",
+    icon: Laptop,
+    label: "Equipamiento corporativo",
+    eyebrow: "Renovación de parque IT",
+    title: "Equipamiento corporativo",
+    description:
+      "Notebooks, PCs, monitores y periféricos para renovar puestos de trabajo con criterio técnico y disponibilidad comercial.",
+    href: "/soluciones/notebooks-corporativas",
+    image: "/photos/products/laptop1.jpg",
+    imageAlt: "Notebook corporativa para empresas",
+    bullets: [
+      "Notebooks y PCs por perfil de usuario",
+      "Monitores, docks y periféricos",
+      "Estandarización por áreas o sucursales",
+      "Configuración previa y logística",
+      "Garantía y seguimiento comercial",
+    ],
+  },
+  {
+    id: "redes",
+    icon: Wifi,
+    label: "Redes y conectividad",
+    eyebrow: "Conectividad empresarial",
+    title: "Redes y conectividad",
+    description:
+      "Switches, access points, routers, cableado y firewalls para redes estables, seguras y preparadas para crecer.",
+    href: "/soluciones/redes-infraestructura",
+    image: "/photos/products/switch.jpg",
+    imageAlt: "Switch de red para infraestructura empresarial",
+    bullets: [
+      "Switches administrables y PoE",
+      "WiFi corporativo y access points",
+      "Routers, firewalls y seguridad perimetral",
+      "Cableado estructurado y racks",
+      "Diseño e implementación de red",
+    ],
+  },
+  {
+    id: "seguridad",
+    icon: ShieldCheck,
+    label: "Seguridad y vigilancia",
+    eyebrow: "Protección y control",
+    title: "Seguridad y vigilancia",
+    description:
+      "Cámaras IP, NVR, almacenamiento y control de acceso para proteger oficinas, depósitos, plantas y sucursales.",
+    href: "/soluciones/videovigilancia-cctv",
+    image: "/photos/cctv.jpg",
+    imageAlt: "Cámara de seguridad para videovigilancia corporativa",
+    bullets: [
+      "Cámaras IP interiores y exteriores",
+      "Grabadores NVR y almacenamiento",
+      "Monitoreo remoto desde celular o PC",
+      "Control de accesos y trazabilidad",
+      "Instalación y puesta en marcha",
+    ],
+  },
+  {
+    id: "cloud",
+    icon: Cloud,
+    label: "Cloud y licencias",
+    eyebrow: "Software y continuidad",
+    title: "Cloud y licencias",
+    description:
+      "Licencias, productividad, backup, correo corporativo y soluciones cloud para ordenar la operación digital de la empresa.",
+    href: "/cloud-licenciamiento",
+    image: "/photos/office.jpg",
+    imageAlt: "Equipo corporativo trabajando con soluciones cloud",
+    bullets: [
+      "Microsoft 365 y licencias corporativas",
+      "Backup y continuidad operativa",
+      "Correo, colaboración y productividad",
+      "Antivirus y seguridad endpoint",
+      "Asesoramiento de adopción y renovación",
+    ],
+  },
+  {
+    id: "soporte",
+    icon: Headphones,
+    label: "Soporte corporativo",
+    eyebrow: "Servicio técnico para empresas",
+    title: "Soporte corporativo",
+    description:
+      "Acompañamiento técnico y comercial para mantener equipos, redes e infraestructura funcionando sin improvisar.",
+    href: "/soporte-corporativo",
+    image: "/photos/engineer.jpg",
+    imageAlt: "Técnico trabajando en soporte corporativo",
+    bullets: [
+      "Mesa de ayuda y asistencia técnica",
+      "Mantenimiento preventivo",
+      "Soporte en sitio o remoto",
+      "Gestión de garantías y RMA",
+      "Planes por criticidad operativa",
+    ],
+  },
+  {
+    id: "barpos",
+    icon: Monitor,
+    label: "BarPOS punto de venta",
+    eyebrow: "Solución para comercios",
+    title: "BarPOS punto de venta",
+    description:
+      "Punto de venta completo para comercios: hardware, software, implementación, capacitación y soporte comercial.",
+    href: "/barpos",
+    image: "/photos/products/desktop.jpg",
+    imageAlt: "Equipo de escritorio para punto de venta BarPOS",
+    bullets: [
+      "Equipamiento + software + soporte",
+      "Caja, ventas, clientes e inventario",
+      "Reportes y gestión administrativa",
+      "Implementación y capacitación",
+      "Programa para revendedores por zona",
+    ],
+  },
+];
+
+export function CorporateSolutionsShowcase() {
+  const [selectedId, setSelectedId] = useState(corporateSolutions[0].id);
+  const selected = corporateSolutions.find((item) => item.id === selectedId) ?? corporateSolutions[0];
+
+  return (
+    <section id="soluciones" className="bg-[#f7f9ff] py-16 lg:py-20">
+      <div className="mx-auto w-[calc(100vw-32px)] max-w-[1320px] min-w-0 px-0 sm:w-full sm:px-6 lg:px-10">
+        <div className="text-center">
+          <h2 className="mx-auto max-w-[13ch] font-display text-[clamp(27px,7vw,48px)] font-black leading-tight tracking-[-0.045em] text-[#11142a] sm:max-w-none">
+            Soluciones corporativas
+          </h2>
+          <p className="mt-2 text-[15px] font-medium text-slate-500">Tecnología y servicios para cada necesidad de tu empresa.</p>
+        </div>
+
+        <div className="mt-10 grid min-w-0 gap-5 lg:grid-cols-[310px_1fr]">
+          <div className="min-w-0 rounded-3xl border border-blue-100 bg-white p-3 shadow-[0_24px_60px_-42px_rgba(15,23,42,0.55)]">
+            {corporateSolutions.map((item) => {
+              const isActive = item.id === selected.id;
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  aria-pressed={isActive}
+                  onClick={() => setSelectedId(item.id)}
+                  className={`group flex w-full min-w-0 items-center gap-3 rounded-2xl px-3.5 py-3.5 text-left text-[12.5px] font-black transition sm:px-4 sm:py-4 sm:text-[13.5px] ${
+                    isActive
+                      ? "bg-gradient-to-r from-[#1236d8] via-[#006dff] to-[#0ea5ff] text-white shadow-[0_18px_36px_-22px_rgba(0,109,255,0.9)]"
+                      : "text-slate-700 hover:bg-blue-50 hover:text-[#1236d8]"
+                  }`}
+                >
+                  <item.icon size={21} strokeWidth={1.8} />
+                  <span className="min-w-0 flex-1 leading-tight">{item.label}</span>
+                  <ArrowRight size={16} className="transition group-hover:translate-x-1" />
+                </button>
+              );
+            })}
+          </div>
+
+          <article className="grid min-w-0 overflow-hidden rounded-3xl border border-blue-100 bg-white shadow-[0_28px_80px_-52px_rgba(15,23,42,0.65)] lg:grid-cols-[0.88fr_1.12fr]">
+            <div className="min-w-0 p-7 lg:p-10">
+              <span className="inline-flex rounded-full bg-gradient-to-r from-[#1236d8] via-[#006dff] to-[#0ea5ff] px-3 py-1.5 text-[11px] font-black uppercase tracking-[0.08em] text-white">
+                {selected.eyebrow}
+              </span>
+              <h3 className="mt-6 max-w-[14ch] font-display text-[clamp(29px,4vw,46px)] font-black leading-[1.02] tracking-[-0.05em] text-[#11142a]">
+                {selected.title}
+              </h3>
+              <p className="mt-5 max-w-[48ch] text-[14.5px] leading-relaxed text-slate-600">{selected.description}</p>
+
+              <ul className="mt-6 grid gap-3">
+                {selected.bullets.map((item) => (
+                  <li key={item} className="flex items-start gap-2 text-[13.5px] font-semibold text-slate-700">
+                    <CheckCircle2 size={17} className="mt-0.5 flex-none text-[#1236d8]" /> <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <Link
+                href={selected.href}
+                className="mt-8 inline-flex items-center gap-2 rounded-xl border border-[#1236d8]/25 px-6 py-3.5 text-[14px] font-black text-[#1236d8] transition hover:bg-blue-50"
+              >
+                Ver más <ArrowRight size={17} />
+              </Link>
+            </div>
+
+            <div className="relative min-h-[330px] bg-gradient-to-br from-[#0726b8] via-[#006dff] to-[#0ea5ff] p-5 sm:min-h-[390px]">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_82%_18%,rgba(255,255,255,0.34),transparent_28%)]" />
+              <div className="absolute bottom-0 right-0 h-52 w-52 bg-[radial-gradient(circle,rgba(255,255,255,0.24)_1px,transparent_1px)] [background-size:15px_15px]" />
+              <div className="relative h-full overflow-hidden rounded-[28px] bg-[#050816] shadow-2xl">
+                <Image
+                  key={selected.image}
+                  src={selected.image}
+                  alt={selected.imageAlt}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 700px"
+                  className="object-cover opacity-90 transition duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-tr from-[#050816]/42 via-transparent to-[#38bdf8]/18" />
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  );
+}
