@@ -23,6 +23,7 @@ import {
 import { company, contact, partners } from "@/constants";
 import { CookieBanner } from "@/components/CookieBanner";
 import { CorporateSolutionsShowcase } from "@/components/CorporateSolutionsShowcase";
+import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import { buildWhatsAppUrl, whatsappLinks } from "@/lib/whatsapp";
 
@@ -315,13 +316,8 @@ export function HomeBlueWholesale() {
           </div>
         </section>
 
-        <footer className="border-t border-slate-200 bg-white py-7">
-          <div className="mx-auto flex max-w-[1320px] flex-col gap-3 px-6 text-[12px] font-semibold text-slate-500 sm:flex-row sm:items-center sm:justify-between lg:px-10">
-            <span>© {new Date().getFullYear()} {company.name}. Distribución IT para empresas y revendedores.</span>
-            <span>{contact.phoneDisplay} · {contact.email}</span>
-          </div>
-        </footer>
       </main>
+      <Footer />
       <CookieBanner />
     </>
   );

@@ -1,84 +1,278 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Check, MessageCircle } from "lucide-react";
+import {
+  Check,
+  Laptop,
+  Monitor,
+  MonitorCog,
+  Server,
+  MessageCircle,
+  ArrowRight,
+  type LucideIcon,
+} from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
-const options = [
-  { id: "notebook", name: "Notebook corporativa", ideal: "Movilidad y puestos híbridos", scale: "1 a 200+ equipos", strengths: ["Movilidad", "Bajo consumo", "Despliegue por flota"], consider: "Puertos, autonomía, peso y garantía aplicable" },
-  { id: "desktop", name: "PC de escritorio", ideal: "Puestos fijos y administrativos", scale: "1 a 200+ equipos", strengths: ["Costo por puesto", "Mantenimiento", "Ampliación"], consider: "Espacio, monitor, periféricos y consumo" },
-  { id: "workstation", name: "Workstation", ideal: "Diseño, ingeniería y cálculo", scale: "1 a 50+ equipos", strengths: ["Rendimiento sostenido", "GPU profesional", "Memoria ampliable"], consider: "Software, certificaciones y carga real" },
-  { id: "server", name: "Servidor", ideal: "Aplicaciones, datos y virtualización", scale: "Por carga y crecimiento", strengths: ["Centralización", "Redundancia", "Administración"], consider: "Usuarios, almacenamiento, backup y continuidad" },
+interface Option {
+  id: string;
+  name: string;
+  icon: LucideIcon;
+  color: string;
+  ideal: string;
+  scale: string;
+  strengths: string[];
+  consider: string;
+}
+
+const options: Option[] = [
+  {
+    id: "notebook",
+    name: "Notebook corporativa",
+    icon: Laptop,
+    color: "#1236d8",
+    ideal: "Movilidad y puestos híbridos",
+    scale: "1 a 200+ equipos",
+    strengths: ["Movilidad", "Bajo consumo", "Despliegue por flota"],
+    consider: "Puertos, autonomía, peso y garantía aplicable",
+  },
+  {
+    id: "desktop",
+    name: "PC de escritorio",
+    icon: Monitor,
+    color: "#7c3aed",
+    ideal: "Puestos fijos y administrativos",
+    scale: "1 a 200+ equipos",
+    strengths: ["Costo por puesto", "Mantenimiento", "Ampliación"],
+    consider: "Espacio, monitor, periféricos y consumo",
+  },
+  {
+    id: "workstation",
+    name: "Workstation",
+    icon: MonitorCog,
+    color: "#ff8f1f",
+    ideal: "Diseño, ingeniería y cálculo",
+    scale: "1 a 50+ equipos",
+    strengths: ["Rendimiento sostenido", "GPU profesional", "Memoria ampliable"],
+    consider: "Software, certificaciones y carga real",
+  },
+  {
+    id: "server",
+    name: "Servidor",
+    icon: Server,
+    color: "#0ea5ff",
+    ideal: "Aplicaciones, datos y virtualización",
+    scale: "Por carga y crecimiento",
+    strengths: ["Centralización", "Redundancia", "Administración"],
+    consider: "Usuarios, almacenamiento, backup y continuidad",
+  },
 ];
 
 export default function ComparadorPage() {
   const [selected, setSelected] = useState(["notebook", "desktop"]);
-  const compared = useMemo(() => options.filter((option) => selected.includes(option.id)), [selected]);
+  const compared = useMemo(
+    () => options.filter((o) => selected.includes(o.id)),
+    [selected],
+  );
 
   function toggle(id: string) {
-    setSelected((current) => current.includes(id) ? current.filter((item) => item !== id) : current.length < 3 ? [...current, id] : current);
+    setSelected((cur) =>
+      cur.includes(id)
+        ? cur.filter((i) => i !== id)
+        : cur.length < 3
+          ? [...cur, id]
+          : cur,
+    );
   }
 
-  const whatsappHref = buildWhatsAppUrl("quote", ["Origen: comparador web", `Alternativas comparadas: ${compared.map((item) => item.name).join(", ")}`]);
+  const whatsappHref = buildWhatsAppUrl("quote", [
+    "Origen: comparador web",
+    `Alternativas comparadas: ${compared.map((i) => i.name).join(", ")}`,
+  ]);
 
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-white pb-24 pt-20 text-slate-900">
+      <main className="min-h-screen bg-white">
         {/* Hero */}
-        <section className="border-b border-slate-200 bg-white py-16 md:py-20">
-          <div className="mx-auto max-w-[1100px] px-6">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 text-[12px] font-semibold text-[#1236d8]">
+        <section className="relative overflow-hidden bg-[#070a16] pb-16 pt-24 text-white md:pb-20 md:pt-28">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-10%,rgba(18,54,216,0.25),transparent)]" />
+          <div className="relative mx-auto max-w-[1100px] px-6">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 text-[12px] font-semibold text-blue-200">
               <span className="size-1.5 rounded-full bg-[#ff8f1f]" />
               Herramienta de decisión
-            </div>
-            <h1 className="max-w-[780px] font-display text-[clamp(34px,5vw,56px)] font-extrabold leading-[1.02] tracking-[-0.035em] text-[#11142a]">Comparador orientativo</h1>
-            <p className="mt-5 max-w-[62ch] text-[clamp(15.5px,1.45vw,18px)] leading-relaxed text-slate-600">Elegí hasta tres familias de equipos. La comparación sirve para ordenar la decisión; la configuración final depende de usuarios, software, escala y presupuesto.</p>
+            </span>
+            <h1 className="mt-5 max-w-[780px] font-display text-[clamp(32px,5vw,52px)] font-extrabold leading-[1.05] tracking-[-0.035em]">
+              Comparador orientativo
+            </h1>
+            <p className="mt-4 max-w-[58ch] text-[16px] leading-relaxed text-slate-300">
+              Elegí hasta tres familias de equipos. La comparación ayuda a
+              ordenar la decisión; la configuración final depende de usuarios,
+              software, escala y presupuesto.
+            </p>
           </div>
         </section>
 
-        <section className="bg-[#f7f9fc] py-16 md:py-20 border-b border-slate-200">
-        <div className="mx-auto max-w-[1100px] px-6">
-          <p className="mb-2 text-[13px] font-bold text-[#1236d8]">Seleccioná hasta 3 familias</p>
-
-          <div className="mt-8 flex flex-wrap gap-2">
-            {options.map((option) => {
-              const active = selected.includes(option.id);
-              return <button key={option.id} type="button" onClick={() => toggle(option.id)} aria-pressed={active} className={`inline-flex items-center gap-2 rounded-lg border px-4 py-2.5 text-[13px] font-semibold transition ${active ? "border-[#1236d8] bg-[#1236d8] text-white" : "border-slate-200 bg-white text-slate-700 hover:border-[#1236d8]"}`}>{active ? <Check size={15} /> : null}{option.name}</button>;
-            })}
+        {/* Selector */}
+        <section className="relative -mt-6 pb-6">
+          <div className="mx-auto max-w-[1100px] px-6">
+            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-card">
+              <p className="mb-4 text-[13px] font-bold uppercase tracking-[0.08em] text-slate-500">
+                Seleccioná hasta 3 familias
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {options.map((option) => {
+                  const active = selected.includes(option.id);
+                  const Icon = option.icon;
+                  return (
+                    <button
+                      key={option.id}
+                      type="button"
+                      onClick={() => toggle(option.id)}
+                      aria-pressed={active}
+                      className={`inline-flex items-center gap-2.5 rounded-xl border-2 px-4 py-3 text-[13px] font-bold transition ${
+                        active
+                          ? "border-[#1236d8] bg-[#1236d8] text-white shadow-glow"
+                          : "border-slate-100 text-slate-700 hover:border-slate-200"
+                      }`}
+                    >
+                      <Icon size={17} />
+                      {option.name}
+                      {active && <Check size={15} />}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           </div>
+        </section>
 
-          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {compared.map((option) => (
-              <article key={option.id} className="rounded-xl border border-slate-200 bg-white p-6 shadow-soft">
-                <h2 className="font-display text-[20px] font-bold text-[#11142a]">{option.name}</h2>
-                <dl className="mt-5 grid gap-4 text-[13px]">
-                  <div><dt className="font-bold text-slate-500">Ideal para</dt><dd className="mt-1 text-slate-800">{option.ideal}</dd></div>
-                  <div><dt className="font-bold text-slate-500">Escala orientativa</dt><dd className="mt-1 text-slate-800">{option.scale}</dd></div>
-                  <div><dt className="font-bold text-slate-500">Fortalezas</dt><dd className="mt-2 flex flex-wrap gap-1.5">{option.strengths.map((item) => <span key={item} className="rounded-full bg-blue-50 px-2.5 py-1 text-[11.5px] font-semibold text-[#1236d8]">{item}</span>)}</dd></div>
-                  <div><dt className="font-bold text-slate-500">Antes de elegir</dt><dd className="mt-1 leading-relaxed text-slate-800">{option.consider}</dd></div>
-                </dl>
-              </article>
-            ))}
-          </div>
+        {/* Comparison cards */}
+        <section className="pb-16 pt-6">
+          <div className="mx-auto max-w-[1100px] px-6">
+            <div
+              className={`grid gap-5 ${compared.length === 1 ? "max-w-[480px]" : compared.length === 2 ? "md:grid-cols-2" : "md:grid-cols-3"}`}
+            >
+              {compared.map((option) => {
+                const Icon = option.icon;
+                return (
+                  <article
+                    key={option.id}
+                    className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft transition hover:shadow-card"
+                  >
+                    <span
+                      className="grid size-11 place-items-center rounded-xl"
+                      style={{
+                        backgroundColor: `${option.color}15`,
+                        color: option.color,
+                      }}
+                    >
+                      <Icon size={22} />
+                    </span>
 
-          <div className="mt-10 rounded-xl border border-slate-200 bg-white p-8 sm:flex sm:items-center sm:justify-between sm:gap-6">
-            <div><h2 className="font-display text-[20px] font-bold text-[#11142a]">Llevá esta comparación a una cotización</h2><p className="mt-1 text-[13.5px] text-slate-500">El mensaje incluirá las alternativas seleccionadas.</p></div>
-            <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex items-center justify-center gap-2 rounded-lg bg-[linear-gradient(90deg,#ff7a18,#ff8f1f,#ffb000)] px-6 py-3.5 text-[14px] font-bold text-white shadow-[0_18px_32px_-18px_rgba(255,122,24,0.85)] transition hover:-translate-y-0.5 sm:mt-0"><MessageCircle size={17} /> Consultar por WhatsApp</a>
+                    <h2 className="mt-4 font-display text-[20px] font-extrabold tracking-[-0.02em] text-[#11142a]">
+                      {option.name}
+                    </h2>
+
+                    <dl className="mt-5 space-y-4 text-[13px]">
+                      <div>
+                        <dt className="text-[11px] font-bold uppercase tracking-[0.1em] text-slate-400">
+                          Ideal para
+                        </dt>
+                        <dd className="mt-1 font-medium text-slate-700">
+                          {option.ideal}
+                        </dd>
+                      </div>
+                      <div>
+                        <dt className="text-[11px] font-bold uppercase tracking-[0.1em] text-slate-400">
+                          Escala orientativa
+                        </dt>
+                        <dd className="mt-1 font-medium text-slate-700">
+                          {option.scale}
+                        </dd>
+                      </div>
+                      <div>
+                        <dt className="text-[11px] font-bold uppercase tracking-[0.1em] text-slate-400">
+                          Fortalezas
+                        </dt>
+                        <dd className="mt-2 flex flex-wrap gap-1.5">
+                          {option.strengths.map((s) => (
+                            <span
+                              key={s}
+                              className="rounded-full px-2.5 py-1 text-[11px] font-semibold"
+                              style={{
+                                backgroundColor: `${option.color}12`,
+                                color: option.color,
+                              }}
+                            >
+                              {s}
+                            </span>
+                          ))}
+                        </dd>
+                      </div>
+                      <div className="border-t border-slate-100 pt-3">
+                        <dt className="text-[11px] font-bold uppercase tracking-[0.1em] text-slate-400">
+                          Antes de elegir
+                        </dt>
+                        <dd className="mt-1 leading-relaxed text-slate-600">
+                          {option.consider}
+                        </dd>
+                      </div>
+                    </dl>
+                  </article>
+                );
+              })}
+            </div>
+
+            {/* Inline CTA */}
+            <div className="mt-10 flex flex-col items-center gap-5 rounded-2xl border border-slate-200 bg-[#f7f9fc] p-8 text-center sm:flex-row sm:text-left">
+              <div className="flex-1">
+                <h2 className="font-display text-[20px] font-extrabold text-[#11142a]">
+                  Llevá esta comparación a una cotización
+                </h2>
+                <p className="mt-1 text-[13.5px] text-slate-500">
+                  El mensaje incluirá las alternativas seleccionadas para que un
+                  asesor te oriente.
+                </p>
+              </div>
+              <a
+                href={whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex flex-none items-center gap-2 rounded-xl bg-[linear-gradient(90deg,#ff7a18,#ff8f1f,#ffb000)] px-6 py-3.5 text-[14px] font-bold text-white shadow-[0_18px_32px_-18px_rgba(255,122,24,0.85)] transition hover:-translate-y-0.5"
+              >
+                <MessageCircle size={17} /> Consultar por WhatsApp
+              </a>
+            </div>
           </div>
-        </div>
         </section>
 
         {/* CTA dark */}
-        <section className="bg-[#070a16] py-16 md:py-20 text-white">
-          <div className="mx-auto flex max-w-[1000px] flex-col items-center px-6 text-center">
-            <h2 className="font-display text-[clamp(28px,4vw,46px)] font-extrabold leading-[1.06] text-balance text-white">¿Necesitás ayuda para definir el equipamiento?</h2>
-            <p className="mt-4 max-w-[58ch] text-[15.5px] leading-relaxed text-slate-300">Un especialista de Bartez analiza tu escenario real y te propone la mejor combinación de equipos, marcas y condiciones.</p>
+        <section className="bg-[#070a16] py-16 text-white md:py-20">
+          <div className="mx-auto flex max-w-[900px] flex-col items-center px-6 text-center">
+            <h2 className="font-display text-[clamp(26px,4vw,42px)] font-extrabold leading-[1.06] tracking-[-0.03em] text-balance">
+              ¿Necesitás ayuda para definir el equipamiento?
+            </h2>
+            <p className="mt-4 max-w-[54ch] text-[15px] leading-relaxed text-slate-300">
+              Un especialista analiza tu escenario y propone la mejor
+              combinación de equipos, marcas y condiciones.
+            </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-[linear-gradient(90deg,#ff7a18,#ff8f1f,#ffb000)] px-5 py-3 text-[14px] font-bold text-white shadow-[0_18px_32px_-18px_rgba(255,122,24,0.85)] transition hover:-translate-y-0.5"><MessageCircle size={17} /> Hablar con un asesor</a>
-              <a href="/configurador" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-blue-200/20 bg-transparent px-5 py-3 text-[14px] font-bold text-white transition hover:bg-white/5">Usar el configurador</a>
+              <a
+                href={whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-[linear-gradient(90deg,#ff7a18,#ff8f1f,#ffb000)] px-6 py-3.5 text-[14px] font-bold text-white shadow-[0_18px_32px_-18px_rgba(255,122,24,0.85)] transition hover:-translate-y-0.5"
+              >
+                <MessageCircle size={17} /> Hablar con un asesor
+              </a>
+              <a
+                href="/configurador"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 px-6 py-3.5 text-[14px] font-bold text-white transition hover:bg-white/5"
+              >
+                Usar el configurador <ArrowRight size={16} />
+              </a>
             </div>
           </div>
         </section>

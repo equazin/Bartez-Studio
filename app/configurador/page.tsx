@@ -1,23 +1,24 @@
 "use client";
 
 import { useState } from "react";
-import { Navbar } from "../../components/Navbar";
-import { Footer } from "../../components/Footer";
-import { 
-  Laptop, 
-  Cpu, 
-  Gamepad2, 
-  Server, 
-  Layers, 
-  Activity, 
-  ArrowRight, 
-  ArrowLeft, 
-  Check, 
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
+import {
+  Laptop,
+  Cpu,
+  Server,
+  MonitorCog,
+  ArrowRight,
+  ArrowLeft,
+  Check,
   MessageCircle,
-  FileText,
-  type LucideIcon
+  Zap,
+  HardDrive,
+  MemoryStick,
+  Monitor,
+  type LucideIcon,
 } from "lucide-react";
-import { track } from "../../components/Analytics";
+import { track } from "@/components/Analytics";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 interface Profile {
@@ -25,6 +26,7 @@ interface Profile {
   name: string;
   description: string;
   icon: LucideIcon;
+  color: string;
   recommendation: {
     cpu: string;
     ram: string;
@@ -39,78 +41,97 @@ const profiles: Profile[] = [
   {
     id: "oficina",
     name: "Administrativo / Oficina",
-    description: "Ideal para tareas diarias, herramientas SaaS, paquete Office y navegación fluida.",
+    description:
+      "Tareas diarias, herramientas SaaS, paquete Office y navegación fluida.",
     icon: Laptop,
+    color: "#1236d8",
     recommendation: {
       cpu: "Intel Core i5 / AMD Ryzen 5 (Última generación)",
       ram: "16 GB DDR4 Dual Channel",
       gpu: "Gráficos Integrados Intel UHD / AMD Radeon",
-      storage: "512 GB SSD NVMe M.2 de alta velocidad",
-      notes: "Configuración optimizada para alta durabilidad, bajo consumo de energía y excelente rendimiento en multitarea de oficina.",
-      brands: ["Lenovo", "Dell", "HP"]
-    }
+      storage: "512 GB SSD NVMe M.2",
+      notes:
+        "Configuración optimizada para alta durabilidad, bajo consumo y excelente rendimiento en multitarea de oficina.",
+      brands: ["Lenovo", "Dell", "HP"],
+    },
   },
   {
     id: "creador-dev",
     name: "Desarrollo y Diseño",
-    description: "Para programación pesada, virtualización, diseño gráfico y edición multimedia.",
+    description:
+      "Programación pesada, virtualización, diseño gráfico y edición multimedia.",
     icon: Cpu,
+    color: "#7c3aed",
     recommendation: {
       cpu: "Intel Core i7 / AMD Ryzen 7 (8+ Núcleos)",
       ram: "32 GB DDR5 a 4800MHz+",
-      gpu: "NVIDIA RTX 4060 o superior / Gráficos integrados avanzados",
-      storage: "1 TB SSD NVMe M.2 Gen4 (Lectura 5000+ MB/s)",
-      notes: "Preparado para compilación veloz, ejecución de contenedores Docker y procesamiento de imágenes y video de alta definición.",
-      brands: ["Dell", "Lenovo", "ASUS"]
-    }
+      gpu: "NVIDIA RTX 4060 o superior",
+      storage: "1 TB SSD NVMe M.2 Gen4",
+      notes:
+        "Preparado para compilación veloz, contenedores Docker y procesamiento de imágenes y video en alta definición.",
+      brands: ["Dell", "Lenovo", "ASUS"],
+    },
   },
   {
-    id: "gamer",
-    name: "Workstations y Alto Desempeño",
-    description: "Estaciones para diseño, ingeniería, renderizado y cargas de alto procesamiento gráfico.",
-    icon: Gamepad2,
+    id: "workstation",
+    name: "Workstation / Alto Desempeño",
+    description:
+      "Diseño industrial, ingeniería, renderizado 3D y cargas de alto procesamiento.",
+    icon: MonitorCog,
+    color: "#ff8f1f",
     recommendation: {
       cpu: "Intel Core i7 / AMD Ryzen 7 3D V-Cache",
       ram: "32 GB DDR5 Dual Channel ultra velocidad",
       gpu: "NVIDIA RTX 4070 Ti / AMD RX 7800 XT o superior",
       storage: "1 TB o 2 TB SSD NVMe Gen4",
-      notes: "Máximo rendimiento térmico y de procesamiento gráfico. Diseñado para workstations híbridas de desarrollo 3D, gaming y renders pesados.",
-      brands: ["Gigabyte", "ASUS", "MSI", "Kingston"]
-    }
+      notes:
+        "Máximo rendimiento térmico y procesamiento gráfico para workstations híbridas de desarrollo 3D y renders pesados.",
+      brands: ["Gigabyte", "ASUS", "MSI", "Kingston"],
+    },
   },
   {
     id: "infraestructura",
-    name: "Servidores e Infraestructura IT",
-    description: "Datacenters, virtualización a gran escala, almacenamiento centralizado y redes corporativas.",
+    name: "Servidores e Infraestructura",
+    description:
+      "Datacenters, virtualización a gran escala, almacenamiento centralizado y redes.",
     icon: Server,
+    color: "#0ea5ff",
     recommendation: {
       cpu: "Intel Xeon Scalable / AMD EPYC (Multiprocesamiento)",
-      ram: "64 GB a 256 GB ECC Registrada (Protección contra fallos)",
-      gpu: "No requerida / Acelerador opcional para AI (NVIDIA L4)",
-      storage: "Arreglo RAID (SSD SAS / NVMe Enterprise) con redundancia hot-swap",
-      notes: "Enfoque en alta disponibilidad, fuentes redundantes redundancia de datos (RAID) y conectividad de red de 10GbE / 25GbE.",
-      brands: ["Dell Enterprise", "HPE", "Cisco", "Fortinet"]
-    }
-  }
+      ram: "64 GB a 256 GB ECC Registrada",
+      gpu: "Acelerador opcional para AI (NVIDIA L4)",
+      storage: "Arreglo RAID SSD SAS / NVMe Enterprise con hot-swap",
+      notes:
+        "Alta disponibilidad, fuentes redundantes, RAID y conectividad 10GbE / 25GbE.",
+      brands: ["Dell Enterprise", "HPE", "Cisco", "Fortinet"],
+    },
+  },
 ];
+
+const specIcons: Record<string, LucideIcon> = {
+  cpu: Zap,
+  ram: MemoryStick,
+  storage: HardDrive,
+  gpu: Monitor,
+};
 
 export default function Configurador() {
   const [step, setStep] = useState(1);
   const [selectedProfile, setSelectedProfile] = useState<string>("");
   const [quantity, setQuantity] = useState<string>("1-5");
   const [intensity, setIntensity] = useState<string>("Moderada");
-  const profileData = profiles.find(p => p.id === selectedProfile);
+  const profileData = profiles.find((p) => p.id === selectedProfile);
 
   const handleNext = () => {
     if (step === 1 && !selectedProfile) return;
-    setStep(prev => prev + 1);
+    setStep((prev) => prev + 1);
   };
 
   const handleBack = () => {
-    setStep(prev => prev - 1);
+    setStep((prev) => prev - 1);
   };
 
-  const whatsappHref = profileData 
+  const whatsappHref = profileData
     ? buildWhatsAppUrl("quote", [
         "Origen: configurador IT de la web",
         `Perfil: ${profileData.name}`,
@@ -127,261 +148,403 @@ export default function Configurador() {
   return (
     <>
       <Navbar />
-      <main className="bg-slate-50 min-h-screen pt-32 pb-24">
-        <div className="mx-auto max-w-[900px] px-6">
-          
-          {/* Header */}
-          <div className="text-center mb-10">
-            <span className="text-[13px] font-semibold uppercase tracking-[0.12em] text-[#1236d8]">
-              Herramienta de Diagnóstico
+      <main className="min-h-screen bg-white">
+        {/* Hero */}
+        <section className="relative overflow-hidden bg-[#070a16] pb-16 pt-24 text-white md:pb-20 md:pt-28">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-10%,rgba(18,54,216,0.25),transparent)]" />
+          <div className="relative mx-auto max-w-[900px] px-6 text-center">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 text-[12px] font-semibold text-blue-200">
+              <span className="size-1.5 rounded-full bg-[#0ea5ff]" />
+              Herramienta interactiva
             </span>
-            <h1 className="mt-3 font-display text-[clamp(28px,4vw,44px)] font-bold leading-tight tracking-[-0.03em] text-[#11142a]">
+            <h1 className="mt-5 font-display text-[clamp(30px,5vw,52px)] font-extrabold leading-[1.05] tracking-[-0.035em]">
               Configurador de Soluciones IT
             </h1>
-            <p className="mt-3 text-[16px] text-slate-600 max-w-[50ch] mx-auto">
-              Definí tu perfil de uso y requerimientos de volumen para obtener una configuración recomendada a medida para tu empresa.
+            <p className="mx-auto mt-4 max-w-[52ch] text-[16px] leading-relaxed text-slate-300">
+              Definí el perfil de uso, ajustá la escala y obtené una
+              recomendación técnica para llevar directo a cotización.
             </p>
           </div>
+        </section>
 
-          {/* Stepper bar */}
-          <div className="mb-12 flex items-center justify-center gap-2">
-            {[
-              { num: 1, label: "Perfil" },
-              { num: 2, label: "Escala" },
-              { num: 3, label: "Recomendación" }
-            ].map(s => (
-              <div key={s.num} className="flex items-center">
-                <span className={`grid size-8 place-items-center rounded-full text-[12px] font-bold border transition ${
-                  step >= s.num 
-                    ? "border-[#1236d8] bg-[#1236d8] text-white" 
-                    : "border-slate-200 bg-white text-slate-400"
-                }`}>
-                  {step > s.num ? <Check size={14} /> : s.num}
-                </span>
-                <span className={`ml-2 text-[13px] font-semibold ${step >= s.num ? "text-[#11142a]" : "text-slate-400"}`}>
-                  {s.label}
-                </span>
-                {s.num < 3 && <span className={`w-12 h-px mx-3 ${step > s.num ? "bg-[#1236d8]" : "bg-slate-200"}`} />}
-              </div>
-            ))}
-          </div>
-
-          {/* Wizard Card */}
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-soft p-6 md:p-10">
-            
-            {/* Paso 1: Perfiles */}
-            {step === 1 && (
-              <div>
-                <h2 className="font-display text-[22px] font-bold text-[#11142a]">
-                  ¿Cuál es el perfil de uso de los equipos?
-                </h2>
-                <p className="mt-1 text-[13.5px] text-slate-500">
-                  Seleccioná la categoría técnica que mejor represente las tareas a realizar.
-                </p>
-
-                <div className="mt-8 grid gap-4 sm:grid-cols-2">
-                  {profiles.map(p => {
-                    const active = selectedProfile === p.id;
-                    const Icon = p.icon;
-                    return (
-                      <button
-                        key={p.id}
-                        type="button"
-                        onClick={() => setSelectedProfile(p.id)}
-                        className={`flex flex-col text-left p-5 rounded-xl border transition ${
-                          active 
-                            ? "border-[#1236d8] bg-blue-50/50 ring-1 ring-[#1236d8]" 
-                            : "border-slate-200 hover:border-[#1236d8]/50"
-                        }`}
-                      >
-                        <span className={`grid size-10 place-items-center rounded-lg ${
-                          active ? "bg-[#1236d8] text-white" : "bg-slate-100 text-[#1236d8]"
-                        }`}>
-                          <Icon size={20} />
-                        </span>
-                        <span className="mt-4 block text-[15px] font-bold text-[#11142a]">{p.name}</span>
-                        <span className="mt-1 block text-[13px] leading-relaxed text-slate-500">{p.description}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-
-                <div className="mt-10 flex justify-end">
+        {/* Wizard */}
+        <section className="relative -mt-6 pb-20">
+          <div className="mx-auto max-w-[960px] px-5">
+            {/* Stepper */}
+            <div className="mb-8 flex items-center justify-center gap-1 rounded-2xl border border-slate-200 bg-white p-3 shadow-card sm:gap-2">
+              {[
+                { num: 1, label: "Perfil de uso" },
+                { num: 2, label: "Escala" },
+                { num: 3, label: "Recomendación" },
+              ].map((s) => (
+                <div key={s.num} className="flex items-center">
                   <button
-                    onClick={handleNext}
-                    disabled={!selectedProfile}
-                    className="inline-flex items-center gap-2 rounded-lg bg-[#1236d8] px-6 py-3 text-[14px] font-semibold text-white transition-colors hover:bg-[#0f2bb8] disabled:opacity-40"
+                    type="button"
+                    onClick={() => {
+                      if (s.num < step) setStep(s.num);
+                    }}
+                    className={`flex items-center gap-2 rounded-xl px-3 py-2.5 text-[13px] font-semibold transition sm:px-4 ${
+                      step === s.num
+                        ? "bg-[#1236d8] text-white shadow-glow"
+                        : step > s.num
+                          ? "bg-blue-50 text-[#1236d8] hover:bg-blue-100"
+                          : "text-slate-400"
+                    }`}
                   >
-                    Siguiente paso <ArrowRight size={16} />
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {/* Paso 2: Detalles de Escala */}
-            {step === 2 && (
-              <div>
-                <h2 className="font-display text-[22px] font-bold text-[#11142a]">
-                  Detalles de volumen y exigencia
-                </h2>
-                <p className="mt-1 text-[13.5px] text-slate-500">
-                  Ajustá la escala para que podamos dimensionar la solución.
-                </p>
-
-                <div className="mt-8 space-y-6">
-                  {/* Escala */}
-                  <div>
-                    <span className="flex items-center gap-2 text-[14px] font-bold text-[#11142a] mb-3">
-                      <Layers size={17} className="text-[#1236d8]" /> Cantidad estimada de unidades
+                    <span
+                      className={`grid size-6 place-items-center rounded-full text-[11px] font-bold ${
+                        step > s.num
+                          ? "bg-[#1236d8] text-white"
+                          : step === s.num
+                            ? "bg-white/20 text-white"
+                            : "bg-slate-100 text-slate-400"
+                      }`}
+                    >
+                      {step > s.num ? <Check size={12} /> : s.num}
                     </span>
-                    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                      {["1-5", "6-20", "21-50", "50+"].map(q => (
+                    <span className="hidden sm:inline">{s.label}</span>
+                  </button>
+                  {s.num < 3 && (
+                    <span
+                      className={`mx-1 h-px w-6 sm:w-10 ${step > s.num ? "bg-[#1236d8]" : "bg-slate-200"}`}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Card */}
+            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-card md:p-10">
+              {/* Step 1 */}
+              {step === 1 && (
+                <div>
+                  <h2 className="font-display text-[24px] font-extrabold tracking-[-0.02em] text-[#11142a]">
+                    ¿Cuál es el perfil de uso?
+                  </h2>
+                  <p className="mt-1.5 text-[14px] text-slate-500">
+                    Seleccioná la categoría que mejor represente las tareas a
+                    realizar.
+                  </p>
+
+                  <div className="mt-8 grid gap-4 sm:grid-cols-2">
+                    {profiles.map((p) => {
+                      const active = selectedProfile === p.id;
+                      const Icon = p.icon;
+                      return (
                         <button
-                          key={q}
+                          key={p.id}
                           type="button"
-                          onClick={() => setQuantity(q)}
-                          className={`py-3 text-center text-[13.5px] font-semibold rounded-lg border transition ${
-                            quantity === q 
-                              ? "border-[#1236d8] bg-[#1236d8] text-white" 
-                              : "border-slate-200 hover:border-[#1236d8]/50 text-slate-700 bg-white"
+                          onClick={() => setSelectedProfile(p.id)}
+                          className={`group relative flex flex-col text-left rounded-xl border-2 p-5 transition-all ${
+                            active
+                              ? "border-[#1236d8] bg-[#1236d8]/[0.03] shadow-[0_0_0_1px_rgba(18,54,216,0.15)]"
+                              : "border-slate-100 hover:border-slate-200 hover:shadow-soft"
                           }`}
                         >
-                          {q} {q === "50+" ? "unidades" : "equipos"}
+                          {active && (
+                            <span className="absolute right-3 top-3 grid size-6 place-items-center rounded-full bg-[#1236d8] text-white">
+                              <Check size={13} />
+                            </span>
+                          )}
+                          <span
+                            className="grid size-11 place-items-center rounded-xl transition-colors"
+                            style={{
+                              backgroundColor: active
+                                ? p.color
+                                : `${p.color}15`,
+                              color: active ? "#fff" : p.color,
+                            }}
+                          >
+                            <Icon size={22} />
+                          </span>
+                          <span className="mt-4 block text-[16px] font-bold text-[#11142a]">
+                            {p.name}
+                          </span>
+                          <span className="mt-1 block text-[13px] leading-relaxed text-slate-500">
+                            {p.description}
+                          </span>
                         </button>
-                      ))}
-                    </div>
+                      );
+                    })}
                   </div>
 
-                  {/* Intensidad de carga */}
-                  <div>
-                    <span className="flex items-center gap-2 text-[14px] font-bold text-[#11142a] mb-3">
-                      <Activity size={17} className="text-[#1236d8]" /> Nivel de exigencia requerido
-                    </span>
-                    <div className="grid gap-3 sm:grid-cols-3">
-                      {[
-                        { name: "Estándar", desc: "Tareas administrativas y uso normal." },
-                        { name: "Moderada", desc: "Multitarea pesada y software intermedio." },
-                        { name: "Intensiva", desc: "Rendering, procesamiento de datos o virtualización." }
-                      ].map(item => (
-                        <button
-                          key={item.name}
-                          type="button"
-                          onClick={() => setIntensity(item.name)}
-                          className={`p-4 text-left rounded-lg border transition ${
-                            intensity === item.name 
-                              ? "border-[#1236d8] bg-blue-50/50 ring-1 ring-[#1236d8]" 
-                              : "border-slate-200 hover:border-[#1236d8]/50 text-slate-700 bg-white"
-                          }`}
-                        >
-                          <span className="block text-[13.5px] font-bold text-[#11142a]">{item.name}</span>
-                          <span className="mt-0.5 block text-[11.5px] text-slate-500 leading-normal">{item.desc}</span>
-                        </button>
-                      ))}
-                    </div>
+                  <div className="mt-10 flex justify-end">
+                    <button
+                      onClick={handleNext}
+                      disabled={!selectedProfile}
+                      className="inline-flex items-center gap-2 rounded-xl bg-[#1236d8] px-7 py-3 text-[14px] font-bold text-white shadow-glow transition hover:bg-[#0f2bb8] disabled:opacity-30 disabled:shadow-none"
+                    >
+                      Siguiente <ArrowRight size={16} />
+                    </button>
                   </div>
                 </div>
+              )}
 
-                <div className="mt-10 flex justify-between">
-                  <button
-                    onClick={handleBack}
-                    className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-slate-500 hover:text-[#11142a]"
-                  >
-                    <ArrowLeft size={16} /> Atrás
-                  </button>
-                  <button
-                    onClick={handleNext}
-                    className="inline-flex items-center gap-2 rounded-lg bg-[#1236d8] px-6 py-3 text-[14px] font-semibold text-white transition-colors hover:bg-[#0f2bb8]"
-                  >
-                    Generar configuración <ArrowRight size={16} />
-                  </button>
-                </div>
-              </div>
-            )}
+              {/* Step 2 */}
+              {step === 2 && (
+                <div>
+                  <h2 className="font-display text-[24px] font-extrabold tracking-[-0.02em] text-[#11142a]">
+                    Volumen y nivel de exigencia
+                  </h2>
+                  <p className="mt-1.5 text-[14px] text-slate-500">
+                    Ajustá la escala para dimensionar la solución correctamente.
+                  </p>
 
-            {/* Paso 3: Propuesta técnica & Formulario de Cotización */}
-            {step === 3 && profileData && (
-              <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
-                
-                {/* Propuesta técnica */}
-                <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-5 md:p-6">
-                  <div className="flex items-center gap-2 pb-4 border-b border-slate-200">
-                    <FileText className="text-[#1236d8] size-5" />
-                    <span className="text-[13px] font-bold uppercase tracking-wider text-slate-500">
-                      Especificación Propuesta
-                    </span>
+                  <div className="mt-8 space-y-8">
+                    <div>
+                      <span className="mb-3 flex items-center gap-2 text-[13px] font-bold uppercase tracking-[0.08em] text-slate-500">
+                        Cantidad estimada
+                      </span>
+                      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                        {["1-5", "6-20", "21-50", "50+"].map((q) => (
+                          <button
+                            key={q}
+                            type="button"
+                            onClick={() => setQuantity(q)}
+                            className={`rounded-xl border-2 py-3.5 text-center text-[14px] font-bold transition ${
+                              quantity === q
+                                ? "border-[#1236d8] bg-[#1236d8] text-white shadow-glow"
+                                : "border-slate-100 text-slate-700 hover:border-slate-200"
+                            }`}
+                          >
+                            {q}
+                            <span className="mt-0.5 block text-[11px] font-semibold opacity-70">
+                              {q === "50+" ? "unidades" : "equipos"}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <span className="mb-3 flex items-center gap-2 text-[13px] font-bold uppercase tracking-[0.08em] text-slate-500">
+                        Nivel de exigencia
+                      </span>
+                      <div className="grid gap-3 sm:grid-cols-3">
+                        {[
+                          {
+                            name: "Estándar",
+                            desc: "Tareas administrativas y uso normal.",
+                            level: 1,
+                          },
+                          {
+                            name: "Moderada",
+                            desc: "Multitarea pesada y software intermedio.",
+                            level: 2,
+                          },
+                          {
+                            name: "Intensiva",
+                            desc: "Rendering, datos o virtualización.",
+                            level: 3,
+                          },
+                        ].map((item) => (
+                          <button
+                            key={item.name}
+                            type="button"
+                            onClick={() => setIntensity(item.name)}
+                            className={`rounded-xl border-2 p-4 text-left transition ${
+                              intensity === item.name
+                                ? "border-[#1236d8] bg-[#1236d8]/[0.03] shadow-[0_0_0_1px_rgba(18,54,216,0.15)]"
+                                : "border-slate-100 hover:border-slate-200"
+                            }`}
+                          >
+                            <div className="flex items-center gap-2">
+                              <span className="text-[14px] font-bold text-[#11142a]">
+                                {item.name}
+                              </span>
+                              <span className="flex gap-0.5">
+                                {[1, 2, 3].map((i) => (
+                                  <span
+                                    key={i}
+                                    className={`size-1.5 rounded-full ${i <= item.level ? "bg-[#1236d8]" : "bg-slate-200"}`}
+                                  />
+                                ))}
+                              </span>
+                            </div>
+                            <span className="mt-1 block text-[12px] leading-relaxed text-slate-500">
+                              {item.desc}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
                   </div>
 
-                  <h3 className="mt-4 font-display text-[19px] font-bold text-[#11142a]">
-                    Equipamiento sugerido para {profileData.name}
-                  </h3>
-                  
-                  <div className="mt-5 space-y-3.5 text-[13.5px]">
+                  <div className="mt-10 flex justify-between">
+                    <button
+                      onClick={handleBack}
+                      className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-slate-500 hover:text-[#11142a]"
+                    >
+                      <ArrowLeft size={16} /> Atrás
+                    </button>
+                    <button
+                      onClick={handleNext}
+                      className="inline-flex items-center gap-2 rounded-xl bg-[#1236d8] px-7 py-3 text-[14px] font-bold text-white shadow-glow transition hover:bg-[#0f2bb8]"
+                    >
+                      Generar recomendación <ArrowRight size={16} />
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Step 3 */}
+              {step === 3 && profileData && (
+                <div>
+                  <div className="mb-8 flex items-center gap-3">
+                    <span
+                      className="grid size-10 place-items-center rounded-xl"
+                      style={{
+                        backgroundColor: profileData.color,
+                        color: "#fff",
+                      }}
+                    >
+                      {(() => {
+                        const Icon = profileData.icon;
+                        return <Icon size={20} />;
+                      })()}
+                    </span>
                     <div>
-                      <span className="block font-bold text-slate-600">Procesamiento (CPU):</span>
-                      <span className="text-slate-800 font-medium">{profileData.recommendation.cpu}</span>
-                    </div>
-                    <div>
-                      <span className="block font-bold text-slate-600">Memoria RAM:</span>
-                      <span className="text-slate-800 font-medium">{profileData.recommendation.ram}</span>
-                    </div>
-                    <div>
-                      <span className="block font-bold text-slate-600">Almacenamiento (SSD):</span>
-                      <span className="text-slate-800 font-medium">{profileData.recommendation.storage}</span>
-                    </div>
-                    <div>
-                      <span className="block font-bold text-slate-600">Gráficos (GPU):</span>
-                      <span className="text-slate-800 font-medium">{profileData.recommendation.gpu}</span>
-                    </div>
-                    <div className="pt-2 border-t border-slate-200">
-                      <span className="block font-bold text-slate-600">Notas de configuración:</span>
-                      <p className="text-[12.5px] leading-relaxed text-slate-500 mt-1">
-                        {profileData.recommendation.notes}
+                      <h2 className="font-display text-[22px] font-extrabold tracking-[-0.02em] text-[#11142a]">
+                        {profileData.name}
+                      </h2>
+                      <p className="text-[13px] text-slate-500">
+                        {quantity} equipos · Exigencia {intensity.toLowerCase()}
                       </p>
                     </div>
-                    <div className="pt-2">
-                      <span className="block font-bold text-slate-600 mb-1.5">Marcas recomendadas:</span>
-                      <div className="flex flex-wrap gap-1.5">
-                        {profileData.recommendation.brands.map(b => (
-                          <span key={b} className="rounded-full bg-slate-200/80 px-3 py-1 text-[11px] font-semibold text-slate-700">
+                  </div>
+
+                  <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+                    {/* Spec sheet */}
+                    <div className="space-y-3">
+                      {(
+                        [
+                          {
+                            key: "cpu",
+                            label: "Procesamiento",
+                            value: profileData.recommendation.cpu,
+                          },
+                          {
+                            key: "ram",
+                            label: "Memoria RAM",
+                            value: profileData.recommendation.ram,
+                          },
+                          {
+                            key: "storage",
+                            label: "Almacenamiento",
+                            value: profileData.recommendation.storage,
+                          },
+                          {
+                            key: "gpu",
+                            label: "Gráficos",
+                            value: profileData.recommendation.gpu,
+                          },
+                        ] as const
+                      ).map((spec) => {
+                        const Icon =
+                          specIcons[spec.key as keyof typeof specIcons];
+                        return (
+                          <div
+                            key={spec.key}
+                            className="flex items-start gap-4 rounded-xl border border-slate-100 bg-slate-50/50 p-4"
+                          >
+                            <span className="mt-0.5 grid size-9 flex-none place-items-center rounded-lg bg-[#1236d8]/10 text-[#1236d8]">
+                              <Icon size={18} />
+                            </span>
+                            <div>
+                              <span className="block text-[11px] font-bold uppercase tracking-[0.1em] text-slate-400">
+                                {spec.label}
+                              </span>
+                              <span className="mt-0.5 block text-[14px] font-semibold text-[#11142a]">
+                                {spec.value}
+                              </span>
+                            </div>
+                          </div>
+                        );
+                      })}
+
+                      <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-4">
+                        <span className="block text-[11px] font-bold uppercase tracking-[0.1em] text-slate-400">
+                          Notas de configuración
+                        </span>
+                        <p className="mt-1 text-[13px] leading-relaxed text-slate-600">
+                          {profileData.recommendation.notes}
+                        </p>
+                      </div>
+
+                      <div className="flex flex-wrap gap-1.5 pt-1">
+                        <span className="text-[11px] font-bold uppercase tracking-[0.1em] text-slate-400">
+                          Marcas:
+                        </span>
+                        {profileData.recommendation.brands.map((b) => (
+                          <span
+                            key={b}
+                            className="rounded-full bg-[#1236d8]/8 px-3 py-0.5 text-[12px] font-semibold text-[#1236d8]"
+                          >
                             {b}
                           </span>
                         ))}
                       </div>
                     </div>
+
+                    {/* CTA panel */}
+                    <div className="flex flex-col justify-between rounded-2xl bg-[#070a16] p-6 text-white">
+                      <div>
+                        <h3 className="font-display text-[20px] font-extrabold tracking-[-0.02em]">
+                          Cotizá esta configuración
+                        </h3>
+                        <p className="mt-2 text-[13px] leading-relaxed text-slate-300">
+                          El mensaje de WhatsApp incluye perfil, cantidad,
+                          exigencia y todas las especificaciones. Podés agregar
+                          marca, presupuesto o fecha de entrega.
+                        </p>
+                      </div>
+
+                      <div className="mt-6">
+                        <a
+                          href={whatsappHref}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() =>
+                            track("configurator_whatsapp_started", {
+                              profile: selectedProfile,
+                              quantity,
+                              intensity,
+                            })
+                          }
+                          className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[linear-gradient(90deg,#ff7a18,#ff8f1f,#ffb000)] px-5 py-3.5 text-[14px] font-bold text-white shadow-[0_18px_32px_-18px_rgba(255,122,24,0.85)] transition hover:-translate-y-0.5"
+                        >
+                          <MessageCircle size={17} /> Cotizar por WhatsApp
+                        </a>
+
+                        <div className="mt-5 space-y-2 text-[12px] text-slate-400">
+                          <div className="flex items-center gap-2">
+                            <Check size={13} className="text-[#0ea5ff]" />
+                            Respuesta en menos de 24 hs hábiles
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Check size={13} className="text-[#0ea5ff]" />
+                            Condiciones B2B disponibles
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Check size={13} className="text-[#0ea5ff]" />
+                            Stock confirmado antes de cotizar
+                          </div>
+                        </div>
+
+                        <button
+                          onClick={() => setStep(1)}
+                          className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-semibold text-slate-400 hover:text-white"
+                        >
+                          <ArrowLeft size={14} /> Empezar de nuevo
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
-
-                <div className="flex flex-col justify-center rounded-xl border border-[#1236d8]/20 bg-[#1236d8]/5 p-6">
-                  <h3 className="font-display text-[20px] font-bold text-[#11142a]">Cotizá esta recomendación</h3>
-                  <p className="mt-2 text-[13.5px] leading-relaxed text-slate-600">
-                    Enviaremos el perfil, la cantidad y las especificaciones sugeridas en un mensaje de WhatsApp. Allí podés sumar marca, presupuesto o fecha de entrega.
-                  </p>
-                  <a
-                    href={whatsappHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => track("configurator_whatsapp_started", { profile: selectedProfile, quantity, intensity })}
-                    className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#1236d8] px-5 py-3.5 text-[14px] font-bold text-white transition-colors hover:bg-[#0f2bb8]"
-                  >
-                    <MessageCircle size={17} /> Cotizar por WhatsApp
-                  </a>
-
-                  <div className="mt-6 pt-4 border-t border-slate-100">
-                    <button
-                      onClick={handleBack}
-                      className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-slate-500 hover:text-[#11142a]"
-                    >
-                      <ArrowLeft size={15} /> Cambiar especificación
-                    </button>
-                  </div>
-                </div>
-
-              </div>
-            )}
-
+              )}
+            </div>
           </div>
-
-        </div>
+        </section>
       </main>
       <Footer />
     </>
