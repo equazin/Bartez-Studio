@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import {
   ArrowRight,
   CheckCircle2,
@@ -11,12 +10,18 @@ import {
   Server,
   Shield,
 } from "lucide-react";
-import { Navbar } from "../../components/Navbar";
-import { Footer } from "../../components/Footer";
-import { contact } from "../../constants";
+import {
+  InternalChecklist,
+  InternalCta,
+  InternalFeatureGrid,
+  InternalHero,
+  InternalPageShell,
+  InternalSection,
+} from "@/components/InternalPage";
+import { contact } from "@/constants";
 
 export const metadata: Metadata = {
-  title: "Soluciones IT para Empresas — Bartez Tecnología",
+  title: "Soluciones IT para Empresas - Bartez Tecnología",
   description:
     "Equipamiento, infraestructura y servicios IT para empresas argentinas. Notebooks corporativas, servidores, redes y workstations con asesoramiento técnico y condiciones B2B.",
 };
@@ -25,48 +30,42 @@ const services = [
   {
     icon: Laptop,
     title: "Notebooks corporativas",
-    desc: "Fleet de notebooks ThinkPad, Latitude y ProBook para equipos de trabajo de cualquier tamaño.",
+    description: "Fleet de notebooks ThinkPad, Latitude y ProBook para equipos de trabajo de cualquier tamano.",
   },
   {
     icon: Server,
     title: "Servidores y storage",
-    desc: "PowerEdge, ProLiant y storage para tu datacenter o sala de servidores.",
+    description: "PowerEdge, ProLiant y storage para datacenter, sala de servidores o virtualizacion.",
   },
   {
     icon: Network,
     title: "Redes e infraestructura",
-    desc: "Switches Cisco, firewalls, WiFi 6 y cableado estructurado para tu planta u oficina.",
+    description: "Switches, firewalls, WiFi y cableado estructurado para planta, deposito u oficina.",
   },
   {
     icon: Monitor,
     title: "Workstations y PCs",
-    desc: "Estaciones de trabajo para diseño, CAD, ingeniería y producción.",
+    description: "Estaciones de trabajo para diseño, CAD, ingeniería, administración y producción.",
   },
   {
     icon: Shield,
     title: "Videovigilancia CCTV",
-    desc: "Cámaras IP y sistemas de monitoreo para proteger tus instalaciones.",
+    description: "Cámaras IP, NVR, almacenamiento y monitoreo para proteger instalaciónes.",
   },
   {
     icon: Package,
-    title: "Periféricos y puestos",
-    desc: "Monitores, docks, headsets y accesorios para equipar cada puesto de trabajo.",
+    title: "Perifericos y puestos",
+    description: "Monitores, docks, headsets y accesorios para dejar cada puesto operativo.",
   },
 ];
 
 const reasons = [
-  "Asesoramiento técnico personalizado, sin venderte lo que no necesitás",
-  "Productos de marcas líderes y acompañamiento en la gestión de garantías",
-  "Factura A en todas las operaciones — Responsable Inscripto",
-  "Cobertura nacional — coordinamos entregas a cualquier sede",
-  "Condiciones B2B: cuenta corriente y plazos acordes a tu operación",
-  "Soporte post-venta y gestión de garantías incluida",
-];
-
-const stats = [
-  { label: "18 años en el rubro" },
-  { label: "Cobertura nacional" },
-  { label: "Factura A" },
+  "Asesoramiento técnico personalizado, sin venderte lo que no necesitás.",
+  "Productos de marcas líderes y acompañamiento en la gestion de garantías.",
+  "Factura A en todas las operaciones y condiciones comerciales B2B.",
+  "Cobertura nacional con entregas coordinadas a una o varias sedes.",
+  "Cuenta corriente y plazos acordes a cada operación.",
+  "Soporte postventa para resolver dudas luego de la entrega.",
 ];
 
 const whatsappHref = `https://wa.me/${contact.whatsappNumber}?text=${encodeURIComponent(
@@ -75,158 +74,72 @@ const whatsappHref = `https://wa.me/${contact.whatsappNumber}?text=${encodeURICo
 
 export default function EmpresasPage() {
   return (
-    <>
-      <Navbar />
-      <main className="bg-[#030c07] text-white pt-20">
-        {/* Hero */}
-        <section className="bg-[#030c07] py-20 text-white md:py-28">
-          <div className="mx-auto max-w-[1200px] px-6">
-            <div className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-3.5 py-1.5 mb-6">
-              <span className="size-2 rounded-full bg-accent animate-pulse" />
-              <span className="text-[12px] font-semibold tracking-wide text-accent">
-                Canal Corporativo · Empresas y organizaciones
-              </span>
-            </div>
+    <InternalPageShell>
+      <InternalHero
+        eyebrow="Canal corporativo"
+        title={
+          <>
+            Soluciones IT completas <span className="text-[#1236d8]">para tu empresa.</span>
+          </>
+        }
+        intro="Equipamos empresas de todos los rubros con tecnología de primera línea. Notebooks, servidores, redes, workstations y periféricos con asesoramiento profesional y cobertura nacional."
+        image="/photos/hero-products-combo.png"
+        imageAlt="Equipamiento corporativo para empresas"
+        imagePriority
+        mediaLabel="Proyecto corporativo"
+        mediaTitle="De la necesidad al equipamiento listo para operar."
+        mediaSubtitle="Ordenamos usuarios, sedes, criticidad y plazos para preparar una propuesta concreta."
+        mediaItems={[
+          { icon: Laptop, title: "Puestos", description: "Equipos y periféricos para cada perfil." },
+          { icon: Server, title: "Infraestructura", description: "Servidores, red, energía y storage." },
+          { icon: CheckCircle2, title: "Condiciones", description: "Factura A, B2B y cobertura nacional." },
+        ]}
+        metrics={[
+          { value: "18", label: "años en el rubro" },
+          { value: "10k+", label: "clientes atendidos" },
+          { value: "ARG", label: "cobertura nacional" },
+        ]}
+        actions={[
+          { label: "Pedir cotización", href: whatsappHref, external: true, icon: MessageCircle },
+          { label: "Ver marcas", href: "/marcas", variant: "secondary", icon: ArrowRight },
+        ]}
+      />
 
-            <h1 className="max-w-[700px] font-display text-[clamp(40px,6vw,70px)] font-bold leading-[0.98] tracking-[-0.05em] text-balance">
-              Soluciones IT completas{" "}
-              <span className="text-gradient">para tu empresa.</span>
-            </h1>
+      <InternalSection
+        tone="soft"
+        eyebrow="Equipamiento y servicios"
+        title="Todo lo que necesita tu empresa en un solo circuito de compra."
+        intro="Una sola fuente de equipamiento IT, con asesoramiento técnico y condiciones comerciales pensadas para empresas."
+      >
+        <InternalFeatureGrid features={services} />
+      </InternalSection>
 
-            <p className="mt-7 max-w-[58ch] text-[clamp(16px,1.5vw,18px)] leading-relaxed text-slate-400">
-              Equipamos empresas de todos los rubros con tecnología de primera
-              línea. Notebooks, servidores, redes, workstations y periféricos
-              con asesoramiento profesional y cobertura nacional.
+      <InternalSection
+        tone="white"
+        eyebrow="Criterios de trabajo"
+        title="Por que las empresas eligen Bartez."
+        intro="Dieciocho años de experiencia en el mercado IT argentino nos permiten entender la realidad de cada empresa y proponer soluciones que realmente funcionen."
+      >
+        <div className="grid gap-8 lg:grid-cols-[0.75fr_1.25fr] lg:items-start">
+          <div className="rounded-lg border border-slate-200 bg-[#f7f9fc] p-6">
+            <Network className="size-7 text-[#1236d8]" strokeWidth={1.7} />
+            <h3 className="mt-5 font-display text-[22px] font-extrabold text-[#11142a]">Compra corporativa sin friccion</h3>
+            <p className="mt-3 text-[14px] leading-relaxed text-slate-600">
+              Relevamos necesidad, cantidad, sedes y tiempos para que la propuesta llegue ordenada y con alternativas reales.
             </p>
-
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <Link
-                href={whatsappHref}
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-bold text-ink transition-all hover:scale-[1.02]"
-              >
-                Pedir cotización <ArrowRight size={17} />
-              </Link>
-              <Link
-                href="/marcas"
-                className="inline-flex items-center gap-2 rounded-lg border border-white/20 bg-white/5 px-5 py-3.5 text-[14px] font-semibold text-white transition-colors hover:bg-white/10"
-              >
-                Ver marcas
-              </Link>
-            </div>
-
-            {/* Stats strip */}
-            <div className="mt-14 flex flex-wrap gap-x-10 gap-y-4 border-t border-white/5 pt-8">
-              {stats.map((s) => (
-                <div key={s.label} className="flex items-center gap-2.5">
-                  <span className="size-1.5 rounded-full bg-accent" />
-                  <span className="text-[13.5px] font-semibold text-slate-350">
-                    {s.label}
-                  </span>
-                </div>
-              ))}
-            </div>
           </div>
-        </section>
+          <InternalChecklist items={reasons} columns="two" />
+        </div>
+      </InternalSection>
 
-        {/* Servicios */}
-        <section className="bg-[#030c07] border-t border-white/5 py-20 md:py-28">
-          <div className="mx-auto max-w-[1200px] px-6">
-            <div className="max-w-[560px]">
-              <h2 className="font-display text-[clamp(28px,3.5vw,42px)] font-bold leading-[1.06] tracking-[-0.035em] text-white">
-                Todo lo que necesita tu empresa en un solo lugar.
-              </h2>
-              <p className="mt-4 text-[16px] leading-relaxed text-slate-400">
-                Una sola fuente de equipamiento IT, con asesoramiento técnico
-                y condiciones comerciales pensadas para empresas.
-              </p>
-            </div>
-
-            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {services.map((s) => (
-                <div
-                  key={s.title}
-                  className="rounded-3xl border border-white/5 bg-[#082214] p-6 hover:border-accent/40 hover:bg-[#0c2e1d] transition duration-300 shadow-glow"
-                >
-                  <span className="grid size-11 place-items-center rounded-xl bg-accent/10 border border-accent/20">
-                    <s.icon className="size-5 text-accent" strokeWidth={1.6} />
-                  </span>
-                  <h3 className="mt-5 font-display text-[16px] font-bold text-white">
-                    {s.title}
-                  </h3>
-                  <p className="mt-2 text-[13px] leading-relaxed text-slate-400">
-                    {s.desc}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Por qué elegirnos */}
-        <section className="bg-[#06140d] py-20 md:py-28">
-          <div className="mx-auto max-w-[1200px] px-6">
-            <div className="grid gap-12 lg:grid-cols-2 lg:gap-20 lg:items-center">
-              {/* Left: text */}
-              <div>
-                <h2 className="font-display text-[clamp(28px,3.5vw,42px)] font-bold leading-[1.06] tracking-[-0.035em] text-white">
-                  ¿Por qué las empresas eligen Bartez?
-                </h2>
-                <p className="mt-5 text-[16px] leading-relaxed text-slate-400">
-                  Dieciocho años de experiencia en el mercado IT argentino nos
-                  permiten entender la realidad de cada empresa y proponer
-                  soluciones que realmente funcionen.
-                </p>
-              </div>
-
-              {/* Right: checklist */}
-              <ul className="space-y-4">
-                {reasons.map((r) => (
-                  <li key={r} className="flex items-start gap-3">
-                    <CheckCircle2
-                      className="mt-0.5 size-5 flex-none text-accent"
-                      strokeWidth={1.8}
-                    />
-                    <span className="text-[15px] leading-relaxed text-slate-300">
-                      {r}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        {/* CTA final */}
-        <section className="bg-[#030c07] border-t border-white/5 py-20 text-white md:py-28">
-          <div className="mx-auto max-w-[1200px] px-6 text-center">
-            <h2 className="font-display text-[clamp(28px,4vw,46px)] font-bold leading-[1.06] tracking-[-0.04em] text-balance">
-              ¿Querés equipar tu empresa con tecnología de primera línea?
-            </h2>
-            <p className="mx-auto mt-5 max-w-[52ch] text-[16px] leading-relaxed text-slate-400">
-              Contanos cuántos usuarios, qué tipo de trabajo realizan y cuál es
-              tu plazo. Un especialista te responde con una propuesta en 24 hs
-              hábiles.
-            </p>
-            <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-              <Link
-                href={whatsappHref}
-                className="inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-bold text-ink transition-all hover:scale-[1.02]"
-              >
-                Solicitar asesoramiento <ArrowRight size={17} />
-              </Link>
-              <a
-                href={whatsappHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-lg border border-white/20 bg-white/5 px-5 py-3.5 text-[14px] font-semibold text-white transition-colors hover:bg-white/10"
-              >
-                <MessageCircle size={17} /> Hablar por WhatsApp
-              </a>
-            </div>
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </>
+      <InternalCta
+        title="Querés equipar tu empresa con tecnología de primera línea?"
+        intro="Contaños cuantos usuarios, que tipo de trabajo realizan y cual es tu plazo. Un especialista te responde con una propuesta en 24 hs hábiles."
+        actions={[
+          { label: "Solicitar asesoramiento", href: whatsappHref, external: true, icon: MessageCircle },
+          { label: "Ver soluciones", href: "/soluciones/servidores", variant: "secondary", icon: ArrowRight },
+        ]}
+      />
+    </InternalPageShell>
   );
 }

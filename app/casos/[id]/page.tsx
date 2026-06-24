@@ -1,12 +1,16 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
-import { Footer } from "../../../components/Footer";
-import { Navbar } from "../../../components/Navbar";
-import { company } from "../../../constants";
-import { getDynamicSuccessCaseById } from "../../../lib/db-content";
+import { ArrowLeft, ArrowRight, FileText, MessageCircle } from "lucide-react";
+import { company } from "@/constants";
+import { getDynamicSuccessCaseById } from "@/lib/db-content";
+import {
+  InternalCta,
+  InternalHero,
+  InternalPageShell,
+  InternalSection,
+} from "@/components/InternalPage";
+import { whatsappLinks } from "@/lib/whatsapp";
 
 export const revalidate = 3600;
 
@@ -36,37 +40,61 @@ export default async function CasePage({ params }: { params: Promise<{ id: strin
   const paragraphs = item.content.split(/\n{2,}/).map((paragraph) => paragraph.trim()).filter(Boolean);
 
   return (
-    <>
-      <Navbar />
-      <main className="bg-[#030c07] text-white">
-        <article>
-          <header className="bg-[#06140d] pt-32 text-white md:pt-40 border-b border-white/5">
-            <div className="mx-auto max-w-[980px] px-6 pb-16">
-              <Link href="/#experiencia" className="inline-flex items-center gap-2 text-[13px] font-semibold text-slate-300 hover:text-white">
-                <ArrowLeft size={16} /> Volver a experiencias
-              </Link>
-              <p className="mt-10 text-[12px] font-bold uppercase tracking-[0.14em] text-accent">{item.clientName}</p>
-              <h1 className="mt-4 max-w-[18ch] font-display text-[clamp(36px,6vw,68px)] font-bold leading-[1.02] tracking-[-0.045em] text-white">{item.title}</h1>
-              <p className="mt-6 max-w-[62ch] text-[17px] leading-relaxed text-slate-400">{item.description}</p>
-            </div>
-          </header>
+    <InternalPageShell>
+      <InternalHero
+        eyebrow={item.clientName}
+        title={item.title}
+        intro={item.description}
+        image={item.coverImage}
+        imageAlt={item.title}
+        imagePriority
+        mediaLabel="Caso documentado"
+        mediaTitle="Proyecto con alcance verificable."
+        mediaSubtitle="El detalle se publica solo cuando existe información autorizada."
+        mediaItems={[
+          { icon: FileText, title: "Contexto", description: "Situacion y necesidad inicial." },
+          { icon: ArrowRight, title: "Solución", description: "Alcance técnico aplicado." },
+          { icon: MessageCircle, title: "Consulta", description: "Caso similar por WhatsApp." },
+        ]}
+        metrics={item.metrics.length > 0 ? item.metrics.slice(0, 3).map((metric) => ({ value: metric, label: "resultado" })) : [
+          { value: "Caso", label: "documentado" },
+          { value: "OK", label: "autorizado" },
+          { value: "B2B", label: "proyecto" },
+        ]}
+        actions={[
+          { label: "Consultar una solución similar", href: whatsappLinks.company, external: true, icon: MessageCircle },
+          { label: "Volver a casos", href: "/casos", variant: "secondary", icon: ArrowLeft },
+        ]}
+      />
 
-          <div className="mx-auto max-w-[980px] px-6 pb-20">
-            <div className="relative -mt-7 aspect-[16/8] overflow-hidden rounded-3xl border border-white/10 bg-[#030c07]">
-              <Image src={item.coverImage} alt={item.title} fill priority sizes="980px" className="object-cover opacity-85" />
+      <InternalSection tone="soft">
+        <article className="mx-auto max-w-[820px] rounded-lg border border-slate-200 bg-white p-7 shadow-sm md:p-10">
+          <Link href="/casos" className="mb-8 inline-flex items-center gap-1.5 text-[13px] font-bold text-[#1236d8] hover:underline">
+            <ArrowLeft size={15} /> Casos
+          </Link>
+          {item.metrics.length > 0 ? (
+            <div className="mb-8 grid gap-3 border-b border-slate-200 pb-8 sm:grid-cols-2">
+              {item.metrics.map((metric) => (
+                <p key={metric} className="rounded-lg border border-blue-100 bg-blue-50 px-4 py-3 text-[13px] font-bold text-[#1236d8]">{metric}</p>
+              ))}
             </div>
-            {item.metrics.length > 0 ? (
-              <div className="grid border-b border-white/10 py-8 sm:grid-cols-2 lg:grid-cols-4">
-                {item.metrics.map((metric) => <p key={metric} className="py-2 text-[14px] font-bold text-accent">{metric}</p>)}
-              </div>
-            ) : null}
-            <div className="mx-auto max-w-[720px] py-14">
-              {paragraphs.map((paragraph) => <p key={paragraph} className="mt-5 text-[17px] leading-[1.8] text-slate-300">{paragraph}</p>)}
-            </div>
+          ) : null}
+          <div>
+            {paragraphs.map((paragraph) => (
+              <p key={paragraph} className="mt-5 text-[16.5px] leading-[1.8] text-slate-700 first:mt-0">{paragraph}</p>
+            ))}
           </div>
         </article>
-      </main>
-      <Footer />
-    </>
+      </InternalSection>
+
+      <InternalCta
+        title="Tenés un proyecto parecido?"
+        intro="Contaños tu contexto y lo convertimos en una propuesta de alcance realista."
+        actions={[
+          { label: "Hablar por WhatsApp", href: whatsappLinks.company, external: true, icon: MessageCircle },
+          { label: "Ver soluciones", href: "/soluciones/servidores", variant: "secondary", icon: ArrowRight },
+        ]}
+      />
+    </InternalPageShell>
   );
 }

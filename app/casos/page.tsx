@@ -1,15 +1,96 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, MessageCircle } from "lucide-react";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
+import { ArrowRight, FileText, MessageCircle } from "lucide-react";
+import {
+  InternalCta,
+  InternalHero,
+  InternalPageShell,
+  InternalSection,
+} from "@/components/InternalPage";
 import { getDynamicSuccessCases } from "@/lib/db-content";
 import { whatsappLinks } from "@/lib/whatsapp";
 
-export const metadata: Metadata = { title: "Casos de éxito — Bartez Tecnología", description: "Proyectos tecnológicos documentados y autorizados por clientes de Bartez." };
+export const metadata: Metadata = {
+  title: "Casos de éxito - Bartez Tecnología",
+  description: "Proyectos tecnológicos documentados y autorizados por clientes de Bartez.",
+};
 
 export default async function CasosPage() {
   const cases = await getDynamicSuccessCases();
-  return <><Navbar /><main className="min-h-screen bg-[#030c07] pb-24 pt-32 text-white"><div className="mx-auto max-w-[1100px] px-6"><h1 className="font-display text-[clamp(38px,5vw,62px)] font-bold tracking-[-0.05em]">Casos de éxito verificables.</h1><p className="mt-5 max-w-[62ch] text-[16px] leading-relaxed text-slate-400">Publicamos únicamente proyectos con información y autorización suficiente para respaldar el alcance y los resultados.</p>{cases.length > 0 ? <div className="mt-12 grid gap-6 md:grid-cols-2">{cases.map((item) => <Link key={item.id} href={`/casos/${item.id}`} className="group overflow-hidden border border-white/10 bg-[#06140d]"><div className="relative aspect-[16/8]"><Image src={item.coverImage} alt={item.title} fill className="object-cover opacity-80 transition group-hover:opacity-100" /></div><div className="p-6"><p className="text-[11px] font-bold uppercase tracking-[0.14em] text-accent">{item.clientName}</p><h2 className="mt-2 font-display text-[21px] font-bold">{item.title}</h2><p className="mt-3 text-[13.5px] leading-relaxed text-slate-400">{item.description}</p><span className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-bold text-accent">Ver caso <ArrowRight size={15} /></span></div></Link>)}</div> : <div className="mt-12 border border-white/10 bg-[#06140d] p-8"><h2 className="font-display text-[22px] font-bold">Contenido en preparación</h2><p className="mt-3 max-w-[60ch] text-[14px] leading-relaxed text-slate-400">Los casos anónimos fueron retirados. Esta sección se habilitará a medida que contemos con clientes, resultados y autorizaciones verificables.</p><a href={whatsappLinks.company} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-3 text-[14px] font-bold text-ink"><MessageCircle size={17} /> Consultar una solución similar</a></div>}</div></main><Footer /></>;
+
+  return (
+    <InternalPageShell>
+      <InternalHero
+        eyebrow="Casos documentados"
+        title={
+          <>
+            Casos de éxito <span className="text-[#1236d8]">verificables.</span>
+          </>
+        }
+        intro="Publicamos únicamente proyectos con información y autorización suficiente para respaldar alcance, contexto y resultados."
+        image="/photos/datacenter.jpg"
+        imageAlt="Proyecto tecnológico documentado"
+        imagePriority
+        mediaLabel="Proyectos"
+        mediaTitle="Contenido publicado solo con respaldo."
+        mediaSubtitle="Preferimos mostrar menos casos, pero con información real y autorizada."
+        mediaItems={[
+          { icon: FileText, title: "Alcance", description: "Contexto y solución aplicada." },
+          { icon: MessageCircle, title: "Consulta", description: "Casos similares por WhatsApp." },
+          { icon: ArrowRight, title: "Detalle", description: "Lectura simple y verificable." },
+        ]}
+        metrics={[
+          { value: `${cases.length}`, label: "casos publicados" },
+          { value: "OK", label: "autorización" },
+          { value: "B2B", label: "proyectos reales" },
+        ]}
+        actions={[
+          { label: "Consultar una solución similar", href: whatsappLinks.company, external: true, icon: MessageCircle },
+          { label: "Ver empresas", href: "/empresas", variant: "secondary", icon: ArrowRight },
+        ]}
+      />
+
+      <InternalSection tone="soft" eyebrow="Biblioteca" title="Proyectos publicados.">
+        {cases.length > 0 ? (
+          <div className="grid gap-5 md:grid-cols-2">
+            {cases.map((item) => (
+              <Link key={item.id} href={`/casos/${item.id}`} className="group overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200">
+                <div className="relative aspect-[16/8] bg-slate-100">
+                  <Image src={item.coverImage} alt={item.title} fill className="object-cover transition duration-500 group-hover:scale-[1.03]" />
+                </div>
+                <div className="p-6">
+                  <p className="text-[12px] font-bold text-[#1236d8]">{item.clientName}</p>
+                  <h2 className="mt-2 font-display text-[21px] font-extrabold text-[#11142a]">{item.title}</h2>
+                  <p className="mt-3 text-[13.5px] leading-relaxed text-slate-600">{item.description}</p>
+                  <span className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-bold text-[#1236d8]">
+                    Ver caso <ArrowRight size={15} />
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-lg border border-slate-200 bg-white p-8 shadow-sm">
+            <h2 className="font-display text-[24px] font-extrabold text-[#11142a]">Contenido en preparación</h2>
+            <p className="mt-3 max-w-[64ch] text-[14px] leading-relaxed text-slate-600">
+              Los casos anónimos fueron retirados. Esta sección se hábilitara a medida que contemos con clientes, resultados y autorizaciónes verificables.
+            </p>
+            <a href={whatsappLinks.company} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex items-center gap-2 rounded-lg bg-[linear-gradient(90deg,#ff7a18,#ff8f1f,#ffb000)] px-5 py-3 text-[14px] font-bold text-white shadow-[0_16px_32px_-18px_rgba(255,122,24,0.9)]">
+              <MessageCircle size={17} /> Consultar una solución similar
+            </a>
+          </div>
+        )}
+      </InternalSection>
+
+      <InternalCta
+        title="Tenés un proyecto parecido en mente?"
+        intro="Contaños el contexto y armamos una propuesta adaptada a tu escala y restricciones."
+        actions={[
+          { label: "Hablar por WhatsApp", href: whatsappLinks.company, external: true, icon: MessageCircle },
+          { label: "Ver soluciones", href: "/soluciones/servidores", variant: "secondary", icon: ArrowRight },
+        ]}
+      />
+    </InternalPageShell>
+  );
 }

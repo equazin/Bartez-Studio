@@ -397,7 +397,7 @@ export const articles: Article[] = [
     excerpt: "Switches, routers, WiFi 6 y firewall: qué necesita realmente tu empresa según su tamaño y operación.",
     date: "2026-06-08",
     readingTime: "6 min",
-    cover: "/photos/products/rack.jpg",
+    cover: "/photos/products/switch.jpg",
     metaDescription:
       "Guía completa de redes para empresas: cómo elegir switches Cisco, routers, firewall y WiFi 6 según el tamaño y las necesidades de tu operación.",
     body: [
@@ -464,7 +464,7 @@ export const articles: Article[] = [
     excerpt: "Firewall, backup, contraseñas y actualizaciones: las capas de protección esenciales que ninguna empresa debería ignorar.",
     date: "2026-05-28",
     readingTime: "5 min",
-    cover: "/photos/products/rack.jpg",
+    cover: "/photos/products/router.jpg",
     metaDescription:
       "Guía de ciberseguridad para PyMEs argentinas: cómo implementar firewall, backup, segmentación de red y políticas de contraseñas sin gastar de más.",
     body: [

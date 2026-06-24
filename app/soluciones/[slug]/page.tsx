@@ -1,19 +1,25 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
-import { 
-  ArrowRight, 
-  CheckCircle2, 
-  MessageCircle 
-} from "lucide-react";
-import { verticals, company } from "../../../constants";
-import { getDynamicPartners } from "../../../lib/db-content";
-import { Navbar } from "../../../components/Navbar";
-import { Footer } from "../../../components/Footer";
-import { Process } from "../../../components/sections/Process";
-import { Icon } from "../../../components/icons";
+import { ArrowRight, CheckCircle2, ClipboardList, FileText, MessageCircle, MessagesSquare, Rocket } from "lucide-react";
+import { company, verticals } from "@/constants";
+import { getDynamicPartners } from "@/lib/db-content";
+import {
+  InternalCta,
+  InternalHero,
+  InternalPageShell,
+  InternalSection,
+} from "@/components/InternalPage";
+import { Icon } from "@/components/icons";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
+
+const processSteps = [
+  { icon: MessagesSquare, title: "Contaños el desafio", description: "Nos compartis qué necesitás resolver y cuales son tus prioridades." },
+  { icon: ClipboardList, title: "Evaluamos la necesidad", description: "Analizamos el entorno y relevamos los requerimientos clave." },
+  { icon: FileText, title: "Presentamos la propuesta", description: "Diseñamos una solución y una propuesta de trabajo clara." },
+  { icon: Rocket, title: "Implementamos y acompañamos", description: "Coordinamos la puesta en marcha y el seguimiento." },
+];
 
 export function generateStaticParams() {
   return verticals.map((vertical) => ({ slug: vertical.slug }));
@@ -33,22 +39,22 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
-export default async function VerticalPage({ 
-  params
-}: { 
+export default async function VerticalPage({
+  params,
+}: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
   const vertical = verticals.find((item) => item.slug === slug);
   if (!vertical) notFound();
-  
+
   const brands = await getDynamicPartners();
   const related = vertical.related
     .map((relatedSlug) => verticals.find((item) => item.slug === relatedSlug))
     .filter(Boolean) as typeof verticals;
-    
-  const whatsappHref = buildWhatsAppUrl("quote", [`Solución de interés: ${vertical.navLabel}`, "Origen: página de solución"]);
-  
+
+  const whatsappHref = buildWhatsAppUrl("quote", [`Solución de interes: ${vertical.navLabel}`, "Origen: pagina de solución"]);
+
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -58,7 +64,7 @@ export default async function VerticalPage({
       acceptedAnswer: { "@type": "Answer", text: item.a },
     })),
   };
-  
+
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -73,142 +79,130 @@ export default async function VerticalPage({
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-      <Navbar />
-      
-      <main className="font-sans antialiased overflow-x-hidden bg-[#030c07] text-white">
-        
-        {/* Hero */}
-        <section className="relative pt-32 pb-20 md:pt-40 md:pb-28">
-          <div className="mx-auto max-w-[1200px] px-6 grid gap-12 lg:grid-cols-[1.1fr_0.9fr] items-center">
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-accent/10 px-3.5 py-1 mb-6 border border-accent/20">
-                <span className="size-1.5 rounded-full bg-accent animate-pulse" />
-                <span className="text-[11.5px] font-bold uppercase tracking-wider text-accent">Soluciones Corporativas B2B</span>
-              </div>
-              <h1 className="font-display text-[clamp(36px,5vw,60px)] font-extrabold leading-[1.05] tracking-[-0.04em] text-white">
-                {vertical.h1}
-              </h1>
-              <p className="mt-6 max-w-[50ch] text-[16.5px] leading-relaxed text-slate-400">
-                {vertical.intro}
-              </p>
-              <div className="mt-8 flex flex-col gap-3.5 sm:flex-row">
-                <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14px] font-bold text-ink transition hover:scale-[1.02]">
-                  <MessageCircle size={17} /> Cotizar por WhatsApp
-                </a>
-                <Link href="/rfq" className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/20 bg-white/5 px-6 py-3.5 text-[14px] font-semibold text-white transition hover:bg-white/10">Ya tengo modelos y cantidades <ArrowRight size={16} /></Link>
-              </div>
-            </div>
-            <div className="relative min-h-[380px] lg:min-h-[480px] rounded-3xl overflow-hidden border border-white/10 shadow-glow bg-[#0A2215]">
-              <Image src={vertical.image} alt={vertical.navLabel} fill priority sizes="(max-width:1024px) 100vw, 50vw" className="object-cover opacity-90" />
-            </div>
-          </div>
-        </section>
 
-        {/* Brands */}
-        <section className="border-y border-white/10 bg-[#06140d] py-6">
-          <div className="mx-auto flex max-w-[1200px] flex-wrap items-center justify-center gap-x-12 gap-y-6 px-6">
-            {brands.slice(0, 6).map((brand) => (
-              <Image key={brand.name} src={brand.logo} alt={brand.name} width={96} height={28} className="h-5 w-auto brightness-0 invert opacity-40 transition hover:opacity-85" />
+      <InternalPageShell>
+        <InternalHero
+          eyebrow={vertical.eyebrow}
+          title={vertical.h1}
+          intro={vertical.intro}
+          image={vertical.image}
+          imageAlt={vertical.navLabel}
+          imagePriority
+          mediaLabel="Soluciones B2B"
+          mediaTitle="Alcance definido para tu contexto."
+          mediaSubtitle="Partimos de usuarios, sedes, criticidad y presupuesto antes de cerrar la recomendacion."
+          mediaItems={vertical.bullets.slice(0, 3).map((bullet) => ({
+            title: bullet.title,
+            description: bullet.desc,
+          }))}
+          metrics={[
+            { value: "24 hs", label: "respuesta inicial" },
+            { value: "B2B", label: "condiciones comerciales" },
+            { value: "ARG", label: "cobertura nacional" },
+          ]}
+          actions={[
+            { label: "Cotizar por WhatsApp", href: whatsappHref, external: true, icon: MessageCircle },
+            { label: "Ya tengo modelos y cantidades", href: "/rfq", variant: "secondary", icon: ArrowRight },
+          ]}
+        />
+
+        <section className="border-b border-slate-200 bg-[#f7f9fc] py-6">
+          <div className="mx-auto flex max-w-[1200px] flex-wrap items-center justify-center gap-x-10 gap-y-5 px-6">
+            {brands.slice(0, 8).map((brand) => (
+              <Image key={brand.name} src={brand.logo} alt={brand.name} width={110} height={34} className="max-h-7 w-auto object-contain opacity-70 grayscale transition hover:opacity-100 hover:grayscale-0" />
             ))}
           </div>
         </section>
 
-        {/* Feature Bento Grid */}
-        <section className="py-20 md:py-28 bg-[#030c07]">
-          <div className="mx-auto max-w-[1200px] px-6">
-            <div className="text-center mb-16">
-              <span className="text-[12px] font-bold uppercase tracking-widest text-accent">Diseño y Calidad</span>
-              <h2 className="mt-3 font-display text-[clamp(28px,3.8vw,44px)] font-bold tracking-[-0.03em]">Una solución pensada para tu contexto</h2>
-            </div>
-            
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {vertical.bullets.map((bullet) => (
-                <div key={bullet.title} className="bg-[#081f12] border border-white/5 rounded-3xl p-8 hover:border-accent/30 transition duration-300">
-                  <div className="size-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent">
-                    <CheckCircle2 size={18} />
-                  </div>
-                  <h3 className="mt-6 font-display text-[17px] font-bold text-white">{bullet.title}</h3>
-                  <p className="mt-3 text-[13.5px] leading-relaxed text-slate-400">{bullet.desc}</p>
-                </div>
-              ))}
-            </div>
+        <InternalSection
+          tone="white"
+          eyebrow="Diseño y calidad"
+          title="Una solución pensada para tu contexto."
+          intro="La misma categoría puede resolverse de formas distintas. Por eso ordenamos alcance, prioridad y restricciones antes de recomendar."
+        >
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {vertical.bullets.map((bullet) => (
+              <article key={bullet.title} className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200">
+                <CheckCircle2 className="size-6 text-[#1236d8]" strokeWidth={1.8} />
+                <h3 className="mt-5 font-display text-[17px] font-extrabold text-[#11142a]">{bullet.title}</h3>
+                <p className="mt-2 text-[13.5px] leading-relaxed text-slate-600">{bullet.desc}</p>
+              </article>
+            ))}
           </div>
-        </section>
+        </InternalSection>
 
-        {/* Capabilities */}
-        <section className="py-20 md:py-28 bg-[#06140d] border-t border-white/5">
-          <div className="mx-auto max-w-[1200px] px-6">
-            <div className="max-w-[650px] mb-12">
-              <h2 className="font-display text-[clamp(28px,3.6vw,42px)] font-bold tracking-[-0.035em]">Cómo podemos acompañarte</h2>
-              <p className="mt-3 text-[15px] text-slate-400">El alcance final se define después de entender tu entorno, prioridades y restricciones.</p>
-            </div>
-
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {vertical.capabilities.map((c) => (
-                <div key={c.title} className="bg-[#030c07] border border-white/5 p-6 rounded-2xl">
-                  <Icon name={c.icon} className="size-6 text-accent" />
-                  <h3 className="mt-4 font-display text-[15.5px] font-bold text-white">{c.title}</h3>
-                  <p className="mt-2 text-[12.5px] leading-relaxed text-slate-400">{c.desc}</p>
-                </div>
-              ))}
-            </div>
+        <InternalSection
+          tone="soft"
+          eyebrow="Alcance"
+          title="Como podemos acompañarte."
+          intro="El alcance final se define despues de entender tu entorno, prioridades y restricciones."
+        >
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {vertical.capabilities.map((capability) => (
+              <article key={capability.title} className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+                <Icon name={capability.icon} className="size-6 text-[#1236d8]" />
+                <h3 className="mt-4 font-display text-[16px] font-extrabold text-[#11142a]">{capability.title}</h3>
+                <p className="mt-2 text-[12.8px] leading-relaxed text-slate-600">{capability.desc}</p>
+              </article>
+            ))}
           </div>
-        </section>
+        </InternalSection>
 
-        {/* Process */}
-        <div className="bg-[#030c07] border-y border-white/5">
-          <Process />
-        </div>
+        <InternalSection tone="white" eyebrow="Proceso" title="De la consulta a la implementacion.">
+          <ol className="grid gap-5 md:grid-cols-4">
+            {processSteps.map((step, index) => (
+              <li key={step.title} className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+                <span className="grid size-10 place-items-center rounded-lg border border-blue-100 bg-blue-50 font-display text-[13px] font-extrabold text-[#1236d8]">
+                  {index + 1}
+                </span>
+                <step.icon className="mt-6 size-6 text-[#1236d8]" strokeWidth={1.7} />
+                <h3 className="mt-4 font-display text-[16px] font-extrabold text-[#11142a]">{step.title}</h3>
+                <p className="mt-2 text-[13px] leading-relaxed text-slate-600">{step.description}</p>
+              </li>
+            ))}
+          </ol>
+        </InternalSection>
 
-        {/* FAQ */}
-        <section className="py-20 md:py-24 bg-[#030c07]">
-          <div className="mx-auto max-w-[1200px] px-6 grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
-            <div>
-              <span className="text-[12px] font-bold uppercase tracking-widest text-accent">Dudas frecuentes</span>
-              <h2 className="mt-3 font-display text-[clamp(26px,3.5vw,38px)] font-bold tracking-[-0.03em] text-white">Preguntas frecuentes</h2>
-            </div>
-            <div className="divide-y divide-white/10">
-              {vertical.faqs.map((item) => (
-                <div key={item.q} className="py-6 first:pt-0 last:pb-0">
-                  <h3 className="font-display text-[16px] font-bold text-white">{item.q}</h3>
-                  <p className="mt-2.5 text-[13.5px] leading-relaxed text-slate-400">{item.a}</p>
-                </div>
-              ))}
-            </div>
+        <InternalSection tone="soft" eyebrow="Dudas frecuentes" title="Preguntas frecuentes.">
+          <div className="grid gap-5 lg:grid-cols-2">
+            {vertical.faqs.map((item) => (
+              <article key={item.q} className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+                <h3 className="font-display text-[16px] font-extrabold text-[#11142a]">{item.q}</h3>
+                <p className="mt-2.5 text-[13.5px] leading-relaxed text-slate-600">{item.a}</p>
+              </article>
+            ))}
           </div>
-        </section>
+        </InternalSection>
 
-        {/* Relacionados */}
-        {related.length > 0 && (
-          <section className="bg-[#030c07] py-20 text-white border-t border-white/5">
-            <div className="mx-auto max-w-[1200px] px-6">
-              <h2 className="font-display text-[26px] font-bold tracking-[-0.03em] text-white">Otras áreas en las que podemos ayudarte</h2>
-              <div className="mt-8 border-t border-white/10">
-                {related.map((item) => (
-                  <Link key={item.slug} href={`/soluciones/${item.slug}`} className="group flex items-center gap-4 border-b border-white/10 py-5 text-white transition-colors hover:text-accent">
+        {related.length > 0 ? (
+          <InternalSection tone="white" eyebrow="Relacionados" title="Otras areas en las que podemos ayudarte.">
+            <div className="grid gap-4 md:grid-cols-2">
+              {related.map((item) => (
+                <Link
+                  key={item.slug}
+                  href={`/soluciones/${item.slug}`}
+                  className="group flex items-center gap-4 rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200"
+                >
+                  <span className="grid size-11 place-items-center rounded-lg border border-blue-100 bg-blue-50 text-[#1236d8]">
                     <Icon name={item.icon} className="size-5" />
-                    <span className="font-display text-[15.5px] font-semibold">{item.navLabel}</span>
-                    <ArrowRight className="ml-auto size-4 transition-transform group-hover:translate-x-1" />
-                  </Link>
-                ))}
-              </div>
+                  </span>
+                  <span className="font-display text-[16px] font-extrabold text-[#11142a]">{item.navLabel}</span>
+                  <ArrowRight className="ml-auto size-4 text-[#1236d8] transition-transform group-hover:translate-x-1" />
+                </Link>
+              ))}
             </div>
-          </section>
-        )}
+          </InternalSection>
+        ) : null}
 
-        {/* CTA Final */}
-        <section className="bg-[#06140d] py-20 text-white border-t border-white/5">
-          <div className="mx-auto flex max-w-[900px] flex-col items-center px-6 text-center">
-            <h2 className="font-display text-[clamp(28px,4vw,44px)] font-bold tracking-[-0.04em]">Hablemos de lo que necesita tu empresa.</h2>
-            <p className="mt-4 max-w-[50ch] text-[15px] leading-relaxed text-slate-350">Un especialista puede ayudarte a definir el alcance antes de preparar una propuesta. Respondemos en <strong>24 hs hábiles</strong> (Lun–Vie 9 a 18 hs).</p>
-            <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="mt-8 inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14px] font-bold text-ink transition hover:scale-[1.02]">
-              <MessageCircle size={17} /> Contanos tu desafío por WhatsApp
-            </a>
-          </div>
-        </section>
-
-      </main>
-      <Footer />
+        <InternalCta
+          title="Hablemos de lo que necesita tu empresa."
+          intro="Un especialista puede ayudarte a definir el alcance antes de preparar una propuesta. Respondemos en 24 hs hábiles."
+          actions={[
+            { label: "Contaños tu desafio por WhatsApp", href: whatsappHref, external: true, icon: MessageCircle },
+            { label: "Ver marcas", href: "/marcas", variant: "secondary", icon: ArrowRight },
+          ]}
+        />
+      </InternalPageShell>
     </>
   );
 }

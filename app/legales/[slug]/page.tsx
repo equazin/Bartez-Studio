@@ -1,16 +1,20 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { legalPages, company } from "../../../constants";
-import { Navbar } from "../../../components/Navbar";
-import { Footer } from "../../../components/Footer";
+import { FileText } from "lucide-react";
+import { company, legalPages } from "@/constants";
+import {
+  InternalHero,
+  InternalPageShell,
+  InternalSection,
+} from "@/components/InternalPage";
 
 export function generateStaticParams() {
-  return legalPages.map((p) => ({ slug: p.slug }));
+  return legalPages.map((page) => ({ slug: page.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const page = legalPages.find((p) => p.slug === slug);
+  const page = legalPages.find((item) => item.slug === slug);
   if (!page) return {};
   return {
     title: `${page.title} | ${company.name}`,
@@ -22,36 +26,38 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function LegalPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const page = legalPages.find((p) => p.slug === slug);
+  const page = legalPages.find((item) => item.slug === slug);
   if (!page) notFound();
 
   return (
-    <>
-      <Navbar />
-      <main className="bg-white">
-        <header className="bg-ink pt-32 text-white md:pt-40">
-          <div className="mx-auto max-w-[760px] px-7 pb-12">
-            <h1 className="font-display text-[clamp(28px,4vw,44px)] font-bold tracking-[-0.02em]">{page.title}</h1>
-            <p className="mt-3 text-[13px] text-slate-400">
-              Última actualización:{" "}
-              {new Date(page.updated).toLocaleDateString("es-AR", { day: "numeric", month: "long", year: "numeric" })}
-            </p>
-          </div>
-        </header>
+    <InternalPageShell>
+      <InternalHero
+        eyebrow="Información legal"
+        eyebrowIcon={FileText}
+        title={page.title}
+        intro={page.intro}
+        metrics={[
+          { value: "Legal", label: "documento público" },
+          {
+            value: new Date(page.updated).toLocaleDateString("es-AR", { day: "numeric", month: "short" }),
+            label: "ultima actualizacion",
+          },
+          { value: "AR", label: "marco aplicable" },
+        ]}
+      />
 
-        <div className="mx-auto max-w-[760px] px-7 py-14">
-          <p className="text-[17px] leading-relaxed text-slate-700">{page.intro}</p>
-          <div className="mt-10 space-y-8">
-            {page.sections.map((s) => (
-              <section key={s.h}>
-                <h2 className="font-display text-[19px] font-bold text-ink">{s.h}</h2>
-                <p className="mt-2 text-[15.5px] leading-[1.7] text-slate-600">{s.p}</p>
+      <InternalSection tone="soft">
+        <article className="mx-auto max-w-[820px] rounded-lg border border-slate-200 bg-white p-7 shadow-sm md:p-10">
+          <div className="space-y-8">
+            {page.sections.map((section) => (
+              <section key={section.h}>
+                <h2 className="font-display text-[20px] font-extrabold text-[#11142a]">{section.h}</h2>
+                <p className="mt-3 text-[15.5px] leading-[1.75] text-slate-600">{section.p}</p>
               </section>
             ))}
           </div>
-        </div>
-      </main>
-      <Footer />
-    </>
+        </article>
+      </InternalSection>
+    </InternalPageShell>
   );
 }

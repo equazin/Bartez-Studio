@@ -1,455 +1,142 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
+import { ArrowRight, CheckCircle2, MessageCircle, Package } from "lucide-react";
 import {
-  CheckCircle2,
-  ExternalLink,
-  Laptop,
-  Network,
-  Package,
-  Server,
-  Shield,
-  Cpu,
-  HardDrive,
-  Monitor,
-  MessageCircle,
-  Cloud,
-} from "lucide-react";
-import { Navbar } from "../../components/Navbar";
-import { Footer } from "../../components/Footer";
+  InternalCta,
+  InternalFeatureGrid,
+  InternalHero,
+  InternalPageShell,
+  InternalSection,
+} from "@/components/InternalPage";
 import { whatsappLinks } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
-  title: "Marcas que trabajamos — Bartez Tecnología",
+  title: "Marcas que trabajamos - Bartez Tecnología",
   description:
-    "Conocé las marcas de tecnología que trabajamos para empresas, organismos y revendedores: Dell, Lenovo, HP, Cisco, Intel, AMD, Kingston y más.",
+    "Conoce las marcas de tecnología que trabajamos para empresas, organismos y revendedores: Dell, Lenovo, HP, Cisco, Intel, AMD, Kingston y más.",
 };
 
 const brands = [
-  {
-    name: "Dell",
-    logo: "/logos/dell.png",
-    category: "Servidores · Notebooks · Workstations · Storage",
-    description:
-      "Distribuimos toda la línea de Dell para el mercado corporativo: servidores PowerEdge, notebooks Latitude y Vostro para empresas, workstations Precision y storage PowerVault.",
-    products: [
-      { icon: Server, label: "Servidores PowerEdge" },
-      { icon: Laptop, label: "Notebooks Latitude / Vostro" },
-      { icon: Monitor, label: "Workstations Precision" },
-      { icon: HardDrive, label: "Storage PowerVault / EMC" },
-    ],
-    accent: "text-blue-500",
-  },
-  {
-    name: "Lenovo",
-    logo: "/logos/lenovo.png",
-    category: "Notebooks · PCs · Servidores",
-    description:
-      "Portfolio completo Lenovo para empresas: notebooks ThinkPad (la línea más confiable del mercado corporativo), ThinkCentre para escritorio y servidores ThinkSystem.",
-    products: [
-      { icon: Laptop, label: "ThinkPad / IdeaPad" },
-      { icon: Monitor, label: "ThinkCentre / ThinkStation" },
-      { icon: Server, label: "ThinkSystem / ThinkAgile" },
-      { icon: Package, label: "Periféricos y accesorios" },
-    ],
-    accent: "text-red-500",
-  },
-  {
-    name: "HP",
-    logo: "/logos/hp.png",
-    category: "Notebooks · PCs · Impresoras · Servidores",
-    description:
-      "HP cubre todos los segmentos: ProBook y EliteBook para empresas, ProDesk para escritorio corporativo y ProLiant para servidores. Además impresoras LaserJet para oficina.",
-    products: [
-      { icon: Laptop, label: "ProBook / EliteBook" },
-      { icon: Monitor, label: "ProDesk / EliteDesk" },
-      { icon: Server, label: "ProLiant (HPE)" },
-      { icon: Package, label: "Impresoras LaserJet" },
-    ],
-    accent: "text-sky-500",
-  },
-  {
-    name: "Hewlett Packard Enterprise",
-    logo: "/logos/hpe.png",
-    category: "Servidores · Almacenamiento · Networking",
-    description:
-      "Soluciones empresariales avanzadas de Hewlett Packard Enterprise. Distribuimos servidores ProLiant Gen11, soluciones de almacenamiento modular Alletra y equipamiento de misión crítica.",
-    products: [
-      { icon: Server, label: "Servidores HPE ProLiant" },
-      { icon: HardDrive, label: "Almacenamiento Alletra" },
-      { icon: Network, label: "Switches y conectividad" },
-      { icon: Package, label: "Soporte HPE Pointnext" },
-    ],
-    accent: "text-emerald-500",
-  },
-  {
-    name: "Cisco",
-    logo: "/logos/cisco.png",
-    category: "Switches · Routers · Firewalls · WiFi",
-    description:
-      "Líderes mundiales en networking. Distribuimos switches Catalyst y Meraki, routers, firewalls Firepower/ASA y access points WiFi 6 para redes empresariales de cualquier escala.",
-    products: [
-      { icon: Network, label: "Switches Catalyst / Meraki" },
-      { icon: Shield, label: "Firewalls Firepower / ASA" },
-      { icon: Network, label: "Routers empresariales" },
-      { icon: Network, label: "Access Points WiFi 6" },
-    ],
-    accent: "text-teal-500",
-  },
-  {
-    name: "Aruba",
-    logo: "/logos/aruba.png",
-    category: "Networking · WiFi corporativo · Switches",
-    description:
-      "Conectividad inteligente y segura para empresas de Aruba Networks (HPE). Switches Instant On, access points WiFi 6 administrables en la nube y soluciones SD-WAN.",
-    products: [
-      { icon: Network, label: "Switches Instant On" },
-      { icon: Network, label: "Access Points WiFi 6" },
-      { icon: Shield, label: "Seguridad y control ClearPass" },
-      { icon: Cloud, label: "Gestión Aruba Central" },
-    ],
-    accent: "text-orange-500",
-  },
-  {
-    name: "APC",
-    logo: "/logos/apc.svg",
-    category: "Energía · UPS · Racks · Distribución",
-    description:
-      "Sistemas de energía ininterrumpida y protección eléctrica APC by Schneider Electric. UPS Smart-UPS monofásicas y trifásicas, racks NetShelter y PDUs para datacenters.",
-    products: [
-      { icon: Cpu, label: "Smart-UPS Monofásicas" },
-      { icon: Server, label: "Sistemas trifásicos Symmetra" },
-      { icon: Package, label: "Racks y gabinetes" },
-      { icon: HardDrive, label: "PDUs de distribución" },
-    ],
-    accent: "text-emerald-500",
-  },
-  {
-    name: "Lyonn",
-    logo: "/logos/lyonn.png",
-    category: "Protección de energía · UPS · Estabilizadores",
-    description:
-      "Soluciones de respaldo y protección eléctrica Lyonn. UPS hogareñas e industriales, estabilizadores de tensión y baterías de reemplazo con excelente relación costo-beneficio.",
-    products: [
-      { icon: Cpu, label: "UPS interactivos (650-2000VA)" },
-      { icon: Server, label: "UPS Online Doble Conversión" },
-      { icon: Package, label: "Estabilizadores de tensión" },
-      { icon: HardDrive, label: "Baterías selladas" },
-    ],
-    accent: "text-blue-500",
-  },
-  {
-    name: "Intel",
-    logo: "/logos/intel.png",
-    category: "Procesadores · NUC · Componentes",
-    description:
-      "Procesadores Intel Core e Intel Xeon para workstations y servidores. Componentes de alta performance para ensamble de PCs y estaciones de trabajo corporativas.",
-    products: [
-      { icon: Cpu, label: "Procesadores Core" },
-      { icon: Cpu, label: "Xeon para servidores" },
-      { icon: Package, label: "Intel NUC" },
-      { icon: Package, label: "Componentes y accesorios" },
-    ],
-    accent: "text-blue-500",
-  },
-  {
-    name: "AMD",
-    logo: "/logos/amd.png",
-    category: "Procesadores · GPUs · Componentes",
-    description:
-      "Procesadores Ryzen para workstations y PCs de alto rendimiento. GPUs Radeon para estaciones gráficas, diseño y renderizado. La alternativa de performance para cada presupuesto.",
-    products: [
-      { icon: Cpu, label: "Ryzen 5 / 7 / 9" },
-      { icon: Cpu, label: "EPYC para servidores" },
-      { icon: Monitor, label: "Radeon GPUs" },
-      { icon: Package, label: "Componentes" },
-    ],
-    accent: "text-orange-500",
-  },
-  {
-    name: "Kingston",
-    logo: "/logos/kingston.png",
-    category: "RAM · SSDs · Memorias Flash",
-    description:
-      "Memorias RAM, SSDs y storage flash para upgrades corporativos. Consultanos compatibilidad, disponibilidad y las condiciones de garantía aplicables a cada línea.",
-    products: [
-      { icon: HardDrive, label: "RAM DDR4 / DDR5" },
-      { icon: HardDrive, label: "SSDs SATA / NVMe" },
-      { icon: Package, label: "Memorias flash USB" },
-      { icon: Package, label: "HyperX Gaming" },
-    ],
-    accent: "text-red-500",
-  },
-  {
-    name: "Microsoft",
-    logo: "/logos/microsoft.svg",
-    category: "Sistemas Operativos · Licenciamiento · Cloud",
-    description:
-      "Soluciones de software y nube de Microsoft. Licenciamiento de Windows Server, Microsoft 365 para empresas, Office Hogar y Empresas, y servicios en la nube Azure.",
-    products: [
-      { icon: Cloud, label: "Microsoft 365" },
-      { icon: Server, label: "Windows Server" },
-      { icon: Package, label: "Licencias Office B2B" },
-      { icon: Cloud, label: "Azure Cloud Services" },
-    ],
-    accent: "text-blue-500",
-  },
-  {
-    name: "ESET",
-    logo: "/logos/eset.svg",
-    category: "Antivirus · Seguridad Endpoint",
-    description:
-      "Protección proactiva contra amenazas informáticas. Licenciamiento de ESET Endpoint Security, antivirus corporativo y administración centralizada en la nube.",
-    products: [
-      { icon: Shield, label: "Endpoint Security" },
-      { icon: Shield, label: "ESET NOD32 Antivirus" },
-      { icon: Cloud, label: "Centralized Admin" },
-      { icon: Laptop, label: "Protección Móvil" },
-    ],
-    accent: "text-teal-500",
-  },
-  {
-    name: "Epson",
-    logo: "/logos/epson.png",
-    category: "Impresión · Proyectores · POS",
-    description:
-      "Equipamiento de impresión y proyección. Impresoras Ecotank para oficina, impresoras térmicas de tickets para punto de venta y proyectores corporativos.",
-    products: [
-      { icon: Package, label: "Impresoras Ecotank" },
-      { icon: Package, label: "Tickets POS (TM-T88)" },
-      { icon: Monitor, label: "Proyectores PowerLite" },
-      { icon: Package, label: "Repuestos y consumibles" },
-    ],
-    accent: "text-sky-500",
-  },
-  {
-    name: "3nStar",
-    logo: "/logos/3nstar.png",
-    category: "Punto de Venta · POS · Lectores",
-    description:
-      "Hardware especializado para punto de venta. Computadoras POS todo en uno, lectores de códigos de barra, cajones de dinero e impresoras de etiquetas.",
-    products: [
-      { icon: Monitor, label: "Computadoras POS" },
-      { icon: Package, label: "Lectores de Barras" },
-      { icon: Package, label: "Impresoras Térmicas" },
-      { icon: Package, label: "Cajones y accesorios" },
-    ],
-    accent: "text-blue-500",
-  },
-  {
-    name: "OCOM",
-    logo: "/logos/ocom.png",
-    category: "Punto de Venta · Impresoras · POS",
-    description:
-      "Equipamiento de hardware para punto de venta de OCOM Technologies. Impresoras de tickets, lectores de código de barras y terminales POS de alta fiabilidad y rendimiento.",
-    products: [
-      { icon: Monitor, label: "Terminales POS" },
-      { icon: Package, label: "Impresoras de Tickets" },
-      { icon: Package, label: "Lectores de Códigos" },
-      { icon: Package, label: "Cajones de Dinero" },
-    ],
-    accent: "text-emerald-500",
-  },
-  {
-    name: "Ubiquiti",
-    logo: "/logos/ubiquiti.png",
-    category: "Networking · WiFi · Videovigilancia",
-    description:
-      "Soluciones de conectividad inalámbrica y redes. Access Points UniFi WiFi 6, switches UniFi, routers EdgeMAX y sistemas de videovigilancia UniFi Protect.",
-    products: [
-      { icon: Network, label: "UniFi Access Points" },
-      { icon: Network, label: "Switches UniFi" },
-      { icon: Network, label: "Gateways EdgeRouter" },
-      { icon: Shield, label: "UniFi Protect (CCTV)" },
-    ],
-    accent: "text-blue-500",
-  },
-  {
-    name: "Vertiv",
-    logo: "/logos/vertiv.png",
-    category: "Energía · Racks · Datacenter",
-    description:
-      "Infraestructura crítica y continuidad operativa. UPS Liebert para servidores, sistemas de refrigeración de precisión, racks SmartCabinet y PDUs inteligentes.",
-    products: [
-      { icon: Cpu, label: "Liebert UPS Monofásica" },
-      { icon: Server, label: "SmartCabinet / Racks" },
-      { icon: Cpu, label: "Sistemas Trifásicos" },
-      { icon: HardDrive, label: "PDUs Inteligentes" },
-    ],
-    accent: "text-orange-500",
-  },
-  {
-    name: "GLC",
-    logo: "/logos/glc.png",
-    category: "Fibra óptica · Cableado · Conectividad",
-    description:
-      "Componentes para redes y cableado estructurado. Cables de red UTP/FTP, fibra óptica, patch panels, organizadores, conectores y racks de pared.",
-    products: [
-      { icon: Network, label: "Bobinas UTP Cat5e/6" },
-      { icon: Network, label: "Cables y Patch Cords" },
-      { icon: Package, label: "Patch Panels / Racks" },
-      { icon: Network, label: "Conectores y fibra" },
-    ],
-    accent: "text-orange-500",
-  },
-  {
-    name: "WD",
-    logo: "/logos/wd.png",
-    category: "Discos Duros · SSDs · Almacenamiento",
-    description:
-      "Discos rígidos y unidades de estado sólido de alta confiabilidad. Discos WD Purple para videovigilancia 24/7, WD Red para NAS y SSDs WD Blue/Gold.",
-    products: [
-      { icon: HardDrive, label: "WD Purple (CCTV)" },
-      { icon: HardDrive, label: "WD Red (para NAS)" },
-      { icon: HardDrive, label: "WD Gold (Server)" },
-      { icon: HardDrive, label: "SSDs NVMe / SATA" },
-    ],
-    accent: "text-blue-500",
-  },
+  { name: "Dell", logo: "/logos/dell.png", category: "Servidores, notebooks, workstations y storage", products: ["PowerEdge", "Latitude", "Precision", "PowerVault"] },
+  { name: "Lenovo", logo: "/logos/lenovo.png", category: "Notebooks, PCs y servidores", products: ["ThinkPad", "ThinkCentre", "ThinkStation", "ThinkSystem"] },
+  { name: "HP", logo: "/logos/hp.png", category: "Notebooks, PCs e impresion", products: ["ProBook", "EliteBook", "ProDesk", "LaserJet"] },
+  { name: "HPE", logo: "/logos/hpe.png", category: "Servidores, storage y networking", products: ["ProLiant", "Alletra", "Aruba", "Pointnext"] },
+  { name: "Cisco", logo: "/logos/cisco.png", category: "Switches, routers, firewalls y WiFi", products: ["Catalyst", "Meraki", "Firepower", "WiFi 6"] },
+  { name: "Aruba", logo: "/logos/aruba.png", category: "Networking y WiFi corporativo", products: ["Instant On", "Access Points", "Switches", "Central"] },
+  { name: "APC", logo: "/logos/apc.svg", category: "Energía, UPS, racks y PDUs", products: ["Smart-UPS", "NetShelter", "PDUs", "Symmetra"] },
+  { name: "Lyonn", logo: "/logos/lyonn.png", category: "UPS y protección eléctrica", products: ["UPS interactivos", "UPS online", "Estabilizadores", "Baterias"] },
+  { name: "Intel", logo: "/logos/intel.png", category: "Procesadores y componentes", products: ["Core", "Xeon", "NUC", "Componentes"] },
+  { name: "AMD", logo: "/logos/amd.png", category: "Procesadores, GPUs y componentes", products: ["Ryzen", "EPYC", "Radeon", "Componentes"] },
+  { name: "Kingston", logo: "/logos/kingston.png", category: "RAM, SSDs y memorias flash", products: ["DDR4", "DDR5", "NVMe", "USB"] },
+  { name: "Microsoft", logo: "/logos/microsoft.svg", category: "Sistemas, licencias y cloud", products: ["Microsoft 365", "Windows Server", "Office", "Azure"] },
+  { name: "ESET", logo: "/logos/eset.svg", category: "Antivirus y seguridad endpoint", products: ["Endpoint", "NOD32", "Cloud admin", "Mobile"] },
+  { name: "Epson", logo: "/logos/epson.png", category: "Impresion, proyectores y POS", products: ["EcoTank", "Laser", "Tickets POS", "PowerLite"] },
+  { name: "3nStar", logo: "/logos/3nstar.png", category: "Punto de venta y lectores", products: ["Terminales POS", "Lectores", "Impresoras", "Cajones"] },
+  { name: "OCOM", logo: "/logos/ocom.png", category: "Hardware POS e impresion", products: ["Terminales", "Tickets", "Lectores", "Accesorios"] },
+  { name: "Ubiquiti", logo: "/logos/ubiquiti.png", category: "WiFi, switching y videovigilancia", products: ["UniFi", "Switches", "Gateways", "Protect"] },
+  { name: "Vertiv", logo: "/logos/vertiv.png", category: "Energía, racks y datacenter", products: ["Liebert", "SmartCabinet", "PDUs", "UPS"] },
+  { name: "GLC", logo: "/logos/glc.png", category: "Fibra optica, cableado y conectividad", products: ["UTP", "Fibra", "Patch panels", "Racks"] },
+  { name: "WD", logo: "/logos/wd.png", category: "Discos, SSDs y almacenamiento", products: ["Purple", "Red", "Gold", "NVMe"] },
 ];
 
 const whyBrands = [
-  { title: "Portfolio para cada necesidad", desc: "Combinamos líneas corporativas, infraestructura, componentes y periféricos." },
-  { title: "Disponibilidad a consultar", desc: "Confirmamos alternativas y plazos al momento de cada cotización." },
-  { title: "Asesoramiento especializado", desc: "Te ayudamos a comparar familias y dimensionar la opción adecuada." },
-  { title: "Condiciones B2B", desc: "Preparamos propuestas por volumen para empresas, organismos y revendedores." },
+  { title: "Portfolio para cada necesidad", description: "Combinamos líneas corporativas, infraestructura, componentes, energía y periféricos." },
+  { title: "Disponibilidad a consultar", description: "Confirmamos alternativas y plazos al momento de cada cotización." },
+  { title: "Asesoramiento especializado", description: "Te ayudamos a comparar familias y dimensionar la opción adecuada." },
+  { title: "Condiciones B2B", description: "Preparamos propuestas por volumen para empresas, organismos y revendedores." },
 ];
 
 export default function MarcasPage() {
   return (
-    <>
-      <Navbar />
-      <main className="bg-[#030c07] text-white pt-20">
-        
-        {/* Hero */}
-        <section className="bg-[#030c07] py-20 md:py-28 relative">
-          <div className="mx-auto max-w-[1200px] px-6">
-            <h1 className="max-w-[700px] font-display text-[clamp(38px,5.5vw,66px)] font-extrabold leading-[0.98] tracking-[-0.05em] text-balance text-white">
-              Marcas que trabajamos para cada proyecto.
-            </h1>
-            <p className="mt-7 max-w-[56ch] text-[clamp(15px,1.4vw,17px)] leading-relaxed text-slate-400">
-              Trabajamos con fabricantes reconocidos en equipamiento, infraestructura, redes y componentes. Consultanos disponibilidad, alternativas y condiciones para tu empresa o canal.
-            </p>
-            <div className="mt-10 flex flex-col gap-3.5 sm:flex-row sm:items-center">
-              <a
-                href={whatsappLinks.quote}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-bold text-ink transition hover:scale-[1.02]"
-              >
-                <MessageCircle size={17} /> Consultar disponibilidad
-              </a>
-              <Link
-                href="/revendedores"
-                className="inline-flex items-center gap-2 rounded-lg border border-white/20 bg-white/5 px-5 py-3.5 text-[14px] font-semibold text-white transition hover:bg-white/10"
-              >
-                Soy revendedor <ExternalLink size={15} />
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* Cómo trabajamos el portfolio */}
-        <section className="bg-[#06140d] border-y border-white/5 py-14">
-          <div className="mx-auto max-w-[1200px] px-6">
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {whyBrands.map((item) => (
-                <div key={item.title} className="flex gap-3 rounded-2xl bg-[#082214] p-5 border border-white/5">
-                  <CheckCircle2 className="mt-0.5 size-5 flex-none text-accent" strokeWidth={1.8} />
-                  <div>
-                    <h3 className="font-display text-[14px] font-bold text-white">{item.title}</h3>
-                    <p className="mt-1 text-[12.5px] leading-relaxed text-slate-400">{item.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Grid de marcas */}
-        <section className="bg-[#030c07] py-20 md:py-28">
-          <div className="mx-auto max-w-[1200px] px-6">
-            <h2 className="font-display text-[clamp(26px,3.5vw,40px)] font-bold tracking-[-0.035em] text-white">
-              Nuestro portfolio de marcas
-            </h2>
-            <p className="mt-3 max-w-[55ch] text-[15px] leading-relaxed text-slate-400">
-              Seleccionamos las marcas líderes en cada categoría para cubrir todos los segmentos y presupuestos.
-            </p>
-
-            <div className="mt-12 grid gap-6 md:grid-cols-2">
-              {brands.map((brand) => (
-                <div
-                  key={brand.name}
-                  className="group rounded-3xl border border-white/5 bg-[#082214] p-8 hover:border-accent/30 transition duration-300 shadow-soft"
-                >
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <span className={`text-[11px] font-bold uppercase tracking-[0.15em] ${brand.accent}`}>
-                        {brand.category}
-                      </span>
-                      <div className="mt-4 h-16 flex items-center grayscale contrast-125 opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:contrast-100 transition-all duration-300">
-                        <Image
-                          src={brand.logo}
-                          alt={brand.name}
-                          width={180}
-                          height={52}
-                          className="h-12 w-auto object-contain object-left"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <p className="mt-5 text-[13.5px] leading-relaxed text-slate-400">
-                    {brand.description}
-                  </p>
-
-                  <div className="mt-5 grid grid-cols-2 gap-2">
-                    {brand.products.map((product) => (
-                      <div key={product.label} className="flex items-center gap-2 rounded-lg bg-white/5 border border-white/10 px-3 py-2">
-                        <product.icon className="size-3.5 flex-none text-accent" strokeWidth={1.6} />
-                        <span className="text-[12px] font-medium text-slate-300">{product.label}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA */}
-        <section className="bg-[#06140d] border-t border-white/5 py-16 text-white">
-          <div className="mx-auto max-w-[1200px] px-6">
-            <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
-              <div>
-                <h2 className="font-display text-[clamp(24px,3vw,36px)] font-bold tracking-[-0.03em] text-white">
-                  ¿Buscás un producto específico?
-                </h2>
-                <p className="mt-3 max-w-[50ch] text-[15px] leading-relaxed text-slate-300">
-                  Consultanos disponibilidad, condiciones y precios. Un especialista te responde en 24 hs hábiles.
-                </p>
+    <InternalPageShell>
+      <InternalHero
+        eyebrow="Portfolio de fabricantes"
+        title={
+          <>
+            Marcas que trabajamos <span className="text-[#1236d8]">para cada proyecto.</span>
+          </>
+        }
+        intro="Trabajamos con fabricantes reconocidos en equipamiento, infraestructura, redes, componentes y punto de venta. Consultanos disponibilidad, alternativas y condiciones para tu empresa o canal."
+        actions={[
+          { label: "Consultar disponibilidad", href: whatsappLinks.quote, external: true, icon: MessageCircle },
+          { label: "Soy revendedor", href: "/revendedores", variant: "secondary", icon: ArrowRight },
+        ]}
+        metrics={[
+          { value: "20+", label: "fabricantes activos" },
+          { value: "B2B", label: "condiciones por volumen" },
+          { value: "IT", label: "portfolio corporativo" },
+        ]}
+      >
+        <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-[0_28px_70px_-46px_rgba(17,20,42,0.42)]">
+          <div className="grid grid-cols-2 gap-px bg-slate-200 sm:grid-cols-3">
+            {brands.slice(0, 9).map((brand) => (
+              <div key={brand.name} className="flex h-28 items-center justify-center bg-white p-5">
+                <Image src={brand.logo} alt={brand.name} width={150} height={52} className="max-h-12 w-auto object-contain" />
               </div>
-              <div className="flex flex-col gap-3 sm:flex-row">
-                <a
-                  href={whatsappLinks.quote}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14.5px] font-bold text-ink transition hover:scale-[1.02]"
-                >
-                  <MessageCircle size={17} /> Pedir cotización
-                </a>
-                <Link
-                  href="/revendedores"
-                  className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/20 bg-white/5 px-6 py-3.5 text-[14.5px] font-semibold text-white transition hover:bg-white/10"
-                >
-                  Canal revendedores
-                </Link>
-              </div>
-            </div>
+            ))}
           </div>
-        </section>
-      </main>
-      <Footer />
-    </>
+          <div className="border-t border-slate-200 bg-[#f7f9fc] p-6">
+            <p className="text-[13px] font-bold text-[#1236d8]">Hardware, software, energía y conectividad</p>
+            <h2 className="mt-2 font-display text-[24px] font-extrabold text-[#11142a]">Selección por categoría, disponibilidad y contexto.</h2>
+            <p className="mt-2 text-[13.5px] leading-relaxed text-slate-600">
+              No empujamos una sola marca. Comparamos alternativas según uso, presupuesto y plazo de entrega.
+            </p>
+          </div>
+        </div>
+      </InternalHero>
+
+      <InternalSection tone="soft" eyebrow="Cómo trabajamos el portfolio" title="La marca se elige despues de entender la necesidad.">
+        <InternalFeatureGrid columns="four" features={whyBrands} />
+      </InternalSection>
+
+      <InternalSection
+        tone="white"
+        eyebrow="Portfolio"
+        title="Fabricantes y líneas que podemos cotizar."
+        intro="Selecciónamos marcas líderes para cubrir segmentos corporativos, infraestructura, energía, punto de venta y componentes."
+      >
+        <div className="grid gap-5 md:grid-cols-2">
+          {brands.map((brand) => (
+            <article
+              key={brand.name}
+              className="group rounded-lg border border-slate-200 bg-white p-6 shadow-[0_18px_50px_-40px_rgba(17,20,42,0.35)] transition hover:-translate-y-0.5 hover:border-blue-200"
+            >
+              <p className="text-[12px] font-bold text-[#1236d8]">{brand.category}</p>
+              <div className="mt-4 flex h-14 items-center">
+                <Image src={brand.logo} alt={brand.name} width={180} height={52} className="h-12 w-auto object-contain object-left" />
+              </div>
+              <div className="mt-5 grid grid-cols-2 gap-2">
+                {brand.products.map((product) => (
+                  <div key={product} className="flex min-w-0 items-center gap-2 rounded-lg border border-slate-200 bg-[#f7f9fc] px-3 py-2">
+                    <Package className="size-3.5 flex-none text-[#1236d8]" strokeWidth={1.7} />
+                    <span className="min-w-0 text-[12px] font-medium leading-snug text-slate-700">{product}</span>
+                  </div>
+                ))}
+              </div>
+            </article>
+          ))}
+        </div>
+      </InternalSection>
+
+      <InternalSection tone="soft" eyebrow="Disponibilidad" title="La cotización se confirma con datos vigentes.">
+        <div className="grid gap-5 md:grid-cols-3">
+          {["Modelos equivalentes cuando no hay stock", "Plazos confirmados al momento de cotizar", "Condiciones por volumen para empresas y canal"].map((item) => (
+            <div key={item} className="flex gap-3 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+              <CheckCircle2 className="mt-0.5 size-5 flex-none text-[#1236d8]" strokeWidth={1.8} />
+              <p className="text-[14px] font-semibold leading-relaxed text-[#11142a]">{item}</p>
+            </div>
+          ))}
+        </div>
+      </InternalSection>
+
+      <InternalCta
+        title="Buscás un producto específico?"
+        intro="Consultanos disponibilidad, condiciones y precios. Un especialista te responde en 24 hs hábiles."
+        actions={[
+          { label: "Pedir cotización", href: whatsappLinks.quote, external: true, icon: MessageCircle },
+          { label: "Canal revendedores", href: "/revendedores", variant: "secondary", icon: ArrowRight },
+        ]}
+      />
+    </InternalPageShell>
   );
 }

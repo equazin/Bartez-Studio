@@ -2,69 +2,104 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, MessageCircle } from "lucide-react";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
+import {
+  InternalCta,
+  InternalHero,
+  InternalPageShell,
+  InternalSection,
+} from "@/components/InternalPage";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
-export const metadata: Metadata = { title: "Catálogo de soluciones IT — Bartez Tecnología", description: "Explorá familias de equipamiento e infraestructura IT y consultá disponibilidad por WhatsApp." };
+export const metadata: Metadata = {
+  title: "Catálogo de soluciones IT - Bartez Tecnología",
+  description: "Explora familias de equipamiento e infraestructura IT y consulta disponibilidad por WhatsApp.",
+};
 
-const families: Array<{
-  title: string;
-  image: string;
-  use: string;
-  brands: string;
-  href: string;
-  imagePosition?: string;
-}> = [
-  { title: "Notebooks corporativas", image: "/photos/products/laptop1.jpg", use: "Administración, ventas, dirección, movilidad y renovación de flotas.", brands: "Dell · Lenovo · HP", href: "/soluciones/notebooks-corporativas" },
-  { title: "PCs y workstations", image: "/photos/products/desktop.jpg", use: "Oficina, diseño, ingeniería, CAD, desarrollo y alto desempeño.", brands: "Dell · Lenovo · HP · Intel · AMD", href: "/configurador" },
-  { title: "BarPOS punto de venta", image: "/photos/products/desktop.jpg", use: "Puesto de venta electrónico completo para comercios, con software, periféricos, implementación y soporte.", brands: "BarPOS · OCOM · Controladora fiscal homologada", href: "/barpos" },
-  { title: "Servidores y almacenamiento", image: "/photos/products/server.jpg", use: "Virtualización, archivos, bases de datos, aplicaciones y continuidad.", brands: "Dell · HPE · Lenovo · Kingston", href: "/soluciones/servidores" },
+const families = [
+  { title: "Notebooks corporativas", image: "/photos/products/laptop1.jpg", use: "Administración, ventas, dirección, movilidad y renovación de flotas.", brands: "Dell, Lenovo, HP", href: "/soluciones/notebooks-corporativas" },
+  { title: "PCs y workstations", image: "/photos/products/desktop.jpg", use: "Oficina, diseño, ingeniería, CAD, desarrollo y alto desempeño.", brands: "Dell, Lenovo, HP, Intel, AMD", href: "/configurador" },
+  { title: "BarPOS punto de venta", image: "/photos/products/desktop.jpg", use: "Puesto de venta electrónico completo para comercios, con software, periféricos, implementación y soporte.", brands: "BarPOS, OCOM, controladora fiscal", href: "/barpos" },
+  { title: "Servidores y almacenamiento", image: "/photos/products/server.jpg", use: "Virtualización, archivos, bases de datos, aplicaciones y continuidad.", brands: "Dell, HPE, Lenovo, Kingston", href: "/soluciones/servidores" },
   { title: "Redes e infraestructura", image: "/photos/products/switch.jpg", use: "Switching, WiFi, routing, segmentación y conectividad multi-sede.", brands: "Cisco y alternativas según proyecto", href: "/soluciones/redes-infraestructura" },
-  { title: "Monitores y periféricos", image: "/photos/products/monitor.jpg", use: "Puestos completos, videollamadas, productividad y ergonomía.", brands: "Líneas corporativas y de uso profesional", href: "/comparador" },
-  { title: "Componentes y upgrades", image: "/photos/products/storage.jpg", use: "Memoria, SSD, almacenamiento, procesadores y ampliaciones.", brands: "Intel · AMD · Kingston y más", href: "/comparador" },
+  { title: "Monitores y periféricos", image: "/photos/products/monitor.jpg", use: "Puestos completos, videollamadas, productividad y ergonomía.", brands: "Líneas corporativas y profesionales", href: "/comparador" },
+  { title: "Componentes y upgrades", image: "/photos/products/storage.jpg", use: "Memoria, SSD, almacenamiento, procesadores y ampliaciones.", brands: "Intel, AMD, Kingston y más", href: "/comparador" },
   { title: "Energía y continuidad", image: "/photos/products/ups.jpg", use: "UPS, protección eléctrica y continuidad para puestos e infraestructura.", brands: "Alternativas según potencia y autonomía", href: "/soluciones/servidores" },
-  { title: "Videovigilancia", image: "/photos/products/cctv.jpg", use: "Cámaras IP, grabación, almacenamiento y monitoreo empresarial.", brands: "Opciones dimensionadas por cobertura y retención", href: "/empresas" },
+  { title: "Videovigilancia", image: "/photos/products/cctv.jpg", use: "Cámaras IP, grabación, almacenamiento y monitoreo empresarial.", brands: "Opciones dimensionadas por cobertura y retención", href: "/soluciones/videovigilancia-cctv" },
 ];
 
 export default function CatalogoPage() {
-  return (
-    <>
-      <Navbar />
-      <main className="bg-[#030c07] pt-20 text-white">
-        <section className="border-b border-white/10 py-20 md:py-28">
-          <div className="mx-auto max-w-[1200px] px-6">
-            <h1 className="max-w-[820px] font-display text-[clamp(40px,6vw,70px)] font-bold leading-[0.98] tracking-[-0.05em]">Catálogo de familias y soluciones IT.</h1>
-            <p className="mt-6 max-w-[66ch] text-[16px] leading-relaxed text-slate-400">Explorá el tipo de solución que necesitás. No publicamos precios ni stock en tiempo real: confirmamos modelos, alternativas y plazos cuando recibimos tu consulta.</p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a href={buildWhatsAppUrl("quote", ["Origen: catálogo web"])} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14px] font-bold text-ink"><MessageCircle size={18} /> Consultar disponibilidad</a>
-              <Link href="/rfq" className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/20 px-6 py-3.5 text-[14px] font-semibold text-white">Ya tengo modelos y cantidades <ArrowRight size={16} /></Link>
-            </div>
-          </div>
-        </section>
+  const whatsappHref = buildWhatsAppUrl("quote", ["Origen: catálogo web"]);
 
-        <section className="py-16 md:py-24">
-          <div className="mx-auto grid max-w-[1200px] gap-6 px-6 md:grid-cols-2">
-            {families.map((family) => (
-              <article key={family.title} className="group overflow-hidden border border-white/10 bg-[#06140d]">
-                <div className="relative aspect-[16/7] overflow-hidden bg-[#082214]">
-                  <Image src={family.image} alt="" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover opacity-75 transition duration-500 group-hover:scale-[1.025] group-hover:opacity-90" style={{ objectPosition: family.imagePosition ?? "center" }} />
+  return (
+    <InternalPageShell>
+      <InternalHero
+        eyebrow="Catálogo de soluciones"
+        title={
+          <>
+            Familias IT para elegir <span className="text-[#1236d8]">por necesidad.</span>
+          </>
+        }
+        intro="Explora el tipo de solución que necesitás. No publicamos precios ni stock en tiempo real: confirmamos modelos, alternativas y plazos cuando recibimos tu consulta."
+        image="/photos/hero-products-combo.png"
+        imageAlt="Equipamiento tecnológico Bartez"
+        imagePriority
+        mediaLabel="Portfolio B2B"
+        mediaTitle="Catálogo orientativo, cotización real."
+        mediaSubtitle="Cada familia puede tener modelos equivalentes según disponibilidad, plazo y uso."
+        mediaItems={[
+          { title: "Familias", description: "Equipos, redes, servidores, POS y energía." },
+          { title: "Alternativas", description: "Marcas y configuraciones equivalentes." },
+          { title: "Consulta", description: "Respuesta comercial con stock vigente." },
+        ]}
+        metrics={[
+          { value: "9", label: "familias principales" },
+          { value: "B2B", label: "catálogo corporativo" },
+          { value: "24 hs", label: "respuesta inicial" },
+        ]}
+        actions={[
+          { label: "Consultar disponibilidad", href: whatsappHref, external: true, icon: MessageCircle },
+          { label: "Ya tengo modelos", href: "/rfq", variant: "secondary", icon: ArrowRight },
+        ]}
+      />
+
+      <InternalSection
+        tone="soft"
+        eyebrow="Categorías"
+        title="Explora por tipo de solución."
+        intro="Usá estas familias como punto de partida. Después confirmamos modelos, equivalencias y plazos."
+      >
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {families.map((family) => (
+            <article key={family.title} className="group overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200">
+              <div className="relative aspect-[16/8] overflow-hidden bg-slate-100">
+                <Image src={family.image} alt={family.title} fill sizes="(max-width: 1024px) 100vw, 33vw" className="object-cover transition duration-500 group-hover:scale-[1.03]" />
+              </div>
+              <div className="p-6">
+                <h2 className="font-display text-[20px] font-extrabold text-[#11142a]">{family.title}</h2>
+                <p className="mt-3 text-[13.5px] leading-relaxed text-slate-600">{family.use}</p>
+                <p className="mt-4 text-[12px] font-bold text-slate-500">{family.brands}</p>
+                <div className="mt-5 flex items-center justify-between gap-3 border-t border-slate-200 pt-4">
+                  <Link href={family.href} className="inline-flex items-center gap-1.5 text-[13px] font-bold text-[#1236d8]">
+                    Ver opciones <ArrowRight size={15} />
+                  </Link>
+                  <a href={buildWhatsAppUrl("quote", [`Familia de interés: ${family.title}`])} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-[13px] font-bold text-[#11142a]">
+                    <MessageCircle size={15} /> Consultar
+                  </a>
                 </div>
-                <div className="p-6 md:p-7">
-                  <h2 className="font-display text-[22px] font-bold text-white">{family.title}</h2>
-                  <p className="mt-3 text-[13.5px] leading-relaxed text-slate-400">{family.use}</p>
-                  <p className="mt-4 text-[12px] font-semibold text-slate-500">{family.brands}</p>
-                  <div className="mt-6 flex flex-wrap gap-3 border-t border-white/10 pt-5">
-                    <Link href={family.href} className="inline-flex items-center gap-1.5 text-[13px] font-bold text-accent">Ver opciones <ArrowRight size={15} /></Link>
-                    <a href={buildWhatsAppUrl("quote", [`Familia de interés: ${family.title}`])} target="_blank" rel="noopener noreferrer" className="ml-auto inline-flex items-center gap-1.5 text-[13px] font-bold text-white"><MessageCircle size={15} /> Consultar</a>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </>
+              </div>
+            </article>
+          ))}
+        </div>
+      </InternalSection>
+
+      <InternalCta
+        title="¿Tenés una lista de modelos o cantidades?"
+        intro="Enviá el detalle y preparamos una respuesta con disponibilidad, alternativas y plazos."
+        actions={[
+          { label: "Enviar por WhatsApp", href: whatsappHref, external: true, icon: MessageCircle },
+          { label: "Usar RFQ", href: "/rfq", variant: "secondary", icon: ArrowRight },
+        ]}
+      />
+    </InternalPageShell>
   );
 }

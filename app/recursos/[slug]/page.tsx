@@ -1,44 +1,52 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Clock, MessageCircle } from "lucide-react";
-import { getDynamicArticleBySlug } from "../../../lib/db-content";
-import { articles, company } from "../../../constants";
-import { Navbar } from "../../../components/Navbar";
-import { Footer } from "../../../components/Footer";
+import { articles, company } from "@/constants";
+import { getDynamicArticleBySlug } from "@/lib/db-content";
+import {
+  InternalCta,
+  InternalHero,
+  InternalPageShell,
+  InternalSection,
+} from "@/components/InternalPage";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 export const revalidate = 3600;
 
 export function generateStaticParams() {
-  return articles.map((a) => ({ slug: a.slug }));
+  return articles.map((article) => ({ slug: article.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const a = await getDynamicArticleBySlug(slug);
-  if (!a) return {};
+  const article = await getDynamicArticleBySlug(slug);
+  if (!article) return {};
   return {
-    title: `${a.title} | Bartez Tecnología`,
-    description: a.metaDescription,
-    alternates: { canonical: `/recursos/${a.slug}` },
-    openGraph: { title: a.title, description: a.metaDescription, type: "article", url: `${company.url}/recursos/${a.slug}` },
+    title: `${article.title} | Bartez Tecnología`,
+    description: article.metaDescription,
+    alternates: { canonical: `/recursos/${article.slug}` },
+    openGraph: {
+      title: article.title,
+      description: article.metaDescription,
+      type: "article",
+      url: `${company.url}/recursos/${article.slug}`,
+    },
   };
 }
 
 export default async function Articulo({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const a = await getDynamicArticleBySlug(slug);
-  if (!a) notFound();
+  const article = await getDynamicArticleBySlug(slug);
+  if (!article) notFound();
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: a.title,
-    description: a.metaDescription,
-    datePublished: a.date,
-    image: `${company.url}${a.cover}`,
+    headline: article.title,
+    description: article.metaDescription,
+    datePublished: article.date,
+    image: `${company.url}${article.cover}`,
     author: { "@type": "Organization", name: company.name },
     publisher: { "@type": "Organization", name: company.name },
   };
@@ -46,48 +54,63 @@ export default async function Articulo({ params }: { params: Promise<{ slug: str
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <Navbar />
-      <main>
-        <article className="bg-white">
-          <header className="bg-ink pt-32 text-white md:pt-40">
-            <div className="mx-auto max-w-[760px] px-7 pb-14">
-              <Link href="/recursos" className="mb-5 inline-flex items-center gap-1.5 text-[13px] font-medium text-slate-400 hover:text-accent">
-                <ArrowLeft size={15} /> Recursos
-              </Link>
-              <h1 className="font-display text-[clamp(28px,4vw,46px)] font-bold leading-[1.1] tracking-[-0.02em]">{a.title}</h1>
-              <div className="mt-5 flex items-center gap-3 text-[13px] text-slate-400">
-                <span>{new Date(a.date).toLocaleDateString("es-AR", { day: "numeric", month: "long", year: "numeric" })}</span>
-                <span className="flex items-center gap-1"><Clock size={13} /> {a.readingTime}</span>
-              </div>
-            </div>
-          </header>
+      <InternalPageShell>
+        <InternalHero
+          eyebrow="Recurso Bartez"
+          title={article.title}
+          intro={article.metaDescription}
+          image={article.cover}
+          imageAlt={article.title}
+          imagePriority
+          mediaLabel="Guía"
+          mediaTitle="Lectura para ordenar decisiones IT."
+          mediaSubtitle="Usa esta guía como base y despues validamos el alcance real por WhatsApp."
+          mediaItems={[
+            { icon: Clock, title: article.readingTime, description: "Tiempo estimado de lectura." },
+            { title: "Publicado", description: new Date(article.date).toLocaleDateString("es-AR", { day: "numeric", month: "long", year: "numeric" }) },
+            { icon: MessageCircle, title: "Consulta", description: "Convertimos criterio en propuesta." },
+          ]}
+          metrics={[
+            { value: "Guía", label: "recurso" },
+            { value: article.readingTime, label: "lectura" },
+            { value: "B2B", label: "enfoque" },
+          ]}
+          actions={[
+            { label: "Consultar por WhatsApp", href: buildWhatsAppUrl("quote", [`Articulo consultado: ${article.title}`]), external: true, icon: MessageCircle },
+            { label: "Volver a recursos", href: "/recursos", variant: "secondary", icon: ArrowLeft },
+          ]}
+        />
 
-          <div className="mx-auto max-w-[760px] px-7">
-            <div className="relative -mt-8 mb-10 aspect-[16/8] overflow-hidden rounded-2xl ring-1 ring-slate-200">
-              <Image src={a.cover} alt={a.title} fill sizes="760px" className="object-cover" priority />
-            </div>
-
-            <div className="prose-bartez pb-8">
-              {a.body.map((b, i) =>
-                b.h ? (
-                  <h2 key={i} className="mt-9 font-display text-[22px] font-bold text-ink">{b.h}</h2>
+        <InternalSection tone="soft">
+          <article className="mx-auto max-w-[820px] rounded-lg border border-slate-200 bg-white p-7 shadow-sm md:p-10">
+            <Link href="/recursos" className="mb-8 inline-flex items-center gap-1.5 text-[13px] font-bold text-[#1236d8] hover:underline">
+              <ArrowLeft size={15} /> Recursos
+            </Link>
+            <div>
+              {article.body.map((block, index) =>
+                block.h ? (
+                  <h2 key={index} className="mt-9 font-display text-[24px] font-extrabold text-[#11142a] first:mt-0">
+                    {block.h}
+                  </h2>
                 ) : (
-                  <p key={i} className="mt-4 text-[16.5px] leading-[1.75] text-slate-700">{b.p}</p>
+                  <p key={index} className="mt-4 text-[16.5px] leading-[1.75] text-slate-700">
+                    {block.p}
+                  </p>
                 )
               )}
             </div>
+          </article>
+        </InternalSection>
 
-            <div className="my-12 rounded-2xl border border-slate-200 bg-slate-50 p-7 text-center">
-              <h3 className="font-display text-[20px] font-bold text-ink">¿Querés evaluar este escenario?</h3>
-              <p className="mt-2 text-[15px] text-slate-600">Contanos tu contexto y un especialista te ayuda a definir el alcance.</p>
-              <a href={buildWhatsAppUrl("quote", [`Artículo consultado: ${a.title}`])} target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex items-center gap-2 rounded-full bg-brand px-7 py-3.5 text-[15px] font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-brand-bright hover:shadow-glow">
-                <MessageCircle size={18} /> Consultar por WhatsApp
-              </a>
-            </div>
-          </div>
-        </article>
-      </main>
-      <Footer />
+        <InternalCta
+          title="Querés evaluar este escenario?"
+          intro="Contaños tu contexto y un especialista te ayuda a definir el alcance."
+          actions={[
+            { label: "Consultar por WhatsApp", href: buildWhatsAppUrl("quote", [`Articulo consultado: ${article.title}`]), external: true, icon: MessageCircle },
+            { label: "Ver soluciones", href: "/soluciones/servidores", variant: "secondary", icon: ArrowLeft },
+          ]}
+        />
+      </InternalPageShell>
     </>
   );
 }

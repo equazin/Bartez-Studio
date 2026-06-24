@@ -1,8 +1,13 @@
 import type { LucideIcon } from "lucide-react";
 import { ArrowRight, CheckCircle2, MessageCircle } from "lucide-react";
-import Link from "next/link";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
+import {
+  InternalChecklist,
+  InternalCta,
+  InternalFeatureGrid,
+  InternalHero,
+  InternalPageShell,
+  InternalSection,
+} from "@/components/InternalPage";
 import { buildWhatsAppUrl, type WhatsAppIntent } from "@/lib/whatsapp";
 
 type CommercialItem = {
@@ -21,7 +26,104 @@ type CommercialLandingProps = {
   whatsappDetails?: string[];
   note?: string;
   secondary?: { label: string; href: string };
+  eyebrow?: string;
+  image?: string;
+  imageAlt?: string;
 };
+
+const defaultProfile = {
+  eyebrow: "Soluciones Bartez",
+  image: "/photos/hero-products-combo.png",
+  mediaTitle: "Una propuesta preparada con contexto real.",
+  mediaSubtitle: "Relevamos necesidad, alcance y restricciones antes de cotizar.",
+  label: "B2B",
+};
+
+function getProfile(title: string, intent: WhatsAppIntent) {
+  const text = title.toLowerCase();
+
+  if (text.includes("ciberseguridad")) {
+    return {
+      eyebrow: "Seguridad IT",
+      image: "/photos/products/router.jpg",
+      mediaTitle: "Proteccion por capas, sin sobredimensionar.",
+      mediaSubtitle: "Ordenamos prioridades: acceso, red, endpoints, backup y continuidad.",
+      label: "Riesgo controlado",
+    };
+  }
+
+  if (text.includes("cloud") || text.includes("licenciamiento")) {
+    return {
+      eyebrow: "Cloud y software",
+      image: "/photos/office.jpg",
+      mediaTitle: "Licencias y servicios alíneados a usuarios reales.",
+      mediaSubtitle: "Evaluamos renovaciones, cuentas, backups y productividad.",
+      label: "Licencias B2B",
+    };
+  }
+
+  if (text.includes("soporte") || text.includes("administrados")) {
+    return {
+      eyebrow: "Servicios IT",
+      image: "/photos/engineer.jpg",
+      mediaTitle: "Acompañamiento técnico con alcance documentado.",
+      mediaSubtitle: "Definimos niveles de atencion segun criticidad, sedes y equipos.",
+      label: "Operaciones",
+    };
+  }
+
+  if (text.includes("renting") || text.includes("leasing") || text.includes("renovacion")) {
+    return {
+      eyebrow: "Financiacion tecnológica",
+      image: "/photos/products/laptop2.jpg",
+      mediaTitle: "Renovar tecnología con impacto financiero claro.",
+      mediaSubtitle: "Comparamos alternativas comerciales segun monto, plazo y disponibilidad.",
+      label: "Renovacion",
+    };
+  }
+
+  if (text.includes("logistica") || text.includes("cobertura")) {
+    return {
+      eyebrow: "Cobertura nacional",
+      image: "/photos/products/storage.jpg",
+      mediaTitle: "Entregas coordinadas para una o varias sedes.",
+      mediaSubtitle: "Validamos destino, urgencia, volumen y modalidad de entrega.",
+      label: "ARG",
+    };
+  }
+
+  if (text.includes("industriales") || text.includes("industria")) {
+    return {
+      eyebrow: "Entornos industriales",
+      image: "/photos/datacenter.jpg",
+      mediaTitle: "Infraestructura para planta, oficina y operaciones.",
+      mediaSubtitle: "Priorizamos continuidad, conectividad y equipos adecuados al uso.",
+      label: "Planta + oficina",
+    };
+  }
+
+  if (text.includes("salud")) {
+    return {
+      eyebrow: "Organizaciones de salud",
+      image: "/photos/products/monitor.jpg",
+      mediaTitle: "Puestos, conectividad y continuidad para sedes criticas.",
+      mediaSubtitle: "Dimensionamos segun usuarios, areas administrativas y servicios internos.",
+      label: "Continuidad",
+    };
+  }
+
+  if (text.includes("pago") || intent === "quote") {
+    return {
+      eyebrow: "Condiciones comerciales",
+      image: "/photos/products/desktop.jpg",
+      mediaTitle: "Cada operación se evalua con información vigente.",
+      mediaSubtitle: "Confirmamos disponibilidad, alternativas y condiciones al cotizar.",
+      label: "Cotización",
+    };
+  }
+
+  return defaultProfile;
+}
 
 export function CommercialLanding({
   title,
@@ -33,53 +135,78 @@ export function CommercialLanding({
   whatsappDetails = [],
   note,
   secondary,
+  eyebrow,
+  image,
+  imageAlt,
 }: CommercialLandingProps) {
   const whatsappHref = buildWhatsAppUrl(intent, whatsappDetails);
+  const profile = getProfile(title, intent);
+  const heroItems = items.slice(0, 3).map((item) => ({
+    icon: item.icon,
+    title: item.title,
+    description: item.description,
+  }));
 
   return (
-    <>
-      <Navbar />
-      <main className="bg-[#030c07] pt-20 text-white">
-        <section className="border-b border-white/10 py-20 md:py-28">
-          <div className="mx-auto max-w-[1200px] px-6">
-            <h1 className="max-w-[900px] font-display text-[clamp(40px,6vw,72px)] font-bold leading-[0.98] tracking-[-0.052em] text-balance">{title}</h1>
-            <p className="mt-7 max-w-[65ch] text-[clamp(16px,1.5vw,18px)] leading-relaxed text-slate-400">{intro}</p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-[14px] font-bold text-ink transition hover:scale-[1.02]">
-                <MessageCircle size={18} /> {ctaLabel}
-              </a>
-              {secondary ? <Link href={secondary.href} className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/20 px-6 py-3.5 text-[14px] font-semibold text-white transition hover:border-accent hover:text-accent">{secondary.label} <ArrowRight size={16} /></Link> : null}
-            </div>
-          </div>
-        </section>
+    <InternalPageShell>
+      <InternalHero
+        eyebrow={eyebrow ?? profile.eyebrow}
+        title={title}
+        intro={intro}
+        image={image ?? profile.image}
+        imageAlt={imageAlt ?? title}
+        imagePriority
+        mediaLabel={profile.label}
+        mediaTitle={profile.mediaTitle}
+        mediaSubtitle={profile.mediaSubtitle}
+        mediaItems={heroItems}
+        actions={[
+          { label: ctaLabel, href: whatsappHref, external: true, icon: MessageCircle },
+          ...(secondary ? [{ label: secondary.label, href: secondary.href, variant: "secondary" as const, icon: ArrowRight }] : []),
+        ]}
+        metrics={[
+          { value: "24 hs", label: "respuesta inicial" },
+          { value: "B2B", label: "condiciones comerciales" },
+          { value: "ARG", label: "cobertura nacional" },
+        ]}
+      />
 
-        <section className="bg-[#06140d] py-16 md:py-20">
-          <div className="mx-auto grid max-w-[1200px] gap-px border border-white/10 bg-white/10 px-0 sm:grid-cols-2 lg:grid-cols-3">
-            {items.map((item) => (
-              <article key={item.title} className="bg-[#06140d] p-7 md:p-8">
-                <item.icon className="text-accent" size={26} strokeWidth={1.6} />
-                <h2 className="mt-5 font-display text-[18px] font-bold text-white">{item.title}</h2>
-                <p className="mt-3 text-[13.5px] leading-relaxed text-slate-400">{item.description}</p>
-              </article>
-            ))}
-          </div>
-        </section>
+      <InternalSection
+        tone="soft"
+        eyebrow="Alcance de trabajo"
+        title="Una solución definida por necesidad, no por catalogo."
+        intro="Cada consulta se ordena con información técnica y comercial para llegar a una propuesta concreta."
+      >
+        <InternalFeatureGrid features={items} />
+      </InternalSection>
 
-        <section className="border-t border-white/5 py-16 md:py-20">
-          <div className="mx-auto grid max-w-[1200px] gap-10 px-6 lg:grid-cols-[0.8fr_1.2fr]">
-            <h2 className="font-display text-[clamp(28px,4vw,46px)] font-bold leading-[1.04] tracking-[-0.04em]">Una propuesta definida con información real.</h2>
-            <div className="border-t border-white/10">
-              {proof.map((item) => (
-                <div key={item} className="flex gap-3 border-b border-white/10 py-4 text-[14px] leading-relaxed text-slate-300">
-                  <CheckCircle2 className="mt-0.5 flex-none text-accent" size={18} /> {item}
-                </div>
-              ))}
-              {note ? <p className="mt-5 text-[12.5px] leading-relaxed text-slate-500">{note}</p> : null}
-            </div>
+      <InternalSection
+        tone="white"
+        eyebrow="Criterios de propuesta"
+        title="Antes de cotizar, validamos lo que puede cambiar el resultado."
+        intro="La diferencia no esta solo en el producto: esta en elegirlo con datos de operación, plazos y condiciones reales."
+      >
+        <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+          <div className="rounded-lg border border-slate-200 bg-[#f7f9fc] p-6">
+            <CheckCircle2 className="size-7 text-[#1236d8]" strokeWidth={1.7} />
+            <h3 className="mt-5 font-display text-[22px] font-extrabold text-[#11142a]">Propuesta con respaldo</h3>
+            <p className="mt-3 text-[14px] leading-relaxed text-slate-600">
+              No publicamos precios o promesas genéricas. Confirmamos el alcance según disponibilidad, marcas posibles y condiciones vigentes.
+            </p>
+            {note ? <p className="mt-4 border-t border-slate-200 pt-4 text-[12.5px] leading-relaxed text-slate-500">{note}</p> : null}
           </div>
-        </section>
-      </main>
-      <Footer />
-    </>
+          <InternalChecklist items={proof} columns="two" />
+        </div>
+      </InternalSection>
+
+      <InternalCta
+        title="Hablemos de tu operación y armamos el siguiente paso."
+        intro="Contaños qué necesitás resolver, con que plazo y en que escala. Un especialista te responde por WhatsApp."
+        actions={[
+          { label: ctaLabel, href: whatsappHref, external: true, icon: MessageCircle },
+          { label: "Ver marcas", href: "/marcas", variant: "secondary", icon: ArrowRight },
+        ]}
+      />
+    </InternalPageShell>
   );
 }
