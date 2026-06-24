@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bartez - Mockup redistribucion navbar</title>
+<style>
+  :root {
+    --ink: #11142a;
+    --nav: #04060d;
+    --panel: #0c1020;
+    --line: rgba(255, 255, 255, 0.1);
+    --muted: #9aa4b8;
+    --soft: #f7f9fc;
+    --blue: #8fb5ff;
+    --brand: #1236d8;
+    --orange: #ff8f1f;
+    --orange-2: #ffb000;
+    --green: #15d66f;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    background: #ffffff;
+    color: var(--ink);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .frame {
+    min-height: 100vh;
+    background:
+      linear-gradient(180deg, rgba(18, 54, 216, 0.07), transparent 360px),
+      #ffffff;
+  }
+
+  .note {
+    border-bottom: 1px solid #dce4f1;
+    background: #f8fafc;
+    color: #42526b;
+    font-size: 13px;
+    font-weight: 650;
+    line-height: 1.45;
+    padding: 12px 24px;
+    text-align: center;
+  }
+
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-bottom: 1px solid var(--line);
+    background: var(--nav);
+    color: white;
+    box-shadow: 0 18px 45px -30px rgba(15, 23, 42, 0.9);
+  }
+
+  .nav-inner {
+    align-items: center;
+    display: flex;
+    gap: 22px;
+    height: 74px;
+    justify-content: space-between;
+    margin: 0 auto;
+    max-width: 1320px;
+    padding: 0 28px;
+  }
+
+  .logo {
+    align-items: center;
+    display: flex;
+    flex: 0 0 auto;
+  }
+
+  .logo img {
+    display: block;
+    height: 40px;
+    width: auto;
+  }
+
+  .nav-links {
+    align-items: center;
+    display: flex;
+    gap: 18px;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  .nav-link {
+    align-items: center;
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.88);
+    display: inline-flex;
+    gap: 6px;
+    font-size: 13.5px;
+    font-weight: 800;
+    line-height: 1;
+    min-height: 38px;
+    padding: 0 4px;
+    transition: color 0.18s ease, background 0.18s ease;
+    white-space: nowrap;
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    color: var(--blue);
+  }
+
+  .barpos-link {
+    border: 1px solid rgba(255, 143, 31, 0.42);
+    background: rgba(255, 143, 31, 0.1);
+    color: #fff;
+    padding: 0 13px;
+  }
+
+  .barpos-link .dot {
+    background: var(--orange);
+    border-radius: 999px;
+    box-shadow: 0 0 0 4px rgba(255, 143, 31, 0.14);
+    display: inline-block;
+    height: 7px;
+    width: 7px;
+  }
+
+  .barpos-link:hover {
+    background: rgba(255, 143, 31, 0.18);
+    color: #fff;
+  }
+
+  .quote {
+    align-items: center;
+    background: linear-gradient(90deg, #ff7a18, var(--orange), var(--orange-2));
+    border-radius: 12px;
+    box-shadow: 0 18px 38px -18px rgba(255, 122, 24, 0.9);
+    color: #fff;
+    display: inline-flex;
+    flex: 0 0 auto;
+    font-size: 13.5px;
+    font-weight: 900;
+    gap: 9px;
+    min-height: 44px;
+    padding: 0 19px;
+    white-space: nowrap;
+  }
+
+  .mock-area {
+    margin: 0 auto;
+    max-width: 1320px;
+    padding: 34px 28px 90px;
+  }
+
+  .mock-title {
+    align-items: end;
+    display: flex;
+    gap: 22px;
+    justify-content: space-between;
+    margin: 32px 0 22px;
+  }
+
+  .mock-title h1 {
+    font-size: clamp(34px, 4vw, 58px);
+    letter-spacing: -0.055em;
+    line-height: 0.98;
+    margin: 0;
+    max-width: 680px;
+  }
+
+  .mock-title p {
+    color: #526078;
+    font-size: 15px;
+    line-height: 1.55;
+    margin: 0;
+    max-width: 420px;
+  }
+
+  .menu-stage {
+    min-height: 332px;
+    position: relative;
+  }
+
+  .mega {
+    background: var(--panel);
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-radius: 16px;
+    box-shadow: 0 26px 70px -34px rgba(15, 23, 42, 0.96);
+    color: white;
+    margin: 0 auto;
+    max-width: 820px;
+    padding: 18px;
+  }
+
+  .mega-header {
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+    margin: -2px 0 14px;
+    padding: 0 2px 14px;
+  }
+
+  .mega-header strong {
+    font-size: 13.5px;
+  }
+
+  .mega-header span {
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 650;
+  }
+
+  .mega-grid {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: 1.2fr 1fr 1fr;
+  }
+
+  .feature {
+    background:
+      radial-gradient(circle at 24px 20px, rgba(255, 143, 31, 0.23), transparent 34px),
+      linear-gradient(145deg, rgba(255, 143, 31, 0.16), rgba(18, 54, 216, 0.14));
+    border: 1px solid rgba(255, 143, 31, 0.24);
+    border-radius: 14px;
+    min-height: 188px;
+    padding: 18px;
+  }
+
+  .feature .chip {
+    color: #ffd38b;
+    font-size: 11px;
+    font-weight: 850;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .feature h2 {
+    font-size: 21px;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+    margin: 18px 0 9px;
+  }
+
+  .feature p {
+    color: #c6cfdf;
+    font-size: 13px;
+    line-height: 1.45;
+    margin: 0 0 18px;
+  }
+
+  .feature a {
+    align-items: center;
+    color: white;
+    display: inline-flex;
+    font-size: 13px;
+    font-weight: 850;
+    gap: 8px;
+  }
+
+  .link-group {
+    border-radius: 14px;
+    padding: 8px;
+  }
+
+  .link-group h3 {
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.11em;
+    margin: 4px 8px 8px;
+    text-transform: uppercase;
+  }
+
+  .link-group a {
+    border-radius: 10px;
+    color: #cbd5e1;
+    display: block;
+    font-size: 13px;
+    font-weight: 720;
+    padding: 10px 8px;
+  }
+
+  .link-group a:hover {
+    background: rgba(255, 255, 255, 0.055);
+    color: var(--blue);
+  }
+
+  .b2b {
+    margin-top: 22px;
+    max-width: 580px;
+  }
+
+  .b2b .mega-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .card-link {
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 14px;
+    min-height: 128px;
+    padding: 17px;
+  }
+
+  .card-link h3 {
+    font-size: 16px;
+    letter-spacing: -0.025em;
+    margin: 0 0 8px;
+  }
+
+  .card-link p {
+    color: #aeb8ca;
+    font-size: 13px;
+    line-height: 1.45;
+    margin: 0;
+  }
+
+  .ia {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-top: 32px;
+  }
+
+  .ia-box {
+    background: #fff;
+    border: 1px solid #dce4f1;
+    border-radius: 14px;
+    box-shadow: 0 16px 40px -28px rgba(18, 54, 216, 0.35);
+    padding: 18px;
+  }
+
+  .ia-box strong {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+
+  .ia-box ul {
+    color: #536077;
+    font-size: 13.5px;
+    line-height: 1.65;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .mobile-mock {
+    background: var(--nav);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 22px;
+    color: white;
+    margin: 42px auto 0;
+    max-width: 430px;
+    overflow: hidden;
+    box-shadow: 0 26px 70px -36px rgba(15, 23, 42, 0.9);
+  }
+
+  .mobile-head {
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    height: 72px;
+    justify-content: space-between;
+    padding: 0 18px;
+  }
+
+  .mobile-head img {
+    height: 38px;
+    width: auto;
+  }
+
+  .hamb {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    display: grid;
+    height: 40px;
+    place-items: center;
+    width: 40px;
+  }
+
+  .mobile-body {
+    padding: 18px;
+  }
+
+  .mobile-primary {
+    align-items: center;
+    background: rgba(255, 143, 31, 0.13);
+    border: 1px solid rgba(255, 143, 31, 0.28);
+    border-radius: 14px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    padding: 15px;
+  }
+
+  .mobile-section {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 14px 0;
+  }
+
+  .mobile-section span {
+    color: #6f7b92;
+    display: block;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.13em;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .mobile-section a {
+    color: #d7deeb;
+    display: block;
+    font-size: 14px;
+    font-weight: 760;
+    padding: 8px 0;
+  }
+
+  @media (max-width: 980px) {
+    .nav-links,
+    .quote {
+      display: none;
+    }
+
+    .mock-title {
+      align-items: start;
+      flex-direction: column;
+    }
+
+    .mega-grid,
+    .b2b .mega-grid,
+    .ia {
+      grid-template-columns: 1fr;
+    }
+
+    .mega {
+      max-width: none;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="note">
+    Mockup de distribuci&oacute;n: se elimina el acceso visible a Productos / Cat&aacute;logo, BarPOS queda como opci&oacute;n propia, y Empresas + Revendedores pasan a una sola entrada.
+  </div>
+
+  <header class="navbar">
+    <div class="nav-inner">
+      <a class="logo" href="#"><img src="../public/brand/bartez-logo.png" alt="Bartez Tecnologia" /></a>
+      <nav class="nav-links" aria-label="Navegacion propuesta">
+        <a class="nav-link barpos-link" href="#"><span class="dot"></span> BarPOS</a>
+        <a class="nav-link active" href="#">Soluciones <span>&#8964;</span></a>
+        <a class="nav-link" href="#">Canal B2B <span>&#8964;</span></a>
+        <a class="nav-link" href="#">Marcas</a>
+        <a class="nav-link" href="#">Nosotros</a>
+        <a class="nav-link" href="#">Contacto</a>
+      </nav>
+      <a class="quote" href="#">&#9675; Cotizar por WhatsApp</a>
+    </div>
+  </header>
+
+  <main class="mock-area">
+    <section class="mock-title">
+      <h1>Navbar m&aacute;s corto, con BarPOS destacado.</h1>
+      <p>
+        La idea es que el primer nivel tenga menos decisiones. El cat&aacute;logo queda sin acceso desde el navbar, pero la ruta puede seguir viva como p&aacute;gina fantasma.
+      </p>
+    </section>
+
+    <section class="menu-stage" aria-label="Mockup desktop">
+      <div class="mega">
+        <div class="mega-header">
+          <strong>Soluciones</strong>
+          <span>Desplegable agrupado, no una lista larga plana</span>
+        </div>
+
+        <div class="mega-grid">
+          <article class="feature">
+            <span class="chip">Acceso destacado</span>
+            <h2>BarPOS punto de venta</h2>
+            <p>Queda fuera de este men&uacute; como opci&oacute;n principal del navbar. Ac&aacute; se puede reforzar con un acceso contextual.</p>
+            <a href="#">Ver landing BarPOS &rarr;</a>
+          </article>
+
+          <div class="link-group">
+            <h3>Infraestructura</h3>
+            <a href="#">Servidores y storage</a>
+            <a href="#">Redes e infraestructura</a>
+            <a href="#">Ciberseguridad</a>
+            <a href="#">Cloud y licenciamiento</a>
+          </div>
+
+          <div class="link-group">
+            <h3>Equipamiento</h3>
+            <a href="#">Notebooks corporativas</a>
+            <a href="#">Soporte corporativo</a>
+            <a href="#">Servicios administrados</a>
+            <a href="#">Renting y leasing</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="mega b2b">
+        <div class="mega-header">
+          <strong>Canal B2B</strong>
+          <span>Una sola opci&oacute;n para Empresas y Revendedores</span>
+        </div>
+
+        <div class="mega-grid">
+          <a class="card-link" href="#">
+            <h3>Empresas</h3>
+            <p>Compras corporativas, proyectos IT, infraestructura y cuentas B2B.</p>
+          </a>
+          <a class="card-link" href="#">
+            <h3>Revendedores</h3>
+            <p>Canal mayorista, condiciones comerciales y distribuci&oacute;n.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="ia" aria-label="Resumen de arquitectura">
+      <div class="ia-box">
+        <strong>Primer nivel</strong>
+        <ul>
+          <li>BarPOS</li>
+          <li>Soluciones</li>
+          <li>Canal B2B</li>
+          <li>Marcas</li>
+          <li>Nosotros</li>
+          <li>Contacto</li>
+        </ul>
+      </div>
+      <div class="ia-box">
+        <strong>Sale del navbar</strong>
+        <ul>
+          <li>Productos</li>
+          <li>Cat&aacute;logo de soluciones</li>
+          <li>Centro de ayuda</li>
+          <li>Recursos</li>
+        </ul>
+      </div>
+      <div class="ia-box">
+        <strong>Soluciones</strong>
+        <ul>
+          <li>Infraestructura</li>
+          <li>Equipamiento</li>
+          <li>Servicios IT</li>
+          <li>Financiamiento</li>
+        </ul>
+      </div>
+      <div class="ia-box">
+        <strong>Canal B2B</strong>
+        <ul>
+          <li>Empresas</li>
+          <li>Revendedores</li>
+          <li>Opcional: Gobierno</li>
+          <li>Opcional: Educaci&oacute;n</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="mobile-mock" aria-label="Mockup mobile">
+      <div class="mobile-head">
+        <img src="../public/brand/bartez-logo.png" alt="Bartez Tecnologia" />
+        <div class="hamb">&#9776;</div>
+      </div>
+      <div class="mobile-body">
+        <a class="mobile-primary" href="#"><strong>BarPOS punto de venta</strong><span>&rarr;</span></a>
+
+        <div class="mobile-section">
+          <span>Soluciones</span>
+          <a href="#">Servidores y storage</a>
+          <a href="#">Redes e infraestructura</a>
+          <a href="#">Notebooks corporativas</a>
+          <a href="#">Servicios administrados</a>
+          <a href="#">Ciberseguridad</a>
+        </div>
+
+        <div class="mobile-section">
+          <span>Canal B2B</span>
+          <a href="#">Empresas</a>
+          <a href="#">Revendedores</a>
+        </div>
+
+        <div class="mobile-section">
+          <span>Institucional</span>
+          <a href="#">Marcas</a>
+          <a href="#">Nosotros</a>
+          <a href="#">Contacto</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+</body>
+</html>
