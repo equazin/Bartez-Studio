@@ -154,8 +154,10 @@ export function HomeBlueWholesale() {
         <Navbar />
 
         <section className="relative overflow-hidden border-b border-slate-200 bg-white">
-          <div className="mx-auto grid max-w-[1320px] items-center gap-8 px-6 pb-8 pt-12 lg:grid-cols-[0.88fr_1.12fr] lg:px-10 lg:pb-10 lg:pt-14">
-            <div className="min-w-0">
+          <div className="absolute inset-y-0 right-0 hidden w-[46%] bg-[linear-gradient(132deg,transparent_0%,transparent_25%,rgba(18,54,216,0.08)_25%,rgba(18,54,216,0.08)_62%,transparent_62%)] lg:block" />
+          <div className="absolute right-0 top-20 hidden h-64 w-40 bg-[radial-gradient(circle,#b8cdfd_1px,transparent_1.6px)] opacity-55 [background-size:10px_10px] lg:block" />
+          <div className="relative mx-auto grid max-w-[1320px] items-center gap-8 px-6 pb-8 pt-12 lg:grid-cols-[0.82fr_1.18fr] lg:px-10 lg:pb-10 lg:pt-14">
+            <div className="relative z-10 min-w-0">
               <p className="text-[12px] font-black uppercase tracking-[0.17em] text-[#1236d8]">Mayorista IT en Argentina</p>
               <h1 className="mt-5 max-w-[660px] font-display text-[clamp(42px,6vw,76px)] font-black leading-[0.96] tracking-[-0.065em] text-[#11142a]">
                 Distribución IT para <span className="text-[#1236d8]">empresas y revendedores</span>
@@ -179,41 +181,29 @@ export function HomeBlueWholesale() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 grid-rows-2 gap-2.5 lg:gap-3">
-              <div className="relative col-span-2 overflow-hidden rounded-2xl border border-blue-100 bg-gradient-to-br from-[#070a16] to-[#0c1630] shadow-[0_34px_80px_-54px_rgba(18,54,216,0.55)]">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(18,54,216,0.2),transparent_50%)]" />
+            <div className="relative z-10 min-h-[300px] overflow-hidden rounded-3xl border border-blue-100 bg-[#f7f9ff] shadow-[0_34px_90px_-62px_rgba(18,54,216,0.6)] lg:min-h-[430px]">
+              <div className="absolute inset-y-0 right-0 w-[78%] origin-bottom-left -skew-x-12 overflow-hidden rounded-l-[48px] bg-[#1236d8]/10">
                 <Image
-                  src="/photos/products/server.jpg"
-                  alt="Datacenter y servidores empresariales"
-                  width={720}
-                  height={280}
+                  src="/photos/home/warehouse-hero.png"
+                  alt=""
+                  fill
                   priority
-                  className="size-full object-cover opacity-85"
+                  sizes="(max-width: 1024px) 80vw, 620px"
+                  className="scale-110 object-cover object-center opacity-80 skew-x-12"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#070a16]/60 via-transparent to-transparent" />
-                <span className="absolute bottom-3 left-4 rounded-lg bg-[#1236d8]/90 px-3 py-1 text-[11px] font-bold text-white backdrop-blur-sm">Infraestructura & Servidores</span>
+                <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(50,20,180,0.62),rgba(18,54,216,0.22)_45%,rgba(255,255,255,0.08))]" />
               </div>
-              <div className="relative overflow-hidden rounded-2xl border border-slate-100 bg-slate-50">
-                <Image
-                  src="/photos/products/laptop1.jpg"
-                  alt="Notebooks corporativas"
-                  width={350}
-                  height={220}
-                  priority
-                  className="size-full object-contain p-4"
-                />
-                <span className="absolute bottom-2.5 left-3 rounded-lg bg-white/90 px-2.5 py-1 text-[11px] font-bold text-[#11142a] shadow-sm backdrop-blur-sm">Notebooks</span>
-              </div>
-              <div className="relative overflow-hidden rounded-2xl border border-slate-100 bg-slate-50">
-                <Image
-                  src="/photos/products/switch.jpg"
-                  alt="Switches y redes corporativas"
-                  width={350}
-                  height={220}
-                  priority
-                  className="size-full object-cover"
-                />
-                <span className="absolute bottom-2.5 left-3 rounded-lg bg-white/90 px-2.5 py-1 text-[11px] font-bold text-[#11142a] shadow-sm backdrop-blur-sm">Redes & Switching</span>
+              <div className="absolute inset-0 bg-[linear-gradient(90deg,#fff_0%,rgba(255,255,255,0.9)_20%,rgba(255,255,255,0.22)_54%,rgba(255,255,255,0)_100%)]" />
+              <Image
+                src="/photos/home/hero-it-equipment-transparent.png"
+                alt="Equipamiento IT para empresas y revendedores"
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 760px"
+                className="relative z-10 object-contain object-center p-0 drop-shadow-[0_28px_34px_rgba(15,23,42,0.18)] sm:p-2 lg:p-0"
+              />
+              <div className="absolute bottom-4 left-4 hidden rounded-xl border border-blue-100 bg-white/92 px-4 py-2 text-[12px] font-black text-[#1236d8] shadow-sm backdrop-blur-sm sm:block">
+                Equipamiento, infraestructura y soluciones IT
               </div>
             </div>
           </div>
