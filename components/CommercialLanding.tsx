@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { ArrowRight, CheckCircle2, MessageCircle } from "lucide-react";
+import { ArrowRight, CheckCircle2, ClipboardList, Headphones, MessageCircle, PackageCheck, Search } from "lucide-react";
 import {
   InternalChecklist,
   InternalCta,
@@ -30,6 +30,33 @@ type CommercialLandingProps = {
   image?: string;
   imageAlt?: string;
 };
+
+const processSteps = [
+  {
+    num: "01",
+    icon: Search,
+    title: "Relevamiento",
+    description: "Entendemos tu operación: usuarios, sedes, software, plazos y restricciones antes de proponer.",
+  },
+  {
+    num: "02",
+    icon: ClipboardList,
+    title: "Propuesta técnica",
+    description: "Armamos una cotización con marcas, modelos y condiciones reales, sin listas genéricas.",
+  },
+  {
+    num: "03",
+    icon: PackageCheck,
+    title: "Entrega coordinada",
+    description: "Confirmamos stock, logística y fecha. Si hay varias sedes, coordinamos entregas parciales.",
+  },
+  {
+    num: "04",
+    icon: Headphones,
+    title: "Soporte post-venta",
+    description: "Garantía, seguimiento técnico y respuesta ante incidentes con canal directo de comunicación.",
+  },
+];
 
 const defaultProfile = {
   eyebrow: "Soluciones Bartez",
@@ -196,6 +223,30 @@ export function CommercialLanding({
             {note ? <p className="mt-4 border-t border-slate-200 pt-4 text-[12.5px] leading-relaxed text-slate-500">{note}</p> : null}
           </div>
           <InternalChecklist items={proof} columns="two" />
+        </div>
+      </InternalSection>
+
+      {/* Proceso de trabajo */}
+      <InternalSection
+        tone="blue"
+        eyebrow="Proceso de trabajo"
+        title="De la consulta a la entrega, paso a paso."
+        intro="Un ciclo claro para que sepas en qué etapa estamos y qué sigue."
+      >
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {processSteps.map((step) => {
+            const Icon = step.icon;
+            return (
+              <div key={step.num} className="relative rounded-lg border border-blue-200/60 bg-white p-6 shadow-sm">
+                <span className="font-display text-[32px] font-extrabold leading-none text-[#1236d8]/15">{step.num}</span>
+                <span className="mt-3 grid size-10 place-items-center rounded-lg border border-blue-100 bg-blue-50">
+                  <Icon className="size-5 text-[#1236d8]" strokeWidth={1.7} />
+                </span>
+                <h3 className="mt-4 font-display text-[16px] font-extrabold text-[#11142a]">{step.title}</h3>
+                <p className="mt-2 text-[13px] leading-relaxed text-slate-600">{step.description}</p>
+              </div>
+            );
+          })}
         </div>
       </InternalSection>
 

@@ -132,10 +132,10 @@ export default function Configurador() {
           
           {/* Header */}
           <div className="text-center mb-10">
-            <span className="text-[13px] font-semibold uppercase tracking-[0.12em] text-brand">
+            <span className="text-[13px] font-semibold uppercase tracking-[0.12em] text-[#1236d8]">
               Herramienta de Diagnóstico
             </span>
-            <h1 className="mt-3 font-display text-[clamp(28px,4vw,44px)] font-bold leading-tight tracking-[-0.03em] text-ink">
+            <h1 className="mt-3 font-display text-[clamp(28px,4vw,44px)] font-bold leading-tight tracking-[-0.03em] text-[#11142a]">
               Configurador de Soluciones IT
             </h1>
             <p className="mt-3 text-[16px] text-slate-600 max-w-[50ch] mx-auto">
@@ -153,15 +153,15 @@ export default function Configurador() {
               <div key={s.num} className="flex items-center">
                 <span className={`grid size-8 place-items-center rounded-full text-[12px] font-bold border transition ${
                   step >= s.num 
-                    ? "border-brand bg-brand text-white" 
+                    ? "border-[#1236d8] bg-[#1236d8] text-white" 
                     : "border-slate-200 bg-white text-slate-400"
                 }`}>
                   {step > s.num ? <Check size={14} /> : s.num}
                 </span>
-                <span className={`ml-2 text-[13px] font-semibold ${step >= s.num ? "text-ink" : "text-slate-400"}`}>
+                <span className={`ml-2 text-[13px] font-semibold ${step >= s.num ? "text-[#11142a]" : "text-slate-400"}`}>
                   {s.label}
                 </span>
-                {s.num < 3 && <span className={`w-12 h-px mx-3 ${step > s.num ? "bg-brand" : "bg-slate-200"}`} />}
+                {s.num < 3 && <span className={`w-12 h-px mx-3 ${step > s.num ? "bg-[#1236d8]" : "bg-slate-200"}`} />}
               </div>
             ))}
           </div>
@@ -172,7 +172,7 @@ export default function Configurador() {
             {/* Paso 1: Perfiles */}
             {step === 1 && (
               <div>
-                <h2 className="font-display text-[22px] font-bold text-ink">
+                <h2 className="font-display text-[22px] font-bold text-[#11142a]">
                   ¿Cuál es el perfil de uso de los equipos?
                 </h2>
                 <p className="mt-1 text-[13.5px] text-slate-500">
@@ -190,16 +190,16 @@ export default function Configurador() {
                         onClick={() => setSelectedProfile(p.id)}
                         className={`flex flex-col text-left p-5 rounded-xl border transition ${
                           active 
-                            ? "border-brand bg-emerald-50/50 ring-1 ring-brand" 
-                            : "border-slate-200 hover:border-brand/40"
+                            ? "border-[#1236d8] bg-blue-50/50 ring-1 ring-[#1236d8]" 
+                            : "border-slate-200 hover:border-[#1236d8]/50"
                         }`}
                       >
                         <span className={`grid size-10 place-items-center rounded-lg ${
-                          active ? "bg-brand text-white" : "bg-slate-100 text-brand"
+                          active ? "bg-[#1236d8] text-white" : "bg-slate-100 text-[#1236d8]"
                         }`}>
                           <Icon size={20} />
                         </span>
-                        <span className="mt-4 block text-[15px] font-bold text-ink">{p.name}</span>
+                        <span className="mt-4 block text-[15px] font-bold text-[#11142a]">{p.name}</span>
                         <span className="mt-1 block text-[13px] leading-relaxed text-slate-500">{p.description}</span>
                       </button>
                     );
@@ -210,7 +210,7 @@ export default function Configurador() {
                   <button
                     onClick={handleNext}
                     disabled={!selectedProfile}
-                    className="inline-flex items-center gap-2 rounded-lg bg-ink px-6 py-3 text-[14px] font-semibold text-white transition-colors hover:bg-brand disabled:opacity-40"
+                    className="inline-flex items-center gap-2 rounded-lg bg-[#1236d8] px-6 py-3 text-[14px] font-semibold text-white transition-colors hover:bg-[#0f2bb8] disabled:opacity-40"
                   >
                     Siguiente paso <ArrowRight size={16} />
                   </button>
@@ -221,7 +221,7 @@ export default function Configurador() {
             {/* Paso 2: Detalles de Escala */}
             {step === 2 && (
               <div>
-                <h2 className="font-display text-[22px] font-bold text-ink">
+                <h2 className="font-display text-[22px] font-bold text-[#11142a]">
                   Detalles de volumen y exigencia
                 </h2>
                 <p className="mt-1 text-[13.5px] text-slate-500">
@@ -231,8 +231,8 @@ export default function Configurador() {
                 <div className="mt-8 space-y-6">
                   {/* Escala */}
                   <div>
-                    <span className="flex items-center gap-2 text-[14px] font-bold text-ink mb-3">
-                      <Layers size={17} className="text-brand" /> Cantidad estimada de unidades
+                    <span className="flex items-center gap-2 text-[14px] font-bold text-[#11142a] mb-3">
+                      <Layers size={17} className="text-[#1236d8]" /> Cantidad estimada de unidades
                     </span>
                     <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                       {["1-5", "6-20", "21-50", "50+"].map(q => (
@@ -242,8 +242,8 @@ export default function Configurador() {
                           onClick={() => setQuantity(q)}
                           className={`py-3 text-center text-[13.5px] font-semibold rounded-lg border transition ${
                             quantity === q 
-                              ? "border-brand bg-brand text-white" 
-                              : "border-slate-200 hover:border-brand/40 text-slate-700 bg-white"
+                              ? "border-[#1236d8] bg-[#1236d8] text-white" 
+                              : "border-slate-200 hover:border-[#1236d8]/50 text-slate-700 bg-white"
                           }`}
                         >
                           {q} {q === "50+" ? "unidades" : "equipos"}
@@ -254,8 +254,8 @@ export default function Configurador() {
 
                   {/* Intensidad de carga */}
                   <div>
-                    <span className="flex items-center gap-2 text-[14px] font-bold text-ink mb-3">
-                      <Activity size={17} className="text-brand" /> Nivel de exigencia requerido
+                    <span className="flex items-center gap-2 text-[14px] font-bold text-[#11142a] mb-3">
+                      <Activity size={17} className="text-[#1236d8]" /> Nivel de exigencia requerido
                     </span>
                     <div className="grid gap-3 sm:grid-cols-3">
                       {[
@@ -269,11 +269,11 @@ export default function Configurador() {
                           onClick={() => setIntensity(item.name)}
                           className={`p-4 text-left rounded-lg border transition ${
                             intensity === item.name 
-                              ? "border-brand bg-emerald-50/50 ring-1 ring-brand" 
-                              : "border-slate-200 hover:border-brand/40 text-slate-700 bg-white"
+                              ? "border-[#1236d8] bg-blue-50/50 ring-1 ring-[#1236d8]" 
+                              : "border-slate-200 hover:border-[#1236d8]/50 text-slate-700 bg-white"
                           }`}
                         >
-                          <span className="block text-[13.5px] font-bold text-ink">{item.name}</span>
+                          <span className="block text-[13.5px] font-bold text-[#11142a]">{item.name}</span>
                           <span className="mt-0.5 block text-[11.5px] text-slate-500 leading-normal">{item.desc}</span>
                         </button>
                       ))}
@@ -284,13 +284,13 @@ export default function Configurador() {
                 <div className="mt-10 flex justify-between">
                   <button
                     onClick={handleBack}
-                    className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-slate-500 hover:text-ink"
+                    className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-slate-500 hover:text-[#11142a]"
                   >
                     <ArrowLeft size={16} /> Atrás
                   </button>
                   <button
                     onClick={handleNext}
-                    className="inline-flex items-center gap-2 rounded-lg bg-ink px-6 py-3 text-[14px] font-semibold text-white transition-colors hover:bg-brand"
+                    className="inline-flex items-center gap-2 rounded-lg bg-[#1236d8] px-6 py-3 text-[14px] font-semibold text-white transition-colors hover:bg-[#0f2bb8]"
                   >
                     Generar configuración <ArrowRight size={16} />
                   </button>
@@ -305,13 +305,13 @@ export default function Configurador() {
                 {/* Propuesta técnica */}
                 <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-5 md:p-6">
                   <div className="flex items-center gap-2 pb-4 border-b border-slate-200">
-                    <FileText className="text-brand size-5" />
+                    <FileText className="text-[#1236d8] size-5" />
                     <span className="text-[13px] font-bold uppercase tracking-wider text-slate-500">
                       Especificación Propuesta
                     </span>
                   </div>
 
-                  <h3 className="mt-4 font-display text-[19px] font-bold text-ink">
+                  <h3 className="mt-4 font-display text-[19px] font-bold text-[#11142a]">
                     Equipamiento sugerido para {profileData.name}
                   </h3>
                   
@@ -351,8 +351,8 @@ export default function Configurador() {
                   </div>
                 </div>
 
-                <div className="flex flex-col justify-center rounded-xl border border-emerald/20 bg-emerald/5 p-6">
-                  <h3 className="font-display text-[20px] font-bold text-ink">Cotizá esta recomendación</h3>
+                <div className="flex flex-col justify-center rounded-xl border border-[#1236d8]/20 bg-[#1236d8]/5 p-6">
+                  <h3 className="font-display text-[20px] font-bold text-[#11142a]">Cotizá esta recomendación</h3>
                   <p className="mt-2 text-[13.5px] leading-relaxed text-slate-600">
                     Enviaremos el perfil, la cantidad y las especificaciones sugeridas en un mensaje de WhatsApp. Allí podés sumar marca, presupuesto o fecha de entrega.
                   </p>
@@ -361,7 +361,7 @@ export default function Configurador() {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => track("configurator_whatsapp_started", { profile: selectedProfile, quantity, intensity })}
-                    className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-ink px-5 py-3.5 text-[14px] font-bold text-white transition-colors hover:bg-brand"
+                    className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#1236d8] px-5 py-3.5 text-[14px] font-bold text-white transition-colors hover:bg-[#0f2bb8]"
                   >
                     <MessageCircle size={17} /> Cotizar por WhatsApp
                   </a>
@@ -369,7 +369,7 @@ export default function Configurador() {
                   <div className="mt-6 pt-4 border-t border-slate-100">
                     <button
                       onClick={handleBack}
-                      className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-slate-500 hover:text-ink"
+                      className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-slate-500 hover:text-[#11142a]"
                     >
                       <ArrowLeft size={15} /> Cambiar especificación
                     </button>

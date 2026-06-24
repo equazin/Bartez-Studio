@@ -14,7 +14,7 @@ import { track } from "../../components/Analytics";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 const inputClass =
-  "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-[14px] text-slate-900 outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/15";
+  "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-[14px] text-slate-900 outline-none transition focus:border-[#1236d8] focus:ring-2 focus:ring-[#1236d8]/15";
 
 export default function Rfq() {
   const [form, setForm] = useState({
@@ -74,10 +74,10 @@ export default function Rfq() {
             
             {/* Información RFQ */}
             <div className="flex flex-col justify-center">
-              <span className="text-[13px] font-semibold uppercase tracking-[0.12em] text-brand">
+              <span className="text-[13px] font-semibold uppercase tracking-[0.12em] text-[#1236d8]">
                 Compras Corporativas & Canal
               </span>
-              <h1 className="mt-3 font-display text-[clamp(32px,4.5vw,52px)] font-bold leading-[1.06] tracking-[-0.035em] text-ink">
+              <h1 className="mt-3 font-display text-[clamp(32px,4.5vw,52px)] font-bold leading-[1.06] tracking-[-0.035em] text-[#11142a]">
                 Solicitud de Cotización Masiva (RFQ)
               </h1>
               <p className="mt-5 text-[16px] text-slate-600 leading-relaxed">
@@ -86,11 +86,11 @@ export default function Rfq() {
 
               <div className="mt-8 space-y-6">
                 <div className="flex gap-4">
-                  <span className="flex size-10 items-center justify-center rounded-lg bg-emerald/10 text-emerald flex-none">
+                  <span className="flex size-10 items-center justify-center rounded-lg bg-[#1236d8]/10 text-[#1236d8] flex-none">
                     <Clock size={20} />
                   </span>
                   <div>
-                    <h3 className="text-[15px] font-bold text-ink">SLA prioritario de 24 hs hábiles</h3>
+                    <h3 className="text-[15px] font-bold text-[#11142a]">SLA prioritario de 24 hs hábiles</h3>
                     <p className="text-[13.5px] text-slate-500 mt-1 leading-relaxed">
                       Un asesor comercial exclusivo del canal mayorista analizará tu pliego o lista técnica para armar una propuesta a medida.
                     </p>
@@ -98,11 +98,11 @@ export default function Rfq() {
                 </div>
 
                 <div className="flex gap-4">
-                  <span className="flex size-10 items-center justify-center rounded-lg bg-emerald/10 text-emerald flex-none">
+                  <span className="flex size-10 items-center justify-center rounded-lg bg-[#1236d8]/10 text-[#1236d8] flex-none">
                     <Briefcase size={20} />
                   </span>
                   <div>
-                    <h3 className="text-[15px] font-bold text-ink">Condiciones de cuenta corriente</h3>
+                    <h3 className="text-[15px] font-bold text-[#11142a]">Condiciones de cuenta corriente</h3>
                     <p className="text-[13.5px] text-slate-500 mt-1 leading-relaxed">
                       Evaluamos plazos de pago y facilidades B2B para operaciones de volumen recurrente.
                     </p>
@@ -110,11 +110,11 @@ export default function Rfq() {
                 </div>
 
                 <div className="flex gap-4">
-                  <span className="flex size-10 items-center justify-center rounded-lg bg-emerald/10 text-emerald flex-none">
+                  <span className="flex size-10 items-center justify-center rounded-lg bg-[#1236d8]/10 text-[#1236d8] flex-none">
                     <Clipboard size={20} />
                   </span>
                   <div>
-                    <h3 className="text-[15px] font-bold text-ink">Armado de pliegos y especificaciones</h3>
+                    <h3 className="text-[15px] font-bold text-[#11142a]">Armado de pliegos y especificaciones</h3>
                     <p className="text-[13.5px] text-slate-500 mt-1 leading-relaxed">
                       Podés pegar directamente tu lista de componentes, pliego de licitación o requisitos específicos en el formulario.
                     </p>
@@ -122,17 +122,17 @@ export default function Rfq() {
                 </div>
               </div>
 
-              <div className="mt-8 rounded-xl bg-ink p-5 text-white flex gap-3.5 items-start">
-                <AlertCircle className="text-accent flex-none mt-0.5" size={18} />
+              <div className="mt-8 rounded-xl bg-[#11142a] p-5 text-white flex gap-3.5 items-start">
+                <AlertCircle className="text-[#0ea5ff] flex-none mt-0.5" size={18} />
                 <p className="text-[12.5px] leading-relaxed text-slate-300">
-                  <strong>¿Sos revendedor de tecnología?</strong> Te sugerimos ingresar a nuestra sección de <a href="/revendedores" className="font-bold text-accent hover:underline">Revendedores</a> para registrarte en el canal de distribución y acceder a precios especiales.
+                  <strong>¿Sos revendedor de tecnología?</strong> Te sugerimos ingresar a nuestra sección de <a href="/revendedores" className="font-bold text-[#0ea5ff] hover:underline">Revendedores</a> para registrarte en el canal de distribución y acceder a precios especiales.
                 </p>
               </div>
             </div>
 
             {/* Formulario RFQ */}
             <div className="bg-white rounded-2xl border border-slate-200 shadow-soft p-6 md:p-10">
-              <h2 className="font-display text-[22px] font-bold text-ink mb-6">
+              <h2 className="font-display text-[22px] font-bold text-[#11142a] mb-6">
                 Completá los detalles de la cotización
               </h2>
 
@@ -283,7 +283,7 @@ export default function Rfq() {
 
                 <button
                   type="submit"
-                  className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-ink px-6 py-3.5 text-[14.5px] font-bold text-white transition-colors hover:bg-brand disabled:opacity-60"
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-[#11142a] px-6 py-3.5 text-[14.5px] font-bold text-white transition-colors hover:bg-[#1236d8] disabled:opacity-60"
                 >
                   <MessageCircle size={17} /> Continuar RFQ por WhatsApp
                 </button>

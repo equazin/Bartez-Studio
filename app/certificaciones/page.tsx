@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { ArrowRight, FileCheck2, MessageCircle, ShieldCheck } from "lucide-react";
+import { ArrowRight, Award, Briefcase, Building2, FileCheck2, Lock, MessageCircle, Recycle, ShieldCheck, Truck } from "lucide-react";
 import {
+  InternalChecklist,
   InternalCta,
   InternalFeatureGrid,
   InternalHero,
@@ -22,9 +23,40 @@ const items = [
   },
   {
     icon: ShieldCheck,
-    title: "Certificaciones",
+    title: "Certificaciones vigentes",
     description: "Se incorporan cuando existe documentación vigente, alcance identificable y autorización para publicarla.",
   },
+  {
+    icon: Building2,
+    title: "Inscripciones ante organismos",
+    description: "Habilitaciones y registros ante organismos públicos nacionales y provinciales cuando la operación lo requiere.",
+  },
+  {
+    icon: Briefcase,
+    title: "Relaciones con fabricantes",
+    description: "Canales de distribución activos con marcas líderes. Se detalla nivel real de acceso, no niveles inflados.",
+  },
+  {
+    icon: Lock,
+    title: "Cumplimiento y privacidad",
+    description: "Políticas de tratamiento de datos, confidencialidad en cotizaciones y resguardo de información comercial.",
+  },
+  {
+    icon: Truck,
+    title: "Logística verificable",
+    description: "Cobertura documentada con operadores logísticos para entregas en todo el territorio nacional.",
+  },
+];
+
+const proofItems = [
+  "Facturación tipo A para operaciones B2B",
+  "CUIT y condición fiscal verificable en AFIP",
+  "Libre deuda de AFIP disponible bajo solicitud",
+  "Póliza de seguro de transporte vigente",
+  "Acuerdos de distribución con marcas autorizadas",
+  "Domicilio fiscal y comercial verificable",
+  "Datos de contacto corporativos publicados",
+  "Historial de operaciones B2B comprobable",
 ];
 
 export default function CertificacionesPage() {
@@ -37,12 +69,12 @@ export default function CertificacionesPage() {
             Certificaciones y documentación <span className="text-[#1236d8]">sin promesas infladas.</span>
           </>
         }
-        intro="Esta sección reune documentación vigente y comprobable. No útilizamos niveles de partnership, certificaciones o autorizaciónes sin respaldo documental."
+        intro="Esta sección reune documentación vigente y comprobable. No utilizamos niveles de partnership, certificaciones o autorizaciones sin respaldo documental."
         image="/photos/products/server.jpg"
         imageAlt="Documentación y respaldo comercial"
         imagePriority
         mediaLabel="Transparencia"
-        mediaTitle="Documentación disponible segun operación."
+        mediaTitle="Documentación disponible según operación."
         mediaSubtitle="Preparamos respaldos comerciales cuando el proceso de compra lo requiere."
         mediaItems={[
           { icon: FileCheck2, title: "Fiscal", description: "Datos comerciales y CUIT." },
@@ -60,13 +92,30 @@ export default function CertificacionesPage() {
         ]}
       />
 
-      <InternalSection tone="soft" eyebrow="Disponibles" title="Respaldos comerciales.">
-        <InternalFeatureGrid columns="two" features={items} />
+      <InternalSection tone="soft" eyebrow="Áreas documentadas" title="Respaldos comerciales y operativos." intro="Cada respaldo responde a un aspecto concreto de la operación. No publicamos certificaciones genéricas ni niveles sin documentación vigente.">
+        <InternalFeatureGrid columns="three" features={items} />
+      </InternalSection>
+
+      <InternalSection tone="white" eyebrow="Comprobables" title="Información que podés verificar." intro="Estos puntos forman parte de nuestra documentación estándar para operaciones corporativas y licitaciones.">
+        <InternalChecklist items={proofItems} columns="two" />
+      </InternalSection>
+
+      <InternalSection tone="blue" eyebrow="Compromiso">
+        <div className="mx-auto max-w-[680px] text-center">
+          <Award className="mx-auto size-10 text-[#1236d8]" strokeWidth={1.5} />
+          <h2 className="mt-5 font-display text-[clamp(24px,3.2vw,36px)] font-extrabold leading-tight text-[#11142a]">Transparencia como principio operativo</h2>
+          <p className="mt-4 text-[15.5px] leading-relaxed text-slate-600">
+            Publicamos solo lo que podemos respaldar. Cuando una certificación vence, se retira. Cuando un acuerdo cambia de nivel, se actualiza. No hay letra chica ni promesas sin documentación.
+          </p>
+          <div className="mt-6 inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-[12.5px] font-semibold text-[#1236d8]">
+            <Recycle className="size-4" /> Actualización periódica verificable
+          </div>
+        </div>
       </InternalSection>
 
       <InternalCta
-        title="Necesitás documentación para una compra?"
-        intro="Escribinos que tipo de respaldo requiere tu proceso y lo preparamos segun corresponda."
+        title="¿Necesitás documentación para una compra?"
+        intro="Escribinos qué tipo de respaldo requiere tu proceso y lo preparamos según corresponda."
         actions={[
           { label: "Pedir documentación", href: whatsappLinks.general, external: true, icon: MessageCircle },
           { label: "Ver descargas", href: "/descargas", variant: "secondary", icon: ArrowRight },

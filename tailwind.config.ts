@@ -9,15 +9,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Paleta Verde Bartez (oscuro) — remapeo de los tokens del sitio
-        ink: "#0A2818", // verde profundo (hero / footer / secciones oscuras)
-        navy: "#0C3520", // verde secundario (cards sobre oscuro)
-        brand: "#14532D", // verde principal (CTAs / acentos sobre claro)
-        "brand-bright": "#16A34A", // hover
-        accent: "#22C55E", // verde acento (chips, líneas, detalles)
-        sky: "#4ADE80", // verde claro (texto/acento sobre oscuro)
-        emerald: "#10B981", // stock / éxito
-        bronce: "#B8956A", // detalle editorial (números, divisores)
+        ink: "#11142a",
+        navy: "#070a16",
+        brand: "#1236d8",
+        "brand-bright": "#0f2bb8",
+        accent: "#0ea5ff",
+        sky: "#0ea5ff",
+        emerald: "#10B981",
+        bronce: "#B8956A",
       },
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
@@ -31,7 +30,7 @@ const config: Config = {
       boxShadow: {
         soft: "0 1px 2px rgba(15,23,42,.06)",
         card: "0 24px 50px -28px rgba(15,39,71,.45)",
-        glow: "0 14px 34px -12px rgba(34,197,94,.5)",
+        glow: "0 14px 34px -12px rgba(18,54,216,.4)",
         ring: "0 0 0 1px rgba(226,232,240,1)",
       },
       backgroundImage: {
