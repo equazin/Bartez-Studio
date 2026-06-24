@@ -6,6 +6,7 @@ import {
   Box,
   Building2,
   CheckCircle2,
+  GitCompareArrows,
   GraduationCap,
   HardDrive,
   Headphones,
@@ -16,6 +17,8 @@ import {
   PackageCheck,
   Printer,
   ShieldCheck,
+  SlidersHorizontal,
+  ClipboardList,
   Truck,
   Users,
   type LucideIcon,
@@ -176,19 +179,42 @@ export function HomeBlueWholesale() {
               </div>
             </div>
 
-            <div className="relative min-h-[310px] overflow-hidden rounded-[32px] border border-blue-100 bg-gradient-to-br from-[#eef6ff] via-white to-[#dff3ff] shadow-[0_34px_80px_-54px_rgba(18,54,216,0.55)] lg:min-h-[420px] lg:[clip-path:polygon(10%_0,100%_0,100%_100%,0_100%,0_16%)]">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_82%_12%,rgba(14,165,255,0.2),transparent_28%),radial-gradient(circle_at_20%_88%,rgba(18,54,216,0.12),transparent_30%)]" />
-              <div className="absolute inset-x-3 -top-5 bottom-3">
+            <div className="grid grid-cols-2 grid-rows-2 gap-2.5 lg:gap-3">
+              <div className="relative col-span-2 overflow-hidden rounded-2xl border border-blue-100 bg-gradient-to-br from-[#070a16] to-[#0c1630] shadow-[0_34px_80px_-54px_rgba(18,54,216,0.55)]">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(18,54,216,0.2),transparent_50%)]" />
                 <Image
-                  src="/photos/hero-products-combo.png"
-                  alt="Equipamiento IT para empresas: notebooks, servidores, redes y seguridad"
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 720px"
+                  src="/photos/products/server.jpg"
+                  alt="Datacenter y servidores empresariales"
+                  width={720}
+                  height={280}
                   priority
-                  className="object-contain object-center"
+                  className="size-full object-cover opacity-85"
                 />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#070a16]/60 via-transparent to-transparent" />
+                <span className="absolute bottom-3 left-4 rounded-lg bg-[#1236d8]/90 px-3 py-1 text-[11px] font-bold text-white backdrop-blur-sm">Infraestructura & Servidores</span>
               </div>
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-white/35 via-transparent to-transparent" />
+              <div className="relative overflow-hidden rounded-2xl border border-slate-100 bg-slate-50">
+                <Image
+                  src="/photos/products/laptop1.jpg"
+                  alt="Notebooks corporativas"
+                  width={350}
+                  height={220}
+                  priority
+                  className="size-full object-contain p-4"
+                />
+                <span className="absolute bottom-2.5 left-3 rounded-lg bg-white/90 px-2.5 py-1 text-[11px] font-bold text-[#11142a] shadow-sm backdrop-blur-sm">Notebooks</span>
+              </div>
+              <div className="relative overflow-hidden rounded-2xl border border-slate-100 bg-slate-50">
+                <Image
+                  src="/photos/products/switch.jpg"
+                  alt="Switches y redes corporativas"
+                  width={350}
+                  height={220}
+                  priority
+                  className="size-full object-cover"
+                />
+                <span className="absolute bottom-2.5 left-3 rounded-lg bg-white/90 px-2.5 py-1 text-[11px] font-bold text-[#11142a] shadow-sm backdrop-blur-sm">Redes & Switching</span>
+              </div>
             </div>
           </div>
 
@@ -247,6 +273,44 @@ export function HomeBlueWholesale() {
                   </span>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-[#f7f9fc] py-12 lg:py-16">
+          <div className="mx-auto max-w-[1320px] px-6 lg:px-10">
+            <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-[12px] font-black uppercase tracking-[0.17em] text-[#1236d8]">Herramientas online</p>
+                <h2 className="mt-2 font-display text-[clamp(26px,3.5vw,38px)] font-black tracking-[-0.04em] text-[#11142a]">Empezá a definir tu solución</h2>
+              </div>
+              <p className="max-w-[42ch] text-[14px] leading-relaxed text-slate-500">Usá estas herramientas para dimensionar, comparar y cotizar antes de hablar con un asesor.</p>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-3">
+              <Link href="/configurador" className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-soft transition hover:-translate-y-1 hover:shadow-card">
+                <span className="grid size-12 place-items-center rounded-xl bg-[#1236d8]/10 text-[#1236d8] transition group-hover:bg-[#1236d8] group-hover:text-white">
+                  <SlidersHorizontal size={24} strokeWidth={1.8} />
+                </span>
+                <h3 className="mt-4 font-display text-[20px] font-black tracking-[-0.03em] text-[#11142a]">Configurador IT</h3>
+                <p className="mt-2 text-[13px] leading-relaxed text-slate-500">Elegí perfil de uso, ajustá escala y obtené una recomendación técnica para llevar a cotización.</p>
+                <span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-black text-[#1236d8]">Usar herramienta <ArrowRight size={15} /></span>
+              </Link>
+              <Link href="/comparador" className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-soft transition hover:-translate-y-1 hover:shadow-card">
+                <span className="grid size-12 place-items-center rounded-xl bg-[#7c3aed]/10 text-[#7c3aed] transition group-hover:bg-[#7c3aed] group-hover:text-white">
+                  <GitCompareArrows size={24} strokeWidth={1.8} />
+                </span>
+                <h3 className="mt-4 font-display text-[20px] font-black tracking-[-0.03em] text-[#11142a]">Comparador orientativo</h3>
+                <p className="mt-2 text-[13px] leading-relaxed text-slate-500">Compará hasta 3 familias de equipos para ordenar la decisión según tu escenario real.</p>
+                <span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-black text-[#7c3aed]">Comparar equipos <ArrowRight size={15} /></span>
+              </Link>
+              <Link href="/rfq" className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-soft transition hover:-translate-y-1 hover:shadow-card">
+                <span className="grid size-12 place-items-center rounded-xl bg-[#ff8f1f]/10 text-[#ff8f1f] transition group-hover:bg-[#ff8f1f] group-hover:text-white">
+                  <ClipboardList size={24} strokeWidth={1.8} />
+                </span>
+                <h3 className="mt-4 font-display text-[20px] font-black tracking-[-0.03em] text-[#11142a]">Cotización masiva (RFQ)</h3>
+                <p className="mt-2 text-[13px] leading-relaxed text-slate-500">Cargá tu pliego o lista técnica y recibí una propuesta formal con condiciones B2B en 24 hs.</p>
+                <span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-black text-[#ff8f1f]">Iniciar RFQ <ArrowRight size={15} /></span>
+              </Link>
             </div>
           </div>
         </section>

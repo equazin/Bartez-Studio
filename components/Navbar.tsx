@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ChevronDown, Menu, MessageCircle, Phone, X } from "lucide-react";
+import { ChevronDown, Menu, MessageCircle, Phone, SlidersHorizontal, X } from "lucide-react";
 import { useState } from "react";
 import { contact } from "@/constants";
 import { whatsappLinks } from "@/lib/whatsapp";
@@ -32,6 +32,12 @@ const solutionGroups = [
       { label: "Renting y leasing", href: "/renting-leasing" },
     ],
   },
+];
+
+const toolLinks = [
+  { label: "Configurador IT", href: "/configurador" },
+  { label: "Comparador orientativo", href: "/comparador" },
+  { label: "Cotización masiva (RFQ)", href: "/rfq" },
 ];
 
 const channelLinks = [
@@ -88,12 +94,12 @@ export function Navbar() {
               <Link href="/#soluciones" className={`${navLinkBase} ${navLinkHover} gap-1.5`}>
                 Soluciones <ChevronDown size={12} className="text-white/30 transition-colors group-hover:text-white/50" />
               </Link>
-              <div className={`${dropdownPanel} w-[820px]`}>
+              <div className={`${dropdownPanel} w-[920px]`}>
                 <div className="mb-3 flex items-center justify-between border-b border-white/10 px-0.5 pb-3">
                   <strong className="text-[13px] font-bold text-white">Soluciones</strong>
                   <span className="text-[12px] font-medium text-slate-400">Agrupadas por necesidad</span>
                 </div>
-                <div className="grid grid-cols-[1.2fr_1fr_1fr] gap-3">
+                <div className="grid grid-cols-[1.1fr_1fr_1fr_0.85fr] gap-3">
                   <Link
                     href="/barpos"
                     className="min-h-[188px] rounded-xl border border-[#ff8f1f]/25 bg-[radial-gradient(circle_at_24px_20px,rgba(255,143,31,0.23),transparent_34px),linear-gradient(145deg,rgba(255,143,31,0.16),rgba(18,54,216,0.14))] p-[18px] transition hover:border-[#ff8f1f]/45"
@@ -113,6 +119,17 @@ export function Navbar() {
                       ))}
                     </div>
                   ))}
+                  <div className="rounded-xl border border-[#1236d8]/20 bg-[#1236d8]/[0.06] p-3">
+                    <div className="mx-1 mb-2 mt-1 flex items-center gap-1.5">
+                      <SlidersHorizontal size={12} className="text-[#8fb5ff]" />
+                      <h3 className="text-[11px] font-bold uppercase tracking-[0.11em] text-[#8fb5ff]">Herramientas</h3>
+                    </div>
+                    {toolLinks.map((link) => (
+                      <Link key={link.href} href={link.href} className="block rounded-lg px-2 py-2.5 text-[13px] font-medium text-slate-300 transition hover:bg-white/5 hover:text-[#8fb5ff]">
+                        {link.label}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -202,6 +219,15 @@ export function Navbar() {
                   </Link>
                 )),
               )}
+            </div>
+
+            <span className="pt-5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#8fb5ff]">Herramientas</span>
+            <div className="grid sm:grid-cols-2">
+              {toolLinks.map((link) => (
+                <Link key={link.href} href={link.href} onClick={() => setOpen(false)} className="border-b border-white/5 py-3 text-[14px] font-medium text-slate-300 hover:text-[#8fb5ff] sm:pr-4">
+                  {link.label}
+                </Link>
+              ))}
             </div>
 
             <span className="pt-5 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Canal B2B</span>
