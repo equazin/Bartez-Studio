@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bartez - Mockups paginas internas</title>
+<style>
+  :root {
+    --ink: #11142a;
+    --muted: #4a5873;
+    --nav: #04060d;
+    --panel: #0c1020;
+    --blue: #1236d8;
+    --cyan: #0ea5ff;
+    --orange: #ff8f1f;
+    --yellow: #ffb000;
+    --line: #dce4f1;
+    --soft: #f6f8fc;
+    --white: #ffffff;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    background: #eef3fb;
+    color: var(--ink);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .note {
+    background: #f8fafc;
+    border-bottom: 1px solid var(--line);
+    color: #42526b;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 12px 24px;
+    text-align: center;
+  }
+
+  .navbar {
+    background: var(--nav);
+    border-bottom: 1px solid rgba(255,255,255,.1);
+    color: white;
+  }
+
+  .nav-inner {
+    align-items: center;
+    display: flex;
+    gap: 24px;
+    height: 74px;
+    justify-content: space-between;
+    margin: 0 auto;
+    max-width: 1320px;
+    padding: 0 28px;
+  }
+
+  .logo img {
+    display: block;
+    height: 40px;
+    width: auto;
+  }
+
+  .nav-links {
+    align-items: center;
+    display: flex;
+    gap: 19px;
+  }
+
+  .nav-link {
+    color: rgba(255,255,255,.9);
+    font-size: 13.5px;
+    font-weight: 850;
+    white-space: nowrap;
+  }
+
+  .barpos {
+    align-items: center;
+    background: rgba(255,143,31,.1);
+    border: 1px solid rgba(255,143,31,.42);
+    border-radius: 10px;
+    display: inline-flex;
+    gap: 8px;
+    min-height: 38px;
+    padding: 0 13px;
+  }
+
+  .barpos::before {
+    background: var(--orange);
+    border-radius: 999px;
+    box-shadow: 0 0 0 4px rgba(255,143,31,.14);
+    content: "";
+    height: 7px;
+    width: 7px;
+  }
+
+  .quote {
+    background: linear-gradient(90deg,#ff7a18,var(--orange),var(--yellow));
+    border-radius: 12px;
+    color: white;
+    font-size: 13.5px;
+    font-weight: 950;
+    padding: 14px 21px;
+  }
+
+  .wrap {
+    margin: 0 auto;
+    max-width: 1320px;
+    padding: 0 28px;
+  }
+
+  .option-label {
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: #43526d;
+    display: inline-flex;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: .1em;
+    margin: 34px 0 14px;
+    padding: 9px 14px;
+    text-transform: uppercase;
+  }
+
+  .screen {
+    background: white;
+    border: 1px solid #d8e1ef;
+    border-radius: 22px;
+    box-shadow: 0 34px 90px -58px rgba(15,23,42,.65);
+    margin-bottom: 54px;
+    overflow: hidden;
+  }
+
+  .screen h1 {
+    font-size: clamp(44px, 5.4vw, 78px);
+    letter-spacing: -.06em;
+    line-height: .96;
+    margin: 0;
+  }
+
+  .screen p {
+    color: var(--muted);
+    font-size: 18px;
+    line-height: 1.62;
+    margin: 0;
+  }
+
+  .eyebrow {
+    color: var(--blue);
+    font-size: 12px;
+    font-weight: 950;
+    letter-spacing: .13em;
+    margin-bottom: 18px;
+    text-transform: uppercase;
+  }
+
+  .btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 31px;
+  }
+
+  .btn {
+    align-items: center;
+    border-radius: 13px;
+    display: inline-flex;
+    font-size: 14px;
+    font-weight: 950;
+    gap: 9px;
+    min-height: 48px;
+    padding: 0 21px;
+  }
+
+  .btn-primary {
+    background: linear-gradient(90deg,#ff7a18,var(--orange),var(--yellow));
+    box-shadow: 0 18px 36px -24px rgba(255,122,24,.95);
+    color: white;
+  }
+
+  .btn-secondary {
+    border: 1px solid rgba(18,54,216,.25);
+    color: var(--blue);
+  }
+
+  .metric {
+    border-top: 1px solid var(--line);
+    display: flex;
+    gap: 34px;
+    margin-top: 40px;
+    padding-top: 24px;
+  }
+
+  .metric b {
+    color: var(--blue);
+    display: block;
+    font-size: 32px;
+    letter-spacing: -.04em;
+    line-height: 1;
+  }
+
+  .metric span {
+    color: #5d6a82;
+    display: block;
+    font-size: 12px;
+    font-weight: 750;
+    margin-top: 6px;
+  }
+
+  /* Option A */
+  .a-hero {
+    display: grid;
+    gap: 44px;
+    grid-template-columns: .93fr 1.07fr;
+    min-height: 660px;
+    padding: 72px;
+  }
+
+  .a-copy {
+    align-self: center;
+  }
+
+  .a-media {
+    align-self: stretch;
+    background:
+      linear-gradient(145deg, rgba(18,54,216,.12), rgba(14,165,255,.04)),
+      #f6f8ff;
+    border: 1px solid #dbe6f6;
+    border-radius: 18px;
+    display: grid;
+    gap: 18px;
+    grid-template-rows: 1fr auto;
+    overflow: hidden;
+    padding: 20px;
+  }
+
+  .a-photo {
+    background:
+      linear-gradient(180deg, rgba(4,6,13,.05), rgba(4,6,13,.55)),
+      url("../public/photos/hero-products-combo.png") center / cover no-repeat;
+    border-radius: 12px;
+    min-height: 330px;
+  }
+
+  .a-strip {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(3,1fr);
+  }
+
+  .a-strip div {
+    background: white;
+    border: 1px solid #dce4f1;
+    border-radius: 12px;
+    padding: 17px;
+  }
+
+  .a-strip b {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+
+  .a-strip span {
+    color: #5d6a82;
+    font-size: 12.5px;
+    line-height: 1.4;
+  }
+
+  .a-next {
+    background: #f7f9fc;
+    border-top: 1px solid var(--line);
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(4,1fr);
+    padding: 34px 72px;
+  }
+
+  .mini-card {
+    background: white;
+    border: 1px solid #dce4f1;
+    border-radius: 14px;
+    padding: 20px;
+  }
+
+  .mini-card b {
+    display: block;
+    font-size: 15px;
+    margin-bottom: 9px;
+  }
+
+  .mini-card span {
+    color: #5d6a82;
+    display: block;
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  /* Option B */
+  .option-b {
+    background: #070b17;
+    color: white;
+  }
+
+  .b-hero {
+    display: grid;
+    gap: 30px;
+    grid-template-columns: .82fr 1.18fr;
+    min-height: 660px;
+    padding: 58px;
+  }
+
+  .b-copy {
+    align-self: center;
+  }
+
+  .b-copy h1,
+  .b-copy p {
+    color: white;
+  }
+
+  .b-copy p {
+    color: #b8c4d8;
+  }
+
+  .b-dashboard {
+    align-self: center;
+    background: #0d1324;
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 18px;
+    box-shadow: 0 26px 74px -48px rgba(14,165,255,.8);
+    display: grid;
+    gap: 14px;
+    grid-template-columns: 230px 1fr;
+    min-height: 470px;
+    padding: 14px;
+  }
+
+  .b-side {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 14px;
+    padding: 14px;
+  }
+
+  .b-side div {
+    border-radius: 10px;
+    color: #b8c4d8;
+    font-size: 13px;
+    font-weight: 850;
+    margin-bottom: 8px;
+    padding: 12px;
+  }
+
+  .b-side div:first-child {
+    background: linear-gradient(90deg,var(--blue),var(--cyan));
+    color: white;
+  }
+
+  .b-main {
+    display: grid;
+    gap: 14px;
+    grid-template-rows: auto 1fr auto;
+  }
+
+  .b-row {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(3,1fr);
+  }
+
+  .b-panel {
+    background: rgba(255,255,255,.045);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 14px;
+    padding: 18px;
+  }
+
+  .b-panel strong {
+    color: white;
+    display: block;
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .b-panel span {
+    color: #93a1b9;
+    display: block;
+    font-size: 12.5px;
+    line-height: 1.45;
+  }
+
+  .b-big {
+    background:
+      linear-gradient(180deg, rgba(18,54,216,.12), rgba(255,143,31,.08)),
+      url("../public/photos/datacenter.jpg") center / cover no-repeat;
+    min-height: 230px;
+  }
+
+  .b-next {
+    border-top: 1px solid rgba(255,255,255,.08);
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(3,1fr);
+    padding: 28px 58px 42px;
+  }
+
+  .b-next .mini-card {
+    background: rgba(255,255,255,.045);
+    border-color: rgba(255,255,255,.1);
+  }
+
+  .b-next .mini-card b {
+    color: white;
+  }
+
+  /* Option C */
+  .c-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: 730px;
+  }
+
+  .c-sidebar {
+    background: #f8fafc;
+    border-right: 1px solid var(--line);
+    padding: 42px 24px;
+  }
+
+  .c-sidebar h3 {
+    color: #7b879b;
+    font-size: 11px;
+    letter-spacing: .12em;
+    margin: 0 0 18px;
+    text-transform: uppercase;
+  }
+
+  .c-sidebar a {
+    border-radius: 12px;
+    color: #526078;
+    display: block;
+    font-size: 14px;
+    font-weight: 850;
+    margin-bottom: 8px;
+    padding: 13px 14px;
+  }
+
+  .c-sidebar a.active {
+    background: var(--blue);
+    color: white;
+    box-shadow: 0 18px 34px -22px rgba(18,54,216,.75);
+  }
+
+  .c-content {
+    padding: 58px 64px 44px;
+  }
+
+  .c-hero {
+    display: grid;
+    gap: 42px;
+    grid-template-columns: 1fr 390px;
+  }
+
+  .c-module {
+    background: #081020;
+    border-radius: 18px;
+    color: white;
+    min-height: 390px;
+    overflow: hidden;
+    padding: 22px;
+  }
+
+  .c-module-top {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+
+  .c-module small {
+    color: #8fb5ff;
+    font-size: 11px;
+    font-weight: 950;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+
+  .c-photo {
+    background: url("../public/photos/products/switch.jpg") center / cover no-repeat;
+    border-radius: 14px;
+    height: 190px;
+    margin-bottom: 16px;
+  }
+
+  .c-list {
+    display: grid;
+    gap: 9px;
+  }
+
+  .c-list div {
+    align-items: center;
+    background: rgba(255,255,255,.055);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 10px;
+    display: flex;
+    font-size: 13px;
+    font-weight: 800;
+    justify-content: space-between;
+    padding: 12px;
+  }
+
+  .c-next {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(3,1fr);
+    margin-top: 42px;
+  }
+
+  .c-next .mini-card {
+    min-height: 140px;
+  }
+
+  @media (max-width: 980px) {
+    .nav-links,
+    .quote {
+      display: none;
+    }
+
+    .a-hero,
+    .b-hero,
+    .c-layout,
+    .c-hero {
+      grid-template-columns: 1fr;
+    }
+
+    .a-hero,
+    .b-hero,
+    .c-content {
+      padding: 34px 22px;
+    }
+
+    .a-next,
+    .b-next,
+    .c-next,
+    .a-strip,
+    .b-row {
+      grid-template-columns: 1fr;
+      padding-left: 22px;
+      padding-right: 22px;
+    }
+
+    .c-sidebar {
+      display: none;
+    }
+
+    .metric {
+      flex-wrap: wrap;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="note">Tres direcciones para redisenar paginas internas: empresas, revendedores, marcas, contacto, nosotros y soluciones.</div>
+
+  <header class="navbar">
+    <div class="nav-inner">
+      <a class="logo" href="#"><img src="../public/brand/bartez-logo.png" alt="Bartez Tecnologia" /></a>
+      <nav class="nav-links">
+        <a class="nav-link barpos" href="#">BarPOS</a>
+        <a class="nav-link" href="#">Soluciones</a>
+        <a class="nav-link" href="#">Canal B2B</a>
+        <a class="nav-link" href="#">Marcas</a>
+        <a class="nav-link" href="#">Nosotros</a>
+        <a class="nav-link" href="#">Contacto</a>
+      </nav>
+      <a class="quote" href="#">Cotizar por WhatsApp</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section>
+      <div class="option-label">Opcion A - Editorial con producto protagonista</div>
+      <div class="screen option-a">
+        <div class="a-hero">
+          <div class="a-copy">
+            <div class="eyebrow">Canal corporativo - Empresas y organizaciones</div>
+            <h1>Soluciones IT completas para operar sin friccion.</h1>
+            <p style="margin-top:24px">Una pagina interna con mas presencia visual: hero asimetrico, imagen real de equipamiento y una primera bajada que ya muestra propuesta, prueba y accion.</p>
+            <div class="btns">
+              <a class="btn btn-primary" href="#">Pedir cotizacion</a>
+              <a class="btn btn-secondary" href="#">Ver marcas</a>
+            </div>
+            <div class="metric">
+              <div><b>18</b><span>anos en el rubro</span></div>
+              <div><b>ARG</b><span>cobertura nacional</span></div>
+              <div><b>B2B</b><span>atencion comercial</span></div>
+            </div>
+          </div>
+          <div class="a-media">
+            <div class="a-photo"></div>
+            <div class="a-strip">
+              <div><b>Stock real</b><span>Equipamiento y alternativas por proyecto.</span></div>
+              <div><b>Asesoria</b><span>Comparacion tecnica antes de comprar.</span></div>
+              <div><b>Entrega</b><span>Logistica para empresas y canal.</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="a-next">
+          <div class="mini-card"><b>Infraestructura</b><span>Servidores, redes, energia y almacenamiento.</span></div>
+          <div class="mini-card"><b>Equipamiento</b><span>Notebooks, PCs, monitores y perifericos.</span></div>
+          <div class="mini-card"><b>Servicios</b><span>Soporte, garantias, cloud y licencias.</span></div>
+          <div class="mini-card"><b>Canal</b><span>Condiciones para empresas y revendedores.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="option-label">Opcion B - Hub operativo B2B</div>
+      <div class="screen option-b">
+        <div class="b-hero">
+          <div class="b-copy">
+            <div class="eyebrow" style="color:#8fb5ff">Soluciones para compras tecnicas</div>
+            <h1>Una pagina que se siente como un centro de control.</h1>
+            <p style="margin-top:24px">Mas densa y profesional. Ideal para soluciones, empresas y revendedores: el usuario escanea categorias, prueba comercial y pasos de compra sin sentir que lee un documento.</p>
+            <div class="btns">
+              <a class="btn btn-primary" href="#">Armar consulta</a>
+              <a class="btn btn-secondary" style="border-color:rgba(255,255,255,.22);color:white" href="#">Hablar con ventas</a>
+            </div>
+          </div>
+          <div class="b-dashboard">
+            <div class="b-side">
+              <div>Proyecto activo</div>
+              <div>Infraestructura</div>
+              <div>Equipamiento</div>
+              <div>Cloud y licencias</div>
+              <div>Soporte</div>
+              <div>Logistica</div>
+            </div>
+            <div class="b-main">
+              <div class="b-row">
+                <div class="b-panel"><strong>24 h</strong><span>respuesta comercial promedio</span></div>
+                <div class="b-panel"><strong>Factura A</strong><span>operacion formal B2B</span></div>
+                <div class="b-panel"><strong>Mayorista</strong><span>condiciones por volumen</span></div>
+              </div>
+              <div class="b-panel b-big"></div>
+              <div class="b-row">
+                <div class="b-panel"><strong>1. Relevamiento</strong><span>Necesidad, rubro y cantidades.</span></div>
+                <div class="b-panel"><strong>2. Alternativas</strong><span>Modelos, marcas y disponibilidad.</span></div>
+                <div class="b-panel"><strong>3. Cotizacion</strong><span>Propuesta lista para aprobar.</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="b-next">
+          <div class="mini-card"><b>Aplicable a soluciones</b><span>Puede convertirse en template para servidores, redes, cloud, soporte y ciberseguridad.</span></div>
+          <div class="mini-card"><b>Menos PDF, mas sistema</b><span>La pagina comunica flujo y decision, no solo texto con tarjetas.</span></div>
+          <div class="mini-card"><b>Buen fit comercial</b><span>Funciona para empresas y revendedores con pocas variantes de contenido.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="option-label">Opcion C - Sistema tecnico con navegacion lateral</div>
+      <div class="screen option-c">
+        <div class="c-layout">
+          <aside class="c-sidebar">
+            <h3>Soluciones</h3>
+            <a class="active" href="#">Redes e infraestructura</a>
+            <a href="#">Servidores y storage</a>
+            <a href="#">Notebooks corporativas</a>
+            <a href="#">Ciberseguridad</a>
+            <a href="#">Cloud y licencias</a>
+            <a href="#">Soporte corporativo</a>
+            <a href="#">Renting y leasing</a>
+          </aside>
+          <div class="c-content">
+            <div class="c-hero">
+              <div>
+                <div class="eyebrow">Pagina de solucion - template reutilizable</div>
+                <h1>Redes, conectividad y seguridad listas para crecer.</h1>
+                <p style="margin-top:24px">Esta direccion sirve especialmente para todas las paginas de soluciones: una navegacion lateral reduce saltos, ordena el contenido y permite comparar areas sin volver al menu principal.</p>
+                <div class="btns">
+                  <a class="btn btn-primary" href="#">Consultar proyecto</a>
+                  <a class="btn btn-secondary" href="#">Ver servicios relacionados</a>
+                </div>
+                <div class="metric">
+                  <div><b>PoE</b><span>switching y WiFi</span></div>
+                  <div><b>FW</b><span>seguridad perimetral</span></div>
+                  <div><b>LAN</b><span>redes empresariales</span></div>
+                </div>
+              </div>
+              <div class="c-module">
+                <div class="c-module-top">
+                  <small>Stack recomendado</small>
+                  <small>Bartez IT</small>
+                </div>
+                <div class="c-photo"></div>
+                <div class="c-list">
+                  <div><span>Switches administrables</span><strong>Core</strong></div>
+                  <div><span>Access points WiFi 6</span><strong>Alta</strong></div>
+                  <div><span>Firewall y seguridad</span><strong>Critico</strong></div>
+                  <div><span>Cableado y racks</span><strong>Base</strong></div>
+                </div>
+              </div>
+            </div>
+            <div class="c-next">
+              <div class="mini-card"><b>Cuando usarla</b><span>Ideal para paginas de soluciones y categorias tecnicas.</span></div>
+              <div class="mini-card"><b>Fortaleza</b><span>Ordena mucha informacion sin convertirla en un documento plano.</span></div>
+              <div class="mini-card"><b>Riesgo</b><span>Es menos emocional para paginas como Nosotros o Contacto.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
