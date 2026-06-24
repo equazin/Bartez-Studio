@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server.js";
+import { after, NextResponse } from "next/server.js";
 import { validateSignature } from "../../../../lib/whatsapp/signature.ts";
 import { parseWebhookPayload } from "../../../../lib/whatsapp/parser.ts";
 import { handleIncomingMessage } from "../../../../lib/whatsapp/router.ts";
@@ -57,16 +57,17 @@ export async function POST(request: Request) {
   // 4. Extract message using parser.
   const parsed = parseWebhookPayload(payload);
 
-  // 5. If it's a valid message (not null, not a status update), process it.
-  //    We return 200 immediately and process in the background to stay
-  //    under Meta's 5-second deadline.
+  // 5. If it's a valid message (not null, not a status update), process it
+  //    after the response so Meta receives a quick 200 and does not retry.
   if (parsed) {
-    try {
-      await handleIncomingMessage(parsed);
-      console.info("[wa:webhook] Mensaje procesado con éxito");
-    } catch (err) {
-      console.error("[wa:webhook] Error procesando mensaje", err);
-    }
+    after(async () => {
+      try {
+        await handleIncomingMessage(parsed);
+        console.info("[wa:webhook] Mensaje procesado con éxito");
+      } catch (err) {
+        console.error("[wa:webhook] Error procesando mensaje", err);
+      }
+    });
   }
 
   // 6. ALWAYS return 200 OK quickly.

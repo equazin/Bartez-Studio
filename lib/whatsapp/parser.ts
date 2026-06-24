@@ -15,6 +15,7 @@ export type ParsedMessage = {
     | "unsupported";
   body: string; // Text content or button/list reply title
   replyId?: string; // For interactive replies, the button/row ID
+  mediaId?: string; // For media messages
   timestamp: number;
 };
 
@@ -127,10 +128,12 @@ export function parseWebhookPayload(body: unknown): ParsedMessage | null {
 
   // --- Media messages (image / document / audio) ---
   if (message.type === "image" || message.type === "document" || message.type === "audio") {
+    const mediaObj = message[message.type] as { id?: string } | undefined;
     return {
       ...base,
       messageType: message.type,
       body: "",
+      mediaId: mediaObj?.id,
     };
   }
 

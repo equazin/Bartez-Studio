@@ -150,6 +150,34 @@ test("parseWebhookPayload handles image message as media type", () => {
   assert.equal(result.body, "");
 });
 
+test("parseWebhookPayload handles audio message as media type with mediaId", () => {
+  const payload = {
+    object: "whatsapp_business_account",
+    entry: [{
+      changes: [{
+        field: "messages",
+        value: {
+          messaging_product: "whatsapp",
+          contacts: [{ profile: { name: "Voice Note Sender" }, wa_id: "111222" }],
+          messages: [{
+            from: "111222",
+            id: "wamid.audio-msg",
+            timestamp: "1700000000",
+            type: "audio",
+            audio: { id: "audio_abc_123", mime_type: "audio/ogg" },
+          }],
+        },
+      }],
+    }],
+  };
+
+  const result = parseWebhookPayload(payload);
+  assert.ok(result);
+  assert.equal(result.messageType, "audio");
+  assert.equal(result.mediaId, "audio_abc_123");
+  assert.equal(result.body, "");
+});
+
 // ── Signature Tests ──────────────────────────────────────────
 
 test("validateSignature returns false when secret is not configured", async () => {

@@ -7,6 +7,10 @@ export const WHATSAPP_API_TOKEN = process.env.WHATSAPP_API_TOKEN ?? "";
 export const WEBHOOK_VERIFY_TOKEN = process.env.WEBHOOK_VERIFY_TOKEN ?? "";
 export const WHATSAPP_APP_SECRET = process.env.WHATSAPP_APP_SECRET ?? "";
 
+export const WHATSAPP_REQUIRE_LEAD_CONFIRMATION = process.env.WHATSAPP_REQUIRE_LEAD_CONFIRMATION !== "false";
+export const WHATSAPP_SANDBOX_NUMBER_NORMALIZATION = process.env.WHATSAPP_SANDBOX_NUMBER_NORMALIZATION === "true";
+export const WHATSAPP_AUDIO_TRANSCRIPTION_ENABLED = process.env.WHATSAPP_AUDIO_TRANSCRIPTION_ENABLED === "true";
+
 /** Meta Graph API base URL (v22.0) */
 export const GRAPH_API_BASE = "https://graph.facebook.com/v22.0";
 

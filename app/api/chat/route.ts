@@ -93,7 +93,7 @@ export async function POST(request: Request) {
 
   const modelMessages = await convertToModelMessages(messages);
   const result = streamText({
-    model: process.env.AI_GATEWAY_MODEL || "openai/gpt-5.4",
+    model: process.env.AI_GATEWAY_MODEL || "anthropic/claude-haiku-4.5",
     system: ASSISTANT_INSTRUCTIONS,
     messages: modelMessages,
     maxOutputTokens: 500,

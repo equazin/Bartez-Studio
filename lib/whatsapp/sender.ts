@@ -1,4 +1,4 @@
-// ---------------------------------------------------------------------------
+﻿// ---------------------------------------------------------------------------
 // WhatsApp Cloud API — Message Sender
 // ---------------------------------------------------------------------------
 
@@ -6,6 +6,7 @@ import {
   GRAPH_API_BASE,
   WHATSAPP_API_TOKEN,
   WHATSAPP_PHONE_NUMBER_ID,
+  WHATSAPP_SANDBOX_NUMBER_NORMALIZATION,
 } from "./config.ts";
 
 /** Endpoint for the configured phone-number ID. */
@@ -20,31 +21,67 @@ function headers(): HeadersInit {
   };
 }
 
+export interface SendResult {
+  success: boolean;
+  error?: string;
+}
+
+/**
+ * Optional sandbox-only recipient normalization.
+ * Keep disabled in production: real WhatsApp numbers must be sent as Meta delivers them.
+ */
+function normalizeRecipient(to: string): string {
+  if (!WHATSAPP_SANDBOX_NUMBER_NORMALIZATION) return to;
+
+  // Rosario mobile sandbox mapping: incoming 549341... -> allowed-list 5434115...
+  if (to.startsWith("549341") && to.length === 13) {
+    return "5434115" + to.slice(6);
+  }
+  return to;
+}
+
 /**
  * Low-level POST to the messages endpoint.
- * Returns `true` on a 2xx response; logs and returns `false` otherwise.
+ * Returns SendResult.
  */
-async function post(payload: Record<string, unknown>): Promise<boolean> {
+async function post(payload: Record<string, unknown>): Promise<SendResult> {
+  if (!WHATSAPP_PHONE_NUMBER_ID || !WHATSAPP_API_TOKEN) {
+    return { success: false, error: "WhatsApp Cloud API no configurado" };
+  }
+
   try {
+    const normalizedPayload = { ...payload };
+    if (normalizedPayload.to && typeof normalizedPayload.to === "string") {
+      normalizedPayload.to = normalizeRecipient(normalizedPayload.to);
+    }
+
     const res = await fetch(messagesUrl(), {
       method: "POST",
       headers: headers(),
-      body: JSON.stringify({ messaging_product: "whatsapp", ...payload }),
+      body: JSON.stringify({ messaging_product: "whatsapp", ...normalizedPayload }),
     });
     if (!res.ok) {
       const text = await res.text().catch(() => "");
       console.error(`[whatsapp/sender] ${res.status} ${res.statusText}`, text);
-      return false;
+      let errorMsg = `${res.status} ${res.statusText}`;
+      try {
+        const parsed = JSON.parse(text);
+        if (parsed.error?.message) {
+          errorMsg = parsed.error.message;
+        }
+      } catch {}
+      return { success: false, error: errorMsg };
     }
-    return true;
+    return { success: true };
   } catch (error) {
+    const errorMsg = error instanceof Error ? error.message : String(error);
     console.error(
       "[whatsapp/sender] Network error",
       error instanceof Error ? error.stack || error.message : error,
       "cause:",
-      (error as any)?.cause
+      (error as any)?.cause,
     );
-    return false;
+    return { success: false, error: `Error de red: ${errorMsg}` };
   }
 }
 
@@ -56,7 +93,7 @@ async function post(payload: Record<string, unknown>): Promise<boolean> {
 export async function sendTextMessage(
   to: string,
   text: string,
-): Promise<boolean> {
+): Promise<SendResult> {
   return post({
     recipient_type: "individual",
     to,
@@ -72,12 +109,11 @@ export async function sendInteractiveButtons(
   to: string,
   body: string,
   buttons: Array<{ id: string; title: string }>,
-): Promise<boolean> {
+): Promise<SendResult> {
   if (buttons.length === 0 || buttons.length > 3) {
-    console.error(
-      `[whatsapp/sender] Interactive buttons must have 1–3 items, got ${buttons.length}`,
-    );
-    return false;
+    const err = `Interactive buttons must have 1–3 items, got ${buttons.length}`;
+    console.error(`[whatsapp/sender] ${err}`);
+    return { success: false, error: err };
   }
 
   return post({
@@ -108,7 +144,7 @@ export async function sendInteractiveList(
     title: string;
     rows: Array<{ id: string; title: string; description?: string }>;
   }>,
-): Promise<boolean> {
+): Promise<SendResult> {
   return post({
     recipient_type: "individual",
     to,

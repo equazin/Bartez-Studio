@@ -8,3 +8,6 @@ await import("./integrations/mail.test.ts");
 await import("./integrations/monday.test.ts");
 await import("./db-fallback.test.ts");
 await import("./admin-auth.test.ts");
+await import("./whatsapp-webhook.test.ts");
+await import("./whatsapp-router.test.ts");
+await import("./admin-conversations.test.ts");

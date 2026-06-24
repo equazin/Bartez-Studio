@@ -21,6 +21,7 @@ class PrismaMock {
     this.updateConversationCalls = [];
     this.createMessageCalls = [];
     this.findManyMessageCalls = [];
+    (globalThis as any).prisma = this;
   }
 
   waConversation = {
@@ -85,8 +86,12 @@ test("handleIncomingMessage processes inbound text message, calls AI, saves outb
   // Env variables for Vercel AI SDK
   const oldGatewayKey = process.env.AI_GATEWAY_API_KEY;
   const oldOpenaiKey = process.env.OPENAI_API_KEY;
+  const oldWaToken = process.env.WHATSAPP_API_TOKEN;
+  const oldWaPhoneId = process.env.WHATSAPP_PHONE_NUMBER_ID;
   process.env.AI_GATEWAY_API_KEY = "mock-key";
   process.env.OPENAI_API_KEY = "mock-key";
+  process.env.WHATSAPP_API_TOKEN = "mock-wa-token";
+  process.env.WHATSAPP_PHONE_NUMBER_ID = "123456789";
 
   const originalFetch = global.fetch;
   const fetchCalls: Array<{ url: string; options: any }> = [];
@@ -185,19 +190,27 @@ test("handleIncomingMessage processes inbound text message, calls AI, saves outb
     global.fetch = originalFetch;
     process.env.AI_GATEWAY_API_KEY = oldGatewayKey;
     process.env.OPENAI_API_KEY = oldOpenaiKey;
+    process.env.WHATSAPP_API_TOKEN = oldWaToken;
+    process.env.WHATSAPP_PHONE_NUMBER_ID = oldWaPhoneId;
   }
 });
 
-test("handleIncomingMessage creates a lead when escalation is required and lead data is sufficient", async () => {
+test("handleIncomingMessage asks for confirmation before creating a lead", async () => {
   prismaMock.reset();
 
   const oldGatewayKey = process.env.AI_GATEWAY_API_KEY;
   const oldOpenaiKey = process.env.OPENAI_API_KEY;
   const oldMondayToken = process.env.MONDAY_API_TOKEN;
-  
+  const oldWaToken = process.env.WHATSAPP_API_TOKEN;
+  const oldWaPhoneId = process.env.WHATSAPP_PHONE_NUMBER_ID;
+  const oldLeadConfirmation = process.env.WHATSAPP_REQUIRE_LEAD_CONFIRMATION;
+
   process.env.AI_GATEWAY_API_KEY = "mock-key";
   process.env.OPENAI_API_KEY = "mock-key";
   process.env.MONDAY_API_TOKEN = "mock-token";
+  process.env.WHATSAPP_API_TOKEN = "mock-wa-token";
+  process.env.WHATSAPP_PHONE_NUMBER_ID = "123456789";
+  process.env.WHATSAPP_REQUIRE_LEAD_CONFIRMATION = "false";
 
   const originalFetch = global.fetch;
   const fetchCalls: Array<{ url: string; options: any }> = [];
@@ -263,19 +276,183 @@ test("handleIncomingMessage creates a lead when escalation is required and lead 
 
     const conv = prismaMock.conversations[0];
     assert.ok(conv);
-    assert.equal(conv.status, "escalated");
-    assert.equal(conv.leadCreated, true);
+    assert.equal(conv.status, "pending_lead_confirmation");
+    assert.equal(conv.leadCreated, false);
 
-    // Verify Monday.com API was called
+    // The lead must not be sent to Monday until the user confirms explicitly.
     const mondayCalls = fetchCalls.filter((c) => c.url.includes("api.monday.com"));
-    assert.equal(mondayCalls.length, 1);
-    
-    const bodyStr = mondayCalls[0].options.body;
-    assert.match(bodyStr, /Acme Corp/);
+    assert.equal(mondayCalls.length, 0);
+
+    const outboundMsg = prismaMock.messages.find((m) => m.direction === "outbound");
+    assert.ok(outboundMsg);
+    assert.match(outboundMsg.body, /confirmame con "SI"/);
+    assert.ok(outboundMsg.metadata?.pendingLead);
   } finally {
     global.fetch = originalFetch;
     process.env.AI_GATEWAY_API_KEY = oldGatewayKey;
     process.env.OPENAI_API_KEY = oldOpenaiKey;
     process.env.MONDAY_API_TOKEN = oldMondayToken;
+    process.env.WHATSAPP_API_TOKEN = oldWaToken;
+    process.env.WHATSAPP_PHONE_NUMBER_ID = oldWaPhoneId;
+    process.env.WHATSAPP_REQUIRE_LEAD_CONFIRMATION = oldLeadConfirmation;
+  }
+});
+
+
+test("handleIncomingMessage creates lead after explicit WhatsApp confirmation", async () => {
+  prismaMock.reset();
+
+  const oldGatewayKey = process.env.AI_GATEWAY_API_KEY;
+  const oldOpenaiKey = process.env.OPENAI_API_KEY;
+  const oldMondayToken = process.env.MONDAY_API_TOKEN;
+  const oldWaToken = process.env.WHATSAPP_API_TOKEN;
+  const oldWaPhoneId = process.env.WHATSAPP_PHONE_NUMBER_ID;
+
+  process.env.AI_GATEWAY_API_KEY = "mock-key";
+  process.env.OPENAI_API_KEY = "mock-key";
+  process.env.MONDAY_API_TOKEN = "mock-token";
+  process.env.WHATSAPP_API_TOKEN = "mock-wa-token";
+  process.env.WHATSAPP_PHONE_NUMBER_ID = "123456789";
+
+  const originalFetch = global.fetch;
+  const fetchCalls: Array<{ url: string; options: any }> = [];
+
+  global.fetch = (async (url: string, options: any) => {
+    fetchCalls.push({ url, options });
+
+    if (url.includes("/messages")) {
+      return new Response(JSON.stringify({ ok: true }), { status: 200 });
+    }
+
+    if (url.includes("api.monday.com")) {
+      return new Response(JSON.stringify({ data: { create_item: { id: "monday-item-confirmed" } } }), { status: 200 });
+    }
+
+    return new Response(JSON.stringify({ ok: true }), { status: 200 });
+  }) as any;
+
+  try {
+    prismaMock.conversations.push({
+      id: "conv_pending_123",
+      waId: "5493415559999",
+      profileName: "Marcos Acme",
+      status: "pending_lead_confirmation",
+      category: "cotizacion",
+      leadCreated: false,
+    });
+
+    prismaMock.messages.push({
+      id: "msg_pending_lead",
+      conversationId: "conv_pending_123",
+      waMessageId: "bot_conv_pending_123_1",
+      direction: "outbound",
+      type: "text",
+      body: "Confirmación pendiente",
+      category: "cotizacion",
+      metadata: {
+        pendingLead: {
+          empresa: "Acme Corp",
+          nombre: "Marcos Acme",
+          email: "5493415559999@whatsapp.placeholder",
+          telefono: "5493415559999",
+          tipoConsulta: "cotizacion",
+          mensaje: "[WhatsApp] Conversación #conv_pending_123\nNecesidad: Cotizar 10 servidores Xeon",
+          agendarReunion: false,
+          origen: "whatsapp",
+        },
+      },
+      createdAt: new Date(Date.now() - 1000),
+    });
+
+    await handleIncomingMessage({
+      senderPhone: "5493415559999",
+      senderName: "Marcos Acme",
+      messageId: "wamid.confirm-lead",
+      messageType: "text" as const,
+      body: "SI, confirmo",
+      timestamp: Date.now(),
+    });
+
+    const conv = prismaMock.conversations[0];
+    assert.equal(conv.status, "escalated");
+    assert.equal(conv.leadCreated, true);
+
+    const mondayCalls = fetchCalls.filter((c) => c.url.includes("api.monday.com"));
+    assert.equal(mondayCalls.length, 1);
+  } finally {
+    global.fetch = originalFetch;
+    process.env.AI_GATEWAY_API_KEY = oldGatewayKey;
+    process.env.OPENAI_API_KEY = oldOpenaiKey;
+    process.env.MONDAY_API_TOKEN = oldMondayToken;
+    process.env.WHATSAPP_API_TOKEN = oldWaToken;
+    process.env.WHATSAPP_PHONE_NUMBER_ID = oldWaPhoneId;
+  }
+});
+
+test("handleIncomingMessage skips processing if conversation status is escalated", async () => {
+  prismaMock.reset();
+
+  const oldGatewayKey = process.env.AI_GATEWAY_API_KEY;
+  const oldOpenaiKey = process.env.OPENAI_API_KEY;
+  process.env.AI_GATEWAY_API_KEY = "mock-key";
+  process.env.OPENAI_API_KEY = "mock-key";
+  process.env.WHATSAPP_API_TOKEN = "mock-wa-token";
+  process.env.WHATSAPP_PHONE_NUMBER_ID = "123456789";
+
+  const originalFetch = global.fetch;
+  const fetchCalls: Array<{ url: string; options: any }> = [];
+
+  global.fetch = (async (url: string, options: any) => {
+    fetchCalls.push({ url, options });
+    return new Response(JSON.stringify({ messaging_product: "whatsapp", messages: [{ id: "wamid.sent-escalated" }] }), {
+      status: 200,
+    });
+  }) as any;
+
+  try {
+    // 1. Seed an escalated conversation in the mock DB
+    prismaMock.conversations.push({
+      id: "conv_escalated_123",
+      waId: "5493415551111",
+      profileName: "Escalated User",
+      status: "escalated",
+      leadCreated: true,
+    });
+
+    const incomingParsed = {
+      senderPhone: "5493415551111",
+      senderName: "Escalated User",
+      messageId: "wamid.msg-during-escalation",
+      messageType: "text" as const,
+      body: "Hola, ¿hay alguien ahí?",
+      timestamp: Date.now(),
+    };
+
+    await handleIncomingMessage(incomingParsed);
+
+    // 2. Outbound message should NOT be created
+    // Total messages should be 1 (the inbound message we just registered)
+    assert.equal(prismaMock.messages.length, 1);
+    const inboundMsg = prismaMock.messages[0];
+    assert.equal(inboundMsg.direction, "inbound");
+    assert.equal(inboundMsg.body, "Hola, ¿hay alguien ahí?");
+
+    // 3. No outbound messages should have been sent to Meta API
+    const whatsappSends = fetchCalls.filter((c) => c.url.includes("/messages"));
+    // Since it's escalated, we markAsRead (blue ticks) is acceptable/fired,
+    // but no sendTextMessage (sending outbound message) should be called.
+    // Let's verify markAsRead is called but no text send.
+    // Let's check that we didn't send any reply.
+    const outboundSends = whatsappSends.filter((c) => {
+      if (!c.options.body) return false;
+      const b = JSON.parse(c.options.body);
+      return b.text !== undefined;
+    });
+    assert.equal(outboundSends.length, 0);
+
+  } finally {
+    global.fetch = originalFetch;
+    process.env.AI_GATEWAY_API_KEY = oldGatewayKey;
+    process.env.OPENAI_API_KEY = oldOpenaiKey;
   }
 });

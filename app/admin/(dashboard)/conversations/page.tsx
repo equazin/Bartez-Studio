@@ -20,10 +20,12 @@ import {
 
 type Message = {
   id: string;
+  waMessageId: string;
   direction: "inbound" | "outbound";
   type: string;
   body: string | null;
   category: string | null;
+  metadata?: any;
   createdAt: string;
 };
 
@@ -41,12 +43,14 @@ type Conversation = {
 const statusLabels: Record<string, string> = {
   active: "Activo",
   escalated: "Escalado",
+  pending_lead_confirmation: "Pendiente",
   resolved: "Resuelto",
 };
 
 const statusColors: Record<string, string> = {
   active: "border-blue-300 bg-blue-50 text-blue-900",
   escalated: "border-amber-300 bg-amber-50 text-amber-900",
+  pending_lead_confirmation: "border-purple-300 bg-purple-50 text-purple-900",
   resolved: "border-slate-300 bg-slate-50 text-slate-900",
 };
 
@@ -70,6 +74,8 @@ export default function AdminConversations() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [updating, setUpdating] = useState(false);
+  const [replyText, setReplyText] = useState("");
+  const [sendingReply, setSendingReply] = useState(false);
 
   // Fetch all conversations
   const loadConversations = useCallback(async (isSilent = false) => {
@@ -137,7 +143,7 @@ export default function AdminConversations() {
       });
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.error || "Error al actualizar");
-      
+
       // Update local state
       await loadConversations(true);
       await loadDetail(id, true);
@@ -146,6 +152,47 @@ export default function AdminConversations() {
     } finally {
       setUpdating(false);
     }
+  };
+
+  const sendManualReply = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedId || !replyText.trim() || sendingReply) return;
+
+    setSendingReply(true);
+    try {
+      const res = await fetch(`/api/admin/conversations/${selectedId}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: replyText.trim() }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) throw new Error(data.error || "Error al enviar mensaje");
+
+      setReplyText("");
+      // Reload conversation detail and list
+      await loadConversations(true);
+      await loadDetail(selectedId, true);
+    } catch (err) {
+      alert((err as Error).message);
+    } finally {
+      setSendingReply(false);
+    }
+  };
+
+  const stats = {
+    total: conversations.length,
+    active: conversations.filter((c) => c.status === "active").length,
+    escalated: conversations.filter((c) => c.status === "escalated").length,
+    resolved: conversations.filter((c) => c.status === "resolved").length,
+  };
+
+  const getPendingStatus = (c: Conversation): "new_message" | "escalated_bot" | null => {
+    if (c.status === "pending_lead_confirmation") return "escalated_bot";
+    if (c.status !== "escalated") return null;
+    const lastMsg = c.messages?.[0];
+    if (!lastMsg) return "escalated_bot"; // Escalated but no messages
+    if (lastMsg.direction === "inbound") return "new_message";
+    return lastMsg.waMessageId?.startsWith("bot_") ? "escalated_bot" : null;
   };
 
   const filtered = conversations.filter((c) => {
@@ -198,6 +245,51 @@ export default function AdminConversations() {
         </div>
       )}
 
+      {/* Stats Bar */}
+      {!loading && (
+        <div className="grid grid-cols-2 gap-4 mt-6 sm:grid-cols-4">
+          <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm flex items-center gap-3">
+            <span className="grid size-10 place-items-center rounded-lg bg-slate-100 text-slate-600">
+              <MessageSquare className="size-5" />
+            </span>
+            <div>
+              <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Total Chats</p>
+              <h4 className="text-xl font-bold text-slate-900 mt-0.5">{stats.total}</h4>
+            </div>
+          </div>
+
+          <div className="bg-white border border-blue-200 rounded-xl p-4 shadow-sm flex items-center gap-3">
+            <span className="grid size-10 place-items-center rounded-lg bg-blue-50 text-blue-700">
+              <RefreshCw className="size-5" />
+            </span>
+            <div>
+              <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Activos (Bot)</p>
+              <h4 className="text-xl font-bold text-blue-900 mt-0.5">{stats.active}</h4>
+            </div>
+          </div>
+
+          <div className="bg-white border border-amber-200 rounded-xl p-4 shadow-sm flex items-center gap-3">
+            <span className="grid size-10 place-items-center rounded-lg bg-amber-50 text-amber-700">
+              <Clock className="size-5" />
+            </span>
+            <div>
+              <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Escalados</p>
+              <h4 className="text-xl font-bold text-amber-900 mt-0.5">{stats.escalated}</h4>
+            </div>
+          </div>
+
+          <div className="bg-white border border-green-200 rounded-xl p-4 shadow-sm flex items-center gap-3">
+            <span className="grid size-10 place-items-center rounded-lg bg-green-50 text-green-700">
+              <CheckCircle2 className="size-5" />
+            </span>
+            <div>
+              <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Resueltos</p>
+              <h4 className="text-xl font-bold text-green-900 mt-0.5">{stats.resolved}</h4>
+            </div>
+          </div>
+        </div>
+      )}
+
       {loading ? (
         <div className="mt-20 flex justify-center">
           <AdminSpinner />
@@ -222,7 +314,7 @@ export default function AdminConversations() {
 
                 {/* Status Filter Tabs */}
                 <div className="flex gap-1 bg-slate-100 p-1 rounded-lg">
-                  {["all", "active", "escalated", "resolved"].map((st) => (
+                  {["all", "active", "pending_lead_confirmation", "escalated", "resolved"].map((st) => (
                     <button
                       key={st}
                       onClick={() => setStatusFilter(st)}
@@ -248,12 +340,19 @@ export default function AdminConversations() {
                   filtered.map((c) => {
                     const lastMsg = c.messages?.[0];
                     const active = selectedId === c.id;
+                    const pendingStatus = getPendingStatus(c);
                     return (
                       <button
                         key={c.id}
                         onClick={() => setSelectedId(c.id)}
-                        className={`w-full p-4 text-left transition-colors flex flex-col gap-1.5 ${
-                          active ? "bg-green-50/70" : "hover:bg-slate-50"
+                        className={`w-full p-4 text-left transition-colors flex flex-col gap-1.5 border-l-4 ${
+                          active
+                            ? "bg-green-50/70 border-l-green-700"
+                            : pendingStatus === "new_message"
+                              ? "bg-rose-50/40 hover:bg-rose-50 border-l-rose-500"
+                              : pendingStatus === "escalated_bot"
+                                ? "bg-amber-50/30 hover:bg-amber-50 border-l-amber-500"
+                                : "hover:bg-slate-50 border-l-transparent"
                         }`}
                       >
                         <div className="flex items-start justify-between gap-2">
@@ -277,6 +376,16 @@ export default function AdminConversations() {
                           >
                             {statusLabels[c.status] || c.status}
                           </span>
+                          {pendingStatus === "new_message" && (
+                            <span className="inline-flex items-center gap-1 rounded border border-rose-200 bg-rose-50 text-rose-800 px-1.5 py-0.5 text-[10.5px] font-bold animate-pulse">
+                              Nuevo Mensaje
+                            </span>
+                          )}
+                          {pendingStatus === "escalated_bot" && (
+                            <span className="inline-flex items-center gap-1 rounded border border-amber-200 bg-amber-50 text-amber-800 px-1.5 py-0.5 text-[10.5px] font-bold">
+                              Derivado
+                            </span>
+                          )}
                           {c.category && (
                             <span className="inline-flex items-center gap-1 rounded border border-green-200 bg-green-50 text-green-800 px-1.5 py-0.5 text-[10.5px] font-bold">
                               {categoryLabels[c.category] || c.category}
@@ -340,6 +449,7 @@ export default function AdminConversations() {
                       >
                         <option value="active">Activo</option>
                         <option value="escalated">Escalado</option>
+                        <option value="pending_lead_confirmation">Pendiente</option>
                         <option value="resolved">Resuelto</option>
                       </select>
                     </div>
@@ -389,15 +499,23 @@ export default function AdminConversations() {
                             }`}
                           >
                             <p className="whitespace-pre-wrap">{m.body}</p>
-                            
+
                             {/* Interactive details */}
                             {m.type === "interactive_reply" && (
                               <span className="mt-1 block text-[10px] uppercase font-bold tracking-wider opacity-60">
                                 🔘 Botón pulsado
                               </span>
                             )}
+
+                            {/* Failed delivery warning */}
+                            {!inbound && m.metadata?.failed && (
+                              <span className="mt-1.5 flex items-center gap-1 text-[11px] font-bold text-rose-200 bg-rose-950/40 border border-rose-800/40 px-2 py-1 rounded-md">
+                                <AlertCircle className="size-3.5 text-rose-400 flex-none" />
+                                Falló el envío: {m.metadata?.error || "Error de entrega"}
+                              </span>
+                            )}
                           </div>
-                          
+
                           <div className="flex items-center gap-1.5 px-1">
                             <span className="text-[10px] text-slate-500">
                               {formatDate(m.createdAt)}
@@ -413,6 +531,25 @@ export default function AdminConversations() {
                     })
                   )}
                 </div>
+
+                {/* Send Reply Input */}
+                <form onSubmit={sendManualReply} className="p-3 border-t border-slate-200 bg-white flex gap-2">
+                  <input
+                    type="text"
+                    value={replyText}
+                    onChange={(e) => setReplyText(e.target.value)}
+                    disabled={sendingReply}
+                    placeholder="Escribí un mensaje de WhatsApp..."
+                    className="flex-1 h-9 rounded-lg border border-slate-300 px-3 text-[13px] text-slate-900 outline-none focus:border-green-700"
+                  />
+                  <AdminButton
+                    type="submit"
+                    disabled={sendingReply || !replyText.trim()}
+                    className="h-9 px-4 bg-green-800 text-white hover:bg-green-900 flex items-center justify-center font-bold text-[12.5px] rounded-lg"
+                  >
+                    {sendingReply ? "Enviando..." : "Enviar"}
+                  </AdminButton>
+                </form>
 
                 {/* Lead Info Footer panel (if lead details are present) */}
                 {selectedConv.status === "escalated" && (

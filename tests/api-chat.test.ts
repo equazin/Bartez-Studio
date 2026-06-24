@@ -23,8 +23,16 @@ test("POST /api/chat - returns 503 if no API keys configured", async () => {
     const body = await res.json();
     assert.match(body.error, /temporalmente fuera de servicio/);
   } finally {
-    process.env.VERCEL_OIDC_TOKEN = originalEnvToken;
-    process.env.AI_GATEWAY_API_KEY = originalEnvKey;
+    if (originalEnvToken === undefined) {
+      delete process.env.VERCEL_OIDC_TOKEN;
+    } else {
+      process.env.VERCEL_OIDC_TOKEN = originalEnvToken;
+    }
+    if (originalEnvKey === undefined) {
+      delete process.env.AI_GATEWAY_API_KEY;
+    } else {
+      process.env.AI_GATEWAY_API_KEY = originalEnvKey;
+    }
   }
 });
 
@@ -95,14 +103,26 @@ test("POST /api/chat - rate limits after 12 requests", async () => {
 
   try {
     for (let i = 0; i < 12; i++) {
+      delete process.env.VERCEL_OIDC_TOKEN;
+      delete process.env.AI_GATEWAY_API_KEY;
       const res = await POST(makeRequest());
-      assert.equal(res.status, 503);
+      assert.notEqual(res.status, 429);
     }
 
+    delete process.env.VERCEL_OIDC_TOKEN;
+    delete process.env.AI_GATEWAY_API_KEY;
     const res = await POST(makeRequest());
     assert.equal(res.status, 429);
   } finally {
-    process.env.VERCEL_OIDC_TOKEN = originalEnvToken;
-    process.env.AI_GATEWAY_API_KEY = originalEnvKey;
+    if (originalEnvToken === undefined) {
+      delete process.env.VERCEL_OIDC_TOKEN;
+    } else {
+      process.env.VERCEL_OIDC_TOKEN = originalEnvToken;
+    }
+    if (originalEnvKey === undefined) {
+      delete process.env.AI_GATEWAY_API_KEY;
+    } else {
+      process.env.AI_GATEWAY_API_KEY = originalEnvKey;
+    }
   }
 });
