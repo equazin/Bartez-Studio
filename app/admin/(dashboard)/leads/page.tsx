@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { Building2, DollarSign, Mail, MessageSquare, Pencil, Phone, Plus, Save, Trash2, User, X } from "lucide-react";
+import { Building2, DollarSign, Download, Mail, MessageSquare, Pencil, Phone, Plus, Save, Trash2, User, X } from "lucide-react";
 import {
   AdminAlert,
   AdminButton,
@@ -203,7 +203,12 @@ export default function LeadsPage() {
           <h1 className="font-display text-[clamp(28px,3vw,36px)] font-bold tracking-[-0.035em] text-slate-950">CRM — Leads</h1>
           <p className="mt-2 text-[14px] font-medium text-slate-700">Pipeline comercial de Bartez. Gestioná tus oportunidades de negocio.</p>
         </div>
-        <AdminButton onClick={() => setEditing({ ...emptyLead })}><Plus />Nuevo lead</AdminButton>
+        <div className="flex gap-2">
+          <AdminButton variant="secondary" asChild>
+            <a href={`/api/admin/leads/export${statusFilter ? `?status=${statusFilter}` : ""}`} download><Download className="size-4" />CSV</a>
+          </AdminButton>
+          <AdminButton onClick={() => setEditing({ ...emptyLead })}><Plus />Nuevo lead</AdminButton>
+        </div>
       </div>
 
       {error && <div className="mt-5"><AdminAlert tone="error">{error}</AdminAlert></div>}

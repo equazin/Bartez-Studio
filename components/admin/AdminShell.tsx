@@ -7,6 +7,7 @@ import { Dialog } from "radix-ui";
 import { BarChart3, BriefcaseBusiness, ExternalLink, FileText, LayoutDashboard, LogOut, Menu, MessageSquare, ScrollText, UserCheck, UsersRound, X } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { AdminButton } from "./AdminUI";
+import { AdminToastProvider, LeadNotificationPoller } from "./AdminToast";
 
 const navigation = [
   { href: "/admin", label: "Inicio", icon: LayoutDashboard, group: "main" },
@@ -137,6 +138,9 @@ export function AdminShell({ username, children }: { username: string; children:
 
         <main className="px-4 py-7 sm:px-6 lg:px-8 lg:py-8 xl:px-10">{children}</main>
       </div>
+
+      <AdminToastProvider />
+      <LeadNotificationPoller />
     </div>
   );
 }
