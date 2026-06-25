@@ -5,6 +5,7 @@ import { mondaySink } from "./monday.ts";
 import { mailSink } from "./mail.ts";
 import { calendarSink } from "./calendar.ts";
 import { archiveSink } from "./archive.ts";
+import { crmSink } from "./crm.ts";
 import { createHash } from "node:crypto";
 
 /**
@@ -13,7 +14,7 @@ import { createHash } from "node:crypto";
  * NO afecta a las demás. La API sólo confirma recepción cuando al menos
  * un destino durable conserva el lead.
  */
-const sinks: LeadSink[] = [archiveSink, apolloSink, mondaySink, mailSink, calendarSink];
+const sinks: LeadSink[] = [crmSink, archiveSink, apolloSink, mondaySink, mailSink, calendarSink];
 
 export async function processLead(lead: Lead): Promise<{
   results: IntegrationResult[];

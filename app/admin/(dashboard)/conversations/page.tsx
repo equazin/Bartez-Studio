@@ -320,7 +320,7 @@ export default function AdminConversations() {
                     placeholder="Buscar chat..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="h-10 w-full rounded-lg border border-slate-300 bg-slate-50 pl-9 pr-3 text-[13.5px] outline-none hover:border-slate-400 focus:border-green-700 focus:bg-white"
+                    className="h-10 w-full rounded-lg border border-slate-300 bg-slate-50 pl-9 pr-3 text-[13.5px] outline-none hover:border-slate-400 focus:border-brand focus:bg-white"
                   />
                 </div>
 
@@ -431,7 +431,7 @@ export default function AdminConversations() {
                 {/* Header */}
                 <div className="p-4 border-b border-slate-200 bg-slate-50 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="size-10 rounded-full bg-green-800 text-white flex items-center justify-center font-bold text-[16px]">
+                    <div className="size-10 rounded-full bg-brand text-white flex items-center justify-center font-bold text-[16px]">
                       {selectedConv.profileName ? (
                         selectedConv.profileName.charAt(0).toUpperCase()
                       ) : (
@@ -457,7 +457,7 @@ export default function AdminConversations() {
                         value={selectedConv.status}
                         onChange={(e) => updateConvProp(selectedConv.id, "status", e.target.value)}
                         disabled={updating}
-                        className="h-8 rounded border border-slate-300 bg-white px-2 text-[12.5px] font-bold text-slate-900 outline-none focus:border-green-700"
+                        className="h-8 rounded border border-slate-300 bg-white px-2 text-[12.5px] font-bold text-slate-900 outline-none focus:border-brand"
                       >
                         <option value="active">Activo</option>
                         <option value="escalated">Escalado</option>
@@ -475,7 +475,7 @@ export default function AdminConversations() {
                         value={selectedConv.category || "info_general"}
                         onChange={(e) => updateConvProp(selectedConv.id, "category", e.target.value)}
                         disabled={updating}
-                        className="h-8 rounded border border-slate-300 bg-white px-2 text-[12.5px] font-bold text-slate-900 outline-none focus:border-green-700"
+                        className="h-8 rounded border border-slate-300 bg-white px-2 text-[12.5px] font-bold text-slate-900 outline-none focus:border-brand"
                       >
                         {Object.entries(categoryLabels).map(([key, label]) => (
                           <option key={key} value={key}>
@@ -507,7 +507,7 @@ export default function AdminConversations() {
                             className={`rounded-xl px-4 py-2.5 text-[13.5px] font-medium leading-relaxed shadow-sm ${
                               inbound
                                 ? "bg-white text-slate-950 border border-slate-200"
-                                : "bg-green-800 text-white"
+                                : "bg-brand text-white"
                             }`}
                           >
                             <p className="whitespace-pre-wrap">{m.body}</p>
@@ -533,7 +533,7 @@ export default function AdminConversations() {
                               {formatDate(m.createdAt)}
                             </span>
                             {!inbound && m.category && (
-                              <span className="text-[9.5px] bg-green-100 text-green-800 font-bold px-1 rounded">
+                              <span className="text-[9.5px] bg-blue-100 text-blue-800 font-bold px-1 rounded">
                                 {m.category}
                               </span>
                             )}
@@ -552,12 +552,12 @@ export default function AdminConversations() {
                     onChange={(e) => setReplyText(e.target.value)}
                     disabled={sendingReply}
                     placeholder="Escribí un mensaje de WhatsApp..."
-                    className="flex-1 h-9 rounded-lg border border-slate-300 px-3 text-[13px] text-slate-900 outline-none focus:border-green-700"
+                    className="flex-1 h-9 rounded-lg border border-slate-300 px-3 text-[13px] text-slate-900 outline-none focus:border-brand"
                   />
                   <AdminButton
                     type="submit"
                     disabled={sendingReply || !replyText.trim()}
-                    className="h-9 px-4 bg-green-800 text-white hover:bg-green-900 flex items-center justify-center font-bold text-[12.5px] rounded-lg"
+                    className="h-9 px-4"
                   >
                     {sendingReply ? "Enviando..." : "Enviar"}
                   </AdminButton>

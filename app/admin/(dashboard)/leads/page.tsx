@@ -136,7 +136,7 @@ export default function LeadsPage() {
       <div className="mx-auto max-w-[860px]">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <button onClick={() => setEditing(null)} className="inline-flex items-center gap-1 text-[13px] font-bold text-green-800 hover:underline"><X className="size-4" />Volver</button>
+            <button onClick={() => setEditing(null)} className="inline-flex items-center gap-1 text-[13px] font-bold text-brand hover:underline"><X className="size-4" />Volver</button>
             <h1 className="mt-2 font-display text-[clamp(26px,3vw,34px)] font-bold tracking-[-0.035em] text-slate-950">{editing.id ? "Editar lead" : "Nuevo lead"}</h1>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -164,7 +164,7 @@ export default function LeadsPage() {
                 id="lead-source"
                 value={editing.source}
                 onChange={(e) => setEditing({ ...editing, source: e.target.value })}
-                className="h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-[13.5px] font-medium text-slate-950 outline-none focus:border-green-600 focus:ring-1 focus:ring-green-600"
+                className="h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-[13.5px] font-medium text-slate-950 outline-none focus:border-brand focus:ring-1 focus:ring-brand/30"
               >
                 {SOURCES.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
               </select>
@@ -174,7 +174,7 @@ export default function LeadsPage() {
                 id="lead-status"
                 value={editing.status}
                 onChange={(e) => setEditing({ ...editing, status: e.target.value })}
-                className="h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-[13.5px] font-medium text-slate-950 outline-none focus:border-green-600 focus:ring-1 focus:ring-green-600"
+                className="h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-[13.5px] font-medium text-slate-950 outline-none focus:border-brand focus:ring-1 focus:ring-brand/30"
               >
                 {STATUSES.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
               </select>

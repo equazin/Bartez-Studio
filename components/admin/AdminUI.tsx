@@ -7,12 +7,12 @@ import { AlertTriangle, CheckCircle2, ChevronLeft, ChevronRight, Loader2, Search
 import { cn } from "../../lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 rounded-lg border text-[13.5px] font-bold transition-[background-color,border-color,color,box-shadow] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-45 [&_svg]:size-4",
+  "inline-flex items-center justify-center gap-2 rounded-lg border text-[13.5px] font-bold transition-[background-color,border-color,color,box-shadow] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-45 [&_svg]:size-4",
   {
     variants: {
       variant: {
-        primary: "border-green-800 bg-green-800 text-white shadow-sm hover:border-green-900 hover:bg-green-900",
-        secondary: "border-slate-400 bg-white text-slate-900 hover:border-green-800 hover:bg-green-50 hover:text-green-900",
+        primary: "border-brand bg-brand text-white shadow-sm hover:border-brand-bright hover:bg-brand-bright",
+        secondary: "border-slate-300 bg-white text-slate-900 hover:border-brand hover:bg-blue-50 hover:text-brand",
         ghost: "border-transparent bg-transparent text-slate-700 hover:bg-slate-100 hover:text-slate-950",
         danger: "border-red-300 bg-white text-red-800 hover:border-red-400 hover:bg-red-50",
       },
@@ -33,7 +33,7 @@ export function AdminButton({ asChild, className, variant, size, ...props }: Adm
 export const AdminInput = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(
   ({ className, ...props }, ref) => (
     <input ref={ref} className={cn(
-      "h-11 w-full rounded-lg border border-slate-400 bg-white px-3.5 text-[14px] font-medium text-slate-950 outline-none placeholder:font-normal placeholder:text-slate-500 hover:border-slate-500 focus:border-green-700 focus:ring-2 focus:ring-green-700/15 disabled:bg-slate-100 disabled:text-slate-600",
+      "h-11 w-full rounded-lg border border-slate-400 bg-white px-3.5 text-[14px] font-medium text-slate-950 outline-none placeholder:font-normal placeholder:text-slate-500 hover:border-slate-500 focus:border-brand focus:ring-2 focus:ring-brand/15 disabled:bg-slate-100 disabled:text-slate-600",
       className,
     )} {...props} />
   ),
@@ -43,7 +43,7 @@ AdminInput.displayName = "AdminInput";
 export const AdminTextarea = React.forwardRef<HTMLTextAreaElement, React.TextareaHTMLAttributes<HTMLTextAreaElement>>(
   ({ className, ...props }, ref) => (
     <textarea ref={ref} className={cn(
-      "min-h-28 w-full resize-y rounded-lg border border-slate-400 bg-white px-3.5 py-3 text-[14px] font-medium leading-relaxed text-slate-950 outline-none placeholder:font-normal placeholder:text-slate-500 hover:border-slate-500 focus:border-green-700 focus:ring-2 focus:ring-green-700/15 disabled:bg-slate-100 disabled:text-slate-600",
+      "min-h-28 w-full resize-y rounded-lg border border-slate-400 bg-white px-3.5 py-3 text-[14px] font-medium leading-relaxed text-slate-950 outline-none placeholder:font-normal placeholder:text-slate-500 hover:border-slate-500 focus:border-brand focus:ring-2 focus:ring-brand/15 disabled:bg-slate-100 disabled:text-slate-600",
       className,
     )} {...props} />
   ),
@@ -82,7 +82,7 @@ export function AdminToggle({ checked, onCheckedChange, label, id }: { checked: 
   return (
     <label htmlFor={id} className="flex cursor-pointer items-center justify-between gap-4 rounded-lg border border-slate-300 bg-white px-3.5 py-3 hover:border-slate-400">
       <span className="text-[13.5px] font-bold text-slate-900">{label}</span>
-      <Switch.Root id={id} checked={checked} onCheckedChange={onCheckedChange} className="relative h-6 w-11 rounded-full bg-slate-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-700 focus-visible:ring-offset-2 data-[state=checked]:bg-green-700">
+      <Switch.Root id={id} checked={checked} onCheckedChange={onCheckedChange} className="relative h-6 w-11 rounded-full bg-slate-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 focus-visible:ring-offset-2 data-[state=checked]:bg-brand">
         <Switch.Thumb className="block size-5 translate-x-0.5 rounded-full bg-white shadow transition-transform data-[state=checked]:translate-x-[22px]" />
       </Switch.Root>
     </label>

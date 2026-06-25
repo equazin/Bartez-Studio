@@ -42,7 +42,7 @@ export function LoginForm() {
           <Image src="/brand/bartez-logo.png" alt="Bartez Tecnología" width={180} height={54} className="h-10 w-auto" priority />
           <div className="mt-12">
             <h1 className="font-display text-[clamp(32px,4vw,42px)] font-bold tracking-[-0.04em] text-slate-950">Acceso al panel</h1>
-            <p className="mt-3 max-w-[42ch] text-[15px] font-medium leading-relaxed text-slate-700">Gestioná artículos, clientes y casos publicados en el sitio institucional.</p>
+            <p className="mt-3 max-w-[42ch] text-[15px] font-medium leading-relaxed text-slate-700">CRM, analytics, contenido y comunicación en un solo lugar.</p>
           </div>
 
           <form onSubmit={submit} className="mt-9 flex flex-col gap-5">
@@ -64,17 +64,17 @@ export function LoginForm() {
             </AdminButton>
           </form>
 
-          <Link href="/" className="mt-8 inline-flex text-[13px] font-bold text-slate-700 hover:text-green-900">← Volver al sitio</Link>
+          <Link href="/" className="mt-8 inline-flex text-[13px] font-bold text-slate-700 hover:text-brand">← Volver al sitio</Link>
         </div>
       </section>
 
-      <aside className="relative hidden overflow-hidden border-l border-green-950 bg-[#064e3b] p-12 text-white lg:flex lg:flex-col lg:justify-between">
-        <ShieldCheck className="size-9 text-emerald" strokeWidth={1.5} />
+      <aside className="relative hidden overflow-hidden border-l border-white/[0.06] bg-[#070a16] p-12 text-white lg:flex lg:flex-col lg:justify-between">
+        <ShieldCheck className="size-9 text-sky" strokeWidth={1.5} />
         <div>
-          <p className="max-w-[14ch] font-display text-[40px] font-bold leading-[1.08] tracking-[-0.045em]">Contenido institucional, bajo control.</p>
-          <p className="mt-6 max-w-[42ch] text-[14px] font-medium leading-relaxed text-white">Sesiones protegidas, cambios validados y publicación coordinada con el sitio público.</p>
+          <p className="max-w-[14ch] font-display text-[40px] font-bold leading-[1.08] tracking-[-0.045em]">Sistema interno Bartez.</p>
+          <p className="mt-6 max-w-[42ch] text-[14px] font-medium leading-relaxed text-slate-300">CRM, analytics, contenido y comunicación. Todo desde un solo lugar.</p>
         </div>
-        <p className="text-[11px] font-bold uppercase tracking-[0.13em] text-green-100">Bartez Tecnología · Administración</p>
+        <p className="text-[11px] font-bold uppercase tracking-[0.13em] text-slate-500">Bartez Tecnología · Sistema interno</p>
       </aside>
     </main>
   );

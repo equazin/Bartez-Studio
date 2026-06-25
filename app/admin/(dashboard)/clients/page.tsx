@@ -122,7 +122,7 @@ export default function AdminClients() {
     return (
       <div className="mx-auto max-w-[980px]">
         <div className="flex flex-col gap-5 border-b border-slate-300 pb-5 sm:flex-row sm:items-center sm:justify-between">
-          <div><button onClick={() => setEditing(null)} className="inline-flex items-center gap-1.5 text-[12.5px] font-bold text-green-800 hover:text-green-950"><ArrowLeft className="size-4" /> Volver a clientes</button><h1 className="mt-2 font-display text-[clamp(26px,3vw,34px)] font-bold tracking-[-0.035em] text-slate-950">{isNew ? "Nuevo cliente" : "Editar cliente"}</h1></div>
+          <div><button onClick={() => setEditing(null)} className="inline-flex items-center gap-1.5 text-[12.5px] font-bold text-brand hover:text-brand-bright"><ArrowLeft className="size-4" /> Volver a clientes</button><h1 className="mt-2 font-display text-[clamp(26px,3vw,34px)] font-bold tracking-[-0.035em] text-slate-950">{isNew ? "Nuevo cliente" : "Editar cliente"}</h1></div>
           <div className="flex gap-2"><AdminButton variant="secondary" onClick={() => setEditing(null)}><X />Cancelar</AdminButton><AdminButton onClick={() => void save()} disabled={saving}><Save />{saving ? "Guardando…" : "Guardar"}</AdminButton></div>
         </div>
         {error ? <div className="mt-5"><AdminAlert>{error}</AdminAlert></div> : null}

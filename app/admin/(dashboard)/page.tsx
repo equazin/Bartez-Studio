@@ -97,7 +97,7 @@ export default async function AdminDashboard() {
               <span>Contenido</span><span>Tipo</span><span>Estado</span><span>Actualizado</span>
             </div>
             {recent.map((item) => (
-              <Link key={item.id} href={item.href} className="grid gap-2 border-b border-slate-200 px-5 py-4 transition-colors last:border-0 hover:bg-green-50/60 sm:px-6 md:grid-cols-[1.6fr_.6fr_.55fr_.7fr] md:items-center md:gap-4">
+              <Link key={item.id} href={item.href} className="grid gap-2 border-b border-slate-200 px-5 py-4 transition-colors last:border-0 hover:bg-blue-50/60 sm:px-6 md:grid-cols-[1.6fr_.6fr_.55fr_.7fr] md:items-center md:gap-4">
                 <div className="min-w-0"><p className="truncate text-[13.5px] font-bold text-slate-950">{item.title}</p><p className="mt-1 truncate text-[12px] text-slate-600">{item.subtitle}</p></div>
                 <p className="text-[12.5px] font-medium text-slate-700">{item.type}</p>
                 <div><StatusBadge active={item.active} activeLabel={item.type === "Lead" ? "Activo" : item.type === "Cliente" ? "Activo" : "Publicado"} inactiveLabel={item.type === "Lead" ? "Perdido" : item.type === "Cliente" ? "Inactivo" : "Borrador"} /></div>

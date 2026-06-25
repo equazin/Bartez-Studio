@@ -151,7 +151,7 @@ export default function AdminCases() {
     return (
       <div className="mx-auto max-w-[1240px]">
         <div className="flex flex-col gap-5 border-b border-slate-300 pb-5 md:flex-row md:items-center md:justify-between">
-          <div><button onClick={() => setEditing(null)} className="inline-flex items-center gap-1.5 text-[12.5px] font-bold text-green-800 hover:text-green-950"><ArrowLeft className="size-4" /> Volver a casos</button><h1 className="mt-2 font-display text-[clamp(26px,3vw,34px)] font-bold tracking-[-0.035em] text-slate-950">{isNew ? "Nuevo caso" : "Editar caso"}</h1></div>
+          <div><button onClick={() => setEditing(null)} className="inline-flex items-center gap-1.5 text-[12.5px] font-bold text-brand hover:text-brand-bright"><ArrowLeft className="size-4" /> Volver a casos</button><h1 className="mt-2 font-display text-[clamp(26px,3vw,34px)] font-bold tracking-[-0.035em] text-slate-950">{isNew ? "Nuevo caso" : "Editar caso"}</h1></div>
           <div className="flex flex-wrap gap-2">
             {!isNew && editing.id && editing.active ? <AdminButton asChild variant="secondary"><Link href={`/casos/${editing.id}`} target="_blank"><Eye />Vista previa</Link></AdminButton> : null}
             <AdminButton variant="secondary" onClick={() => setEditing(null)}><X />Cancelar</AdminButton>
