@@ -40,7 +40,7 @@ export default async function AdminDashboard() {
   const stats = [
     { label: "Leads", value: leadCount, note: "oportunidades comerciales", icon: UserCheck, accent: "border-blue-200 bg-blue-50 text-blue-900" },
     { label: "WhatsApp activos", value: activeConvos, note: "conversaciones en curso", icon: MessageSquare, accent: "border-purple-200 bg-purple-50 text-purple-900" },
-    { label: "Artículos", value: articleCount, note: `${publishedCount} publicados`, icon: FileText, accent: "border-green-200 bg-green-50 text-green-900" },
+    { label: "Artículos", value: articleCount, note: `${publishedCount} publicados`, icon: FileText, accent: "border-sky-200 bg-sky-50 text-sky-900" },
     { label: "Clientes", value: clientCount, note: "visibles en el sitio", icon: UsersRound, accent: "border-emerald-200 bg-emerald-50 text-emerald-900" },
     { label: "Casos de éxito", value: caseCount, note: "publicados", icon: BriefcaseBusiness, accent: "border-amber-200 bg-amber-50 text-amber-900" },
     { label: "Borradores", value: Math.max(0, articleCount - publishedCount), note: "pendientes de publicar", icon: FileClock, accent: "border-slate-200 bg-slate-50 text-slate-900" },

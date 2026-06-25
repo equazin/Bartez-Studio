@@ -213,7 +213,7 @@ export default function LeadsPage() {
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="h-10 rounded-lg border border-slate-300 bg-white px-3 text-[13px] font-medium text-slate-700 outline-none focus:border-green-600"
+          className="h-10 rounded-lg border border-slate-300 bg-white px-3 text-[13px] font-medium text-slate-700 outline-none focus:border-brand"
         >
           <option value="">Todos los estados</option>
           {STATUSES.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}

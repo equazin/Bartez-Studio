@@ -169,7 +169,7 @@ export default function AdminCases() {
               <AdminField label="Métricas verificadas" htmlFor="case-metric" hint="Máximo 8. Publicá únicamente resultados autorizados.">
                 <div className="flex gap-2"><AdminInput id="case-metric" value={metric} onChange={(event) => setMetric(event.target.value)} maxLength={100} onKeyDown={(event) => { if (event.key === "Enter") { event.preventDefault(); addMetric(); } }} /><AdminButton type="button" variant="secondary" onClick={addMetric}><Plus />Agregar</AdminButton></div>
               </AdminField>
-              {metrics.length > 0 ? <div className="flex flex-wrap gap-2">{metrics.map((item, index) => <button key={`${item}-${index}`} onClick={() => setMetrics((current) => current.filter((_, metricIndex) => metricIndex !== index))} className="inline-flex items-center gap-1.5 rounded-md border border-green-200 bg-green-50 px-2.5 py-1.5 text-[12px] font-semibold text-brand">{item}<X className="size-3.5" /></button>)}</div> : null}
+              {metrics.length > 0 ? <div className="flex flex-wrap gap-2">{metrics.map((item, index) => <button key={`${item}-${index}`} onClick={() => setMetrics((current) => current.filter((_, metricIndex) => metricIndex !== index))} className="inline-flex items-center gap-1.5 rounded-md border border-blue-200 bg-blue-50 px-2.5 py-1.5 text-[12px] font-semibold text-brand">{item}<X className="size-3.5" /></button>)}</div> : null}
             </div>
           </AdminPanel>
           <div className="flex flex-col gap-5">
@@ -210,7 +210,7 @@ export default function AdminCases() {
             {items.map((item) => (
               <div key={item.id} className="grid gap-4 border-b border-slate-200 px-5 py-4 last:border-0 sm:grid-cols-[96px_minmax(0,1fr)_120px_110px] sm:items-center">
                 <div className="h-16 w-24 overflow-hidden rounded-lg border border-slate-300 bg-slate-100"><Image src={item.coverImage} alt="" width={96} height={64} className="size-full object-cover" /></div>
-                <div className="min-w-0"><p className="text-[11.5px] font-bold uppercase tracking-[0.08em] text-green-800">{item.clientName}</p><p className="mt-1 truncate text-[13.5px] font-bold text-slate-950">{item.title}</p><p className="mt-1 truncate text-[11.5px] font-medium text-slate-600">{item.description}</p></div>
+                <div className="min-w-0"><p className="text-[11.5px] font-bold uppercase tracking-[0.08em] text-brand">{item.clientName}</p><p className="mt-1 truncate text-[13.5px] font-bold text-slate-950">{item.title}</p><p className="mt-1 truncate text-[11.5px] font-medium text-slate-600">{item.description}</p></div>
                 <button className="justify-self-start" onClick={() => void toggle(item)}><StatusBadge active={item.active} activeLabel="Publicado" inactiveLabel="Oculto" /></button>
                 <div className="flex justify-end gap-1"><AdminButton variant="ghost" size="icon" onClick={() => editItem(item)} aria-label="Editar"><Pencil /></AdminButton><AdminButton variant="ghost" size="icon" onClick={() => setDeleteTarget(item)} aria-label="Eliminar"><Trash2 /></AdminButton></div>
               </div>

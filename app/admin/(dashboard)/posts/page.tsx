@@ -192,7 +192,7 @@ export default function AdminPosts() {
                   {blocks.map((block, index) => {
                     const paragraph = "p" in block;
                     return (
-                      <div key={index} className="grid grid-cols-[32px_minmax(0,1fr)_auto] items-start gap-2 rounded-lg border border-slate-300 bg-white p-2.5 focus-within:border-green-700 focus-within:ring-2 focus-within:ring-green-700/10">
+                      <div key={index} className="grid grid-cols-[32px_minmax(0,1fr)_auto] items-start gap-2 rounded-lg border border-slate-300 bg-white p-2.5 focus-within:border-brand focus-within:ring-2 focus-within:ring-brand/10">
                         <span className="grid size-8 place-items-center text-slate-400"><GripVertical className="size-4" /></span>
                         {paragraph ? (
                           <AdminTextarea aria-label={`Párrafo ${index + 1}`} value={block.p} onChange={(event) => updateBlock(index, event.target.value)} className="min-h-20 border-0 bg-transparent p-2 shadow-none focus:ring-0" placeholder="Escribí el párrafo…" />
