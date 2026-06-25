@@ -118,7 +118,7 @@ export function InternalPageShell({
   return (
     <>
       <Navbar />
-      <main className="overflow-x-hidden bg-white text-ink">
+      <main id="main-content" className="overflow-x-hidden bg-white text-ink">
         {showBreadcrumbs ? <Breadcrumbs /> : null}
         {children}
       </main>

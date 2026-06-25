@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function Gracias() {
   const wa = `https://wa.me/${contact.whatsappNumber}?text=${encodeURIComponent(contact.whatsappMessage)}`;
   return (
-    <main className="grid min-h-screen place-items-center bg-[linear-gradient(135deg,#070a16_0%,#11142a_100%)] px-7 text-white">
+    <main id="main-content" className="grid min-h-screen place-items-center bg-[linear-gradient(135deg,#070a16_0%,#11142a_100%)] px-7 text-white">
       <ConversionTracker />
       <div className="max-w-[520px] text-center">
         <span className="mx-auto mb-7 grid h-16 w-16 place-items-center rounded-full bg-[#1236d8]/15 text-[#0ea5ff]">

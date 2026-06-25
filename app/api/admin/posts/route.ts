@@ -4,6 +4,7 @@ import { generateSlug, invalidatePublicContent } from "../../../../lib/admin-con
 import { postCreateSchema } from "../../../../lib/admin-schema.ts";
 import { logAudit } from "../../../../lib/audit.ts";
 import { getDb } from "../../../../lib/db.ts";
+import { checkRateLimit } from "../../../../lib/rate-limit.ts";
 
 export const runtime = "nodejs";
 
@@ -30,6 +31,10 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   const auth = await authorizeAdminRequest(request, { mutation: true });
   if (auth.response) return auth.response;
+  const { allowed, retryAfter } = checkRateLimit(request, "admin:mutations", 30, 60_000);
+  if (!allowed) {
+    return new Response(JSON.stringify({ error: "Rate limit exceeded" }), { status: 429, headers: { "Retry-After": String(retryAfter) } });
+  }
   const body = await readAdminJson(request);
   if (!body.ok) return body.response;
   const parsed = postCreateSchema.safeParse(body.data);

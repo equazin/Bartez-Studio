@@ -11,3 +11,5 @@ await import("./admin-auth.test.ts");
 await import("./whatsapp-webhook.test.ts");
 await import("./whatsapp-router.test.ts");
 await import("./admin-conversations.test.ts");
+await import("./audit.test.ts");
+await import("./admin-rate-limit.test.ts");

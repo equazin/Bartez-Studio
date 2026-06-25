@@ -76,10 +76,11 @@ export async function getDynamicArticles(): Promise<DynamicArticle[]> {
   }
 }
 
-export async function getDynamicArticleBySlug(slug: string): Promise<DynamicArticle | null> {
+export async function getDynamicArticleBySlug(slug: string, opts?: { preview?: boolean }): Promise<DynamicArticle | null> {
   if (hasDatabase()) {
     try {
-      const post = await getDb().post.findFirst({ where: { slug, published: true } });
+      const where = opts?.preview ? { slug } : { slug, published: true };
+      const post = await getDb().post.findFirst({ where });
       if (post) {
         return {
           slug: post.slug,

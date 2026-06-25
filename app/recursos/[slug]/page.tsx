@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Clock, MessageCircle } from "lucide-react";
+import { ArrowLeft, Clock, Eye, MessageCircle } from "lucide-react";
 import { articles, company } from "@/constants";
 import { getDynamicArticleBySlug } from "@/lib/db-content";
+import { verifyToken, tokenFromCookieHeader } from "@/lib/auth-token";
+import { cookies } from "next/headers";
 import {
   InternalCta,
   InternalHero,
@@ -35,9 +37,24 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
-export default async function Articulo({ params }: { params: Promise<{ slug: string }> }) {
+async function isAdminPreview(): Promise<boolean> {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("admin_session")?.value;
+    if (!token) return false;
+    const session = await verifyToken(token);
+    return session !== null;
+  } catch {
+    return false;
+  }
+}
+
+export default async function Articulo({ params, searchParams }: { params: Promise<{ slug: string }>; searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const { slug } = await params;
-  const article = await getDynamicArticleBySlug(slug);
+  const query = await searchParams;
+  const wantsPreview = query.preview === "1";
+  const isPreview = wantsPreview && (await isAdminPreview());
+  const article = await getDynamicArticleBySlug(slug, { preview: isPreview });
   if (!article) notFound();
 
   const jsonLd = {
@@ -54,6 +71,11 @@ export default async function Articulo({ params }: { params: Promise<{ slug: str
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      {isPreview && (
+        <div className="sticky top-0 z-50 flex items-center justify-center gap-2 bg-amber-500 px-4 py-2 text-sm font-bold text-black">
+          <Eye size={16} /> Vista previa — Este artículo no está publicado
+        </div>
+      )}
       <InternalPageShell>
         <InternalHero
           eyebrow="Recurso Bartez"

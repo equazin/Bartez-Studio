@@ -98,7 +98,7 @@ export default function BarposPage() {
     <>
       <Navbar />
       <Breadcrumbs />
-      <main className="overflow-x-hidden bg-white text-[#071033]">
+      <main id="main-content" className="overflow-x-hidden bg-white text-[#071033]">
         <section className="relative overflow-hidden border-b border-[#dce7ff] bg-white">
           <div className="absolute inset-y-0 right-0 hidden w-[48%] bg-[linear-gradient(135deg,transparent_0%,transparent_28%,#eef6ff_28%,#eef6ff_56%,transparent_56%)] lg:block" />
           <div className="absolute right-0 top-16 hidden h-72 w-52 bg-[radial-gradient(circle,#b9d6ff_1px,transparent_1.6px)] [background-size:10px_10px] opacity-70 lg:block" />

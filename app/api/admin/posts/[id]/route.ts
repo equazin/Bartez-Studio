@@ -4,12 +4,17 @@ import { invalidatePublicContent } from "../../../../../lib/admin-content.ts";
 import { adminIdSchema, postUpdateSchema } from "../../../../../lib/admin-schema.ts";
 import { logAudit } from "../../../../../lib/audit.ts";
 import { getDb } from "../../../../../lib/db.ts";
+import { checkRateLimit } from "../../../../../lib/rate-limit.ts";
 
 export const runtime = "nodejs";
 
 export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const auth = await authorizeAdminRequest(request, { mutation: true });
   if (auth.response) return auth.response;
+  const { allowed, retryAfter } = checkRateLimit(request, "admin:mutations", 30, 60_000);
+  if (!allowed) {
+    return new Response(JSON.stringify({ error: "Rate limit exceeded" }), { status: 429, headers: { "Retry-After": String(retryAfter) } });
+  }
   const id = adminIdSchema.safeParse((await params).id);
   if (!id.success) return invalidAdminInput(id.error.issues);
   const body = await readAdminJson(request);
@@ -33,6 +38,10 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const auth = await authorizeAdminRequest(request, { mutation: true });
   if (auth.response) return auth.response;
+  const { allowed, retryAfter } = checkRateLimit(request, "admin:mutations", 30, 60_000);
+  if (!allowed) {
+    return new Response(JSON.stringify({ error: "Rate limit exceeded" }), { status: 429, headers: { "Retry-After": String(retryAfter) } });
+  }
   const id = adminIdSchema.safeParse((await params).id);
   if (!id.success) return invalidAdminInput(id.error.issues);
   try {

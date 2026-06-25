@@ -160,8 +160,8 @@ export default function AdminPosts() {
             <h1 className="mt-2 font-display text-[clamp(26px,3vw,34px)] font-bold tracking-[-0.035em] text-slate-950">{isNew ? "Nuevo artículo" : "Editar artículo"}</h1>
           </div>
           <div className="flex flex-wrap gap-2">
-            {!isNew && editing.slug && editing.published ? (
-              <AdminButton asChild variant="secondary"><Link href={`/recursos/${editing.slug}`} target="_blank"><Eye />Vista previa</Link></AdminButton>
+            {!isNew && editing.slug ? (
+              <AdminButton asChild variant="secondary"><Link href={`/recursos/${editing.slug}${editing.published ? "" : "?preview=1"}`} target="_blank"><Eye />Vista previa</Link></AdminButton>
             ) : null}
             <AdminButton variant="secondary" onClick={cancel}><X />Cancelar</AdminButton>
             <AdminButton onClick={() => void save()} disabled={saving}><Save />{saving ? "Guardando…" : "Guardar cambios"}</AdminButton>
