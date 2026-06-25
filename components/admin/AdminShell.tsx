@@ -4,16 +4,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Dialog } from "radix-ui";
-import { BriefcaseBusiness, ExternalLink, FileText, LayoutDashboard, LogOut, Menu, MessageSquare, ScrollText, UsersRound, X } from "lucide-react";
+import { BarChart3, BriefcaseBusiness, ExternalLink, FileText, LayoutDashboard, LogOut, Menu, MessageSquare, ScrollText, UserCheck, UsersRound, X } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { AdminButton } from "./AdminUI";
 
 const navigation = [
   { href: "/admin", label: "Inicio", icon: LayoutDashboard },
+  { href: "/admin/leads", label: "CRM", icon: UserCheck },
+  { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
+  { href: "/admin/conversations", label: "WhatsApp", icon: MessageSquare },
   { href: "/admin/posts", label: "Artículos", icon: FileText },
   { href: "/admin/clients", label: "Clientes", icon: UsersRound },
   { href: "/admin/cases", label: "Casos de éxito", icon: BriefcaseBusiness },
-  { href: "/admin/conversations", label: "WhatsApp", icon: MessageSquare },
   { href: "/admin/audit", label: "Auditoría", icon: ScrollText },
 ];
 

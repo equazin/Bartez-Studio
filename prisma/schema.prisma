@@ -76,6 +76,24 @@ model WaMessage {
   @@index([conversationId, createdAt])
 }
 
+model Lead {
+  id          Int      @id @default(autoincrement())
+  name        String
+  company     String?
+  email       String?
+  phone       String?
+  source      String   @default("whatsapp")
+  status      String   @default("nuevo")
+  value       Float?
+  notes       String?
+  waId        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+}
+
 model AuditLog {
   id        Int      @id @default(autoincrement())
   action    String

@@ -4,7 +4,7 @@ import { logger } from "./logger.ts";
 
 export type AuditAction = "create" | "update" | "delete";
 
-export type AuditEntity = "post" | "client" | "case" | "conversation";
+export type AuditEntity = "post" | "client" | "case" | "conversation" | "lead";
 
 export async function logAudit(
   action: AuditAction,
