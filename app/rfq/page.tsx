@@ -10,12 +10,13 @@ import {
   Briefcase,
   ShieldCheck,
   Check,
+  CheckCircle2,
 } from "lucide-react";
 import { track } from "@/components/Analytics";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 const inputClass =
-  "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-[14px] text-slate-900 outline-none transition focus:border-[#1236d8] focus:ring-2 focus:ring-[#1236d8]/15";
+  "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-[14px] text-slate-900 outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/15";
 
 const highlights = [
   {
@@ -41,6 +42,7 @@ const highlights = [
 ];
 
 export default function Rfq() {
+  const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({
     nombre: "",
     email: "",
@@ -90,6 +92,7 @@ export default function Rfq() {
       "_blank",
       "noopener,noreferrer",
     );
+    setSubmitted(true);
   };
 
   return (
@@ -97,7 +100,7 @@ export default function Rfq() {
       <Navbar />
       <main className="min-h-screen bg-white">
         {/* Hero */}
-        <section className="relative overflow-hidden bg-[#070a16] pb-16 pt-24 text-white md:pb-20 md:pt-28">
+        <section className="relative overflow-hidden bg-navy pb-16 pt-24 text-white md:pb-20 md:pt-28">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-10%,rgba(18,54,216,0.25),transparent)]" />
           <div className="relative mx-auto max-w-[1200px] px-6">
             <div className="grid items-center gap-10 lg:grid-cols-[1fr_1.1fr]">
@@ -108,7 +111,7 @@ export default function Rfq() {
                 </span>
                 <h1 className="mt-5 font-display text-[clamp(30px,4.5vw,48px)] font-extrabold leading-[1.05] tracking-[-0.035em]">
                   Cotización Masiva
-                  <span className="text-[#0ea5ff]"> (RFQ)</span>
+                  <span className="text-sky"> (RFQ)</span>
                 </h1>
                 <p className="mt-4 max-w-[48ch] text-[16px] leading-relaxed text-slate-300">
                   Para empresas y organismos que requieren cotizar volumen de
@@ -126,7 +129,7 @@ export default function Rfq() {
                     >
                       <Icon
                         size={20}
-                        className="text-[#0ea5ff]"
+                        className="text-sky"
                         strokeWidth={1.8}
                       />
                       <h3 className="mt-3 text-[13px] font-bold text-white">
@@ -147,8 +150,27 @@ export default function Rfq() {
         <section className="relative -mt-6 pb-20">
           <div className="mx-auto max-w-[860px] px-5">
             <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-card md:p-10">
+              {submitted ? (
+                <div className="flex flex-col items-center gap-4 py-12 text-center">
+                  <span className="grid size-16 place-items-center rounded-full bg-emerald-50">
+                    <CheckCircle2 size={32} className="text-emerald-600" />
+                  </span>
+                  <h3 className="font-display text-[22px] font-extrabold text-ink">Tu cotización fue enviada por WhatsApp</h3>
+                  <p className="max-w-[48ch] text-[14px] leading-relaxed text-slate-500">
+                    Un asesor revisará tu pliego y te contactará en menos de 24 hs hábiles. Revisá tu WhatsApp para confirmar el envío.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setSubmitted(false)}
+                    className="mt-2 inline-flex items-center gap-2 rounded-xl border border-slate-200 px-5 py-2.5 text-[13px] font-bold text-slate-700 transition hover:bg-slate-50"
+                  >
+                    Enviar otra cotización
+                  </button>
+                </div>
+              ) : (
+              <>
               <div className="mb-8 border-b border-slate-100 pb-6">
-                <h2 className="font-display text-[22px] font-extrabold text-[#11142a]">
+                <h2 className="font-display text-[22px] font-extrabold text-ink">
                   Detalle de la cotización
                 </h2>
                 <p className="mt-1 text-[14px] text-slate-500">
@@ -348,7 +370,7 @@ export default function Rfq() {
                 <div className="border-t border-slate-100 pt-6">
                   <button
                     type="submit"
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#11142a] px-6 py-4 text-[15px] font-bold text-white transition hover:bg-[#1236d8]"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#11142a] px-6 py-4 text-[15px] font-bold text-white transition hover:bg-brand"
                   >
                     <MessageCircle size={18} /> Continuar RFQ por WhatsApp
                   </button>
@@ -358,6 +380,8 @@ export default function Rfq() {
                   </p>
                 </div>
               </form>
+              </>
+              )}
             </div>
 
             {/* Trust bar */}
@@ -369,22 +393,22 @@ export default function Rfq() {
                 "Cobertura nacional",
               ].map((item) => (
                 <span key={item} className="flex items-center gap-1.5">
-                  <Check size={13} className="text-[#1236d8]" />
+                  <Check size={13} className="text-brand" />
                   {item}
                 </span>
               ))}
             </div>
 
             {/* Reseller callout */}
-            <div className="mt-8 rounded-2xl border border-[#1236d8]/15 bg-[#1236d8]/[0.03] p-5 text-center">
+            <div className="mt-8 rounded-2xl border border-[#1236d8]/15 bg-brand/[0.03] p-5 text-center">
               <p className="text-[13px] text-slate-600">
-                <strong className="text-[#11142a]">
+                <strong className="text-ink">
                   ¿Sos revendedor de tecnología?
                 </strong>{" "}
                 Te sugerimos ingresar a nuestra sección de{" "}
                 <a
                   href="/revendedores"
-                  className="font-bold text-[#1236d8] hover:underline"
+                  className="font-bold text-brand hover:underline"
                 >
                   Revendedores
                 </a>{" "}

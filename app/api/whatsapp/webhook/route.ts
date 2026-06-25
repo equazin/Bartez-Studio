@@ -3,6 +3,7 @@ import { validateSignature } from "../../../../lib/whatsapp/signature.ts";
 import { parseWebhookPayload } from "../../../../lib/whatsapp/parser.ts";
 import { handleIncomingMessage } from "../../../../lib/whatsapp/router.ts";
 import { WEBHOOK_VERIFY_TOKEN } from "../../../../lib/whatsapp/config.ts";
+import { logger } from "../../../../lib/logger.ts";
 
 export const runtime = "nodejs";
 
@@ -22,7 +23,7 @@ export async function GET(request: Request) {
     return new Response(challenge ?? "", { status: 200 });
   }
 
-  console.warn("[wa:webhook] Verificación fallida — token inválido");
+  logger.warn("wa.webhook.verify", "token inválido");
   return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 }
 
@@ -42,7 +43,7 @@ export async function POST(request: Request) {
   const signature = request.headers.get("x-hub-signature-256") ?? "";
   const isValid = await validateSignature(rawBody, signature);
   if (!isValid) {
-    console.warn("[wa:webhook] Firma inválida");
+    logger.warn("wa.webhook.signature", "firma inválida");
     return NextResponse.json({ error: "Invalid signature" }, { status: 403 });
   }
 
@@ -65,7 +66,7 @@ export async function POST(request: Request) {
         await handleIncomingMessage(parsed);
         console.info("[wa:webhook] Mensaje procesado con éxito");
       } catch (err) {
-        console.error("[wa:webhook] Error procesando mensaje", err);
+        logger.error("wa.webhook.handle", err);
       }
     });
   }

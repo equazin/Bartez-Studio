@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { ArrowLeft, Pencil, Plus, Save, Trash2, UsersRound, X } from "lucide-react";
-import { AdminAlert, AdminButton, AdminField, AdminInput, AdminPanel, AdminSpinner, AdminToggle, ConfirmDialog, StatusBadge } from "../../../../components/admin/AdminUI";
+import { AdminAlert, AdminButton, AdminField, AdminInput, AdminPagination, AdminPanel, AdminSearch, AdminSpinner, AdminToggle, ConfirmDialog, StatusBadge, useDebouncedValue } from "../../../../components/admin/AdminUI";
 import { ImageUpload } from "../../../../components/admin/ImageUpload";
 
 type ClientLogo = {
@@ -25,23 +25,32 @@ export default function AdminClients() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [deleteTarget, setDeleteTarget] = useState<ClientLogo | null>(null);
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const limit = 20;
+  const debouncedSearch = useDebouncedValue(search, 300);
 
   const load = useCallback(async () => {
     setLoading(true);
     setError("");
     try {
-      const response = await fetch("/api/admin/clients", { cache: "no-store" });
+      const params = new URLSearchParams({ page: String(page), limit: String(limit) });
+      if (debouncedSearch) params.set("q", debouncedSearch);
+      const response = await fetch(`/api/admin/clients?${params.toString()}`, { cache: "no-store" });
       const data = await response.json();
       if (!response.ok || !data.ok) throw new Error(data.error || "No pudimos cargar los clientes.");
       setItems(data.clients);
+      setTotal(data.meta?.total ?? data.clients.length);
     } catch (loadError) {
       setError((loadError as Error).message);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [page, debouncedSearch]);
 
   useEffect(() => { const timer = window.setTimeout(() => void load(), 0); return () => window.clearTimeout(timer); }, [load]);
+  useEffect(() => { setPage(1); }, [debouncedSearch]);
 
   function createItem() {
     setEditing(emptyLogo);
@@ -148,17 +157,25 @@ export default function AdminClients() {
         <AdminButton onClick={createItem}><Plus />Nuevo cliente</AdminButton>
       </div>
       {error ? <div className="mt-5"><AdminAlert>{error}</AdminAlert></div> : null}
-      <AdminPanel className="mt-6 overflow-hidden">
+      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <AdminSearch value={search} onChange={setSearch} placeholder="Buscar por nombre…" />
+      </div>
+      <AdminPanel className="mt-4 overflow-hidden">
         {loading ? <div className="grid min-h-48 place-items-center"><AdminSpinner label="Cargando clientes…" /></div> : items.length === 0 ? (
-          <div className="grid min-h-56 place-items-center p-8 text-center"><div><UsersRound className="mx-auto size-8 text-slate-500" /><p className="mt-4 text-[14px] font-bold text-slate-950">No hay clientes cargados.</p><AdminButton className="mt-5" onClick={createItem}><Plus />Cargar el primero</AdminButton></div></div>
-        ) : items.map((item) => (
-          <div key={item.id} className="grid gap-4 border-b border-slate-200 px-5 py-4 last:border-0 sm:grid-cols-[84px_minmax(0,1fr)_110px_110px] sm:items-center">
-            <div className="grid h-14 w-20 place-items-center overflow-hidden rounded-lg border border-slate-300 bg-white p-2"><Image src={item.logoUrl} alt="" width={72} height={48} className="max-h-full max-w-full object-contain grayscale" /></div>
-            <div><p className="text-[13.5px] font-bold text-slate-950">{item.name}</p><p className="mt-1 text-[11.5px] font-medium text-slate-600">Orden {item.displayOrder}</p></div>
-            <button className="justify-self-start" onClick={() => void toggle(item)}><StatusBadge active={item.active} activeLabel="Activo" inactiveLabel="Inactivo" /></button>
-            <div className="flex justify-end gap-1"><AdminButton variant="ghost" size="icon" onClick={() => editItem(item)} aria-label="Editar"><Pencil /></AdminButton><AdminButton variant="ghost" size="icon" onClick={() => setDeleteTarget(item)} aria-label="Eliminar"><Trash2 /></AdminButton></div>
-          </div>
-        ))}
+          <div className="grid min-h-56 place-items-center p-8 text-center"><div><UsersRound className="mx-auto size-8 text-slate-500" /><p className="mt-4 text-[14px] font-bold text-slate-950">{debouncedSearch ? "No encontramos clientes para esa búsqueda." : "No hay clientes cargados."}</p>{!debouncedSearch ? <AdminButton className="mt-5" onClick={createItem}><Plus />Cargar el primero</AdminButton> : null}</div></div>
+        ) : (
+          <>
+            {items.map((item) => (
+              <div key={item.id} className="grid gap-4 border-b border-slate-200 px-5 py-4 last:border-0 sm:grid-cols-[84px_minmax(0,1fr)_110px_110px] sm:items-center">
+                <div className="grid h-14 w-20 place-items-center overflow-hidden rounded-lg border border-slate-300 bg-white p-2"><Image src={item.logoUrl} alt="" width={72} height={48} className="max-h-full max-w-full object-contain grayscale" /></div>
+                <div><p className="text-[13.5px] font-bold text-slate-950">{item.name}</p><p className="mt-1 text-[11.5px] font-medium text-slate-600">Orden {item.displayOrder}</p></div>
+                <button className="justify-self-start" onClick={() => void toggle(item)}><StatusBadge active={item.active} activeLabel="Activo" inactiveLabel="Inactivo" /></button>
+                <div className="flex justify-end gap-1"><AdminButton variant="ghost" size="icon" onClick={() => editItem(item)} aria-label="Editar"><Pencil /></AdminButton><AdminButton variant="ghost" size="icon" onClick={() => setDeleteTarget(item)} aria-label="Eliminar"><Trash2 /></AdminButton></div>
+              </div>
+            ))}
+            <AdminPagination page={page} limit={limit} total={total} onPageChange={setPage} />
+          </>
+        )}
       </AdminPanel>
       <ConfirmDialog open={Boolean(deleteTarget)} onOpenChange={(open) => !open && setDeleteTarget(null)} title="Eliminar cliente" description="El cliente dejará de mostrarse en el sitio y se eliminará del panel." onConfirm={() => void remove()} />
     </div>

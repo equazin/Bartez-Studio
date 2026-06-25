@@ -71,7 +71,7 @@ const audienceCards = [
     text: "Equipamiento y soluciones para instituciones educativas.",
     href: "/educacion",
     cta: "Ver soluciones",
-    image: "/photos/office.jpg",
+    image: "/photos/engineer.jpg",
     bullets: ["Aulas y laboratorios", "Conectividad y redes", "Soporte especializado"],
   },
 ];
@@ -84,12 +84,12 @@ const stats = [
 ];
 
 const families = [
-  { image: "/photos/products/laptop1.jpg", label: "Notebooks y PCs" },
-  { image: "/photos/products/peripherals.jpg", label: "Componentes y hardware" },
-  { image: "/photos/products/monitor.jpg", label: "Monitores y displays" },
-  { image: "/photos/products/peripherals.jpg", label: "Impresión y periféricos" },
-  { image: "/photos/products/storage.jpg", label: "Almacenamiento y memoria" },
-  { image: "/photos/products/ups.jpg", label: "Energía y continuidad" },
+  { image: "/photos/products/laptop1.jpg", label: "Notebooks y PCs", href: "/catalogo#notebooks" },
+  { image: "/photos/products/peripherals.jpg", label: "Componentes y hardware", href: "/catalogo#componentes" },
+  { image: "/photos/products/monitor.jpg", label: "Monitores y displays", href: "/catalogo#monitores" },
+  { image: "/photos/products/peripherals.jpg", label: "Impresión y periféricos", href: "/catalogo#perifericos" },
+  { image: "/photos/products/storage.jpg", label: "Almacenamiento y memoria", href: "/catalogo#almacenamiento" },
+  { image: "/photos/products/ups.jpg", label: "Energía y continuidad", href: "/catalogo#energia" },
 ];
 
 function SunsetButton({
@@ -116,12 +116,12 @@ function SunsetButton({
 function ProofItem({ icon: Icon, title, text }: { icon: LucideIcon; title: string; text: string }) {
   return (
     <div className="flex min-w-0 items-center gap-3">
-      <span className="grid size-11 flex-none place-items-center rounded-2xl bg-blue-50 text-[#1236d8]">
+      <span className="grid size-11 flex-none place-items-center rounded-2xl bg-blue-50 text-brand">
         <Icon size={23} strokeWidth={1.85} />
       </span>
       <span className="min-w-0">
-        <span className="block text-[12.5px] font-black leading-tight text-[#11142a]">{title}</span>
-        <span className="mt-0.5 block text-[11.5px] font-semibold leading-tight text-slate-500">{text}</span>
+        <span className="block text-[12.5px] font-black leading-tight text-ink">{title}</span>
+        <span className="mt-0.5 block text-[11.5px] font-semibold leading-tight text-slate-600">{text}</span>
       </span>
     </div>
   );
@@ -130,27 +130,7 @@ function ProofItem({ icon: Icon, title, text }: { icon: LucideIcon; title: strin
 export function HomeBlueWholesale() {
   return (
     <>
-      <main className="home-blue min-h-screen w-full max-w-full overflow-hidden bg-white text-[#11142a]">
-        <style>{`
-          .home-blue,
-          .home-blue *,
-          .home-blue *::before,
-          .home-blue *::after {
-            box-sizing: border-box;
-          }
-          .home-blue,
-          .home-blue section {
-            max-width: 100vw;
-            overflow-x: clip;
-          }
-          .home-blue h1,
-          .home-blue h2,
-          .home-blue h3,
-          .home-blue p {
-            overflow-wrap: break-word;
-          }
-        `}</style>
-
+      <main className="home-blue min-h-screen w-full max-w-full overflow-hidden bg-white text-ink">
         <Navbar />
 
         <section className="relative overflow-hidden border-b border-slate-200 bg-white">
@@ -158,9 +138,9 @@ export function HomeBlueWholesale() {
           <div className="absolute right-0 top-20 hidden h-64 w-40 bg-[radial-gradient(circle,#b8cdfd_1px,transparent_1.6px)] opacity-55 [background-size:10px_10px] lg:block" />
           <div className="relative mx-auto grid max-w-[1320px] items-center gap-8 px-6 pb-8 pt-12 lg:grid-cols-[0.82fr_1.18fr] lg:px-10 lg:pb-10 lg:pt-14">
             <div className="relative z-10 min-w-0">
-              <p className="text-[12px] font-black uppercase tracking-[0.17em] text-[#1236d8]">Mayorista IT en Argentina</p>
-              <h1 className="mt-5 max-w-[660px] font-display text-[clamp(42px,6vw,76px)] font-black leading-[0.96] tracking-[-0.065em] text-[#11142a]">
-                Distribución IT para <span className="text-[#1236d8]">empresas y revendedores</span>
+              <p className="text-[12px] font-black uppercase tracking-[0.17em] text-brand">Mayorista IT en Argentina</p>
+              <h1 className="mt-5 max-w-[660px] font-display text-[clamp(42px,6vw,76px)] font-black leading-[0.96] tracking-[-0.065em] text-ink">
+                Distribución IT para <span className="text-brand">empresas y revendedores</span>
               </h1>
               <p className="mt-6 max-w-[58ch] text-[15.5px] leading-relaxed text-slate-600 lg:text-[17px]">
                 Brindamos stock real, precios competitivos y asesoramiento especializado para que tu negocio crezca.
@@ -171,18 +151,18 @@ export function HomeBlueWholesale() {
                   href={whatsappLinks.quote}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#1236d8] px-6 py-3.5 text-[14px] font-black text-white shadow-[0_18px_38px_-18px_rgba(18,54,216,0.65)] transition hover:-translate-y-0.5 hover:bg-[#0b2bb7]"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-6 py-3.5 text-[14px] font-black text-white shadow-[0_18px_38px_-18px_rgba(18,54,216,0.65)] transition hover:-translate-y-0.5 hover:bg-brand-bright"
                 >
                   <MessageCircle size={19} /> Cotizar por WhatsApp
                 </a>
-                <Link href="/catalogo" className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#1236d8]/70 bg-white px-6 py-3.5 text-[14px] font-black text-[#1236d8] transition hover:bg-blue-50">
+                <Link href="/catalogo" className="inline-flex items-center justify-center gap-2 rounded-xl border border-brand/70 bg-white px-6 py-3.5 text-[14px] font-black text-brand transition hover:bg-blue-50">
                   <Box size={18} /> Catálogo de soluciones
                 </Link>
               </div>
             </div>
 
             <div className="relative z-10 min-h-[300px] overflow-hidden rounded-3xl border border-blue-100 bg-[#f7f9ff] shadow-[0_34px_90px_-62px_rgba(18,54,216,0.6)] lg:min-h-[430px]">
-              <div className="absolute inset-y-0 right-0 w-[78%] origin-bottom-left -skew-x-12 overflow-hidden rounded-l-[48px] bg-[#1236d8]/10">
+              <div className="absolute inset-y-0 right-0 w-[78%] origin-bottom-left -skew-x-12 overflow-hidden rounded-l-[48px] bg-brand/10">
                 <Image
                   src="/photos/home/warehouse-hero.png"
                   alt=""
@@ -202,7 +182,7 @@ export function HomeBlueWholesale() {
                 sizes="(max-width: 1024px) 100vw, 760px"
                 className="relative z-10 object-contain object-center p-0 drop-shadow-[0_28px_34px_rgba(15,23,42,0.18)] sm:p-2 lg:p-0"
               />
-              <div className="absolute bottom-4 left-4 hidden rounded-xl border border-blue-100 bg-white/92 px-4 py-2 text-[12px] font-black text-[#1236d8] shadow-sm backdrop-blur-sm sm:block">
+              <div className="absolute bottom-4 left-4 hidden rounded-xl border border-blue-100 bg-white/92 px-4 py-2 text-[12px] font-black text-brand shadow-sm backdrop-blur-sm sm:block">
                 Equipamiento, infraestructura y soluciones IT
               </div>
             </div>
@@ -227,22 +207,22 @@ export function HomeBlueWholesale() {
                   <span className="grid size-14 place-items-center rounded-full bg-gradient-to-br from-[#1236d8] via-[#006dff] to-[#0ea5ff] text-white">
                     <card.icon size={27} strokeWidth={1.7} />
                   </span>
-                  <h3 className="mt-5 font-display text-[22px] font-black tracking-[-0.035em] text-[#11142a]">{card.title}</h3>
-                  <p className="mt-2 min-h-[44px] text-[13.5px] leading-relaxed text-slate-500">{card.text}</p>
+                  <h3 className="mt-5 font-display text-[22px] font-black tracking-[-0.035em] text-ink">{card.title}</h3>
+                  <p className="mt-2 min-h-[44px] text-[13.5px] leading-relaxed text-slate-600">{card.text}</p>
                   <ul className="mt-5 grid gap-2.5">
                     {card.bullets.map((bullet) => (
                       <li key={bullet} className="flex gap-2 text-[13px] font-semibold text-slate-700">
-                        <CheckCircle2 size={15} className="mt-0.5 flex-none text-[#1236d8]" /> {bullet}
+                        <CheckCircle2 size={15} className="mt-0.5 flex-none text-brand" /> {bullet}
                       </li>
                     ))}
                   </ul>
-                  <Link href={card.href} className="mt-6 inline-flex items-center gap-2 text-[13.5px] font-black text-[#1236d8]">
+                  <Link href={card.href} className="mt-6 inline-flex items-center gap-2 text-[13.5px] font-black text-brand">
                     {card.cta} <ArrowRight size={16} />
                   </Link>
                 </div>
                 <div className="relative aspect-[16/8] bg-slate-100">
                   <Image src={card.image} alt="" fill sizes="(max-width: 1024px) 50vw, 25vw" className="object-cover transition duration-500 group-hover:scale-[1.035]" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#11142a]/18 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink/18 to-transparent" />
                 </div>
               </article>
             ))}
@@ -254,12 +234,12 @@ export function HomeBlueWholesale() {
             <div className="grid gap-px overflow-hidden rounded-2xl border border-blue-100 bg-blue-100 sm:grid-cols-2 lg:grid-cols-4">
               {stats.map((item) => (
                 <div key={item.value} className="flex items-center gap-4 bg-white px-7 py-5">
-                  <span className="grid size-12 place-items-center rounded-2xl bg-blue-50 text-[#1236d8]">
+                  <span className="grid size-12 place-items-center rounded-2xl bg-blue-50 text-brand">
                     <item.icon size={26} strokeWidth={1.8} />
                   </span>
                   <span>
-                    <span className="block font-display text-[28px] font-black tracking-[-0.04em] text-[#11142a]">{item.value}</span>
-                    <span className="block text-[13px] font-semibold text-slate-500">{item.label}</span>
+                    <span className="block font-display text-[28px] font-black tracking-[-0.04em] text-ink">{item.value}</span>
+                    <span className="block text-[13px] font-semibold text-slate-600">{item.label}</span>
                   </span>
                 </div>
               ))}
@@ -271,35 +251,35 @@ export function HomeBlueWholesale() {
           <div className="mx-auto max-w-[1320px] px-6 lg:px-10">
             <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p className="text-[12px] font-black uppercase tracking-[0.17em] text-[#1236d8]">Herramientas online</p>
-                <h2 className="mt-2 font-display text-[clamp(26px,3.5vw,38px)] font-black tracking-[-0.04em] text-[#11142a]">Empezá a definir tu solución</h2>
+                <p className="text-[12px] font-black uppercase tracking-[0.17em] text-brand">Herramientas online</p>
+                <h2 className="mt-2 font-display text-[clamp(26px,3.5vw,38px)] font-black tracking-[-0.04em] text-ink">Empezá a definir tu solución</h2>
               </div>
-              <p className="max-w-[42ch] text-[14px] leading-relaxed text-slate-500">Usá estas herramientas para dimensionar, comparar y cotizar antes de hablar con un asesor.</p>
+              <p className="max-w-[42ch] text-[14px] leading-relaxed text-slate-600">Usá estas herramientas para dimensionar, comparar y cotizar antes de hablar con un asesor.</p>
             </div>
             <div className="grid gap-4 sm:grid-cols-3">
               <Link href="/configurador" className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-soft transition hover:-translate-y-1 hover:shadow-card">
-                <span className="grid size-12 place-items-center rounded-xl bg-[#1236d8]/10 text-[#1236d8] transition group-hover:bg-[#1236d8] group-hover:text-white">
+                <span className="grid size-12 place-items-center rounded-xl bg-brand/10 text-brand transition group-hover:bg-brand group-hover:text-white">
                   <SlidersHorizontal size={24} strokeWidth={1.8} />
                 </span>
-                <h3 className="mt-4 font-display text-[20px] font-black tracking-[-0.03em] text-[#11142a]">Configurador IT</h3>
-                <p className="mt-2 text-[13px] leading-relaxed text-slate-500">Elegí perfil de uso, ajustá escala y obtené una recomendación técnica para llevar a cotización.</p>
-                <span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-black text-[#1236d8]">Usar herramienta <ArrowRight size={15} /></span>
+                <h3 className="mt-4 font-display text-[20px] font-black tracking-[-0.03em] text-ink">Configurador IT</h3>
+                <p className="mt-2 text-[13px] leading-relaxed text-slate-600">Elegí perfil de uso, ajustá escala y obtené una recomendación técnica para llevar a cotización.</p>
+                <span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-black text-brand">Usar herramienta <ArrowRight size={15} /></span>
               </Link>
               <Link href="/comparador" className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-soft transition hover:-translate-y-1 hover:shadow-card">
                 <span className="grid size-12 place-items-center rounded-xl bg-[#7c3aed]/10 text-[#7c3aed] transition group-hover:bg-[#7c3aed] group-hover:text-white">
                   <GitCompareArrows size={24} strokeWidth={1.8} />
                 </span>
-                <h3 className="mt-4 font-display text-[20px] font-black tracking-[-0.03em] text-[#11142a]">Comparador orientativo</h3>
-                <p className="mt-2 text-[13px] leading-relaxed text-slate-500">Compará hasta 3 familias de equipos para ordenar la decisión según tu escenario real.</p>
+                <h3 className="mt-4 font-display text-[20px] font-black tracking-[-0.03em] text-ink">Comparador orientativo</h3>
+                <p className="mt-2 text-[13px] leading-relaxed text-slate-600">Compará hasta 3 familias de equipos para ordenar la decisión según tu escenario real.</p>
                 <span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-black text-[#7c3aed]">Comparar equipos <ArrowRight size={15} /></span>
               </Link>
               <Link href="/rfq" className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-soft transition hover:-translate-y-1 hover:shadow-card">
-                <span className="grid size-12 place-items-center rounded-xl bg-[#ff8f1f]/10 text-[#ff8f1f] transition group-hover:bg-[#ff8f1f] group-hover:text-white">
+                <span className="grid size-12 place-items-center rounded-xl bg-sunset/10 text-sunset transition group-hover:bg-sunset group-hover:text-white">
                   <ClipboardList size={24} strokeWidth={1.8} />
                 </span>
-                <h3 className="mt-4 font-display text-[20px] font-black tracking-[-0.03em] text-[#11142a]">Cotización masiva (RFQ)</h3>
-                <p className="mt-2 text-[13px] leading-relaxed text-slate-500">Cargá tu pliego o lista técnica y recibí una propuesta formal con condiciones B2B en 24 hs.</p>
-                <span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-black text-[#ff8f1f]">Iniciar RFQ <ArrowRight size={15} /></span>
+                <h3 className="mt-4 font-display text-[20px] font-black tracking-[-0.03em] text-ink">Cotización masiva (RFQ)</h3>
+                <p className="mt-2 text-[13px] leading-relaxed text-slate-600">Cargá tu pliego o lista técnica y recibí una propuesta formal con condiciones B2B en 24 hs.</p>
+                <span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-black text-sunset">Iniciar RFQ <ArrowRight size={15} /></span>
               </Link>
             </div>
           </div>
@@ -308,19 +288,23 @@ export function HomeBlueWholesale() {
         <section className="bg-white py-8">
           <div className="mx-auto max-w-[1320px] px-6 lg:px-10">
             <div className="grid items-center gap-5 border-y border-slate-100 py-6 lg:grid-cols-[170px_1fr_auto]">
-              <h2 className="font-display text-[25px] font-black leading-[1.05] tracking-[-0.04em] text-[#11142a]">Familias de productos</h2>
+              <h2 className="font-display text-[25px] font-black leading-[1.05] tracking-[-0.04em] text-ink">Familias de productos</h2>
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6 lg:gap-5">
                 {families.map((family) => (
-                  <div key={family.label} className="flex min-w-0 items-center gap-2">
-                    <div className="relative size-14 flex-none overflow-hidden rounded-xl bg-white">
+                  <Link
+                    key={family.label}
+                    href={family.href}
+                    className="group flex min-w-0 min-h-[44px] items-center gap-2 rounded-xl p-1.5 transition hover:bg-blue-50/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50"
+                  >
+                    <div className="relative size-14 flex-none overflow-hidden rounded-xl bg-white transition group-hover:scale-[1.04]">
                       <Image src={family.image} alt="" fill sizes="56px" className="object-contain" />
                     </div>
-                    <p className="text-[11px] font-black leading-tight text-slate-700">{family.label}</p>
-                  </div>
+                    <p className="text-[11.5px] font-black leading-tight text-slate-800 group-hover:text-brand">{family.label}</p>
+                  </Link>
                 ))}
               </div>
-              <Link href="/catalogo" className="inline-flex items-center justify-center gap-2 text-[12.5px] font-black text-[#1236d8]">
-                Ver todas las categorías <span className="grid size-8 place-items-center rounded-full bg-[#1236d8] text-white"><ArrowRight size={15} /></span>
+              <Link href="/catalogo" className="inline-flex items-center justify-center gap-2 text-[12.5px] font-black text-brand">
+                Ver todas las categorías <span className="grid size-8 place-items-center rounded-full bg-brand text-white"><ArrowRight size={15} /></span>
               </Link>
             </div>
           </div>
@@ -329,7 +313,7 @@ export function HomeBlueWholesale() {
         <section className="bg-white pb-10">
           <div className="mx-auto max-w-[1320px] px-6 lg:px-10">
             <div className="grid items-center gap-5 lg:grid-cols-[190px_1fr_auto]">
-              <h2 className="font-display text-[21px] font-black leading-[1.08] tracking-[-0.035em] text-[#11142a]">Marcas que trabajamos</h2>
+              <h2 className="font-display text-[21px] font-black leading-[1.08] tracking-[-0.035em] text-ink">Marcas que trabajamos</h2>
               <div className="grid grid-cols-3 items-center gap-x-6 gap-y-5 sm:grid-cols-5 lg:grid-cols-9">
                 {partners.brands.slice(0, 9).map((brand) => (
                   <div key={brand.name} className="flex h-10 items-center justify-center">
@@ -337,8 +321,8 @@ export function HomeBlueWholesale() {
                   </div>
                 ))}
               </div>
-              <Link href="/marcas" className="inline-flex items-center justify-center gap-2 text-[12.5px] font-black text-[#1236d8]">
-                Ver todas las marcas <span className="grid size-8 place-items-center rounded-full bg-[#1236d8] text-white"><ArrowRight size={15} /></span>
+              <Link href="/marcas" className="inline-flex items-center justify-center gap-2 text-[12.5px] font-black text-brand">
+                Ver todas las marcas <span className="grid size-8 place-items-center rounded-full bg-brand text-white"><ArrowRight size={15} /></span>
               </Link>
             </div>
           </div>

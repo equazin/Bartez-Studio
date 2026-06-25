@@ -102,7 +102,7 @@ export default function AdminConversations() {
       if (!res.ok || !data.ok) throw new Error(data.error || "Error al cargar detalle");
       setSelectedConv(data.conversation);
     } catch (err) {
-      console.error(err);
+      setError((err as Error).message);
     } finally {
       if (!isSilent) setLoadingDetail(false);
     }
@@ -113,16 +113,28 @@ export default function AdminConversations() {
     loadConversations();
   }, [loadConversations]);
 
-  // Polling loop for active updates (every 7 seconds)
+  // SSE stream for live updates (replaces 7s polling)
   useEffect(() => {
-    const timer = setInterval(() => {
-      loadConversations(true);
-      if (selectedId) {
-        loadDetail(selectedId, true);
+    const source = new EventSource("/api/admin/conversations/stream");
+    source.addEventListener("conversations", (event) => {
+      try {
+        const payload = JSON.parse((event as MessageEvent<string>).data) as { conversations: Conversation[] };
+        setConversations(payload.conversations);
+      } catch {
+        /* ignore parse errors */
       }
-    }, 7000);
-    return () => clearInterval(timer);
-  }, [loadConversations, loadDetail, selectedId]);
+    });
+    source.onerror = () => {
+      // EventSource auto-reconnects; we just surface a soft error
+      setError("Conexión en vivo interrumpida. Reintentando…");
+    };
+    return () => source.close();
+  }, []);
+
+  // Re-fetch detail when a new conversations payload arrives and we have one selected
+  useEffect(() => {
+    if (selectedId) loadDetail(selectedId, true);
+  }, [conversations, selectedId, loadDetail]);
 
   // Fetch detail when selectedId changes
   useEffect(() => {

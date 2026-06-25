@@ -50,7 +50,7 @@ export default function ContactoPage() {
         eyebrow="Contacto directo"
         title={
           <>
-            Hablemos de lo que <span className="text-[#1236d8]">necesitás.</span>
+            Hablemos de lo que <span className="text-brand">necesitás.</span>
           </>
         }
         intro="Estamos en Rosario, Santa Fe, atendiendo clientes en toda Argentina. Elegí el canal que prefieras y respondemos en 24 hs hábiles."
@@ -65,27 +65,27 @@ export default function ContactoPage() {
         ]}
       >
         <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-[0_28px_70px_-46px_rgba(17,20,42,0.42)]">
-          <p className="text-[13px] font-bold text-[#1236d8]">Rosario, Santa Fe</p>
-          <h2 className="mt-2 font-display text-[26px] font-extrabold text-[#11142a]">Contacto comercial y soporte.</h2>
+          <p className="text-[13px] font-bold text-brand">Rosario, Santa Fe</p>
+          <h2 className="mt-2 font-display text-[26px] font-extrabold text-ink">Contacto comercial y soporte.</h2>
           <div className="mt-6 grid gap-4">
             <div className="flex gap-3 border-b border-slate-200 pb-4">
-              <MapPin className="mt-0.5 size-5 flex-none text-[#1236d8]" strokeWidth={1.7} />
+              <MapPin className="mt-0.5 size-5 flex-none text-brand" strokeWidth={1.7} />
               <div>
-                <p className="font-bold text-[#11142a]">{company.address}</p>
+                <p className="font-bold text-ink">{company.address}</p>
                 <p className="text-[13px] text-slate-500">Rosario, Santa Fe, Argentina</p>
               </div>
             </div>
             <div className="flex gap-3 border-b border-slate-200 pb-4">
-              <Clock3 className="mt-0.5 size-5 flex-none text-[#1236d8]" strokeWidth={1.7} />
+              <Clock3 className="mt-0.5 size-5 flex-none text-brand" strokeWidth={1.7} />
               <div>
-                <p className="font-bold text-[#11142a]">{contact.hours}</p>
+                <p className="font-bold text-ink">{contact.hours}</p>
                 <p className="text-[13px] text-slate-500">Respondemos consultas comerciales y técnicas.</p>
               </div>
             </div>
             <div className="flex gap-3">
-              <Phone className="mt-0.5 size-5 flex-none text-[#1236d8]" strokeWidth={1.7} />
+              <Phone className="mt-0.5 size-5 flex-none text-brand" strokeWidth={1.7} />
               <div>
-                <p className="font-bold text-[#11142a]">{contact.phoneDisplay}</p>
+                <p className="font-bold text-ink">{contact.phoneDisplay}</p>
                 <p className="text-[13px] text-slate-500">WhatsApp y teléfono comercial.</p>
               </div>
             </div>
@@ -97,15 +97,15 @@ export default function ContactoPage() {
         <div className="grid gap-5 md:grid-cols-3">
           {channels.map((ch) => (
             <article key={ch.title} className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200">
-              <ch.icon className="size-7 text-[#1236d8]" strokeWidth={1.7} />
-              <h2 className="mt-5 font-display text-[19px] font-extrabold text-[#11142a]">{ch.title}</h2>
+              <ch.icon className="size-7 text-brand" strokeWidth={1.7} />
+              <h2 className="mt-5 font-display text-[19px] font-extrabold text-ink">{ch.title}</h2>
               <p className="mt-1 text-[14px] font-bold text-slate-700">{ch.value}</p>
               <p className="mt-1 text-[12.5px] text-slate-500">{ch.sub}</p>
               <a
                 href={ch.href}
                 target={ch.href.startsWith("http") ? "_blank" : undefined}
                 rel={ch.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-bold text-[#1236d8] hover:underline"
+                className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-bold text-brand hover:underline"
               >
                 {ch.cta} <ArrowRight size={13} />
               </a>
@@ -122,7 +122,7 @@ export default function ContactoPage() {
       >
         <div className="grid gap-8 lg:grid-cols-[1.08fr_0.92fr]">
           <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-[0_20px_60px_-48px_rgba(17,20,42,0.42)] md:p-8">
-            <h2 className="font-display text-[22px] font-extrabold text-[#11142a]">Prepara tu consulta</h2>
+            <h2 className="font-display text-[22px] font-extrabold text-ink">Prepara tu consulta</h2>
             <p className="mt-2 text-[13.5px] text-slate-600">Sin compromiso. Respondemos en 24 hs hábiles.</p>
             <ContactWhatsAppForm />
           </div>
@@ -136,7 +136,7 @@ export default function ContactoPage() {
             </div>
 
             <div className="rounded-lg border border-slate-200 bg-[#f7f9fc] p-6">
-              <p className="text-[13px] font-bold text-[#1236d8]">Atencion nacional</p>
+              <p className="text-[13px] font-bold text-brand">Atencion nacional</p>
               <p className="mt-2 text-[14.5px] leading-relaxed text-slate-700">
                 Aunque nuestra sede está en Rosario, coordinamos proyectos y entregas en toda la Argentina.
               </p>
@@ -144,7 +144,7 @@ export default function ContactoPage() {
                 href={whatsappLinks.quote}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-bold text-[#1236d8] hover:underline"
+                className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-bold text-brand hover:underline"
               >
                 Solicitar presupuesto <ArrowRight size={13} />
               </a>

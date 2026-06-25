@@ -3,6 +3,7 @@ import type { LucideIcon } from "lucide-react";
 import { ArrowRight, CheckCircle2, MessageCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import { cn } from "@/lib/utils";
@@ -14,6 +15,61 @@ type InternalAction = {
   external?: boolean;
   icon?: LucideIcon;
 };
+
+export type InternalAccent = "brand" | "violet" | "teal" | "amber";
+
+type AccentClasses = {
+  badgeBorder: string;
+  badgeBg: string;
+  badgeText: string;
+  badgeDot: string;
+  highlight: string;
+  metric: string;
+  ring: string;
+};
+
+const ACCENT_MAP: Record<InternalAccent, AccentClasses> = {
+  brand: {
+    badgeBorder: "border-blue-100",
+    badgeBg: "bg-blue-50",
+    badgeText: "text-brand",
+    badgeDot: "bg-brand",
+    highlight: "text-brand",
+    metric: "text-brand",
+    ring: "ring-brand/40",
+  },
+  violet: {
+    badgeBorder: "border-violet-100",
+    badgeBg: "bg-violet-50",
+    badgeText: "text-violet-700",
+    badgeDot: "bg-violet-600",
+    highlight: "text-violet-700",
+    metric: "text-violet-700",
+    ring: "ring-violet-400/40",
+  },
+  teal: {
+    badgeBorder: "border-teal-100",
+    badgeBg: "bg-teal-50",
+    badgeText: "text-teal-700",
+    badgeDot: "bg-teal-600",
+    highlight: "text-teal-700",
+    metric: "text-teal-700",
+    ring: "ring-teal-400/40",
+  },
+  amber: {
+    badgeBorder: "border-amber-100",
+    badgeBg: "bg-amber-50",
+    badgeText: "text-amber-700",
+    badgeDot: "bg-amber-500",
+    highlight: "text-amber-700",
+    metric: "text-amber-700",
+    ring: "ring-amber-400/40",
+  },
+};
+
+function accentClasses(accent: InternalAccent = "brand"): AccentClasses {
+  return ACCENT_MAP[accent];
+}
 
 export type InternalMetric = {
   value: string;
@@ -43,6 +99,7 @@ export type InternalHeroProps = {
   mediaItems?: InternalMediaItem[];
   children?: ReactNode;
   className?: string;
+  accent?: InternalAccent;
 };
 
 export type InternalFeature = {
@@ -51,11 +108,20 @@ export type InternalFeature = {
   icon?: LucideIcon;
 };
 
-export function InternalPageShell({ children }: { children: ReactNode }) {
+export function InternalPageShell({
+  children,
+  showBreadcrumbs = true,
+}: {
+  children: ReactNode;
+  showBreadcrumbs?: boolean;
+}) {
   return (
     <>
       <Navbar />
-      <main className="overflow-x-hidden bg-white pt-20 text-[#11142a]">{children}</main>
+      <main className="overflow-x-hidden bg-white text-ink">
+        {showBreadcrumbs ? <Breadcrumbs /> : null}
+        {children}
+      </main>
       <Footer />
     </>
   );
@@ -77,21 +143,23 @@ export function InternalHero({
   mediaItems = [],
   children,
   className,
+  accent = "brand",
 }: InternalHeroProps) {
   const hasMedia = Boolean(children || image || mediaItems.length);
+  const a = accentClasses(accent);
 
   return (
     <section className={cn("border-b border-slate-200 bg-white py-16 md:py-20 lg:py-24", className)}>
       <div className={cn("mx-auto grid max-w-[1200px] gap-12 px-6", hasMedia ? "lg:grid-cols-[0.94fr_1.06fr] lg:items-center" : "")}>
         <div>
           {eyebrow ? (
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 text-[12px] font-semibold text-[#1236d8]">
-              {EyebrowIcon ? <EyebrowIcon className="size-3.5" strokeWidth={1.8} /> : <span className="size-1.5 rounded-full bg-[#ff8f1f]" />}
+            <div className={cn("mb-6 inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[12px] font-semibold", a.badgeBorder, a.badgeBg, a.badgeText)}>
+              {EyebrowIcon ? <EyebrowIcon className="size-3.5" strokeWidth={1.8} /> : <span className={cn("size-1.5 rounded-full", a.badgeDot)} />}
               {eyebrow}
             </div>
           ) : null}
 
-          <h1 className="max-w-[780px] font-display text-[clamp(38px,5.4vw,68px)] font-extrabold leading-[1.02] text-[#11142a] text-balance">
+          <h1 className="max-w-[780px] font-display text-[clamp(38px,5.4vw,68px)] font-extrabold leading-[1.02] text-ink text-balance">
             {title}
           </h1>
           <p className="mt-6 max-w-[62ch] text-[clamp(15.5px,1.45vw,18px)] leading-relaxed text-slate-600">{intro}</p>
@@ -108,9 +176,9 @@ export function InternalHero({
             <div className="mt-12 grid gap-5 border-t border-slate-200 pt-7 sm:grid-cols-3">
               {metrics.map((metric) => (
                 <div key={`${metric.value}-${metric.label}`}>
-                  <div className="font-display text-[clamp(28px,4vw,42px)] font-extrabold leading-none text-[#1236d8]">{metric.value}</div>
-                  <div className="mt-1 text-[12.5px] font-semibold text-[#11142a]">{metric.label}</div>
-                  {metric.detail ? <div className="mt-1 text-[12px] leading-relaxed text-slate-500">{metric.detail}</div> : null}
+                  <div className={cn("font-display text-[clamp(28px,4vw,42px)] font-extrabold leading-none", a.metric)}>{metric.value}</div>
+                  <div className="mt-1 text-[12.5px] font-semibold text-ink">{metric.label}</div>
+                  {metric.detail ? <div className="mt-1 text-[12px] leading-relaxed text-slate-600">{metric.detail}</div> : null}
                 </div>
               ))}
             </div>
@@ -142,7 +210,7 @@ function InternalActionLink({ action }: { action: InternalAction }) {
   const className = cn(
     "inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-5 py-3 text-[14px] font-bold transition",
     action.variant === "secondary"
-      ? "border border-blue-200 bg-white text-[#1236d8] shadow-sm hover:border-[#1236d8] hover:bg-blue-50"
+      ? "border border-blue-200 bg-white text-brand shadow-sm hover:border-brand hover:bg-blue-50"
       : "bg-[linear-gradient(90deg,#ff7a18,#ff8f1f,#ffb000)] text-white shadow-[0_18px_32px_-18px_rgba(255,122,24,0.85)] hover:-translate-y-0.5"
   );
 
@@ -195,7 +263,7 @@ export function InternalHeroMedia({
             className="object-cover"
           />
           {label ? (
-            <div className="absolute left-4 top-4 rounded-full bg-white/92 px-3 py-1.5 text-[12px] font-bold text-[#1236d8] shadow-sm">
+            <div className="absolute left-4 top-4 rounded-full bg-white/92 px-3 py-1.5 text-[12px] font-bold text-brand shadow-sm">
               {label}
             </div>
           ) : null}
@@ -204,7 +272,7 @@ export function InternalHeroMedia({
 
       {(title || subtitle || items.length) ? (
         <div className="p-5 md:p-6">
-          {title ? <h2 className="font-display text-[22px] font-extrabold leading-tight text-[#11142a]">{title}</h2> : null}
+          {title ? <h2 className="font-display text-[22px] font-extrabold leading-tight text-ink">{title}</h2> : null}
           {subtitle ? <p className="mt-2 text-[13.5px] leading-relaxed text-slate-600">{subtitle}</p> : null}
           {items.length ? (
             <div className="mt-5 grid gap-4 border-t border-slate-200 pt-5 sm:grid-cols-3">
@@ -212,8 +280,8 @@ export function InternalHeroMedia({
                 const Icon = item.icon ?? CheckCircle2;
                 return (
                   <div key={item.title} className="min-w-0">
-                    <Icon className="size-5 text-[#1236d8]" strokeWidth={1.8} />
-                    <h3 className="mt-3 text-[13.5px] font-bold text-[#11142a]">{item.title}</h3>
+                    <Icon className="size-5 text-brand" strokeWidth={1.8} />
+                    <h3 className="mt-3 text-[13.5px] font-bold text-ink">{item.title}</h3>
                     <p className="mt-1 text-[12px] leading-relaxed text-slate-500">{item.description}</p>
                   </div>
                 );
@@ -254,8 +322,8 @@ export function InternalSection({
       <div className="mx-auto max-w-[1200px] px-6">
         {(eyebrow || title || intro) ? (
           <div className="mb-10 max-w-[680px]">
-            {eyebrow ? <p className="text-[13px] font-bold text-[#1236d8]">{eyebrow}</p> : null}
-            {title ? <h2 className="mt-2 font-display text-[clamp(28px,3.8vw,44px)] font-extrabold leading-[1.05] text-[#11142a] text-balance">{title}</h2> : null}
+            {eyebrow ? <p className="text-[13px] font-bold text-brand">{eyebrow}</p> : null}
+            {title ? <h2 className="mt-2 font-display text-[clamp(28px,3.8vw,44px)] font-extrabold leading-[1.05] text-ink text-balance">{title}</h2> : null}
             {intro ? <p className="mt-4 text-[15.5px] leading-relaxed text-slate-600">{intro}</p> : null}
           </div>
         ) : null}
@@ -289,9 +357,9 @@ export function InternalFeatureGrid({
         return (
           <article key={feature.title} className="rounded-lg border border-slate-200 bg-white p-6 shadow-[0_18px_50px_-40px_rgba(17,20,42,0.35)] transition hover:-translate-y-0.5 hover:border-blue-200">
             <span className="grid size-11 place-items-center rounded-lg border border-blue-100 bg-blue-50">
-              <Icon className="size-5 text-[#1236d8]" strokeWidth={1.7} />
+              <Icon className="size-5 text-brand" strokeWidth={1.7} />
             </span>
-            <h3 className="mt-5 font-display text-[17px] font-extrabold text-[#11142a]">{feature.title}</h3>
+            <h3 className="mt-5 font-display text-[17px] font-extrabold text-ink">{feature.title}</h3>
             <p className="mt-2 text-[13.5px] leading-relaxed text-slate-600">{feature.description}</p>
           </article>
         );
@@ -313,7 +381,7 @@ export function InternalChecklist({
     <ul className={cn("grid gap-4", columns === "two" && "md:grid-cols-2", className)}>
       {items.map((item) => (
         <li key={item} className="flex gap-3 rounded-lg border border-slate-200 bg-white p-4 text-[14px] leading-relaxed text-slate-700 shadow-sm">
-          <CheckCircle2 className="mt-0.5 size-5 flex-none text-[#1236d8]" strokeWidth={1.8} />
+          <CheckCircle2 className="mt-0.5 size-5 flex-none text-brand" strokeWidth={1.8} />
           <span>{item}</span>
         </li>
       ))}
@@ -333,9 +401,9 @@ export function InternalCta({
   tone?: "dark" | "light";
 }) {
   return (
-    <section className={cn("py-16 md:py-20", tone === "dark" ? "bg-[#070a16] text-white" : "border-t border-slate-200 bg-white text-[#11142a]")}>
+    <section className={cn("py-16 md:py-20", tone === "dark" ? "bg-navy text-white" : "border-t border-slate-200 bg-white text-ink")}>
       <div className="mx-auto flex max-w-[1000px] flex-col items-center px-6 text-center">
-        <h2 className={cn("font-display text-[clamp(28px,4vw,46px)] font-extrabold leading-[1.06] text-balance", tone === "dark" ? "text-white" : "text-[#11142a]")}>{title}</h2>
+        <h2 className={cn("font-display text-[clamp(28px,4vw,46px)] font-extrabold leading-[1.06] text-balance", tone === "dark" ? "text-white" : "text-ink")}>{title}</h2>
         <p className={cn("mt-4 max-w-[58ch] text-[15.5px] leading-relaxed", tone === "dark" ? "text-slate-300" : "text-slate-600")}>{intro}</p>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           {actions.map((action) => (

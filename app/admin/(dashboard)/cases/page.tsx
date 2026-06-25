@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { ArrowLeft, BriefcaseBusiness, Eye, Pencil, Plus, Save, Trash2, X } from "lucide-react";
-import { AdminAlert, AdminButton, AdminField, AdminInput, AdminPanel, AdminSpinner, AdminTextarea, AdminToggle, ConfirmDialog, StatusBadge } from "../../../../components/admin/AdminUI";
+import { AdminAlert, AdminButton, AdminField, AdminInput, AdminPagination, AdminPanel, AdminSearch, AdminSpinner, AdminTextarea, AdminToggle, ConfirmDialog, StatusBadge, useDebouncedValue } from "../../../../components/admin/AdminUI";
 import { ImageUpload } from "../../../../components/admin/ImageUpload";
 
 type SuccessCase = {
@@ -41,23 +41,32 @@ export default function AdminCases() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [deleteTarget, setDeleteTarget] = useState<SuccessCase | null>(null);
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const limit = 20;
+  const debouncedSearch = useDebouncedValue(search, 300);
 
   const load = useCallback(async () => {
     setLoading(true);
     setError("");
     try {
-      const response = await fetch("/api/admin/cases", { cache: "no-store" });
+      const params = new URLSearchParams({ page: String(page), limit: String(limit) });
+      if (debouncedSearch) params.set("q", debouncedSearch);
+      const response = await fetch(`/api/admin/cases?${params.toString()}`, { cache: "no-store" });
       const data = await response.json();
       if (!response.ok || !data.ok) throw new Error(data.error || "No pudimos cargar los casos.");
       setItems(data.cases);
+      setTotal(data.meta?.total ?? data.cases.length);
     } catch (loadError) {
       setError((loadError as Error).message);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [page, debouncedSearch]);
 
   useEffect(() => { const timer = window.setTimeout(() => void load(), 0); return () => window.clearTimeout(timer); }, [load]);
+  useEffect(() => { setPage(1); }, [debouncedSearch]);
 
   function createItem() {
     setEditing(emptyCase);
@@ -190,17 +199,25 @@ export default function AdminCases() {
         <AdminButton onClick={createItem}><Plus />Nuevo caso</AdminButton>
       </div>
       {error ? <div className="mt-5"><AdminAlert>{error}</AdminAlert></div> : null}
-      <AdminPanel className="mt-6 overflow-hidden">
+      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <AdminSearch value={search} onChange={setSearch} placeholder="Buscar por título o cliente…" />
+      </div>
+      <AdminPanel className="mt-4 overflow-hidden">
         {loading ? <div className="grid min-h-48 place-items-center"><AdminSpinner label="Cargando casos…" /></div> : items.length === 0 ? (
-          <div className="grid min-h-56 place-items-center p-8 text-center"><div><BriefcaseBusiness className="mx-auto size-8 text-slate-300" /><p className="mt-4 text-[14px] font-semibold text-slate-950">No hay casos cargados.</p><AdminButton className="mt-5" onClick={createItem}><Plus />Crear el primero</AdminButton></div></div>
-        ) : items.map((item) => (
-          <div key={item.id} className="grid gap-4 border-b border-slate-200 px-5 py-4 last:border-0 sm:grid-cols-[96px_minmax(0,1fr)_120px_110px] sm:items-center">
-            <div className="h-16 w-24 overflow-hidden rounded-lg border border-slate-300 bg-slate-100"><Image src={item.coverImage} alt="" width={96} height={64} className="size-full object-cover" /></div>
-            <div className="min-w-0"><p className="text-[11.5px] font-bold uppercase tracking-[0.08em] text-green-800">{item.clientName}</p><p className="mt-1 truncate text-[13.5px] font-bold text-slate-950">{item.title}</p><p className="mt-1 truncate text-[11.5px] font-medium text-slate-600">{item.description}</p></div>
-            <button className="justify-self-start" onClick={() => void toggle(item)}><StatusBadge active={item.active} activeLabel="Publicado" inactiveLabel="Oculto" /></button>
-            <div className="flex justify-end gap-1"><AdminButton variant="ghost" size="icon" onClick={() => editItem(item)} aria-label="Editar"><Pencil /></AdminButton><AdminButton variant="ghost" size="icon" onClick={() => setDeleteTarget(item)} aria-label="Eliminar"><Trash2 /></AdminButton></div>
-          </div>
-        ))}
+          <div className="grid min-h-56 place-items-center p-8 text-center"><div><BriefcaseBusiness className="mx-auto size-8 text-slate-300" /><p className="mt-4 text-[14px] font-semibold text-slate-950">{debouncedSearch ? "No encontramos casos para esa búsqueda." : "No hay casos cargados."}</p>{!debouncedSearch ? <AdminButton className="mt-5" onClick={createItem}><Plus />Crear el primero</AdminButton> : null}</div></div>
+        ) : (
+          <>
+            {items.map((item) => (
+              <div key={item.id} className="grid gap-4 border-b border-slate-200 px-5 py-4 last:border-0 sm:grid-cols-[96px_minmax(0,1fr)_120px_110px] sm:items-center">
+                <div className="h-16 w-24 overflow-hidden rounded-lg border border-slate-300 bg-slate-100"><Image src={item.coverImage} alt="" width={96} height={64} className="size-full object-cover" /></div>
+                <div className="min-w-0"><p className="text-[11.5px] font-bold uppercase tracking-[0.08em] text-green-800">{item.clientName}</p><p className="mt-1 truncate text-[13.5px] font-bold text-slate-950">{item.title}</p><p className="mt-1 truncate text-[11.5px] font-medium text-slate-600">{item.description}</p></div>
+                <button className="justify-self-start" onClick={() => void toggle(item)}><StatusBadge active={item.active} activeLabel="Publicado" inactiveLabel="Oculto" /></button>
+                <div className="flex justify-end gap-1"><AdminButton variant="ghost" size="icon" onClick={() => editItem(item)} aria-label="Editar"><Pencil /></AdminButton><AdminButton variant="ghost" size="icon" onClick={() => setDeleteTarget(item)} aria-label="Eliminar"><Trash2 /></AdminButton></div>
+              </div>
+            ))}
+            <AdminPagination page={page} limit={limit} total={total} onPageChange={setPage} />
+          </>
+        )}
       </AdminPanel>
       <ConfirmDialog open={Boolean(deleteTarget)} onOpenChange={(open) => !open && setDeleteTarget(null)} title="Eliminar caso" description="El caso se eliminará de forma permanente." onConfirm={() => void remove()} />
     </div>

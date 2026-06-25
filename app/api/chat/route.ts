@@ -5,6 +5,7 @@ import {
   type UIMessage,
 } from "ai";
 import { ASSISTANT_INSTRUCTIONS } from "../../../lib/ai/knowledge.ts";
+import { logger } from "../../../lib/logger.ts";
 import { checkRateLimit } from "../../../lib/rate-limit.ts";
 
 export const runtime = "nodejs";
@@ -104,7 +105,7 @@ export async function POST(request: Request) {
       },
     },
     onError: ({ error }) => {
-      console.error("Bartez assistant error", error instanceof Error ? error.message : "unknown");
+      logger.error("api.chat.assistant", error);
     },
   });
 

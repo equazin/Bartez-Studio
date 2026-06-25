@@ -75,3 +75,16 @@ model WaMessage {
 
   @@index([conversationId, createdAt])
 }
+
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  action    String
+  entity    String
+  entityId  String
+  changes   Json?
+  adminUser String   @default("admin")
+  createdAt DateTime @default(now())
+
+  @@index([entity, entityId])
+  @@index([createdAt])
+}

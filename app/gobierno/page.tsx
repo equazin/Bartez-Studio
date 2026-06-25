@@ -36,10 +36,11 @@ export default function GobiernoPage() {
   return (
     <InternalPageShell>
       <InternalHero
+        accent="teal"
         eyebrow="Sector público"
         title={
           <>
-            Tecnología para organismos <span className="text-[#1236d8]">públicos y gubernamentales.</span>
+            Tecnología para organismos <span className="text-teal-700">públicos y gubernamentales.</span>
           </>
         }
         intro="Proveemos equipamiento IT, infraestructura y soluciones tecnológicas para municipios, ministerios, hospitales, escuelas y entidades estatales en toda Argentina."

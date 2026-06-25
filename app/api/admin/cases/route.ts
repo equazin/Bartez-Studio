@@ -1,6 +1,7 @@
 import { adminOk, adminServerError, authorizeAdminRequest, invalidAdminInput, readAdminJson } from "../../../../lib/admin-api.ts";
 import { invalidatePublicContent } from "../../../../lib/admin-content.ts";
 import { caseCreateSchema } from "../../../../lib/admin-schema.ts";
+import { logAudit } from "../../../../lib/audit.ts";
 import { getDb } from "../../../../lib/db.ts";
 
 export const runtime = "nodejs";
@@ -9,8 +10,22 @@ export async function GET(request: Request) {
   const auth = await authorizeAdminRequest(request);
   if (auth.response) return auth.response;
   try {
-    const cases = await getDb().successCase.findMany({ orderBy: { id: "desc" } });
-    return adminOk({ cases });
+    const url = new URL(request.url);
+    const page = Math.max(1, Number(url.searchParams.get("page") || "1"));
+    const limit = Math.min(100, Math.max(1, Number(url.searchParams.get("limit") || "20")));
+    const q = url.searchParams.get("q")?.trim() || "";
+    const where = q
+      ? { OR: [
+          { title: { contains: q, mode: "insensitive" as const } },
+          { clientName: { contains: q, mode: "insensitive" as const } },
+        ] }
+      : {};
+    const db = getDb();
+    const [cases, total] = await Promise.all([
+      db.successCase.findMany({ where, orderBy: { id: "desc" }, take: limit, skip: (page - 1) * limit }),
+      db.successCase.count({ where }),
+    ]);
+    return adminOk({ cases, meta: { total, page, limit } });
   } catch (error) {
     return adminServerError("listar casos", error);
   }
@@ -27,6 +42,7 @@ export async function POST(request: Request) {
     const newCase = await getDb().successCase.create({
       data: { ...parsed.data, logoUrl: parsed.data.logoUrl || null },
     });
+    await logAudit("create", "case", newCase.id, { title: newCase.title, clientName: newCase.clientName });
     invalidatePublicContent("cases");
     return adminOk({ successCase: newCase });
   } catch (error) {

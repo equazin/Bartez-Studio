@@ -2,6 +2,7 @@ import type { Prisma } from "@prisma/client";
 import { adminOk, adminServerError, authorizeAdminRequest, invalidAdminInput, readAdminJson } from "../../../../../lib/admin-api.ts";
 import { invalidatePublicContent } from "../../../../../lib/admin-content.ts";
 import { adminIdSchema, postUpdateSchema } from "../../../../../lib/admin-schema.ts";
+import { logAudit } from "../../../../../lib/audit.ts";
 import { getDb } from "../../../../../lib/db.ts";
 
 export const runtime = "nodejs";
@@ -21,6 +22,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     const data: Prisma.PostUpdateInput = { ...fields };
     if (bodyContent) data.body = bodyContent;
     const post = await getDb().post.update({ where: { id: id.data }, data });
+    await logAudit("update", "post", post.id, { fields: Object.keys(parsed.data) });
     invalidatePublicContent("posts", post.slug);
     return adminOk({ post });
   } catch (error) {
@@ -35,6 +37,7 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
   if (!id.success) return invalidAdminInput(id.error.issues);
   try {
     const post = await getDb().post.delete({ where: { id: id.data } });
+    await logAudit("delete", "post", post.id, { title: post.title, slug: post.slug });
     invalidatePublicContent("posts", post.slug);
     return adminOk();
   } catch (error) {

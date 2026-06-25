@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, MessageCircle, Phone, SlidersHorizontal, X } from "lucide-react";
 import { useState } from "react";
 import { contact } from "@/constants";
@@ -54,13 +55,40 @@ const channelLinks = [
 ];
 
 const navLinkBase =
-  "relative flex items-center h-[60px] px-3.5 text-[13px] font-semibold text-white/60 transition-colors hover:text-white/90 after:absolute after:bottom-0 after:left-3.5 after:right-3.5 after:h-[2px] after:rounded-t after:transition-colors";
+  "relative flex items-center h-[60px] px-3.5 text-[13px] font-semibold text-white/80 transition-colors hover:text-white after:absolute after:bottom-0 after:left-3.5 after:right-3.5 after:h-[2px] after:rounded-t after:transition-colors";
 const navLinkHover = "hover:after:bg-[#1236d8]/40";
+const navLinkActive = "text-white after:bg-[#1236d8]";
 const dropdownPanel =
   "invisible absolute left-1/2 top-[56px] -translate-x-1/2 translate-y-2 rounded-2xl border border-white/10 bg-[#0c1020] p-[18px] opacity-0 shadow-2xl transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100";
 
+const solutionPrefixes = [
+  "/soluciones",
+  "/ciberseguridad",
+  "/cloud-licenciamiento",
+  "/servicios-administrados",
+  "/soporte-corporativo",
+  "/renting-leasing",
+];
+const channelPrefixes = ["/empresas", "/revendedores", "/gobierno", "/educacion"];
+
+function matchesPrefix(pathname: string | null, prefixes: string[]): boolean {
+  if (!pathname) return false;
+  return prefixes.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));
+}
+
 export function Navbar() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
+  const isActive = (href: string): boolean => {
+    if (!pathname) return false;
+    if (href === "/") return pathname === "/";
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
+
+  const isSolutionsActive = matchesPrefix(pathname, solutionPrefixes);
+  const isChannelActive = matchesPrefix(pathname, channelPrefixes);
+  const isBarposActive = isActive("/barpos");
 
   return (
     <header className="sticky inset-x-0 top-0 z-50 bg-[linear-gradient(180deg,#080b18,#060914)] text-white shadow-[0_1px_0_0_rgba(18,54,216,0.15),0_12px_32px_-16px_rgba(0,0,0,0.5)]">
@@ -82,7 +110,12 @@ export function Navbar() {
             {/* BarPOS — accent link */}
             <Link
               href="/barpos"
-              className="relative flex h-[60px] items-center px-3.5 text-[13px] font-bold text-[#ffb86c] transition-colors bg-[linear-gradient(90deg,rgba(255,143,31,0.08),transparent)] hover:text-[#ffd4a8] after:absolute after:bottom-0 after:left-3.5 after:right-3.5 after:h-[2px] after:rounded-t after:bg-[#ff8f1f]/60"
+              aria-current={isBarposActive ? "page" : undefined}
+              className={`relative flex h-[60px] items-center px-3.5 text-[13px] font-bold transition-colors bg-[linear-gradient(90deg,rgba(255,143,31,0.08),transparent)] after:absolute after:bottom-0 after:left-3.5 after:right-3.5 after:h-[2px] after:rounded-t ${
+                isBarposActive
+                  ? "text-[#ffd4a8] after:bg-[#ff8f1f]"
+                  : "text-[#ffb86c] hover:text-[#ffd4a8] after:bg-[#ff8f1f]/60"
+              }`}
             >
               BarPOS
             </Link>
@@ -91,7 +124,11 @@ export function Navbar() {
 
             {/* Soluciones dropdown */}
             <div className="group relative">
-              <Link href="/#soluciones" className={`${navLinkBase} ${navLinkHover} gap-1.5`}>
+              <Link
+                href="/#soluciones"
+                aria-current={isSolutionsActive ? "page" : undefined}
+                className={`${navLinkBase} ${navLinkHover} gap-1.5 ${isSolutionsActive ? navLinkActive : ""}`}
+              >
                 Soluciones <ChevronDown size={12} className="text-white/30 transition-colors group-hover:text-white/50" />
               </Link>
               <div className={`${dropdownPanel} w-[920px]`}>
@@ -136,7 +173,11 @@ export function Navbar() {
 
             {/* Canal B2B dropdown */}
             <div className="group relative">
-              <Link href="/empresas" className={`${navLinkBase} ${navLinkHover} gap-1.5`}>
+              <Link
+                href="/empresas"
+                aria-current={isChannelActive ? "page" : undefined}
+                className={`${navLinkBase} ${navLinkHover} gap-1.5 ${isChannelActive ? navLinkActive : ""}`}
+              >
                 Canal B2B <ChevronDown size={12} className="text-white/30 transition-colors group-hover:text-white/50" />
               </Link>
               <div className={`${dropdownPanel} w-[520px]`}>
@@ -158,11 +199,19 @@ export function Navbar() {
             <span className="mx-1 h-5 w-px bg-white/8" />
 
             {/* Institutional links */}
-            {institutionalLinks.map((link) => (
-              <Link key={link.href} href={link.href} className={`${navLinkBase} ${navLinkHover}`}>
-                {link.label}
-              </Link>
-            ))}
+            {institutionalLinks.map((link) => {
+              const active = isActive(link.href);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  aria-current={active ? "page" : undefined}
+                  className={`${navLinkBase} ${navLinkHover} ${active ? navLinkActive : ""}`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </nav>
         </div>
 

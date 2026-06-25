@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { ArrowRight, Building2, CheckCircle2, Globe, Landmark, MessageCircle, School, Store } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import { ArrowRight, Building2, CheckCircle2, Globe, Landmark, MessageCircle, Network, Rocket, School, Sparkles, Store, Truck } from "lucide-react";
 import {
   InternalChecklist,
   InternalCta,
@@ -45,6 +46,46 @@ const values = [
   "Trabajamos con marcas reconocidas mundialmente y líneas pensadas para uso real.",
   "Cada cliente recibe atención dedicada: no vendemos productos aislados, armamos soluciones.",
   "Desde Rosario gestionamos distribución y proyectos en diferentes puntos de Argentina.",
+];
+
+type TimelineMilestone = {
+  year: string;
+  icon: LucideIcon;
+  title: string;
+  detail: string;
+};
+
+const milestones: TimelineMilestone[] = [
+  {
+    year: "2008",
+    icon: Rocket,
+    title: "Fundación en Rosario",
+    detail: "Bartez nace con foco en distribución IT al canal y al sector corporativo argentino.",
+  },
+  {
+    year: "2013",
+    icon: Store,
+    title: "Apertura del canal mayorista",
+    detail: "Acuerdos directos con fabricantes líderes y crecimiento del programa de revendedores en todo el país.",
+  },
+  {
+    year: "2017",
+    icon: Network,
+    title: "Infraestructura y proyectos",
+    detail: "Sumamos servidores, redes, energía y servicios profesionales para escalar a proyectos de mayor complejidad.",
+  },
+  {
+    year: "2020",
+    icon: Truck,
+    title: "Logística nacional",
+    detail: "Coordinación de entregas multi-sede y operaciones en organismos públicos, salud y educación.",
+  },
+  {
+    year: "2026",
+    icon: Sparkles,
+    title: "Hoy",
+    detail: "Más de 10.000 clientes atendidos, BarPOS 4.0 en el portfolio y herramientas online para cotizar y comparar.",
+  },
 ];
 
 export default function QuienesSomosPage() {
@@ -100,6 +141,53 @@ export default function QuienesSomosPage() {
 
       <InternalSection
         tone="soft"
+        eyebrow="Línea de tiempo"
+        title="Hitos que marcaron el crecimiento de Bartez."
+        intro="Una mirada rápida a los momentos clave desde la fundación hasta hoy."
+      >
+        <ol
+          aria-label="Hitos de Bartez Tecnología desde 2008"
+          className="relative grid gap-6 sm:gap-7"
+        >
+          <span
+            aria-hidden="true"
+            className="absolute left-[22px] top-2 bottom-2 w-px bg-gradient-to-b from-blue-200 via-blue-100 to-transparent sm:left-[27px]"
+          />
+          {milestones.map((milestone, index) => {
+            const Icon = milestone.icon;
+            const isLast = index === milestones.length - 1;
+            return (
+              <li key={milestone.year} className="relative flex gap-5 sm:gap-6">
+                <span
+                  className={`relative z-10 grid size-11 sm:size-14 flex-none place-items-center rounded-full border-2 ${
+                    isLast
+                      ? "border-brand bg-brand text-white shadow-[0_18px_36px_-18px_rgba(18,54,216,0.7)]"
+                      : "border-blue-200 bg-white text-brand shadow-sm"
+                  }`}
+                >
+                  <Icon size={20} strokeWidth={1.9} />
+                </span>
+                <div className="flex-1 rounded-lg border border-slate-200 bg-white p-5 shadow-[0_18px_50px_-40px_rgba(17,20,42,0.35)] sm:p-6">
+                  <div className="flex flex-wrap items-baseline gap-3">
+                    <span className="font-display text-[22px] font-extrabold leading-none text-brand sm:text-[26px]">
+                      {milestone.year}
+                    </span>
+                    <h3 className="font-display text-[16px] font-extrabold text-ink sm:text-[17px]">
+                      {milestone.title}
+                    </h3>
+                  </div>
+                  <p className="mt-2 text-[13.5px] leading-relaxed text-slate-600 sm:text-[14px]">
+                    {milestone.detail}
+                  </p>
+                </div>
+              </li>
+            );
+          })}
+        </ol>
+      </InternalSection>
+
+      <InternalSection
+        tone="white"
         eyebrow="Mercados atendidos"
         title="Los canales que atendemos."
         intro="Nuestra experiencia nos permite adaptarnos a la realidad de cada cliente, sin importar el rubro ni la escala."

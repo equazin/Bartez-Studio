@@ -2,6 +2,7 @@ import { createHash, timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server.js";
 import { adminLoginSchema } from "../../../../lib/admin-schema.ts";
 import { ADMIN_COOKIE_NAME, signToken } from "../../../../lib/auth.ts";
+import { logger } from "../../../../lib/logger.ts";
 import { checkRateLimit } from "../../../../lib/rate-limit.ts";
 
 export const runtime = "nodejs";
@@ -35,7 +36,7 @@ export async function POST(request: Request) {
   const password = process.env.ADMIN_PASSWORD;
   const configured = Boolean(password && process.env.ADMIN_JWT_SECRET && process.env.ADMIN_JWT_SECRET.length >= 32);
   if (!configured || !password) {
-    console.error("[admin] Faltan ADMIN_PASSWORD o ADMIN_JWT_SECRET.");
+    logger.error("admin.login.config", "Faltan ADMIN_PASSWORD o ADMIN_JWT_SECRET");
     return NextResponse.json(
       { ok: false, error: "El panel no está disponible temporalmente." },
       { status: 503, headers: { "Cache-Control": "no-store" } },

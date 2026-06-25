@@ -7,7 +7,7 @@ import { whatsappLinks } from "@/lib/whatsapp";
 export function WhatsAppFloat() {
   const pathname = usePathname();
 
-  if (pathname === "/" || pathname.startsWith("/admin")) return null;
+  if (pathname.startsWith("/admin")) return null;
 
   return (
     <a

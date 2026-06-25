@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { ArrowDown, ArrowLeft, ArrowUp, Eye, FileText, GripVertical, Pencil, Plus, Save, Trash2, X } from "lucide-react";
 import type { BodyBlock } from "../../../../lib/admin-schema";
-import { AdminAlert, AdminButton, AdminField, AdminInput, AdminPanel, AdminSpinner, AdminTextarea, AdminToggle, ConfirmDialog, StatusBadge } from "../../../../components/admin/AdminUI";
+import { AdminAlert, AdminButton, AdminField, AdminInput, AdminPagination, AdminPanel, AdminSearch, AdminSpinner, AdminTextarea, AdminToggle, ConfirmDialog, StatusBadge, useDebouncedValue } from "../../../../components/admin/AdminUI";
 import { ImageUpload } from "../../../../components/admin/ImageUpload";
 
 type Post = {
@@ -41,23 +41,32 @@ export default function AdminPosts() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [deleteTarget, setDeleteTarget] = useState<Post | null>(null);
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const limit = 20;
+  const debouncedSearch = useDebouncedValue(search, 300);
 
   const load = useCallback(async () => {
     setLoading(true);
     setError("");
     try {
-      const response = await fetch("/api/admin/posts", { cache: "no-store" });
+      const params = new URLSearchParams({ page: String(page), limit: String(limit) });
+      if (debouncedSearch) params.set("q", debouncedSearch);
+      const response = await fetch(`/api/admin/posts?${params.toString()}`, { cache: "no-store" });
       const data = await response.json();
       if (!response.ok || !data.ok) throw new Error(data.error || "No pudimos cargar los artículos.");
       setPosts(data.posts);
+      setTotal(data.meta?.total ?? data.posts.length);
     } catch (loadError) {
       setError((loadError as Error).message);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [page, debouncedSearch]);
 
   useEffect(() => { const timer = window.setTimeout(() => void load(), 0); return () => window.clearTimeout(timer); }, [load]);
+  useEffect(() => { setPage(1); }, [debouncedSearch]);
 
   function createPost() {
     setEditing(emptyPost);
@@ -236,9 +245,12 @@ export default function AdminPosts() {
         <AdminButton onClick={createPost}><Plus />Nuevo artículo</AdminButton>
       </div>
       {error ? <div className="mt-5"><AdminAlert>{error}</AdminAlert></div> : null}
-      <AdminPanel className="mt-6 overflow-hidden">
+      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <AdminSearch value={search} onChange={setSearch} placeholder="Buscar por título…" />
+      </div>
+      <AdminPanel className="mt-4 overflow-hidden">
         {loading ? <div className="grid min-h-48 place-items-center"><AdminSpinner label="Cargando artículos…" /></div> : posts.length === 0 ? (
-          <div className="grid min-h-56 place-items-center p-8 text-center"><div><FileText className="mx-auto size-8 text-slate-300" /><p className="mt-4 text-[14px] font-semibold text-slate-950">No hay artículos todavía.</p><AdminButton className="mt-5" onClick={createPost}><Plus />Crear el primero</AdminButton></div></div>
+          <div className="grid min-h-56 place-items-center p-8 text-center"><div><FileText className="mx-auto size-8 text-slate-300" /><p className="mt-4 text-[14px] font-semibold text-slate-950">{debouncedSearch ? "No encontramos artículos para esa búsqueda." : "No hay artículos todavía."}</p>{!debouncedSearch ? <AdminButton className="mt-5" onClick={createPost}><Plus />Crear el primero</AdminButton> : null}</div></div>
         ) : (
           <div>
             <div className="hidden grid-cols-[minmax(0,1fr)_150px_120px_90px] gap-4 border-b border-slate-300 bg-slate-100 px-5 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-slate-700 md:grid"><span>Contenido</span><span>Fecha</span><span>Estado</span><span className="text-right">Acciones</span></div>
@@ -253,6 +265,7 @@ export default function AdminPosts() {
                 </div>
               </div>
             ))}
+            <AdminPagination page={page} limit={limit} total={total} onPageChange={setPage} />
           </div>
         )}
       </AdminPanel>

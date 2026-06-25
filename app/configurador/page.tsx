@@ -120,15 +120,24 @@ export default function Configurador() {
   const [selectedProfile, setSelectedProfile] = useState<string>("");
   const [quantity, setQuantity] = useState<string>("1-5");
   const [intensity, setIntensity] = useState<string>("Moderada");
+  const [transitioning, setTransitioning] = useState(false);
   const profileData = profiles.find((p) => p.id === selectedProfile);
+
+  const changeStep = (next: number) => {
+    setTransitioning(true);
+    window.setTimeout(() => {
+      setStep(next);
+      window.setTimeout(() => setTransitioning(false), 20);
+    }, 180);
+  };
 
   const handleNext = () => {
     if (step === 1 && !selectedProfile) return;
-    setStep((prev) => prev + 1);
+    changeStep(step + 1);
   };
 
   const handleBack = () => {
-    setStep((prev) => prev - 1);
+    changeStep(step - 1);
   };
 
   const whatsappHref = profileData
@@ -181,7 +190,7 @@ export default function Configurador() {
                   <button
                     type="button"
                     onClick={() => {
-                      if (s.num < step) setStep(s.num);
+                      if (s.num < step) changeStep(s.num);
                     }}
                     className={`flex items-center gap-2 rounded-xl px-3 py-2.5 text-[13px] font-semibold transition sm:px-4 ${
                       step === s.num
@@ -214,7 +223,7 @@ export default function Configurador() {
             </div>
 
             {/* Card */}
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-card md:p-10">
+            <div className={`rounded-2xl border border-slate-200 bg-white p-6 shadow-card md:p-10 transition-opacity duration-200 ${transitioning ? "opacity-0" : "opacity-100"}`}>
               {/* Step 1 */}
               {step === 1 && (
                 <div>

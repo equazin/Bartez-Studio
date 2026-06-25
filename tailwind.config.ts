@@ -16,6 +16,7 @@ const config: Config = {
         accent: "#0ea5ff",
         sky: "#0ea5ff",
         emerald: "#10B981",
+        sunset: "#ff8f1f",
         bronce: "#B8956A",
       },
       fontFamily: {
@@ -26,6 +27,11 @@ const config: Config = {
         xl: "14px",
         "2xl": "18px",
         "3xl": "24px",
+        // Semantic radius tokens — prefer these over arbitrary values
+        card: "14px",      // standard cards, feature grid items, badges
+        surface: "18px",   // larger surfaces, modals, sheets
+        hero: "24px",      // hero panels and showcase containers
+        pill: "9999px",    // pills, fully rounded
       },
       boxShadow: {
         soft: "0 1px 2px rgba(15,23,42,.06)",

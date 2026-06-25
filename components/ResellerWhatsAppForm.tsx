@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { MessageCircle } from "lucide-react";
+import { Loader2, MessageCircle } from "lucide-react";
 import { track } from "@/components/Analytics";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
@@ -20,6 +20,7 @@ export function ResellerWhatsAppForm() {
     volumen: "Estoy comenzando",
     mensaje: "",
   });
+  const [submitting, setSubmitting] = useState(false);
 
   const update = (key: keyof typeof form, value: string) => {
     setForm((current) => ({ ...current, [key]: value }));
@@ -27,6 +28,8 @@ export function ResellerWhatsAppForm() {
 
   function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (submitting) return;
+    setSubmitting(true);
     const details = [
       "Origen: formulario de revendedores",
       `Empresa: ${form.empresa}`,
@@ -42,6 +45,7 @@ export function ResellerWhatsAppForm() {
 
     track("reseller_whatsapp_started", { channel_type: form.tipo, volume: form.volumen });
     window.open(buildWhatsAppUrl("reseller", details), "_blank", "noopener,noreferrer");
+    window.setTimeout(() => setSubmitting(false), 1500);
   }
 
   return (
@@ -96,10 +100,23 @@ export function ResellerWhatsAppForm() {
         <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-700">Contaños sobre tu negocio</span>
         <textarea value={form.mensaje} onChange={(event) => update("mensaje", event.target.value)} rows={3} className={`${inputClass} resize-none`} placeholder="Categorías que trabajas, mercado principal o marcas de interes" />
       </label>
-      <button type="submit" className="sm:col-span-2 mt-2 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[linear-gradient(90deg,#ff7a18,#ff8f1f,#ffb000)] px-6 py-3.5 text-[14.5px] font-bold text-white shadow-[0_16px_32px_-18px_rgba(255,122,24,0.9)] transition hover:-translate-y-0.5">
-        <MessageCircle size={18} /> Continuar por WhatsApp
+      <button
+        type="submit"
+        disabled={submitting}
+        aria-busy={submitting}
+        className="sm:col-span-2 mt-2 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[linear-gradient(90deg,#ff7a18,#ff8f1f,#ffb000)] px-6 py-3.5 text-[14.5px] font-bold text-white shadow-[0_16px_32px_-18px_rgba(255,122,24,0.9)] transition hover:-translate-y-0.5 disabled:cursor-wait disabled:opacity-80 disabled:hover:translate-y-0"
+      >
+        {submitting ? (
+          <>
+            <Loader2 size={18} className="animate-spin" /> Abriendo WhatsApp...
+          </>
+        ) : (
+          <>
+            <MessageCircle size={18} /> Continuar por WhatsApp
+          </>
+        )}
       </button>
-      <p className="sm:col-span-2 text-center text-[11.5px] text-slate-500">Al continuar, WhatsApp abrira el mensaje completo para que puedas revisarlo antes de enviarlo.</p>
+      <p className="sm:col-span-2 text-center text-[11.5px] text-slate-600">Al continuar, WhatsApp abrirá el mensaje completo para que puedas revisarlo antes de enviarlo.</p>
     </form>
   );
 }

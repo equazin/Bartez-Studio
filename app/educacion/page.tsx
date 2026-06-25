@@ -47,11 +47,12 @@ export default function EducacionPage() {
   return (
     <InternalPageShell>
       <InternalHero
+        accent="amber"
         eyebrow="Sector educativo"
         eyebrowIcon={GraduationCap}
         title={
           <>
-            Tecnología que <span className="text-[#1236d8]">transforma la educación.</span>
+            Tecnología que <span className="text-amber-700">transforma la educación.</span>
           </>
         }
         intro="Equipamos instituciónes educativas de todos los niveles con tecnología de primera línea: laboratorios de computacion, tablets, redes, servidores y audiovisuales."

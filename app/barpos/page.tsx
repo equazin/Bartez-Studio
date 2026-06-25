@@ -22,6 +22,7 @@ import {
   Users,
 } from "lucide-react";
 import { BarposWhatsAppForm } from "@/components/BarposWhatsAppForm";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
@@ -96,8 +97,9 @@ export default function BarposPage() {
   return (
     <>
       <Navbar />
-      <main className="overflow-x-hidden bg-white pt-20 text-[#071033]">
-        <section className="relative -mt-20 overflow-hidden border-b border-[#dce7ff] bg-white pt-20">
+      <Breadcrumbs />
+      <main className="overflow-x-hidden bg-white text-[#071033]">
+        <section className="relative overflow-hidden border-b border-[#dce7ff] bg-white">
           <div className="absolute inset-y-0 right-0 hidden w-[48%] bg-[linear-gradient(135deg,transparent_0%,transparent_28%,#eef6ff_28%,#eef6ff_56%,transparent_56%)] lg:block" />
           <div className="absolute right-0 top-16 hidden h-72 w-52 bg-[radial-gradient(circle,#b9d6ff_1px,transparent_1.6px)] [background-size:10px_10px] opacity-70 lg:block" />
           <div className="mx-auto grid max-w-[1320px] gap-10 px-5 py-14 sm:px-6 md:py-18 lg:grid-cols-[0.82fr_1.18fr] lg:items-center lg:py-20">

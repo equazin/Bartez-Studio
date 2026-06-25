@@ -106,11 +106,12 @@ export default function RevendedoresPage() {
   return (
     <InternalPageShell>
       <InternalHero
+        accent="violet"
         eyebrow="Canal IT"
         eyebrowIcon={Handshake}
         title={
           <>
-            Revende tecnología de <span className="text-[#1236d8]">primera línea.</span>
+            Revende tecnología de <span className="text-violet-700">primera línea.</span>
           </>
         }
         intro="Sumate al canal de distribución de Bartez. Condiciones comerciales competitivas, marcas líderes y 18 años de experiencia para acompañar el crecimiento de tu negocio."

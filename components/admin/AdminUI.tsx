@@ -3,7 +3,7 @@
 import * as React from "react";
 import { AlertDialog, Slot, Switch } from "radix-ui";
 import { cva, type VariantProps } from "class-variance-authority";
-import { AlertTriangle, CheckCircle2, Loader2, X } from "lucide-react";
+import { AlertTriangle, CheckCircle2, ChevronLeft, ChevronRight, Loader2, Search, X } from "lucide-react";
 import { cn } from "../../lib/utils";
 
 const buttonVariants = cva(
@@ -103,6 +103,70 @@ export function AdminAlert({ tone = "error", children }: { tone?: "error" | "suc
 
 export function AdminSpinner({ label = "Cargando" }: { label?: string }) {
   return <span className="inline-flex items-center gap-2 text-[13px] font-semibold text-slate-700"><Loader2 className="size-4 animate-spin" />{label}</span>;
+}
+
+export interface AdminPaginationProps {
+  page: number;
+  limit: number;
+  total: number;
+  onPageChange: (page: number) => void;
+}
+
+export function AdminPagination({ page, limit, total, onPageChange }: AdminPaginationProps) {
+  const totalPages = Math.max(1, Math.ceil(total / limit));
+  if (totalPages <= 1) return null;
+  const from = (page - 1) * limit + 1;
+  const to = Math.min(page * limit, total);
+  return (
+    <div className="flex flex-col items-center justify-between gap-3 border-t border-slate-200 px-5 py-3 sm:flex-row">
+      <p className="text-[12px] font-medium text-slate-600">
+        Mostrando <span className="font-bold text-slate-900">{from}-{to}</span> de <span className="font-bold text-slate-900">{total}</span>
+      </p>
+      <div className="flex items-center gap-2">
+        <AdminButton variant="secondary" size="sm" onClick={() => onPageChange(page - 1)} disabled={page <= 1}>
+          <ChevronLeft />Anterior
+        </AdminButton>
+        <span className="text-[12.5px] font-semibold text-slate-700">{page} / {totalPages}</span>
+        <AdminButton variant="secondary" size="sm" onClick={() => onPageChange(page + 1)} disabled={page >= totalPages}>
+          Siguiente<ChevronRight />
+        </AdminButton>
+      </div>
+    </div>
+  );
+}
+
+export interface AdminSearchProps {
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+}
+
+export function AdminSearch({ value, onChange, placeholder = "Buscar..." }: AdminSearchProps) {
+  return (
+    <div className="relative w-full sm:max-w-sm">
+      <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-500" />
+      <AdminInput value={value} onChange={(event) => onChange(event.target.value)} placeholder={placeholder} className="pl-10" />
+      {value ? (
+        <button
+          type="button"
+          onClick={() => onChange("")}
+          className="absolute right-2 top-1/2 grid size-7 -translate-y-1/2 place-items-center rounded-md text-slate-600 hover:bg-slate-100"
+          aria-label="Limpiar búsqueda"
+        >
+          <X className="size-3.5" />
+        </button>
+      ) : null}
+    </div>
+  );
+}
+
+export function useDebouncedValue<T>(value: T, delay = 300): T {
+  const [debounced, setDebounced] = React.useState<T>(value);
+  React.useEffect(() => {
+    const timer = window.setTimeout(() => setDebounced(value), delay);
+    return () => window.clearTimeout(timer);
+  }, [value, delay]);
+  return debounced;
 }
 
 export function ConfirmDialog({ open, onOpenChange, title, description, onConfirm }: {
