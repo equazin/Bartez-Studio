@@ -52,6 +52,9 @@ export const metadata: Metadata = {
     apple: "/brand/bartez-isologo.png",
   },
   manifest: "/manifest.webmanifest",
+  verification: {
+    other: { "facebook-domain-verification": ["lne0ay8twnu51nbcgo74vymd4cvzac"] },
+  },
 };
 
 const jsonLd = {
