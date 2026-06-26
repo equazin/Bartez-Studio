@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { Building2, DollarSign, Download, Mail, MessageSquare, Pencil, Phone, Plus, Save, Trash2, User, X } from "lucide-react";
+import { scoreLeadHeuristic } from "../../../../lib/ai/lead-score";
 import {
   AdminAlert,
   AdminButton,
@@ -267,10 +268,20 @@ export default function LeadsPage() {
                 </div>
                 <p className="truncate text-[13px] text-slate-700">{lead.company || "—"}</p>
                 <p className="text-[12.5px] font-medium text-slate-700">{SOURCES.find((s) => s.value === lead.source)?.label || lead.source}</p>
-                <div>
+                <div className="flex flex-col gap-1.5">
                   <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[11px] font-bold ${statusMeta(lead.status).color}`}>
                     {statusMeta(lead.status).label}
                   </span>
+                  {(() => {
+                    const s = scoreLeadHeuristic({ ...lead, createdAt: new Date(lead.createdAt), updatedAt: new Date(lead.updatedAt) });
+                    const cls = s.color === "red" ? "bg-red-50 text-red-700" : s.color === "amber" ? "bg-amber-50 text-amber-700" : "bg-slate-100 text-slate-500";
+                    return (
+                      <span className={`inline-flex w-fit items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold ${cls}`}>
+                        <span>{s.score}</span>
+                        <span>{s.label}</span>
+                      </span>
+                    );
+                  })()}
                 </div>
                 <p className="text-[13px] font-medium text-slate-700">{lead.value ? `$${lead.value.toLocaleString()}` : "—"}</p>
                 <div className="flex gap-1">

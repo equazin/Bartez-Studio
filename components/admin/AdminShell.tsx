@@ -11,6 +11,8 @@ import {
   ScrollText, ShieldCheck, ShoppingCart, Tag, Target, Truck, UserCheck,
   UsersRound, Wallet, Warehouse, Wrench, X,
 } from "lucide-react";
+import { Copilot } from "./Copilot";
+import { OnboardingTour } from "./OnboardingTour";
 import { cn } from "../../lib/utils";
 import { AdminToastProvider, LeadNotificationPoller } from "./AdminToast";
 
@@ -225,6 +227,8 @@ export function AdminShell({ username, children }: { username: string; children:
 
           {/* Right side */}
           <div className="ml-auto flex items-center gap-2">
+            <Copilot />
+
             <a
               href="/"
               target="_blank"
@@ -313,6 +317,7 @@ export function AdminShell({ username, children }: { username: string; children:
         </div>
       </main>
 
+      <OnboardingTour pathname={pathname} />
       <AdminToastProvider />
       <LeadNotificationPoller />
     </div>
