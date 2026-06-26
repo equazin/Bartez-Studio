@@ -1,6 +1,7 @@
 import { getDb } from "../../db.ts";
 import { nextNumber } from "../sales/numbering.ts";
 import { findDocType } from "../afip/catalog.ts";
+import { postAutoEntry } from "../accounting/accounting-service.ts";
 import type { ReceiptCreate } from "./schema.ts";
 
 /**
@@ -88,6 +89,19 @@ export async function createReceipt(options: { organizationId: string; data: Rec
         credit: data.amount,
         currency: data.currency,
       },
+    });
+
+    // Asiento contable: Debe Caja y Bancos / Haber Deudores por Ventas.
+    await postAutoEntry(tx, {
+      organizationId: options.organizationId,
+      date: receivedAt,
+      description: `Recibo ${number}`,
+      referenceType: "receipt",
+      referenceId: receipt.id,
+      lines: [
+        { code: "1.1.01", debit: Number(data.amount) },
+        { code: "1.1.02", credit: Number(data.amount) },
+      ],
     });
 
     return receipt;

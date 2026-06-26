@@ -1,3 +1,4 @@
+import type { Prisma } from "@prisma/client";
 import { getDb } from "../../db.ts";
 import { nextNumber } from "../sales/numbering.ts";
 import type { JournalEntryCreate, LedgerAccountCreate, LedgerAccountType } from "./schema.ts";
@@ -50,6 +51,95 @@ export async function seedChartOfAccounts(organizationId: string) {
     })),
   });
   return { created: DEFAULT_CHART.length };
+}
+
+/** Garantiza el plan de cuentas dentro de una transacción (idempotente). */
+async function ensureChartTx(tx: Prisma.TransactionClient, organizationId: string): Promise<void> {
+  const existing = await tx.ledgerAccount.count({ where: { organizationId } });
+  if (existing > 0) return;
+  await tx.ledgerAccount.createMany({
+    data: DEFAULT_CHART.map((account) => ({
+      organizationId,
+      code: account.code,
+      name: account.name,
+      type: account.type,
+    })),
+  });
+}
+
+export interface AutoEntryLine {
+  code: string;
+  debit?: number;
+  credit?: number;
+  description?: string;
+}
+
+/**
+ * Asiento automático posteado dentro de la transacción de la operación origen
+ * (factura, cobro, pago…). Resuelve las cuentas por código del plan.
+ *
+ * Es best-effort: si el plan no tiene una cuenta o el asiento no balancea por
+ * algún borde, NO lanza — registra nada y deja seguir la operación de plata,
+ * para que la contabilidad nunca rompa una factura o un pago.
+ */
+export async function postAutoEntry(
+  tx: Prisma.TransactionClient,
+  options: { organizationId: string; date: Date; description: string; referenceType: string; referenceId: string; lines: AutoEntryLine[] },
+): Promise<void> {
+  await ensureChartTx(tx, options.organizationId);
+
+  const codes = Array.from(new Set(options.lines.map((line) => line.code)));
+  const accounts = await tx.ledgerAccount.findMany({
+    where: { organizationId: options.organizationId, code: { in: codes } },
+    select: { id: true, code: true },
+  });
+  const idByCode = new Map(accounts.map((account) => [account.code, account.id]));
+  if (codes.some((code) => !idByCode.has(code))) return; // falta una cuenta: no posteamos
+
+  const journalLines = options.lines
+    .map((line) => ({
+      accountId: idByCode.get(line.code)!,
+      debit: round2(Number(line.debit ?? 0)),
+      credit: round2(Number(line.credit ?? 0)),
+      description: line.description ?? null,
+    }))
+    .filter((line) => line.debit > 0 || line.credit > 0);
+
+  if (journalLines.length < 2) return;
+  const totalDebit = round2(journalLines.reduce((sum, line) => sum + line.debit, 0));
+  const totalCredit = round2(journalLines.reduce((sum, line) => sum + line.credit, 0));
+  if (Math.abs(totalDebit - totalCredit) > 0.01) return; // no balancea: no posteamos
+
+  const { number } = await nextNumber(tx, { organizationId: options.organizationId, docType: "asiento" });
+  await tx.journalEntry.create({
+    data: {
+      organizationId: options.organizationId,
+      number,
+      date: options.date,
+      description: options.description,
+      referenceType: options.referenceType,
+      referenceId: options.referenceId,
+      source: "auto",
+      lines: { create: journalLines },
+    },
+  });
+}
+
+/** Marca como anulados los asientos automáticos de una operación origen. */
+export async function voidAutoEntries(
+  tx: Prisma.TransactionClient,
+  options: { organizationId: string; referenceType: string; referenceId: string },
+): Promise<void> {
+  await tx.journalEntry.updateMany({
+    where: {
+      organizationId: options.organizationId,
+      referenceType: options.referenceType,
+      referenceId: options.referenceId,
+      source: "auto",
+      voidedAt: null,
+    },
+    data: { voidedAt: new Date() },
+  });
 }
 
 export async function listLedgerAccounts(organizationId: string) {

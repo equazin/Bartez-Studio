@@ -6,6 +6,7 @@ import { AFIP_IVA_CODES, AFIP_RECEIVER_DOC_TYPES, findDocType, shortDocCode } fr
 import { solicitarCae } from "../afip/wsfe.ts";
 import { getAfipConfig } from "../afip/config.ts";
 import { buildAfipQrUrl } from "../afip/qr.ts";
+import { postAutoEntry, voidAutoEntries } from "../accounting/accounting-service.ts";
 import type { InvoiceCreate } from "./schema.ts";
 
 /**
@@ -193,8 +194,8 @@ export async function createInvoice(options: { organizationId: string; data: Inv
 
     // Asiento en cuenta corriente: una nota de crédito (isCreditNote) genera credit,
     // el resto (facturas y NDs) genera debit.
+    const isCredit = doc.isCreditNote;
     if (data.accountId) {
-      const isCredit = doc.isCreditNote;
       await tx.customerAccountEntry.create({
         data: {
           organizationId: options.organizationId,
@@ -210,6 +211,27 @@ export async function createInvoice(options: { organizationId: string; data: Inv
         },
       });
     }
+
+    // Asiento contable automático (partida doble). Factura: Debe Deudores,
+    // Haber Ventas + IVA Débito. Nota de crédito: al revés.
+    await postAutoEntry(tx, {
+      organizationId: options.organizationId,
+      date: issueDate,
+      description: `${shortDocCode(data.docTypeCode)} ${number}`,
+      referenceType: "invoice",
+      referenceId: invoice.id,
+      lines: isCredit
+        ? [
+            { code: "4.1.01", debit: totals.subtotal },
+            { code: "2.1.02", debit: totals.taxTotal },
+            { code: "1.1.02", credit: totals.total },
+          ]
+        : [
+            { code: "1.1.02", debit: totals.total },
+            { code: "4.1.01", credit: totals.subtotal },
+            { code: "2.1.02", credit: totals.taxTotal },
+          ],
+    });
 
     return { invoice, qrUrl: buildAfipQrUrl({
       fecha: issueDate.toISOString().slice(0, 10),
@@ -252,6 +274,7 @@ export async function cancelInvoice(options: { organizationId: string; id: strin
         },
       });
     }
+    await voidAutoEntries(tx, { organizationId: options.organizationId, referenceType: "invoice", referenceId: existing.id });
     return tx.invoice.update({ where: { id: existing.id }, data: { status: "cancelled", cancelledAt: new Date() } });
   });
 }

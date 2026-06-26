@@ -2,6 +2,7 @@ import { Prisma } from "@prisma/client";
 import { getDb } from "../../db.ts";
 import { calcQuote } from "../sales/calc.ts";
 import { nextNumber } from "../sales/numbering.ts";
+import { postAutoEntry, voidAutoEntries } from "../accounting/accounting-service.ts";
 import type { GoodsReceiptCreate, PurchaseOrderCreate, SupplierPaymentCreate } from "./schema.ts";
 
 export class PurchaseValidationError extends Error {}
@@ -334,6 +335,19 @@ export async function createSupplierPayment(options: { organizationId: string; d
       });
     }
 
+    // Asiento contable: Debe Proveedores / Haber Caja y Bancos.
+    await postAutoEntry(tx, {
+      organizationId: options.organizationId,
+      date: paidAt,
+      description: `Pago ${number}`,
+      referenceType: "supplier_payment",
+      referenceId: payment.id,
+      lines: [
+        { code: "2.1.01", debit: Number(data.amount) },
+        { code: "1.1.01", credit: Number(data.amount) },
+      ],
+    });
+
     return payment;
   });
 }
@@ -374,6 +388,8 @@ export async function voidSupplierPayment(options: { organizationId: string; id:
         });
       }
     }
+
+    await voidAutoEntries(tx, { organizationId: options.organizationId, referenceType: "supplier_payment", referenceId: payment.id });
 
     return tx.supplierPayment.update({
       where: { id: payment.id },
