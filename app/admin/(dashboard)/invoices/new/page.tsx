@@ -66,6 +66,7 @@ export default function NewInvoicePage() {
   const [receiverDocType, setReceiverDocType] = useState(99);
   const [receiverAddress, setReceiverAddress] = useState("");
   const [currency, setCurrency] = useState<"PES" | "DOL">("PES");
+  const [exchangeRate, setExchangeRate] = useState("1");
   const [issueDate, setIssueDate] = useState(new Date().toISOString().slice(0, 10));
   const [notes, setNotes] = useState("");
   const [lines, setLines] = useState<Line[]>([{ ...emptyLine }]);
@@ -81,6 +82,9 @@ export default function NewInvoicePage() {
     fetch("/api/admin/products?limit=200&active=1").then((r) => r.json()).then((j) => setProducts(j.data || [])).catch(() => {});
     fetch("/api/admin/orders?limit=50").then((r) => r.json()).then((j) => setOrders(j.data || [])).catch(() => {});
     fetch("/api/admin/invoices?limit=100&status=issued").then((r) => r.json()).then((j) => setRelatedInvoices(j.data || [])).catch(() => {});
+    fetch("/api/admin/exchange-rates").then((r) => r.json()).then((j) => {
+      if (j.ok && j.data.latest) setExchangeRate(String(Number(j.data.latest.rate)));
+    }).catch(() => {});
   }, []);
 
   // Autocomplete receptor cuando se elige cuenta
@@ -137,6 +141,7 @@ export default function NewInvoicePage() {
       receiverDocType: receiverDocType || null,
       receiverAddress: receiverAddress || null,
       currency,
+      exchangeRate: currency === "DOL" ? (Number(exchangeRate) > 0 ? Number(exchangeRate) : 1) : 1,
       issueDate,
       notes: notes || null,
       lines: lines.filter((l) => l.description.trim()),
@@ -223,6 +228,11 @@ export default function NewInvoicePage() {
               <option value="DOL">Dólares (DOL)</option>
             </select>
           </AdminField>
+          {currency === "DOL" && (
+            <AdminField label="Cotización USD → ARS" htmlFor="i-rate">
+              <AdminInput id="i-rate" type="number" min="0" step="0.01" placeholder="Ej: 1050" value={exchangeRate} onChange={(e) => setExchangeRate(e.target.value)} />
+            </AdminField>
+          )}
           <AdminField label="Fecha de emisión" htmlFor="i-issue">
             <AdminInput id="i-issue" type="date" value={issueDate} onChange={(e) => setIssueDate(e.target.value)} />
           </AdminField>

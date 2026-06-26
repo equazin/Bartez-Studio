@@ -30,6 +30,7 @@ export type AuditEntity =
   | "supplier_payment"
   | "cash_account"
   | "cash_movement"
+  | "exchange_rate"
   | "ticket"
   | "ticket_message"
   | "warranty_term"

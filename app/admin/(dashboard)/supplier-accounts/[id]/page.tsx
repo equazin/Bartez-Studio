@@ -87,16 +87,19 @@ export default function SupplierAccountDetailPage() {
     setLoading(true);
     setError(null);
     try {
-      const [detailRes, cashRes] = await Promise.all([
+      const [detailRes, cashRes, rateRes] = await Promise.all([
         fetch(`/api/admin/supplier-accounts/${params.id}`),
         fetch("/api/admin/cash-accounts?limit=100&active=1"),
+        fetch("/api/admin/exchange-rates"),
       ]);
       const detailJson = await detailRes.json();
       const cashJson = await cashRes.json();
+      const rateJson = await rateRes.json();
       if (!detailRes.ok || !detailJson.ok) throw new Error(detailJson.error || "No pudimos cargar la cuenta proveedor");
       setDetail(detailJson.data);
       setCashAccounts(cashJson.data || []);
       setCashAccountId((cashJson.data || [])[0]?.id || "");
+      if (rateRes.ok && rateJson.ok && rateJson.data.latest) setExchangeRate(String(Number(rateJson.data.latest.rate)));
       const firstCurrency = detailJson.data?.balances?.[0]?.currency || detailJson.data?.openOrders?.[0]?.currency || "ARS";
       setCurrency(firstCurrency === "USD" ? "USD" : "ARS");
     } catch (err) {
@@ -264,6 +267,7 @@ export default function SupplierAccountDetailPage() {
             {hasCrossCurrency && (
               <AdminField label={`Cotización ${currency === "ARS" ? "USD → ARS" : "ARS → USD"}`} htmlFor="exchange-rate">
                 <AdminInput id="exchange-rate" type="number" min="0.000001" step="0.01" placeholder="Ej: 1050" value={exchangeRate} onChange={(event) => setExchangeRate(event.target.value)} />
+                <p className="mt-1 text-[11px] text-slate-500">Tomada de la cotización del día (editable). Cargala en Caja y bancos.</p>
               </AdminField>
             )}
             <div className="grid gap-4 sm:grid-cols-2">

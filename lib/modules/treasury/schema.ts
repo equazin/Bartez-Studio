@@ -37,3 +37,11 @@ export const cashMovementCreateSchema = z.object({
   referenceId: nullableTrimmed(80),
 });
 export type CashMovementCreate = z.infer<typeof cashMovementCreateSchema>;
+
+export const exchangeRateCreateSchema = z.object({
+  base: z.enum(["USD"]).default("USD"),
+  quote: z.enum(["ARS"]).default("ARS"),
+  rate: positiveDecimal,
+  date: z.coerce.date().optional(),
+});
+export type ExchangeRateCreate = z.infer<typeof exchangeRateCreateSchema>;

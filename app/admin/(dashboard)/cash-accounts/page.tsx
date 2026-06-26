@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Ban, Landmark, Plus, Save, Wallet } from "lucide-react";
+import { Ban, DollarSign, Landmark, Plus, Save, Wallet } from "lucide-react";
 import {
   AdminAlert,
   AdminButton,
@@ -68,22 +68,29 @@ export default function CashAccountsPage() {
   const [movementDescription, setMovementDescription] = useState("");
   const [movementAmount, setMovementAmount] = useState("");
 
+  const [latestRate, setLatestRate] = useState<{ rate: string | number; date: string } | null>(null);
+  const [rateInput, setRateInput] = useState("");
+  const [savingRate, setSavingRate] = useState(false);
+
   const load = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const [accountsRes, movementsRes] = await Promise.all([
+      const [accountsRes, movementsRes, rateRes] = await Promise.all([
         fetch("/api/admin/cash-accounts?limit=100"),
         fetch(`/api/admin/cash-movements?page=${page}&limit=${limit}`),
+        fetch("/api/admin/exchange-rates"),
       ]);
       const accountsJson = await accountsRes.json();
       const movementsJson = await movementsRes.json();
+      const rateJson = await rateRes.json();
       if (!accountsRes.ok || !accountsJson.ok) throw new Error(accountsJson.error || "No pudimos cargar cajas/bancos");
       if (!movementsRes.ok || !movementsJson.ok) throw new Error(movementsJson.error || "No pudimos cargar movimientos");
       setAccounts(accountsJson.data);
       setMovements(movementsJson.data);
       setTotal(movementsJson.meta.total);
       setMovementAccountId((current) => current || accountsJson.data[0]?.id || "");
+      if (rateRes.ok && rateJson.ok) setLatestRate(rateJson.data.latest || null);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error desconocido");
     } finally {
@@ -114,6 +121,28 @@ export default function CashAccountsPage() {
       setError(err instanceof Error ? err.message : "Error desconocido");
     } finally {
       setSavingAccount(false);
+    }
+  }
+
+  async function saveRate() {
+    const parsed = Number(rateInput);
+    if (!parsed || parsed <= 0) { setError("Ingresa una cotización mayor a cero."); return; }
+    setSavingRate(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/admin/exchange-rates", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ base: "USD", quote: "ARS", rate: parsed }),
+      });
+      const json = await res.json();
+      if (!res.ok || !json.ok) throw new Error(json.error || "No pudimos guardar la cotización");
+      setRateInput("");
+      await load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Error desconocido");
+    } finally {
+      setSavingRate(false);
     }
   }
 
@@ -226,6 +255,25 @@ export default function CashAccountsPage() {
         </div>
 
         <div className="grid content-start gap-5">
+          <AdminPanel className="p-5">
+            <div className="flex items-center gap-2">
+              <DollarSign className="size-[18px] text-emerald-600" />
+              <h2 className="font-display text-[17px] font-bold text-slate-950">Cotización del dólar</h2>
+            </div>
+            <p className="mt-2 text-[12.5px] text-slate-600">
+              {latestRate
+                ? <>Vigente: <b className="text-slate-950">USD 1 = ARS {Number(latestRate.rate).toLocaleString("es-AR", { minimumFractionDigits: 2 })}</b> <span className="text-slate-500">({new Date(latestRate.date).toLocaleDateString("es-AR")})</span></>
+                : "Todavía no cargaste ninguna cotización."}
+            </p>
+            <p className="mt-1 text-[11.5px] text-slate-500">Se autocompleta en facturas y pagos a proveedores en otra moneda.</p>
+            <div className="mt-4 grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
+              <AdminField label="USD 1 = ARS" htmlFor="rate-input">
+                <AdminInput id="rate-input" type="number" min="0" step="0.01" placeholder="Ej: 1050" value={rateInput} onChange={(event) => setRateInput(event.target.value)} />
+              </AdminField>
+              <AdminButton onClick={() => void saveRate()} disabled={savingRate}><Save />{savingRate ? "..." : "Guardar"}</AdminButton>
+            </div>
+          </AdminPanel>
+
           <AdminPanel className="p-5">
             <h2 className="font-display text-[17px] font-bold text-slate-950">Nueva cuenta</h2>
             <div className="mt-4 grid gap-4">
