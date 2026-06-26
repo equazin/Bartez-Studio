@@ -42,6 +42,7 @@ model User {
   ownedOpps       Opportunity[] @relation("OpportunityOwner")
   assignedActs    Activity[]    @relation("ActivityAssignee")
   ownedQuotes     Quote[]       @relation("QuoteOwner")
+  ownedOrders     SalesOrder[]  @relation("OrderOwner")
 }
 
 model Membership {
@@ -241,6 +242,7 @@ model Account {
   opportunities  Opportunity[]
   activities     Activity[]
   quotes         Quote[]
+  orders         SalesOrder[]
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
   deletedAt      DateTime?
@@ -348,6 +350,9 @@ model Product {
   taxRate        Decimal          @default(21) @db.Decimal(5, 2) // IVA por defecto (%)
   prices         PriceListItem[]
   quoteLines     QuoteLine[]
+  orderLines     SalesOrderLine[]
+  stockItems     StockItem[]
+  stockMovements StockMovement[]
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
   deletedAt      DateTime?
@@ -414,6 +419,7 @@ model Quote {
   acceptedAt      DateTime?
   rejectedAt      DateTime?
   lines           QuoteLine[]
+  orders          SalesOrder[]
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
   deletedAt       DateTime?
@@ -442,5 +448,127 @@ model QuoteLine {
   lineTotal    Decimal @default(0) @db.Decimal(14, 2)
 
   @@index([quoteId, position])
+  @@index([productId])
+}
+
+// ─────────────────────────────────────────────────────────────
+// Inventario + Pedidos de venta (Fase 3)
+// Modelo mixto: productos en stock (stockTracked=true) viven en
+// StockItem por depósito; productos bajo pedido se cubren con OC.
+// Reserva = StockMovement type=reserve; al entregar se descuenta.
+// ─────────────────────────────────────────────────────────────
+
+model Warehouse {
+  id             String          @id @default(cuid())
+  organizationId String
+  code           String // identificador corto (DEP01)
+  name           String
+  address        String?
+  isDefault      Boolean         @default(false)
+  active         Boolean         @default(true)
+  stockItems     StockItem[]
+  movements      StockMovement[] @relation("WarehouseMovements")
+  movementsFrom  StockMovement[] @relation("WarehouseFromMovements")
+  movementsTo    StockMovement[] @relation("WarehouseToMovements")
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  @@unique([organizationId, code])
+  @@index([organizationId, active])
+}
+
+model StockItem {
+  id          String    @id @default(cuid())
+  warehouseId String
+  warehouse   Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
+  productId   String
+  product     Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  quantity    Decimal   @default(0) @db.Decimal(14, 4) // stock disponible (no reservado)
+  reserved    Decimal   @default(0) @db.Decimal(14, 4) // unidades reservadas por pedidos confirmados
+  reorderPoint Decimal? @db.Decimal(14, 4) // alerta de stock bajo
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([warehouseId, productId])
+  @@index([productId])
+}
+
+model StockMovement {
+  id              String     @id @default(cuid())
+  organizationId  String
+  type            String // in | out | transfer | adjust | reserve | release
+  productId       String
+  product         Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+  warehouseId     String? // depósito principal del movimiento (in/out/adjust/reserve/release)
+  warehouse       Warehouse? @relation("WarehouseMovements", fields: [warehouseId], references: [id])
+  fromWarehouseId String? // transfer
+  fromWarehouse   Warehouse? @relation("WarehouseFromMovements", fields: [fromWarehouseId], references: [id])
+  toWarehouseId   String? // transfer
+  toWarehouse     Warehouse? @relation("WarehouseToMovements", fields: [toWarehouseId], references: [id])
+  quantity        Decimal    @db.Decimal(14, 4) // siempre positivo; el type define el signo
+  reason          String? // motivo (entrega de SO, recepción de OC, ajuste físico, etc.)
+  referenceType  String? // sales_order | purchase_order | manual
+  referenceId    String?
+  createdAt       DateTime   @default(now())
+
+  @@index([organizationId, createdAt])
+  @@index([productId, createdAt])
+  @@index([referenceType, referenceId])
+}
+
+model SalesOrder {
+  id              String           @id @default(cuid())
+  organizationId  String
+  number          String // PED-0001-00000001
+  accountId       String?
+  account         Account?         @relation(fields: [accountId], references: [id], onDelete: SetNull)
+  quoteId         String?
+  quote           Quote?           @relation(fields: [quoteId], references: [id], onDelete: SetNull)
+  ownerId         String?
+  owner           User?            @relation("OrderOwner", fields: [ownerId], references: [id])
+  warehouseId     String? // depósito de salida; opcional para bajo pedido puro
+  status          String           @default("draft") // draft | confirmed | in_preparation | delivered | cancelled
+  currency        String           @default("USD")
+  orderDate       DateTime         @default(now())
+  expectedDate    DateTime?
+  notes           String?
+  subtotal        Decimal          @default(0) @db.Decimal(14, 2)
+  discountTotal   Decimal          @default(0) @db.Decimal(14, 2)
+  taxTotal        Decimal          @default(0) @db.Decimal(14, 2)
+  total           Decimal          @default(0) @db.Decimal(14, 2)
+  confirmedAt     DateTime?
+  preparedAt      DateTime?
+  deliveredAt     DateTime?
+  cancelledAt     DateTime?
+  lines           SalesOrderLine[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  deletedAt       DateTime?
+
+  @@unique([organizationId, number])
+  @@index([organizationId, status])
+  @@index([accountId])
+  @@index([quoteId])
+}
+
+model SalesOrderLine {
+  id           String    @id @default(cuid())
+  orderId      String
+  order        SalesOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId    String?
+  product      Product?  @relation(fields: [productId], references: [id], onDelete: SetNull)
+  position     Int       @default(0)
+  description  String
+  quantity     Decimal   @default(1) @db.Decimal(14, 4)
+  unitPrice    Decimal   @db.Decimal(14, 4)
+  discountPct  Decimal   @default(0) @db.Decimal(5, 2)
+  taxRate      Decimal   @default(21) @db.Decimal(5, 2)
+  lineSubtotal Decimal   @default(0) @db.Decimal(14, 2)
+  lineTax      Decimal   @default(0) @db.Decimal(14, 2)
+  lineTotal    Decimal   @default(0) @db.Decimal(14, 2)
+  // Fulfillment: cuántas unidades quedaron pendientes vs entregadas
+  delivered    Decimal   @default(0) @db.Decimal(14, 4)
+  backorder    Boolean   @default(false) // marcada para producto bajo pedido
+
+  @@index([orderId, position])
   @@index([productId])
 }

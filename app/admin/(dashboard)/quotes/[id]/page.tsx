@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { CheckCircle2, ChevronLeft, FileText, Pencil, Send, XCircle } from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
+import { CheckCircle2, ChevronLeft, FileText, Pencil, Send, ShoppingCart, XCircle } from "lucide-react";
 import { AdminAlert, AdminButton, AdminPanel, AdminSpinner } from "../../../../../components/admin/AdminUI";
 
 interface QuoteLine {
@@ -52,10 +52,31 @@ const STATUSES: Record<string, { label: string; color: string }> = {
 
 export default function QuoteDetailPage() {
   const params = useParams<{ id: string }>();
+  const router = useRouter();
   const [quote, setQuote] = useState<QuoteDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [transitioning, setTransitioning] = useState(false);
+  const [creatingOrder, setCreatingOrder] = useState(false);
+
+  async function createOrder() {
+    setCreatingOrder(true);
+    setError(null);
+    try {
+      const res = await fetch(`/api/admin/quotes/${params.id}/to-order`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ warehouseId: null }),
+      });
+      const json = await res.json();
+      if (!res.ok || !json.data?.id) throw new Error(json.error || "Error al crear pedido");
+      router.push(`/admin/orders/${json.data.id}`);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Error");
+    } finally {
+      setCreatingOrder(false);
+    }
+  }
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -120,6 +141,9 @@ export default function QuoteDetailPage() {
               <AdminButton onClick={() => void changeStatus("accepted")} disabled={transitioning}><CheckCircle2 />Aceptado</AdminButton>
               <AdminButton variant="secondary" onClick={() => void changeStatus("rejected")} disabled={transitioning}><XCircle />Rechazado</AdminButton>
             </>
+          )}
+          {quote.status === "accepted" && (
+            <AdminButton onClick={() => void createOrder()} disabled={creatingOrder}><ShoppingCart />{creatingOrder ? "Creando…" : "Crear pedido"}</AdminButton>
           )}
         </div>
       </div>
