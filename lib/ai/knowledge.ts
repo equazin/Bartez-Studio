@@ -15,7 +15,7 @@ Condiciones comerciales verificadas:
 - Cobertura y entregas coordinadas en todo el país.
 - Horario de atención: lunes a viernes de 9 a 18 hs.
 - Email: ventas@bartez.com.ar.
-- WhatsApp comercial: +54 9 341 510-4902.
+- WhatsApp comercial: +54 9 341 668-4350.
 
 Proceso de trabajo:
 1. El cliente explica el desafío y su prioridad.

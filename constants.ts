@@ -32,11 +32,11 @@ export const company = {
 
 export const contact = {
   // Reemplazar por datos reales en producción
-  whatsappNumber: "5493415104902",
+  whatsappNumber: "5493416684350",
   whatsappMessage:
     "Hola, vengo de la web y necesito asesoramiento para mi empresa.",
   email: "ventas@bartez.com.ar",
-  phoneDisplay: "+54 9 341 510-4902",
+  phoneDisplay: "+54 9 341 668-4350",
   hours: "Lunes a Viernes · 9 a 18 hs",
   social: {
     linkedin: "https://www.linkedin.com/company/bartez",

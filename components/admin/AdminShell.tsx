@@ -193,7 +193,7 @@ function MobileNav({ pathname, close }: { pathname: string; close: () => void })
 function Brand() {
   return (
     <Link href="/admin" className="inline-flex items-center gap-2 flex-none">
-      <Image src="/brand/bartez-logo-oficial-blanco.png" alt="Bartez Tecnología" width={170} height={52} className="h-6 w-auto" priority />
+      <Image src="/brand/bartez-logo.png" alt="Bartez Tecnología" width={170} height={52} className="h-7 w-auto" priority />
     </Link>
   );
 }
