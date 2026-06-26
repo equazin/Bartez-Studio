@@ -20,3 +20,5 @@ await import("./sales-calc.test.ts");
 await import("./catalog-schema.test.ts");
 await import("./inventory-schema.test.ts");
 await import("./orders-schema.test.ts");
+await import("./billing-schema.test.ts");
+await import("./purchases-treasury-schema.test.ts");

@@ -19,7 +19,17 @@ export type AuditEntity =
   | "quote"
   | "warehouse"
   | "stock_movement"
-  | "sales_order";
+  | "sales_order"
+  | "delivery_note"
+  | "invoice"
+  | "receipt"
+  | "payment_link"
+  | "supplier"
+  | "purchase_order"
+  | "goods_receipt"
+  | "supplier_payment"
+  | "cash_account"
+  | "cash_movement";
 
 export async function logAudit(
   action: AuditAction,

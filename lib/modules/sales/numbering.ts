@@ -16,7 +16,12 @@ const PREFIX_BY_DOC: Record<string, string> = {
   factura_b: "FCB",
   factura_c: "FCC",
   nota_credito: "NC",
+  nota_debito: "ND",
   remito: "REM",
+  orden_compra: "OC",
+  recepcion_compra: "RC",
+  pago_proveedor: "OP",
+  movimiento_caja: "MOV",
 };
 
 export type TxClient = Prisma.TransactionClient | PrismaClient;

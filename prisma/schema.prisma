@@ -243,6 +243,10 @@ model Account {
   activities     Activity[]
   quotes         Quote[]
   orders         SalesOrder[]
+  deliveryNotes  DeliveryNote[]
+  invoices       Invoice[]
+  receipts       Receipt[]
+  accountEntries CustomerAccountEntry[]
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
   deletedAt      DateTime?
@@ -351,6 +355,9 @@ model Product {
   prices         PriceListItem[]
   quoteLines     QuoteLine[]
   orderLines     SalesOrderLine[]
+  deliveryLines  DeliveryNoteLine[]
+  purchaseLines  PurchaseOrderLine[]
+  goodsReceiptLines GoodsReceiptLine[]
   stockItems     StockItem[]
   stockMovements StockMovement[]
   createdAt      DateTime         @default(now())
@@ -467,6 +474,7 @@ model Warehouse {
   isDefault      Boolean         @default(false)
   active         Boolean         @default(true)
   stockItems     StockItem[]
+  goodsReceipts  GoodsReceipt[]
   movements      StockMovement[] @relation("WarehouseMovements")
   movementsFrom  StockMovement[] @relation("WarehouseFromMovements")
   movementsTo    StockMovement[] @relation("WarehouseToMovements")
@@ -540,6 +548,8 @@ model SalesOrder {
   deliveredAt     DateTime?
   cancelledAt     DateTime?
   lines           SalesOrderLine[]
+  deliveryNotes   DeliveryNote[]
+  invoices        Invoice[]
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
   deletedAt       DateTime?
@@ -571,4 +581,439 @@ model SalesOrderLine {
 
   @@index([orderId, position])
   @@index([productId])
+}
+
+// ─────────────────────────────────────────────────────────────
+// Facturación AFIP + Cobranzas (Fase 4)
+// Invoice = comprobante electrónico (A/B/C, NC/ND). El CAE se solicita
+// a AFIP vía WSFE; mientras tanto status="draft"; al obtener CAE pasa
+// a "issued". Receipt = cobranza con allocations a una o más Invoices.
+// CustomerAccountEntry es el libro mayor por cuenta (factura, recibo,
+// NC) que permite calcular saldo simple.
+// ─────────────────────────────────────────────────────────────
+
+model DeliveryNote {
+  id              String             @id @default(cuid())
+  organizationId  String
+  number          String // REM-0001-00000001
+  pointOfSale     Int                @default(1)
+  accountId       String?
+  account         Account?           @relation(fields: [accountId], references: [id], onDelete: SetNull)
+  orderId         String?
+  order           SalesOrder?        @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  receiverName    String
+  receiverTaxId   String?
+  receiverAddress String?
+  issueDate       DateTime           @default(now())
+  status          String             @default("issued") // draft | issued | cancelled
+  notes           String?
+  lines           DeliveryNoteLine[]
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+  deletedAt       DateTime?
+
+  @@unique([organizationId, number])
+  @@index([organizationId, status])
+  @@index([accountId])
+  @@index([orderId])
+}
+
+model DeliveryNoteLine {
+  id             String       @id @default(cuid())
+  deliveryNoteId String
+  deliveryNote   DeliveryNote @relation(fields: [deliveryNoteId], references: [id], onDelete: Cascade)
+  productId      String?
+  product        Product?     @relation(fields: [productId], references: [id], onDelete: SetNull)
+  position       Int          @default(0)
+  description    String
+  quantity       Decimal      @default(1) @db.Decimal(14, 4)
+
+  @@index([deliveryNoteId, position])
+  @@index([productId])
+}
+
+model Invoice {
+  id              String                  @id @default(cuid())
+  organizationId  String
+  number          String // FCA-0001-00000001 (interno hasta tener CAE)
+  // Datos AFIP
+  docTypeCode     Int // 1 = Factura A, 6 = Factura B, 11 = Factura C, 3 = NC A, 8 = NC B, 13 = NC C, etc.
+  pointOfSale     Int // PtoVta
+  afipNumber      Int? // CbteDesde/Hasta otorgado en la respuesta
+  cae             String? // CAE devuelto por AFIP
+  caeExpiresAt    DateTime? // FchVtoCAE
+  afipStatus      String                  @default("pending") // pending | issued | rejected
+  afipObservations Json?                  // detalle del rechazo o avisos
+  // Comprobante asociado en NC/ND
+  relatedInvoiceId String?
+  relatedInvoice   Invoice?                @relation("InvoiceRelated", fields: [relatedInvoiceId], references: [id])
+  reversals       Invoice[]                @relation("InvoiceRelated")
+  // Vínculos comerciales
+  accountId       String?
+  account         Account?                @relation(fields: [accountId], references: [id], onDelete: SetNull)
+  orderId         String?
+  order           SalesOrder?             @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  // Datos del receptor (snapshot)
+  receiverName     String
+  receiverTaxId    String?
+  receiverDocType  Int? // 80=CUIT, 86=CUIL, 96=DNI, 99=Consumidor Final
+  receiverAddress  String?
+  // Datos del comprobante
+  currency        String                  @default("ARS") // PES, USD, EUR — internamente guardamos código corto
+  exchangeRate    Decimal                 @default(1) @db.Decimal(18, 6)
+  issueDate       DateTime                @default(now())
+  serviceFrom     DateTime?
+  serviceTo       DateTime?
+  paymentDueDate  DateTime?
+  // Totales
+  subtotal        Decimal                 @default(0) @db.Decimal(14, 2)
+  discountTotal   Decimal                 @default(0) @db.Decimal(14, 2)
+  taxTotal        Decimal                 @default(0) @db.Decimal(14, 2)
+  total           Decimal                 @default(0) @db.Decimal(14, 2)
+  notes           String?
+  status          String                  @default("draft") // draft | issued | cancelled
+  issuedAt        DateTime?
+  cancelledAt     DateTime?
+  lines           InvoiceLine[]
+  allocations     ReceiptAllocation[]
+  paymentLinks    PaymentLink[]
+  createdAt       DateTime                @default(now())
+  updatedAt       DateTime                @updatedAt
+  deletedAt       DateTime?
+
+  @@unique([organizationId, pointOfSale, docTypeCode, afipNumber])
+  @@unique([organizationId, number])
+  @@index([organizationId, status])
+  @@index([accountId])
+  @@index([orderId])
+  @@index([cae])
+}
+
+model InvoiceLine {
+  id           String   @id @default(cuid())
+  invoiceId    String
+  invoice      Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  productId    String?
+  position     Int      @default(0)
+  description  String
+  quantity     Decimal  @default(1) @db.Decimal(14, 4)
+  unitPrice    Decimal  @db.Decimal(14, 4)
+  discountPct  Decimal  @default(0) @db.Decimal(5, 2)
+  taxRate      Decimal  @default(21) @db.Decimal(5, 2)
+  lineSubtotal Decimal  @default(0) @db.Decimal(14, 2)
+  lineTax      Decimal  @default(0) @db.Decimal(14, 2)
+  lineTotal    Decimal  @default(0) @db.Decimal(14, 2)
+
+  @@index([invoiceId, position])
+}
+
+model Receipt {
+  id             String              @id @default(cuid())
+  organizationId String
+  number         String // REC-0001-00000001
+  accountId      String
+  account        Account             @relation(fields: [accountId], references: [id], onDelete: Restrict)
+  receivedAt     DateTime            @default(now())
+  method         String // cash | transfer | card | mercadopago | other
+  reference      String? // n° de transferencia, etc.
+  amount         Decimal             @db.Decimal(14, 2)
+  currency       String              @default("ARS")
+  notes          String?
+  allocations    ReceiptAllocation[]
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+  deletedAt      DateTime?
+
+  @@unique([organizationId, number])
+  @@index([organizationId, accountId])
+  @@index([receivedAt])
+}
+
+model ReceiptAllocation {
+  id        String  @id @default(cuid())
+  receiptId String
+  receipt   Receipt @relation(fields: [receiptId], references: [id], onDelete: Cascade)
+  invoiceId String
+  invoice   Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  amount    Decimal @db.Decimal(14, 2)
+
+  @@unique([receiptId, invoiceId])
+  @@index([invoiceId])
+}
+
+model CustomerAccountEntry {
+  id             String   @id @default(cuid())
+  organizationId String
+  accountId      String
+  account        Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  date           DateTime @default(now())
+  type           String // invoice | receipt | credit_note | adjust
+  referenceType  String? // invoice | receipt
+  referenceId    String?
+  description    String
+  // Positivo = aumenta saldo deudor (cliente debe). Negativo = lo reduce.
+  debit          Decimal  @default(0) @db.Decimal(14, 2)
+  credit         Decimal  @default(0) @db.Decimal(14, 2)
+  currency       String   @default("ARS")
+  createdAt      DateTime @default(now())
+
+  @@index([organizationId, accountId, date])
+  @@index([referenceType, referenceId])
+}
+
+model PaymentLink {
+  id             String   @id @default(cuid())
+  organizationId String
+  invoiceId      String?
+  invoice        Invoice? @relation(fields: [invoiceId], references: [id], onDelete: SetNull)
+  provider       String   @default("mercadopago") // mercadopago | manual
+  externalId     String? // preference_id en MP
+  url            String?
+  amount         Decimal  @db.Decimal(14, 2)
+  currency       String   @default("ARS")
+  status         String   @default("pending") // pending | paid | expired | cancelled
+  expiresAt      DateTime?
+  paidAt         DateTime?
+  metadata       Json?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([organizationId, status])
+  @@index([externalId])
+}
+
+model AfipTaCache {
+  id             String   @id @default(cuid())
+  organizationId String
+  cuit           String
+  service        String // wsfe | wsfev1
+  mode           String // homo | prod
+  token          String
+  sign           String
+  generationTime DateTime
+  expirationTime DateTime
+  updatedAt      DateTime @updatedAt
+
+  @@unique([organizationId, cuit, service, mode])
+  @@index([expirationTime])
+}
+
+// Phase 5: Purchases + Treasury
+
+model Supplier {
+  id             String                 @id @default(cuid())
+  organizationId String
+  name           String
+  taxId          String?
+  email          String?
+  phone          String?
+  address        String?
+  city           String?
+  country        String?
+  paymentTerms   String?
+  notes          String?
+  active         Boolean                @default(true)
+  purchaseOrders PurchaseOrder[]
+  goodsReceipts  GoodsReceipt[]
+  payments       SupplierPayment[]
+  accountEntries SupplierAccountEntry[]
+  createdAt      DateTime               @default(now())
+  updatedAt      DateTime               @updatedAt
+  deletedAt      DateTime?
+
+  @@index([organizationId, active])
+  @@index([organizationId, name])
+  @@index([taxId])
+}
+
+model PurchaseOrder {
+  id             String                 @id @default(cuid())
+  organizationId String
+  number         String
+  supplierId     String
+  supplier       Supplier               @relation(fields: [supplierId], references: [id], onDelete: Restrict)
+  status         String                 @default("issued") // draft | issued | partially_received | received | cancelled
+  currency       String                 @default("ARS")
+  issueDate      DateTime               @default(now())
+  expectedDate   DateTime?
+  notes          String?
+  subtotal       Decimal                @default(0) @db.Decimal(14, 2)
+  discountTotal  Decimal                @default(0) @db.Decimal(14, 2)
+  taxTotal       Decimal                @default(0) @db.Decimal(14, 2)
+  total          Decimal                @default(0) @db.Decimal(14, 2)
+  issuedAt       DateTime?
+  receivedAt     DateTime?
+  cancelledAt    DateTime?
+  lines          PurchaseOrderLine[]
+  receipts       GoodsReceipt[]
+  allocations    SupplierPaymentAllocation[]
+  accountEntries SupplierAccountEntry[]
+  createdAt      DateTime               @default(now())
+  updatedAt      DateTime               @updatedAt
+  deletedAt      DateTime?
+
+  @@unique([organizationId, number])
+  @@index([organizationId, status])
+  @@index([supplierId])
+  @@index([issueDate])
+}
+
+model PurchaseOrderLine {
+  id              String             @id @default(cuid())
+  purchaseOrderId String
+  purchaseOrder   PurchaseOrder      @relation(fields: [purchaseOrderId], references: [id], onDelete: Cascade)
+  productId       String?
+  product         Product?           @relation(fields: [productId], references: [id], onDelete: SetNull)
+  position        Int                @default(0)
+  description     String
+  quantity        Decimal            @default(1) @db.Decimal(14, 4)
+  unitPrice       Decimal            @db.Decimal(14, 4)
+  discountPct     Decimal            @default(0) @db.Decimal(5, 2)
+  taxRate         Decimal            @default(21) @db.Decimal(5, 2)
+  lineSubtotal    Decimal            @default(0) @db.Decimal(14, 2)
+  lineTax         Decimal            @default(0) @db.Decimal(14, 2)
+  lineTotal       Decimal            @default(0) @db.Decimal(14, 2)
+  received        Decimal            @default(0) @db.Decimal(14, 4)
+  receiptLines    GoodsReceiptLine[]
+
+  @@index([purchaseOrderId, position])
+  @@index([productId])
+}
+
+model GoodsReceipt {
+  id              String             @id @default(cuid())
+  organizationId  String
+  number          String
+  supplierId      String?
+  supplier        Supplier?          @relation(fields: [supplierId], references: [id], onDelete: SetNull)
+  purchaseOrderId String?
+  purchaseOrder   PurchaseOrder?     @relation(fields: [purchaseOrderId], references: [id], onDelete: SetNull)
+  warehouseId     String
+  warehouse       Warehouse          @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+  receivedAt      DateTime           @default(now())
+  status          String             @default("received") // received | cancelled
+  notes           String?
+  lines           GoodsReceiptLine[]
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+  deletedAt       DateTime?
+
+  @@unique([organizationId, number])
+  @@index([organizationId, receivedAt])
+  @@index([purchaseOrderId])
+  @@index([warehouseId])
+}
+
+model GoodsReceiptLine {
+  id                  String             @id @default(cuid())
+  goodsReceiptId      String
+  goodsReceipt        GoodsReceipt       @relation(fields: [goodsReceiptId], references: [id], onDelete: Cascade)
+  purchaseOrderLineId String?
+  purchaseOrderLine   PurchaseOrderLine? @relation(fields: [purchaseOrderLineId], references: [id], onDelete: SetNull)
+  productId           String?
+  product             Product?           @relation(fields: [productId], references: [id], onDelete: SetNull)
+  position            Int                @default(0)
+  description         String
+  quantity            Decimal            @default(1) @db.Decimal(14, 4)
+  unitCost            Decimal            @default(0) @db.Decimal(14, 4)
+
+  @@index([goodsReceiptId, position])
+  @@index([purchaseOrderLineId])
+  @@index([productId])
+}
+
+model SupplierPayment {
+  id             String                       @id @default(cuid())
+  organizationId String
+  number         String
+  supplierId     String
+  supplier       Supplier                     @relation(fields: [supplierId], references: [id], onDelete: Restrict)
+  cashAccountId  String?
+  cashAccount    CashAccount?                 @relation(fields: [cashAccountId], references: [id], onDelete: SetNull)
+  paidAt         DateTime                     @default(now())
+  method         String                       @default("transfer") // cash | transfer | card | mercadopago | other
+  reference      String?
+  amount         Decimal                      @db.Decimal(14, 2)
+  currency       String                       @default("ARS")
+  notes          String?
+  allocations    SupplierPaymentAllocation[]
+  createdAt      DateTime                     @default(now())
+  updatedAt      DateTime                     @updatedAt
+  deletedAt      DateTime?
+
+  @@unique([organizationId, number])
+  @@index([organizationId, supplierId])
+  @@index([paidAt])
+}
+
+model SupplierPaymentAllocation {
+  id              String          @id @default(cuid())
+  paymentId       String
+  payment         SupplierPayment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  purchaseOrderId String
+  purchaseOrder   PurchaseOrder   @relation(fields: [purchaseOrderId], references: [id], onDelete: Cascade)
+  amount          Decimal         @db.Decimal(14, 2)
+
+  @@unique([paymentId, purchaseOrderId])
+  @@index([purchaseOrderId])
+}
+
+model SupplierAccountEntry {
+  id              String         @id @default(cuid())
+  organizationId  String
+  supplierId      String
+  supplier        Supplier       @relation(fields: [supplierId], references: [id], onDelete: Cascade)
+  purchaseOrderId String?
+  purchaseOrder   PurchaseOrder? @relation(fields: [purchaseOrderId], references: [id], onDelete: SetNull)
+  date            DateTime       @default(now())
+  type            String // purchase_order | payment | adjust
+  referenceType   String?
+  referenceId     String?
+  description     String
+  debit           Decimal        @default(0) @db.Decimal(14, 2) // reduces payable
+  credit          Decimal        @default(0) @db.Decimal(14, 2) // increases payable
+  currency        String         @default("ARS")
+  createdAt       DateTime       @default(now())
+
+  @@index([organizationId, supplierId, date])
+  @@index([purchaseOrderId])
+  @@index([referenceType, referenceId])
+}
+
+model CashAccount {
+  id             String            @id @default(cuid())
+  organizationId String
+  name           String
+  type           String            @default("bank") // cash | bank
+  currency       String            @default("ARS")
+  balance        Decimal           @default(0) @db.Decimal(14, 2)
+  active         Boolean           @default(true)
+  details        Json?
+  movements      CashMovement[]
+  supplierPayments SupplierPayment[]
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  deletedAt      DateTime?
+
+  @@unique([organizationId, name])
+  @@index([organizationId, active])
+}
+
+model CashMovement {
+  id             String      @id @default(cuid())
+  organizationId String
+  cashAccountId  String
+  cashAccount    CashAccount @relation(fields: [cashAccountId], references: [id], onDelete: Cascade)
+  type           String // income | expense | adjust
+  date           DateTime    @default(now())
+  description    String
+  amount         Decimal     @db.Decimal(14, 2)
+  currency       String      @default("ARS")
+  referenceType  String?
+  referenceId    String?
+  createdAt      DateTime    @default(now())
+
+  @@index([organizationId, date])
+  @@index([cashAccountId, date])
+  @@index([referenceType, referenceId])
 }
