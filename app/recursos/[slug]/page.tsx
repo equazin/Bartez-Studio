@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, Clock, Eye, MessageCircle } from "lucide-react";
 import { articles, company } from "@/constants";
 import { getDynamicArticleBySlug } from "@/lib/db-content";
+import { safeJsonLd } from "@/lib/json-ld";
 import { verifyToken, tokenFromCookieHeader } from "@/lib/auth-token";
 import { cookies } from "next/headers";
 import {
@@ -70,7 +71,7 @@ export default async function Articulo({ params, searchParams }: { params: Promi
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       {isPreview && (
         <div className="sticky top-0 z-50 flex items-center justify-center gap-2 bg-amber-500 px-4 py-2 text-sm font-bold text-black">
           <Eye size={16} /> Vista previa — Este artículo no está publicado

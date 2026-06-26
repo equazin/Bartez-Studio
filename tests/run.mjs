@@ -26,3 +26,4 @@ await import("./support-schema.test.ts");
 await import("./warranties-schema.test.ts");
 await import("./services-schema.test.ts");
 await import("./accounting-schema.test.ts");
+await import("./json-ld.test.ts");

@@ -3,7 +3,16 @@
 // El token se configura via env var API_V1_TOKEN
 // ---------------------------------------------------------------------------
 
+import { createHash, timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
+
+/** Comparación en tiempo constante (evita oráculos de tiempo sobre el token). */
+function safeEqual(left: string, right: string): boolean {
+  return timingSafeEqual(
+    createHash("sha256").update(left).digest(),
+    createHash("sha256").update(right).digest(),
+  );
+}
 
 export function authorizeV1Request(request: Request): { ok: true } | { ok: false; response: Response } {
   const token = process.env.API_V1_TOKEN;
@@ -17,7 +26,7 @@ export function authorizeV1Request(request: Request): { ok: true } | { ok: false
   const auth = request.headers.get("authorization") || "";
   const provided = auth.startsWith("Bearer ") ? auth.slice(7).trim() : "";
 
-  if (provided !== token) {
+  if (!provided || !safeEqual(provided, token)) {
     return {
       ok: false,
       response: NextResponse.json(

@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { ArrowRight, CheckCircle2, ClipboardList, FileText, MessageCircle, MessagesSquare, Rocket } from "lucide-react";
 import { company, verticals } from "@/constants";
 import { getDynamicPartners } from "@/lib/db-content";
+import { safeJsonLd } from "@/lib/json-ld";
 import {
   InternalCta,
   InternalHero,
@@ -77,8 +78,8 @@ export default async function VerticalPage({
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
 
       <InternalPageShell>
         <InternalHero

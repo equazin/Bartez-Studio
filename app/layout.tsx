@@ -3,6 +3,7 @@ import { Inter, Space_Grotesk } from "next/font/google";
 import "streamdown/styles.css";
 import "./globals.css";
 import { company, seo, contact, faq } from "../constants";
+import { safeJsonLd } from "../lib/json-ld";
 import { Analytics } from "../components/Analytics";
 import { Analytics as VercelAnalytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -114,7 +115,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}
         />
       </head>
       <body className="font-sans antialiased">
