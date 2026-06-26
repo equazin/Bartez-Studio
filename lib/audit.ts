@@ -31,6 +31,8 @@ export type AuditEntity =
   | "cash_account"
   | "cash_movement"
   | "exchange_rate"
+  | "ledger_account"
+  | "journal_entry"
   | "ticket"
   | "ticket_message"
   | "warranty_term"

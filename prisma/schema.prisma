@@ -1030,6 +1030,64 @@ model CashMovement {
 }
 
 // ─────────────────────────────────────────────────────────────
+// Contabilidad de partida doble (Fase 3).
+// LedgerAccount: plan de cuentas jerárquico (activo/pasivo/PN/
+// ingresos/egresos). JournalEntry + JournalLine: asientos con
+// validación debe = haber. Reportes: Libro Diario, Libro Mayor,
+// Balance de Sumas y Saldos.
+// ─────────────────────────────────────────────────────────────
+
+model LedgerAccount {
+  id             String          @id @default(cuid())
+  organizationId String
+  code           String // "1.1.01" jerárquico
+  name           String
+  type           String // asset | liability | equity | income | expense
+  parentId       String?
+  parent         LedgerAccount?  @relation("LedgerTree", fields: [parentId], references: [id])
+  children       LedgerAccount[] @relation("LedgerTree")
+  active         Boolean         @default(true)
+  lines          JournalLine[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  @@unique([organizationId, code])
+  @@index([organizationId, type])
+}
+
+model JournalEntry {
+  id             String        @id @default(cuid())
+  organizationId String
+  number         String // folio interno (AS-0001-00000001)
+  date           DateTime
+  description    String
+  referenceType  String? // invoice | supplier_payment | receipt | cash_movement | manual
+  referenceId    String?
+  source         String        @default("manual") // manual | auto
+  lines          JournalLine[]
+  createdAt      DateTime      @default(now())
+  voidedAt       DateTime?
+
+  @@unique([organizationId, number])
+  @@index([organizationId, date])
+  @@index([referenceType, referenceId])
+}
+
+model JournalLine {
+  id          String        @id @default(cuid())
+  entryId     String
+  entry       JournalEntry  @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  accountId   String
+  account     LedgerAccount @relation(fields: [accountId], references: [id], onDelete: Restrict)
+  debit       Decimal       @default(0) @db.Decimal(14, 2)
+  credit      Decimal       @default(0) @db.Decimal(14, 2)
+  description String?
+
+  @@index([entryId])
+  @@index([accountId])
+}
+
+// ─────────────────────────────────────────────────────────────
 // Postventa, Garantías y Servicios (Fase 6)
 // Ticket: solicitud de soporte / RMA. SerialNumber: tracking
 // individual de unidades vendidas. WarrantyTerm: política de

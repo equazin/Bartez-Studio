@@ -8,7 +8,7 @@ import {
   BarChart3, BookOpen, Boxes, Building2, BriefcaseBusiness, CalendarCheck,
   ChevronDown, ExternalLink, FileSpreadsheet, FileText, Hash, LayoutDashboard,
   LifeBuoy, LogOut, Menu, MessageSquare, Package, PackageOpen, Receipt,
-  ScrollText, ShieldCheck, ShoppingCart, Tag, Target, Truck, UserCheck,
+  Scale, ScrollText, ShieldCheck, ShoppingCart, Tag, Target, Truck, UserCheck,
   UsersRound, Wallet, Warehouse, Wrench, X,
 } from "lucide-react";
 import { Copilot } from "./Copilot";
@@ -42,6 +42,7 @@ const navigation: NavItem[] = [
   { href: "/admin/customer-accounts",  label: "Cta. Cte. Clientes",  icon: Wallet,           group: "finance" },
   { href: "/admin/supplier-accounts",  label: "Cta. Cte. Proveedores",icon: Wallet,          group: "finance" },
   { href: "/admin/cash-accounts",      label: "Caja y bancos",       icon: Building2,        group: "finance" },
+  { href: "/admin/accounting",         label: "Contabilidad",        icon: Scale,            group: "finance" },
   { href: "/admin/accounting-export",  label: "Export contable",     icon: FileSpreadsheet,  group: "finance" },
   { href: "/admin/tickets",            label: "Tickets",             icon: LifeBuoy,         group: "support" },
   { href: "/admin/work-orders",        label: "Órdenes de trabajo",  icon: Wrench,           group: "support" },

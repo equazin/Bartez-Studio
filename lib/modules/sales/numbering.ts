@@ -22,6 +22,7 @@ const PREFIX_BY_DOC: Record<string, string> = {
   recepcion_compra: "RC",
   pago_proveedor: "OP",
   movimiento_caja: "MOV",
+  asiento: "AS",
 };
 
 export type TxClient = Prisma.TransactionClient | PrismaClient;
