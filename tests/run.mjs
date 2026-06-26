@@ -22,3 +22,6 @@ await import("./inventory-schema.test.ts");
 await import("./orders-schema.test.ts");
 await import("./billing-schema.test.ts");
 await import("./purchases-treasury-schema.test.ts");
+await import("./support-schema.test.ts");
+await import("./warranties-schema.test.ts");
+await import("./services-schema.test.ts");

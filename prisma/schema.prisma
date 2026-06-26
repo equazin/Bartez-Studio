@@ -43,6 +43,9 @@ model User {
   assignedActs    Activity[]    @relation("ActivityAssignee")
   ownedQuotes     Quote[]       @relation("QuoteOwner")
   ownedOrders     SalesOrder[]  @relation("OrderOwner")
+  assignedTickets Ticket[]      @relation("TicketAssignee")
+  authoredArticles KnowledgeArticle[] @relation("ArticleAuthor")
+  assignedWorkOrders WorkOrder[] @relation("WorkOrderAssignee")
 }
 
 model Membership {
@@ -247,6 +250,9 @@ model Account {
   invoices       Invoice[]
   receipts       Receipt[]
   accountEntries CustomerAccountEntry[]
+  tickets        Ticket[]
+  workOrders     WorkOrder[]
+  serialNumbers  SerialNumber[]
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
   deletedAt      DateTime?
@@ -360,6 +366,9 @@ model Product {
   goodsReceiptLines GoodsReceiptLine[]
   stockItems     StockItem[]
   stockMovements StockMovement[]
+  serialNumbers  SerialNumber[]
+  workOrderItems WorkOrderItem[]
+  warrantyTerms  WarrantyTerm[]
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
   deletedAt      DateTime?
@@ -1016,4 +1025,176 @@ model CashMovement {
   @@index([organizationId, date])
   @@index([cashAccountId, date])
   @@index([referenceType, referenceId])
+}
+
+// ─────────────────────────────────────────────────────────────
+// Postventa, Garantías y Servicios (Fase 6)
+// Ticket: solicitud de soporte / RMA. SerialNumber: tracking
+// individual de unidades vendidas. WarrantyTerm: política de
+// garantía por producto. WorkOrder: orden de trabajo técnica.
+// KnowledgeArticle: base de conocimiento reutilizable por el bot.
+// ─────────────────────────────────────────────────────────────
+
+model Ticket {
+  id              String          @id @default(cuid())
+  organizationId  String
+  number          String // TCK-0001-00000001
+  type            String          @default("support") // support | rma | incident | question
+  priority        String          @default("normal") // low | normal | high | urgent
+  status          String          @default("new") // new | open | pending | solved | closed
+  subject         String
+  description     String?
+  channel         String          @default("manual") // manual | whatsapp | email | web
+  accountId       String?
+  account         Account?        @relation(fields: [accountId], references: [id], onDelete: SetNull)
+  serialNumberId  String?
+  serialNumber    SerialNumber?   @relation(fields: [serialNumberId], references: [id], onDelete: SetNull)
+  assignedToId    String?
+  assignedTo      User?           @relation("TicketAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
+  workOrders      WorkOrder[]
+  messages        TicketMessage[]
+  resolutionNotes String?
+  firstResponseAt DateTime?
+  solvedAt        DateTime?
+  closedAt        DateTime?
+  dueAt           DateTime? // SLA
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  deletedAt       DateTime?
+
+  @@unique([organizationId, number])
+  @@index([organizationId, status])
+  @@index([organizationId, priority])
+  @@index([accountId])
+  @@index([assignedToId, status])
+  @@index([dueAt])
+}
+
+model TicketMessage {
+  id           String   @id @default(cuid())
+  ticketId     String
+  ticket       Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  authorType   String // user | customer | system
+  authorName   String?
+  body         String
+  internal     Boolean  @default(false) // nota interna no visible al cliente
+  attachments  Json?
+  createdAt    DateTime @default(now())
+
+  @@index([ticketId, createdAt])
+}
+
+model WarrantyTerm {
+  id             String   @id @default(cuid())
+  organizationId String
+  productId      String
+  product        Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  // Días de garantía contados desde la fecha de entrega.
+  durationDays   Int      @default(365)
+  coverage       String? // qué cubre (texto libre, mostrable al cliente)
+  exclusions     String?
+  active         Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([organizationId, productId])
+}
+
+model SerialNumber {
+  id             String        @id @default(cuid())
+  organizationId String
+  productId      String
+  product        Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
+  serial         String
+  accountId      String?
+  account        Account?      @relation(fields: [accountId], references: [id], onDelete: SetNull)
+  orderLineId    String? // origen de la asignación (cuando se entrega un pedido)
+  invoiceId      String?
+  deliveredAt    DateTime?
+  warrantyUntil  DateTime?
+  status         String        @default("in_stock") // in_stock | delivered | returned | scrapped
+  notes          String?
+  tickets        Ticket[]
+  workOrders     WorkOrder[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@unique([organizationId, serial])
+  @@index([productId])
+  @@index([accountId])
+  @@index([warrantyUntil])
+  @@index([status])
+}
+
+model KnowledgeArticle {
+  id             String   @id @default(cuid())
+  organizationId String
+  slug           String
+  title          String
+  body           String // markdown
+  excerpt        String?
+  tags           Json? // array de strings
+  category       String?
+  authorId       String?
+  author         User?    @relation("ArticleAuthor", fields: [authorId], references: [id], onDelete: SetNull)
+  published      Boolean  @default(true)
+  views          Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  deletedAt      DateTime?
+
+  @@unique([organizationId, slug])
+  @@index([organizationId, published])
+  @@index([category])
+}
+
+model WorkOrder {
+  id              String          @id @default(cuid())
+  organizationId  String
+  number          String // OT-0001-00000001
+  type            String          @default("repair") // install | repair | maintenance | training
+  status          String          @default("scheduled") // scheduled | in_progress | completed | cancelled
+  priority        String          @default("normal")
+  title           String
+  description     String?
+  accountId       String?
+  account         Account?        @relation(fields: [accountId], references: [id], onDelete: SetNull)
+  ticketId        String?
+  ticket          Ticket?         @relation(fields: [ticketId], references: [id], onDelete: SetNull)
+  serialNumberId  String?
+  serialNumber    SerialNumber?   @relation(fields: [serialNumberId], references: [id], onDelete: SetNull)
+  assignedToId    String?
+  assignedTo      User?           @relation("WorkOrderAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
+  scheduledFor    DateTime?
+  startedAt       DateTime?
+  completedAt     DateTime?
+  durationMinutes Int? // tiempo real registrado al cerrar
+  items           WorkOrderItem[]
+  resolutionNotes String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  deletedAt       DateTime?
+
+  @@unique([organizationId, number])
+  @@index([organizationId, status])
+  @@index([assignedToId, status])
+  @@index([scheduledFor])
+  @@index([accountId])
+}
+
+model WorkOrderItem {
+  id           String     @id @default(cuid())
+  workOrderId  String
+  workOrder    WorkOrder  @relation(fields: [workOrderId], references: [id], onDelete: Cascade)
+  productId    String?
+  product      Product?   @relation(fields: [productId], references: [id], onDelete: SetNull)
+  kind         String     @default("part") // part | labor
+  description  String
+  quantity     Decimal    @default(1) @db.Decimal(14, 4)
+  unitPrice    Decimal    @default(0) @db.Decimal(14, 4)
+  billable     Boolean    @default(true)
+  notes        String?
+  createdAt    DateTime   @default(now())
+
+  @@index([workOrderId])
 }

@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Dialog } from "radix-ui";
-import { BarChart3, Boxes, Building2, BriefcaseBusiness, CalendarCheck, ExternalLink, FileSpreadsheet, FileText, LayoutDashboard, LogOut, Menu, MessageSquare, Package, PackageOpen, Receipt, ScrollText, ShoppingCart, Tag, Target, Truck, UserCheck, UsersRound, Wallet, Warehouse, X } from "lucide-react";
+import { BarChart3, BookOpen, Boxes, Building2, BriefcaseBusiness, CalendarCheck, ExternalLink, FileSpreadsheet, FileText, Hash, LayoutDashboard, LifeBuoy, LogOut, Menu, MessageSquare, Package, PackageOpen, Receipt, ScrollText, ShieldCheck, ShoppingCart, Tag, Target, Truck, UserCheck, UsersRound, Wallet, Warehouse, Wrench, X } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { AdminButton } from "./AdminUI";
 import { AdminToastProvider, LeadNotificationPoller } from "./AdminToast";
@@ -32,6 +32,12 @@ const navigation = [
   { href: "/admin/supplier-accounts", label: "Cuentas proveedores", icon: Wallet, group: "finance" },
   { href: "/admin/cash-accounts", label: "Caja y bancos", icon: Building2, group: "finance" },
   { href: "/admin/accounting-export", label: "Export contable", icon: FileSpreadsheet, group: "finance" },
+  { href: "/admin/tickets", label: "Tickets", icon: LifeBuoy, group: "support" },
+  { href: "/admin/work-orders", label: "Órdenes de trabajo", icon: Wrench, group: "support" },
+  { href: "/admin/serial-numbers", label: "N° de serie", icon: Hash, group: "support" },
+  { href: "/admin/warranty-terms", label: "Garantías", icon: ShieldCheck, group: "support" },
+  { href: "/admin/knowledge", label: "Base de conocimiento", icon: BookOpen, group: "support" },
+  { href: "/admin/reports", label: "Reportes BI", icon: BarChart3, group: "bi" },
   { href: "/admin/analytics", label: "Analytics", icon: BarChart3, group: "main" },
   { href: "/admin/conversations", label: "WhatsApp", icon: MessageSquare, group: "main" },
   { href: "/admin/posts", label: "Artículos", icon: FileText, group: "content" },
@@ -69,6 +75,8 @@ function Navigation({ pathname, close }: { pathname: string; close?: () => void 
   const purchases = navigation.filter((n) => n.group === "purchases");
   const inventory = navigation.filter((n) => n.group === "inventory");
   const finance = navigation.filter((n) => n.group === "finance");
+  const support = navigation.filter((n) => n.group === "support");
+  const bi = navigation.filter((n) => n.group === "bi");
   const content = navigation.filter((n) => n.group === "content");
   const system = navigation.filter((n) => n.group === "system");
   return (
@@ -78,6 +86,8 @@ function Navigation({ pathname, close }: { pathname: string; close?: () => void 
       <NavGroup label="Compras" items={purchases} pathname={pathname} close={close} />
       <NavGroup label="Inventario" items={inventory} pathname={pathname} close={close} />
       <NavGroup label="Finanzas" items={finance} pathname={pathname} close={close} />
+      <NavGroup label="Postventa" items={support} pathname={pathname} close={close} />
+      <NavGroup label="BI" items={bi} pathname={pathname} close={close} />
       <NavGroup label="Contenido" items={content} pathname={pathname} close={close} />
       <NavGroup label="Sistema" items={system} pathname={pathname} close={close} />
     </nav>

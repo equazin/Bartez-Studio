@@ -29,7 +29,13 @@ export type AuditEntity =
   | "goods_receipt"
   | "supplier_payment"
   | "cash_account"
-  | "cash_movement";
+  | "cash_movement"
+  | "ticket"
+  | "ticket_message"
+  | "warranty_term"
+  | "serial_number"
+  | "knowledge_article"
+  | "work_order";
 
 export async function logAudit(
   action: AuditAction,
