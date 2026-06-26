@@ -13,3 +13,5 @@ await import("./whatsapp-router.test.ts");
 await import("./admin-conversations.test.ts");
 await import("./audit.test.ts");
 await import("./admin-rate-limit.test.ts");
+await import("./rbac.test.ts");
+await import("./password.test.ts");

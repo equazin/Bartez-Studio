@@ -11,6 +11,7 @@ export async function logAudit(
   entity: AuditEntity,
   entityId: string | number,
   changes?: Record<string, unknown>,
+  options?: { organizationId?: string; adminUser?: string },
 ): Promise<void> {
   try {
     await getDb().auditLog.create({
@@ -19,6 +20,8 @@ export async function logAudit(
         entity,
         entityId: String(entityId),
         changes: (changes ?? undefined) as Prisma.InputJsonValue | undefined,
+        organizationId: options?.organizationId ?? null,
+        ...(options?.adminUser ? { adminUser: options.adminUser } : {}),
       },
     });
   } catch (error) {

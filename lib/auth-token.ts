@@ -3,7 +3,26 @@ import { SignJWT, jwtVerify, type JWTPayload } from "jose";
 export const ADMIN_COOKIE_NAME = "admin_session";
 const ISSUER = "bartez-admin";
 const AUDIENCE = "bartez-content-management";
-export type AdminSession = JWTPayload & { username: string };
+
+/**
+ * Sesión del admin. `username` es obligatorio (compat. con tokens previos).
+ * Los campos multi-tenant son opcionales para mantener compatibilidad con
+ * sesiones emitidas antes de la Fase 0; el código que los necesita resuelve
+ * un fallback a la organización semilla.
+ */
+export type AdminSession = JWTPayload & {
+  username: string;
+  userId?: string;
+  orgId?: string;
+  role?: string;
+};
+
+export interface TokenClaims {
+  username: string;
+  userId?: string;
+  orgId?: string;
+  role?: string;
+}
 
 function jwtSecret() {
   const secret = process.env.ADMIN_JWT_SECRET;
@@ -11,10 +30,16 @@ function jwtSecret() {
   return new TextEncoder().encode(secret);
 }
 
-export async function signToken(username: string) {
-  return new SignJWT({ username })
+export async function signToken(claims: string | TokenClaims) {
+  const data: TokenClaims = typeof claims === "string" ? { username: claims } : claims;
+  const payload: Record<string, string> = { username: data.username };
+  if (data.userId) payload.userId = data.userId;
+  if (data.orgId) payload.orgId = data.orgId;
+  if (data.role) payload.role = data.role;
+
+  return new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256", typ: "JWT" })
-    .setSubject(username)
+    .setSubject(data.username)
     .setIssuer(ISSUER)
     .setAudience(AUDIENCE)
     .setIssuedAt()
