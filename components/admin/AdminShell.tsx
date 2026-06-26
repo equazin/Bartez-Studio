@@ -53,6 +53,7 @@ const navigation: NavItem[] = [
   { href: "/admin/posts",              label: "Artículos",           icon: FileText,         group: "content" },
   { href: "/admin/clients",            label: "Clientes",            icon: UsersRound,       group: "content" },
   { href: "/admin/cases",              label: "Casos de éxito",      icon: BriefcaseBusiness,group: "content" },
+  { href: "/admin/team",               label: "Equipo",              icon: UsersRound,       group: "system" },
   { href: "/admin/audit",              label: "Auditoría",           icon: ScrollText,       group: "system" },
 ];
 

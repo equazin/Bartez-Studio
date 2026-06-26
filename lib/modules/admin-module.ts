@@ -3,6 +3,7 @@ import { authorizeAdminRequest } from "../admin-api.ts";
 import { can } from "../rbac.ts";
 import { resolveOrgId } from "../tenant.ts";
 import { checkRateLimit } from "../rate-limit.ts";
+import { loadMembershipPermissions } from "./team/team-service.ts";
 import type { AdminSession } from "../auth-token.ts";
 
 const MUTATION_LIMIT = 30;
@@ -43,17 +44,24 @@ export async function authorizeModule(
     }
   }
 
+  const orgId = await resolveOrgId(session);
+
+  // Chequeo RBAC. Si el rol no alcanza, recién ahí cargamos los permisos
+  // puntuales del Membership (overrides por usuario) y reintentamos, para no
+  // pagar una query extra en el caso común donde el rol ya concede el permiso.
   if (!can(session, permission)) {
-    return {
-      ok: false,
-      response: NextResponse.json(
-        { ok: false, error: "No tenés permisos para esta acción." },
-        { status: 403, headers: { "Cache-Control": "no-store" } },
-      ),
-    };
+    const extra = session.userId ? await loadMembershipPermissions(session.userId, orgId) : [];
+    if (!can(session, permission, extra)) {
+      return {
+        ok: false,
+        response: NextResponse.json(
+          { ok: false, error: "No tenés permisos para esta acción." },
+          { status: 403, headers: { "Cache-Control": "no-store" } },
+        ),
+      };
+    }
   }
 
-  const orgId = await resolveOrgId(session);
   return { ok: true, session, orgId };
 }
 
