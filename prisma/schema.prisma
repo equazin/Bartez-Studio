@@ -41,6 +41,7 @@ model User {
   ownedAccounts   Account[]     @relation("AccountOwner")
   ownedOpps       Opportunity[] @relation("OpportunityOwner")
   assignedActs    Activity[]    @relation("ActivityAssignee")
+  ownedQuotes     Quote[]       @relation("QuoteOwner")
 }
 
 model Membership {
@@ -239,6 +240,7 @@ model Account {
   leads          Lead[]
   opportunities  Opportunity[]
   activities     Activity[]
+  quotes         Quote[]
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
   deletedAt      DateTime?
@@ -286,6 +288,7 @@ model Opportunity {
   lostReason     String?
   notes          String?
   activities     Activity[]
+  quotes         Quote[]
   createdAt      DateTime   @default(now())
   updatedAt      DateTime   @updatedAt
   deletedAt      DateTime?
@@ -320,4 +323,124 @@ model Activity {
   @@index([assignedToId, status])
   @@index([accountId])
   @@index([opportunityId])
+}
+
+// ─────────────────────────────────────────────────────────────
+// Catálogo + Ventas (Fase 2)
+// Product: bienes y servicios. PriceList: lista de precios (multi-moneda).
+// PriceListItem: precio de un producto en una lista. Quote: cotización
+// con QuoteLine[]. Los totales se persisten denormalizados para reportes
+// pero también se recalculan desde las líneas en el servicio.
+// ─────────────────────────────────────────────────────────────
+
+model Product {
+  id             String           @id @default(cuid())
+  organizationId String
+  sku            String?
+  name           String
+  description    String?
+  type           String           @default("good") // good | service
+  unit           String           @default("unit") // unit | hour | month
+  brand          String?
+  supplier       String?
+  stockTracked   Boolean          @default(false) // true: gestión de stock; false: bajo pedido
+  active         Boolean          @default(true)
+  taxRate        Decimal          @default(21) @db.Decimal(5, 2) // IVA por defecto (%)
+  prices         PriceListItem[]
+  quoteLines     QuoteLine[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  deletedAt      DateTime?
+
+  @@unique([organizationId, sku])
+  @@index([organizationId, active])
+  @@index([name])
+}
+
+model PriceList {
+  id             String          @id @default(cuid())
+  organizationId String
+  name           String
+  currency       String          @default("USD") // USD | ARS | EUR
+  isDefault      Boolean         @default(false)
+  active         Boolean         @default(true)
+  items          PriceListItem[]
+  quotes         Quote[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  @@unique([organizationId, name])
+  @@index([organizationId, isDefault])
+}
+
+model PriceListItem {
+  id          String    @id @default(cuid())
+  priceListId String
+  priceList   PriceList @relation(fields: [priceListId], references: [id], onDelete: Cascade)
+  productId   String
+  product     Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  unitPrice   Decimal   @db.Decimal(14, 4)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([priceListId, productId])
+  @@index([productId])
+}
+
+model Quote {
+  id              String       @id @default(cuid())
+  organizationId  String
+  number          String // Folio asignado (ej. "COT-2026-0001")
+  accountId       String?
+  account         Account?     @relation(fields: [accountId], references: [id], onDelete: SetNull)
+  opportunityId   String?
+  opportunity     Opportunity? @relation(fields: [opportunityId], references: [id], onDelete: SetNull)
+  ownerId         String?
+  owner           User?        @relation("QuoteOwner", fields: [ownerId], references: [id])
+  priceListId     String?
+  priceList       PriceList?   @relation(fields: [priceListId], references: [id])
+  status          String       @default("draft") // draft | sent | accepted | rejected | expired
+  currency        String       @default("USD")
+  issueDate       DateTime     @default(now())
+  validUntil      DateTime?
+  notes           String?
+  terms           String?
+  // Totales persistidos (calculados desde QuoteLine[])
+  subtotal        Decimal      @default(0) @db.Decimal(14, 2)
+  discountTotal   Decimal      @default(0) @db.Decimal(14, 2)
+  taxTotal        Decimal      @default(0) @db.Decimal(14, 2)
+  total           Decimal      @default(0) @db.Decimal(14, 2)
+  sentAt          DateTime?
+  acceptedAt      DateTime?
+  rejectedAt      DateTime?
+  lines           QuoteLine[]
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  deletedAt       DateTime?
+
+  @@unique([organizationId, number])
+  @@index([organizationId, status])
+  @@index([accountId])
+  @@index([opportunityId])
+}
+
+model QuoteLine {
+  id          String   @id @default(cuid())
+  quoteId     String
+  quote       Quote    @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  productId   String?
+  product     Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  position    Int      @default(0)
+  description String // snapshot del nombre/descripción en momento de la cotización
+  quantity    Decimal  @default(1) @db.Decimal(14, 4)
+  unitPrice   Decimal  @db.Decimal(14, 4)
+  discountPct Decimal  @default(0) @db.Decimal(5, 2)
+  taxRate     Decimal  @default(21) @db.Decimal(5, 2)
+  // Totales persistidos para reportes; se recalculan en el service
+  lineSubtotal Decimal @default(0) @db.Decimal(14, 2)
+  lineTax      Decimal @default(0) @db.Decimal(14, 2)
+  lineTotal    Decimal @default(0) @db.Decimal(14, 2)
+
+  @@index([quoteId, position])
+  @@index([productId])
 }

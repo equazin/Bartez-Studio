@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Dialog } from "radix-ui";
-import { BarChart3, Building2, BriefcaseBusiness, CalendarCheck, ExternalLink, FileText, LayoutDashboard, LogOut, Menu, MessageSquare, ScrollText, Target, UserCheck, UsersRound, X } from "lucide-react";
+import { BarChart3, Building2, BriefcaseBusiness, CalendarCheck, ExternalLink, FileSpreadsheet, FileText, LayoutDashboard, LogOut, Menu, MessageSquare, Package, ScrollText, Tag, Target, UserCheck, UsersRound, X } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { AdminButton } from "./AdminUI";
 import { AdminToastProvider, LeadNotificationPoller } from "./AdminToast";
@@ -15,6 +15,9 @@ const navigation = [
   { href: "/admin/accounts", label: "Cuentas", icon: Building2, group: "main" },
   { href: "/admin/opportunities", label: "Oportunidades", icon: Target, group: "main" },
   { href: "/admin/activities", label: "Actividades", icon: CalendarCheck, group: "main" },
+  { href: "/admin/quotes", label: "Presupuestos", icon: FileSpreadsheet, group: "sales" },
+  { href: "/admin/products", label: "Productos", icon: Package, group: "sales" },
+  { href: "/admin/price-lists", label: "Listas de precios", icon: Tag, group: "sales" },
   { href: "/admin/analytics", label: "Analytics", icon: BarChart3, group: "main" },
   { href: "/admin/conversations", label: "WhatsApp", icon: MessageSquare, group: "main" },
   { href: "/admin/posts", label: "Artículos", icon: FileText, group: "content" },
@@ -48,11 +51,13 @@ function NavGroup({ label, items, pathname, close }: { label: string; items: typ
 
 function Navigation({ pathname, close }: { pathname: string; close?: () => void }) {
   const main = navigation.filter((n) => n.group === "main");
+  const sales = navigation.filter((n) => n.group === "sales");
   const content = navigation.filter((n) => n.group === "content");
   const system = navigation.filter((n) => n.group === "system");
   return (
     <nav aria-label="Navegación principal" className="flex flex-col gap-6">
       <NavGroup label="Operaciones" items={main} pathname={pathname} close={close} />
+      <NavGroup label="Ventas" items={sales} pathname={pathname} close={close} />
       <NavGroup label="Contenido" items={content} pathname={pathname} close={close} />
       <NavGroup label="Sistema" items={system} pathname={pathname} close={close} />
     </nav>

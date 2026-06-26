@@ -13,7 +13,10 @@ export type AuditEntity =
   | "account"
   | "contact"
   | "activity"
-  | "opportunity";
+  | "opportunity"
+  | "product"
+  | "price_list"
+  | "quote";
 
 export async function logAudit(
   action: AuditAction,

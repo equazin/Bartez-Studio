@@ -16,3 +16,5 @@ await import("./admin-rate-limit.test.ts");
 await import("./rbac.test.ts");
 await import("./password.test.ts");
 await import("./crm-schema.test.ts");
+await import("./sales-calc.test.ts");
+await import("./catalog-schema.test.ts");
