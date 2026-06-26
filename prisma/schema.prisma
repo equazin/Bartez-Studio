@@ -29,14 +29,18 @@ model Organization {
 }
 
 model User {
-  id           String       @id @default(cuid())
-  email        String       @unique
-  name         String
-  passwordHash String
-  active       Boolean      @default(true)
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
-  memberships  Membership[]
+  id              String        @id @default(cuid())
+  email           String        @unique
+  name            String
+  passwordHash    String
+  active          Boolean       @default(true)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  memberships     Membership[]
+  assignedLeads   Lead[]        @relation("LeadAssignee")
+  ownedAccounts   Account[]     @relation("AccountOwner")
+  ownedOpps       Opportunity[] @relation("OpportunityOwner")
+  assignedActs    Activity[]    @relation("ActivityAssignee")
 }
 
 model Membership {
@@ -171,6 +175,10 @@ model WaMessage {
 model Lead {
   id             Int      @id @default(autoincrement())
   organizationId String?
+  accountId      String?
+  account        Account? @relation(fields: [accountId], references: [id])
+  assignedToId   String?
+  assignedTo     User?    @relation("LeadAssignee", fields: [assignedToId], references: [id])
   name           String
   company        String?
   email          String?
@@ -186,6 +194,8 @@ model Lead {
   @@index([status])
   @@index([createdAt])
   @@index([organizationId])
+  @@index([accountId])
+  @@index([assignedToId])
 }
 
 model AuditLog {
@@ -201,4 +211,113 @@ model AuditLog {
   @@index([entity, entityId])
   @@index([createdAt])
   @@index([organizationId])
+}
+
+// ─────────────────────────────────────────────────────────────
+// Comercial / CRM (Fase 1)
+// Account = empresa cliente. Contact = persona vinculada a una Account.
+// Activity = llamada/email/reunión/tarea con due date. Opportunity = deal
+// con valor, etapa, probabilidad y cierre estimado.
+// ─────────────────────────────────────────────────────────────
+
+model Account {
+  id             String        @id @default(cuid())
+  organizationId String
+  name           String
+  taxId          String?
+  industry       String?
+  website        String?
+  phone          String?
+  email          String?
+  address        String?
+  city           String?
+  country        String?
+  notes          String?
+  ownerId        String?
+  owner          User?         @relation("AccountOwner", fields: [ownerId], references: [id])
+  contacts       Contact[]
+  leads          Lead[]
+  opportunities  Opportunity[]
+  activities     Activity[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  deletedAt      DateTime?
+
+  @@index([organizationId])
+  @@index([ownerId])
+  @@index([name])
+}
+
+model Contact {
+  id             String     @id @default(cuid())
+  organizationId String
+  accountId      String?
+  account        Account?   @relation(fields: [accountId], references: [id], onDelete: SetNull)
+  firstName      String
+  lastName       String?
+  email          String?
+  phone          String?
+  jobTitle       String?
+  notes          String?
+  activities     Activity[]
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  deletedAt      DateTime?
+
+  @@index([organizationId])
+  @@index([accountId])
+  @@index([email])
+}
+
+model Opportunity {
+  id             String     @id @default(cuid())
+  organizationId String
+  accountId      String?
+  account        Account?   @relation(fields: [accountId], references: [id], onDelete: SetNull)
+  ownerId        String?
+  owner          User?      @relation("OpportunityOwner", fields: [ownerId], references: [id])
+  title          String
+  stage          String     @default("qualification") // qualification | proposal | negotiation | won | lost
+  amount         Decimal?   @db.Decimal(14, 2)
+  currency       String     @default("USD")
+  probability    Int        @default(20) // 0..100
+  expectedClose  DateTime?
+  closedAt       DateTime?
+  lostReason     String?
+  notes          String?
+  activities     Activity[]
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  deletedAt      DateTime?
+
+  @@index([organizationId, stage])
+  @@index([accountId])
+  @@index([ownerId])
+  @@index([expectedClose])
+}
+
+model Activity {
+  id             String       @id @default(cuid())
+  organizationId String
+  type           String // call | email | meeting | task | note
+  subject        String
+  body           String?
+  status         String       @default("pending") // pending | done | cancelled
+  dueAt          DateTime?
+  completedAt    DateTime?
+  assignedToId   String?
+  assignedTo     User?        @relation("ActivityAssignee", fields: [assignedToId], references: [id])
+  accountId      String?
+  account        Account?     @relation(fields: [accountId], references: [id], onDelete: SetNull)
+  contactId      String?
+  contact        Contact?     @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  opportunityId  String?
+  opportunity    Opportunity? @relation(fields: [opportunityId], references: [id], onDelete: SetNull)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@index([organizationId, status, dueAt])
+  @@index([assignedToId, status])
+  @@index([accountId])
+  @@index([opportunityId])
 }

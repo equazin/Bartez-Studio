@@ -4,14 +4,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Dialog } from "radix-ui";
-import { BarChart3, BriefcaseBusiness, ExternalLink, FileText, LayoutDashboard, LogOut, Menu, MessageSquare, ScrollText, UserCheck, UsersRound, X } from "lucide-react";
+import { BarChart3, Building2, BriefcaseBusiness, CalendarCheck, ExternalLink, FileText, LayoutDashboard, LogOut, Menu, MessageSquare, ScrollText, Target, UserCheck, UsersRound, X } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { AdminButton } from "./AdminUI";
 import { AdminToastProvider, LeadNotificationPoller } from "./AdminToast";
 
 const navigation = [
   { href: "/admin", label: "Inicio", icon: LayoutDashboard, group: "main" },
-  { href: "/admin/leads", label: "CRM", icon: UserCheck, group: "main" },
+  { href: "/admin/leads", label: "Leads", icon: UserCheck, group: "main" },
+  { href: "/admin/accounts", label: "Cuentas", icon: Building2, group: "main" },
+  { href: "/admin/opportunities", label: "Oportunidades", icon: Target, group: "main" },
+  { href: "/admin/activities", label: "Actividades", icon: CalendarCheck, group: "main" },
   { href: "/admin/analytics", label: "Analytics", icon: BarChart3, group: "main" },
   { href: "/admin/conversations", label: "WhatsApp", icon: MessageSquare, group: "main" },
   { href: "/admin/posts", label: "Artículos", icon: FileText, group: "content" },
