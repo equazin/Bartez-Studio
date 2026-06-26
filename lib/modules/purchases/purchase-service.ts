@@ -236,10 +236,7 @@ export async function receivePurchaseOrder(options: { organizationId: string; da
 export async function createSupplierPayment(options: { organizationId: string; data: SupplierPaymentCreate }) {
   const db = getDb();
   const data = options.data;
-  const totalAllocated = data.allocations.reduce((sum, allocation) => sum + Number(allocation.amount), 0);
-  if (totalAllocated > Number(data.amount) + 0.005) {
-    throw new PurchaseValidationError("Las imputaciones superan el importe del pago");
-  }
+  const exchangeRate = Number(data.exchangeRate ?? 1);
 
   return db.$transaction(async (tx) => {
     const supplier = await tx.supplier.findFirst({
@@ -256,6 +253,7 @@ export async function createSupplierPayment(options: { organizationId: string; d
       if (cash.currency !== data.currency) throw new PurchaseValidationError("La moneda del pago no coincide con caja/banco");
     }
 
+    let totalEquivalentInPaymentCurrency = 0;
     for (const allocation of data.allocations) {
       const balance = await openPurchaseOrderBalance(tx, options.organizationId, allocation.purchaseOrderId);
       if (!balance || balance.order.supplierId !== data.supplierId) {
@@ -264,6 +262,15 @@ export async function createSupplierPayment(options: { organizationId: string; d
       if (Number(allocation.amount) > balance.pending + 0.005) {
         throw new PurchaseValidationError(`La imputacion supera el saldo pendiente de ${balance.order.number}`);
       }
+      const orderCurrency = balance.order.currency;
+      if (orderCurrency === data.currency) {
+        totalEquivalentInPaymentCurrency += Number(allocation.amount);
+      } else {
+        totalEquivalentInPaymentCurrency += Number(allocation.amount) * exchangeRate;
+      }
+    }
+    if (totalEquivalentInPaymentCurrency > Number(data.amount) + 1) {
+      throw new PurchaseValidationError("Las imputaciones superan el importe del pago");
     }
 
     const { number } = await nextNumber(tx, { organizationId: options.organizationId, docType: "pago_proveedor" });
@@ -280,6 +287,7 @@ export async function createSupplierPayment(options: { organizationId: string; d
         reference: data.reference,
         amount: data.amount,
         currency: data.currency,
+        exchangeRate,
         notes: data.notes,
         allocations: {
           create: data.allocations.map((allocation) => ({
@@ -327,6 +335,50 @@ export async function createSupplierPayment(options: { organizationId: string; d
     }
 
     return payment;
+  });
+}
+
+export async function voidSupplierPayment(options: { organizationId: string; id: string }) {
+  const db = getDb();
+  return db.$transaction(async (tx) => {
+    const payment = await tx.supplierPayment.findFirst({
+      where: { id: options.id, organizationId: options.organizationId, deletedAt: null },
+      include: { allocations: true },
+    });
+    if (!payment) return null;
+
+    await tx.supplierAccountEntry.create({
+      data: {
+        organizationId: options.organizationId,
+        supplierId: payment.supplierId,
+        date: new Date(),
+        type: "adjust",
+        referenceType: "supplier_payment",
+        referenceId: payment.id,
+        description: `Anulacion pago ${payment.number}`,
+        debit: 0,
+        credit: payment.amount,
+        currency: payment.currency,
+      },
+    });
+
+    if (payment.cashAccountId) {
+      const movement = await tx.cashMovement.findFirst({
+        where: { referenceType: "supplier_payment", referenceId: payment.id, voidedAt: null },
+      });
+      if (movement) {
+        await tx.cashMovement.update({ where: { id: movement.id }, data: { voidedAt: new Date() } });
+        await tx.cashAccount.update({
+          where: { id: payment.cashAccountId },
+          data: { balance: { increment: payment.amount } },
+        });
+      }
+    }
+
+    return tx.supplierPayment.update({
+      where: { id: payment.id },
+      data: { deletedAt: new Date() },
+    });
   });
 }
 

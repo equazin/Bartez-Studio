@@ -79,6 +79,7 @@ export const supplierPaymentCreateSchema = z.object({
   reference: nullableTrimmed(120),
   amount: positiveDecimal,
   currency: z.enum(["ARS", "USD"]).default("ARS"),
+  exchangeRate: positiveDecimal.default(1),
   notes: nullableTrimmed(4000),
   allocations: z.array(supplierPaymentAllocationSchema).default([]),
 });

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Landmark, Plus, Save, Wallet } from "lucide-react";
+import { Ban, Landmark, Plus, Save, Wallet } from "lucide-react";
 import {
   AdminAlert,
   AdminButton,
@@ -28,6 +28,7 @@ interface CashMovement {
   description: string;
   amount: string | number;
   currency: string;
+  voidedAt: string | null;
   cashAccount: { id: string; name: string };
 }
 
@@ -116,6 +117,19 @@ export default function CashAccountsPage() {
     }
   }
 
+  async function voidMovement(id: string) {
+    if (!confirm("¿Anular este movimiento? El saldo se corregirá automáticamente.")) return;
+    setError(null);
+    try {
+      const res = await fetch(`/api/admin/cash-movements/${id}`, { method: "DELETE" });
+      const json = await res.json();
+      if (!res.ok || !json.ok) throw new Error(json.error || "No pudimos anular el movimiento");
+      await load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Error desconocido");
+    }
+  }
+
   async function createMovement() {
     if (!movementAccountId) { setError("Selecciona una caja o banco."); return; }
     if (!movementDescription.trim()) { setError("Ingresa una descripcion."); return; }
@@ -188,16 +202,21 @@ export default function CashAccountsPage() {
               <div className="px-5 py-14 text-center"><Landmark className="mx-auto size-10 text-slate-400" /><p className="mt-4 text-[14px] font-bold text-slate-950">No hay movimientos de tesoreria.</p></div>
             ) : (
               <div>
-                <div className="hidden grid-cols-[.55fr_.8fr_1.2fr_.6fr_.7fr] gap-3 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-slate-700 lg:grid">
-                  <span>Fecha</span><span>Cuenta</span><span>Descripcion</span><span>Tipo</span><span>Importe</span>
+                <div className="hidden grid-cols-[.55fr_.8fr_1.2fr_.6fr_.7fr_40px] gap-3 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-slate-700 lg:grid">
+                  <span>Fecha</span><span>Cuenta</span><span>Descripcion</span><span>Tipo</span><span>Importe</span><span />
                 </div>
                 {movements.map((movement) => (
-                  <div key={movement.id} className="grid gap-2 border-b border-slate-200 px-5 py-4 last:border-0 sm:px-6 lg:grid-cols-[.55fr_.8fr_1.2fr_.6fr_.7fr] lg:items-center lg:gap-3">
+                  <div key={movement.id} className={`grid gap-2 border-b border-slate-200 px-5 py-4 last:border-0 sm:px-6 lg:grid-cols-[.55fr_.8fr_1.2fr_.6fr_.7fr_40px] lg:items-center lg:gap-3 ${movement.voidedAt ? "opacity-50" : ""}`}>
                     <p className="text-[12px] text-slate-600">{new Date(movement.date).toLocaleDateString("es-AR")}</p>
                     <p className="truncate text-[13px] font-bold text-slate-950">{movement.cashAccount.name}</p>
-                    <p className="text-[13px] text-slate-700">{movement.description}</p>
+                    <p className="text-[13px] text-slate-700">{movement.description}{movement.voidedAt && <span className="ml-2 text-[11px] font-bold text-red-600">ANULADO</span>}</p>
                     <p className="text-[12.5px] font-bold text-slate-700">{MOVEMENT_TYPES.find((item) => item.value === movement.type)?.label || movement.type}</p>
                     <p className="text-[13px] font-bold text-slate-950">{money(movement.currency, movement.amount)}</p>
+                    {!movement.voidedAt && (
+                      <button onClick={() => void voidMovement(movement.id)} title="Anular movimiento" className="flex size-8 items-center justify-center rounded-lg text-slate-400 hover:bg-red-50 hover:text-red-600">
+                        <Ban className="size-4" />
+                      </button>
+                    )}
                   </div>
                 ))}
               </div>

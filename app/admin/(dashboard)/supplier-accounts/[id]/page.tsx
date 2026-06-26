@@ -78,6 +78,7 @@ export default function SupplierAccountDetailPage() {
   const [currency, setCurrency] = useState<"ARS" | "USD">("ARS");
   const [notes, setNotes] = useState("");
   const [allocations, setAllocations] = useState<Record<string, number>>({});
+  const [exchangeRate, setExchangeRate] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -107,17 +108,41 @@ export default function SupplierAccountDetailPage() {
 
   useEffect(() => { void load(); }, [load]);
 
+  const hasCrossCurrency = useMemo(
+    () => detail?.openOrders.some((order) => order.currency !== currency) ?? false,
+    [detail, currency],
+  );
+
   const totalAllocated = useMemo(
     () => Object.values(allocations).reduce((sum, value) => sum + (Number(value) || 0), 0),
     [allocations],
   );
 
+  const totalAllocatedInPaymentCurrency = useMemo(() => {
+    if (!detail) return 0;
+    let total = 0;
+    for (const [orderId, value] of Object.entries(allocations)) {
+      const order = detail.openOrders.find((o) => o.id === orderId);
+      if (!order) continue;
+      if (order.currency === currency) {
+        total += Number(value) || 0;
+      } else {
+        total += (Number(value) || 0) * (Number(exchangeRate) || 1);
+      }
+    }
+    return Math.round(total * 100) / 100;
+  }, [allocations, detail, currency, exchangeRate]);
+
   function allocatePending() {
     if (!detail) return;
     const next: Record<string, number> = {};
-    for (const order of detail.openOrders.filter((item) => item.currency === currency)) next[order.id] = order.pending;
+    const rate = Number(exchangeRate) || 1;
+    let total = 0;
+    for (const order of detail.openOrders) {
+      next[order.id] = order.pending;
+      total += order.currency === currency ? order.pending : order.pending * rate;
+    }
     setAllocations(next);
-    const total = Object.values(next).reduce((sum, value) => sum + value, 0);
     setAmount(String(Math.round(total * 100) / 100));
   }
 
@@ -134,6 +159,7 @@ export default function SupplierAccountDetailPage() {
         reference: reference || null,
         amount: parsedAmount,
         currency,
+        exchangeRate: Number(exchangeRate) > 0 ? Number(exchangeRate) : 1,
         notes: notes || null,
         allocations: Object.entries(allocations)
           .filter(([, value]) => Number(value) > 0)
@@ -161,7 +187,7 @@ export default function SupplierAccountDetailPage() {
   if (loading) return <div className="flex items-center justify-center py-32"><AdminSpinner /></div>;
   if (!detail) return <p className="py-20 text-center text-slate-600">Proveedor no encontrado.</p>;
 
-  const openOrdersForCurrency = detail.openOrders.filter((order) => order.currency === currency);
+  const openOrdersForCurrency = detail.openOrders;
 
   return (
     <div className="mx-auto max-w-[1180px]">
@@ -235,6 +261,11 @@ export default function SupplierAccountDetailPage() {
                 {cashAccounts.filter((account) => account.currency === currency).map((account) => <option key={account.id} value={account.id}>{account.name} - {money(account.currency, account.balance)}</option>)}
               </select>
             </AdminField>
+            {hasCrossCurrency && (
+              <AdminField label={`Cotización ${currency === "ARS" ? "USD → ARS" : "ARS → USD"}`} htmlFor="exchange-rate">
+                <AdminInput id="exchange-rate" type="number" min="0.000001" step="0.01" placeholder="Ej: 1050" value={exchangeRate} onChange={(event) => setExchangeRate(event.target.value)} />
+              </AdminField>
+            )}
             <div className="grid gap-4 sm:grid-cols-2">
               <AdminField label="Metodo" htmlFor="payment-method">
                 <select id="payment-method" value={method} onChange={(event) => setMethod(event.target.value)} className="h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-[13.5px]">
@@ -249,14 +280,25 @@ export default function SupplierAccountDetailPage() {
               <div className="rounded-lg border border-slate-300">
                 <div className="border-b border-slate-200 px-3 py-2 text-[12px] font-bold text-slate-700">Imputaciones</div>
                 <div className="grid gap-2 p-3">
-                  {openOrdersForCurrency.map((order) => (
-                    <div key={order.id} className="grid gap-2 sm:grid-cols-[1fr_120px] sm:items-center">
-                      <p className="truncate text-[12.5px] font-bold text-slate-950">{order.number}<span className="ml-2 font-normal text-slate-500">Pendiente {money(order.currency, order.pending)}</span></p>
-                      <AdminInput type="number" min="0" max={order.pending} step="0.01" value={allocations[order.id] ?? ""} onChange={(event) => setAllocations({ ...allocations, [order.id]: Number(event.target.value) })} />
-                    </div>
-                  ))}
+                  {openOrdersForCurrency.map((order) => {
+                    const isCross = order.currency !== currency;
+                    const rate = Number(exchangeRate) || 1;
+                    const allocationVal = Number(allocations[order.id] ?? 0);
+                    const equivalent = isCross ? allocationVal * rate : null;
+                    return (
+                      <div key={order.id} className="grid gap-2 sm:grid-cols-[1fr_120px] sm:items-center">
+                        <div>
+                          <p className="truncate text-[12.5px] font-bold text-slate-950">{order.number}{isCross && <span className="ml-1 rounded bg-amber-100 px-1 py-px text-[10px] font-bold text-amber-700">{order.currency}</span>}<span className="ml-2 font-normal text-slate-500">Pendiente {money(order.currency, order.pending)}</span></p>
+                          {isCross && equivalent != null && equivalent > 0 && <p className="text-[11px] text-slate-500">≈ {money(currency, equivalent)}</p>}
+                        </div>
+                        <AdminInput type="number" min="0" max={order.pending} step="0.01" value={allocations[order.id] ?? ""} onChange={(event) => setAllocations({ ...allocations, [order.id]: Number(event.target.value) })} />
+                      </div>
+                    );
+                  })}
                 </div>
-                <div className="border-t border-slate-200 px-3 py-2 text-right text-[12.5px] font-bold text-slate-700">Imputado {money(currency, totalAllocated)}</div>
+                <div className="border-t border-slate-200 px-3 py-2 text-right text-[12.5px] font-bold text-slate-700">
+                  Imputado {hasCrossCurrency ? money(currency, totalAllocatedInPaymentCurrency) : money(currency, totalAllocated)}
+                </div>
               </div>
             )}
             <AdminField label="Notas" htmlFor="payment-notes">

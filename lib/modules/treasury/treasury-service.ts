@@ -57,3 +57,25 @@ export async function createCashMovement(options: { organizationId: string; data
     return movement;
   });
 }
+
+export async function voidCashMovement(options: { organizationId: string; id: string }) {
+  const db = getDb();
+  return db.$transaction(async (tx) => {
+    const movement = await tx.cashMovement.findFirst({
+      where: { id: options.id, organizationId: options.organizationId, voidedAt: null },
+    });
+    if (!movement) return null;
+
+    await tx.cashMovement.update({ where: { id: movement.id }, data: { voidedAt: new Date() } });
+
+    const delta = movement.type === "income" ? -Number(movement.amount) : movement.type === "expense" ? Number(movement.amount) : 0;
+    if (delta !== 0) {
+      await tx.cashAccount.update({
+        where: { id: movement.cashAccountId },
+        data: { balance: { increment: delta } },
+      });
+    }
+
+    return movement;
+  });
+}

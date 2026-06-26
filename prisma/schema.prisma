@@ -944,6 +944,7 @@ model SupplierPayment {
   reference      String?
   amount         Decimal                      @db.Decimal(14, 2)
   currency       String                       @default("ARS")
+  exchangeRate   Decimal                      @default(1) @db.Decimal(14, 6)
   notes          String?
   allocations    SupplierPaymentAllocation[]
   createdAt      DateTime                     @default(now())
@@ -1020,6 +1021,7 @@ model CashMovement {
   currency       String      @default("ARS")
   referenceType  String?
   referenceId    String?
+  voidedAt       DateTime?
   createdAt      DateTime    @default(now())
 
   @@index([organizationId, date])
