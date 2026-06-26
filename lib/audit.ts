@@ -33,6 +33,7 @@ export type AuditEntity =
   | "exchange_rate"
   | "ledger_account"
   | "journal_entry"
+  | "organization"
   | "ticket"
   | "ticket_message"
   | "warranty_term"

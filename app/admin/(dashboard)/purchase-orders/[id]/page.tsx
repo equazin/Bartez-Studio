@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { Ban, ChevronLeft, PackageCheck } from "lucide-react";
+import { Ban, CheckCircle2, ChevronLeft, PackageCheck, ShieldAlert, XCircle } from "lucide-react";
 import { AdminAlert, AdminButton, AdminField, AdminInput, AdminPanel, AdminSpinner, AdminTextarea, ConfirmDialog } from "../../../../../components/admin/AdminUI";
 
 interface Line {
@@ -19,6 +19,9 @@ interface PurchaseOrder {
   id: string;
   number: string;
   status: string;
+  approvalStatus: string;
+  approvalNote: string | null;
+  approvedAt: string | null;
   currency: string;
   issueDate: string;
   total: string | number;
@@ -101,6 +104,25 @@ export default function PurchaseOrderDetailPage() {
     else await load();
   }
 
+  async function decideApproval(decision: "approved" | "rejected") {
+    setSaving(true);
+    setError(null);
+    try {
+      const res = await fetch(`/api/admin/purchase-orders/${params.id}/approval`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ decision }),
+      });
+      const json = await res.json();
+      if (!res.ok || !json.ok) throw new Error(json.error || "No pudimos procesar la aprobación");
+      await load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Error desconocido");
+    } finally {
+      setSaving(false);
+    }
+  }
+
   if (loading) return <div className="flex items-center justify-center py-32"><AdminSpinner /></div>;
   if (!po) return <p className="py-20 text-center text-slate-600">OC no encontrada.</p>;
 
@@ -113,6 +135,28 @@ export default function PurchaseOrderDetailPage() {
       </div>
       {error && <div className="mt-5"><AdminAlert tone="error">{error}</AdminAlert></div>}
 
+      {po.approvalStatus === "pending" && (
+        <div className="mt-5 rounded-xl border border-amber-300 bg-amber-50 p-4">
+          <div className="flex items-start gap-3">
+            <ShieldAlert className="mt-0.5 size-5 shrink-0 text-amber-600" />
+            <div className="flex-1">
+              <p className="text-[14px] font-bold text-amber-900">Pendiente de aprobación</p>
+              <p className="mt-0.5 text-[13px] text-amber-800">Esta orden supera el monto que requiere aprobación. No se puede recibir hasta aprobarla.</p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <AdminButton size="sm" onClick={() => void decideApproval("approved")} disabled={saving}><CheckCircle2 />Aprobar</AdminButton>
+                <AdminButton size="sm" variant="secondary" onClick={() => void decideApproval("rejected")} disabled={saving}><XCircle />Rechazar</AdminButton>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {po.approvalStatus === "approved" && (
+        <div className="mt-5 inline-flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-[12.5px] font-bold text-emerald-800"><CheckCircle2 className="size-4" />Aprobada{po.approvedAt ? ` el ${new Date(po.approvedAt).toLocaleDateString("es-AR")}` : ""}</div>
+      )}
+      {po.approvalStatus === "rejected" && (
+        <div className="mt-5 inline-flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-[12.5px] font-bold text-red-700"><XCircle className="size-4" />Rechazada</div>
+      )}
+
       <AdminPanel className="mt-6 overflow-hidden">
         <table className="w-full min-w-[760px] text-[13px]">
           <thead className="bg-slate-100 text-[11px] font-bold uppercase tracking-[0.08em] text-slate-700"><tr><th className="px-4 py-2 text-left">Linea</th><th className="px-4 py-2 text-right">Pedida</th><th className="px-4 py-2 text-right">Recibida</th><th className="px-4 py-2 text-right">Costo</th><th className="px-4 py-2 text-right">Total</th></tr></thead>
@@ -121,7 +165,7 @@ export default function PurchaseOrderDetailPage() {
         <div className="border-t border-slate-300 bg-slate-50 px-5 py-4 text-right font-display text-lg font-bold text-slate-950">Total {po.currency} {Number(po.total).toLocaleString("es-AR")}</div>
       </AdminPanel>
 
-      {receivableLines.length > 0 && po.status !== "cancelled" && (
+      {receivableLines.length > 0 && po.status !== "cancelled" && po.approvalStatus !== "pending" && po.approvalStatus !== "rejected" && (
         <AdminPanel className="mt-5 p-5">
           <h2 className="font-display text-[16px] font-bold text-slate-950">Recepcionar mercaderia</h2>
           <div className="mt-4 grid gap-4 sm:grid-cols-2">

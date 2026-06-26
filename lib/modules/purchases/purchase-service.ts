@@ -3,6 +3,7 @@ import { getDb } from "../../db.ts";
 import { calcQuote } from "../sales/calc.ts";
 import { nextNumber } from "../sales/numbering.ts";
 import { postAutoEntry, voidAutoEntries } from "../accounting/accounting-service.ts";
+import { getOrgSettings } from "../settings/settings-service.ts";
 import type { GoodsReceiptCreate, PurchaseOrderCreate, SupplierPaymentCreate } from "./schema.ts";
 
 export class PurchaseValidationError extends Error {}
@@ -32,6 +33,12 @@ export async function createPurchaseOrder(options: { organizationId: string; dat
   }));
   const { totals, lines } = calcQuote(drafts);
 
+  // Umbral de aprobación: si el total supera el configurado, la OC nace
+  // pendiente de aprobación y no se puede recibir hasta que un responsable la apruebe.
+  const settings = await getOrgSettings(options.organizationId);
+  const threshold = settings.purchaseApprovalThreshold;
+  const approvalStatus = threshold > 0 && Number(totals.total) >= threshold ? "pending" : "not_required";
+
   return db.$transaction(async (tx) => {
     const supplier = await tx.supplier.findFirst({
       where: { id: data.supplierId, organizationId: options.organizationId, deletedAt: null },
@@ -48,6 +55,7 @@ export async function createPurchaseOrder(options: { organizationId: string; dat
         number,
         supplierId: data.supplierId,
         status: "issued",
+        approvalStatus,
         currency: data.currency,
         issueDate,
         expectedDate: data.expectedDate ?? null,
@@ -130,6 +138,34 @@ export async function cancelPurchaseOrder(options: { organizationId: string; id:
   });
 }
 
+export async function decidePurchaseOrderApproval(options: {
+  organizationId: string;
+  id: string;
+  decision: "approved" | "rejected";
+  userId?: string;
+  note?: string | null;
+}) {
+  const db = getDb();
+  return db.$transaction(async (tx) => {
+    const order = await tx.purchaseOrder.findFirst({
+      where: { id: options.id, organizationId: options.organizationId, deletedAt: null },
+    });
+    if (!order) return null;
+    if (order.approvalStatus !== "pending") {
+      throw new PurchaseValidationError("La orden de compra no está pendiente de aprobación");
+    }
+    return tx.purchaseOrder.update({
+      where: { id: order.id },
+      data: {
+        approvalStatus: options.decision,
+        approvedById: options.userId ?? null,
+        approvedAt: new Date(),
+        approvalNote: options.note ?? null,
+      },
+    });
+  });
+}
+
 export async function receivePurchaseOrder(options: { organizationId: string; data: GoodsReceiptCreate }) {
   const db = getDb();
   const data = options.data;
@@ -141,6 +177,8 @@ export async function receivePurchaseOrder(options: { organizationId: string; da
     });
     if (!order) throw new PurchaseValidationError("La orden de compra no existe");
     if (order.status === "cancelled") throw new PurchaseValidationError("La orden de compra esta anulada");
+    if (order.approvalStatus === "pending") throw new PurchaseValidationError("La orden de compra requiere aprobacion antes de recibirse");
+    if (order.approvalStatus === "rejected") throw new PurchaseValidationError("La orden de compra fue rechazada");
 
     const warehouse = await tx.warehouse.findFirst({
       where: { id: data.warehouseId, organizationId: options.organizationId, active: true },
