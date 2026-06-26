@@ -266,3 +266,100 @@ export async function daysSalesOutstanding(options: { organizationId: string }) 
   const dso = Math.round((receivables / totalSales) * 90);
   return { dso, totalReceivables: Math.round(receivables * 100) / 100, totalSales: Math.round(totalSales * 100) / 100 };
 }
+
+/**
+ * Rentabilidad por producto.
+ *
+ * Ingreso = lineSubtotal (neto, post-descuento, sin IVA) de facturas emitidas.
+ * Costo   = costo promedio ponderado de compras (GoodsReceiptLine.unitCost) por
+ *           las unidades vendidas. Si un producto no tiene recepciones, su costo
+ *           queda como desconocido (hasCost: false) y no suma al margen total.
+ */
+export async function productProfitability(options: { organizationId: string; from?: Date; to?: Date; limit?: number }) {
+  const db = getDb();
+  const limit = options.limit ?? 50;
+
+  const [saleLines, costLines] = await Promise.all([
+    db.invoiceLine.findMany({
+      where: {
+        invoice: {
+          organizationId: options.organizationId,
+          status: "issued",
+          deletedAt: null,
+          ...(options.from || options.to ? { issueDate: { gte: options.from, lte: options.to } } : {}),
+        },
+        productId: { not: null },
+      },
+      select: { productId: true, quantity: true, lineSubtotal: true, description: true },
+    }),
+    db.goodsReceiptLine.findMany({
+      where: { goodsReceipt: { organizationId: options.organizationId }, productId: { not: null } },
+      select: { productId: true, quantity: true, unitCost: true },
+    }),
+  ]);
+
+  // Costo promedio ponderado por producto (todas las recepciones históricas).
+  const costAgg = new Map<string, { qty: number; cost: number }>();
+  for (const line of costLines) {
+    if (!line.productId) continue;
+    const acc = costAgg.get(line.productId) ?? { qty: 0, cost: 0 };
+    acc.qty += Number(line.quantity);
+    acc.cost += Number(line.quantity) * Number(line.unitCost);
+    costAgg.set(line.productId, acc);
+  }
+  const avgCostByProduct = new Map<string, number>();
+  for (const [productId, agg] of costAgg) {
+    if (agg.qty > 0) avgCostByProduct.set(productId, agg.cost / agg.qty);
+  }
+
+  // Ingreso y unidades por producto.
+  const revenueAgg = new Map<string, { name: string; qty: number; revenue: number }>();
+  for (const line of saleLines) {
+    if (!line.productId) continue;
+    const acc = revenueAgg.get(line.productId) ?? { name: line.description, qty: 0, revenue: 0 };
+    acc.qty += Number(line.quantity);
+    acc.revenue += Number(line.lineSubtotal);
+    revenueAgg.set(line.productId, acc);
+  }
+
+  const productIds = Array.from(revenueAgg.keys());
+  const products = productIds.length > 0
+    ? await db.product.findMany({ where: { id: { in: productIds } }, select: { id: true, name: true, sku: true } })
+    : [];
+  const productById = new Map(products.map((p) => [p.id, p]));
+
+  const rows = productIds.map((productId) => {
+    const agg = revenueAgg.get(productId)!;
+    const product = productById.get(productId);
+    const avgCost = avgCostByProduct.get(productId);
+    const hasCost = avgCost != null;
+    const cost = hasCost ? round2(avgCost * agg.qty) : 0;
+    const revenue = round2(agg.revenue);
+    const margin = hasCost ? round2(revenue - cost) : 0;
+    const marginPct = hasCost && revenue > 0 ? Math.round((margin / revenue) * 1000) / 10 : null;
+    return {
+      productId,
+      name: product?.name ?? agg.name,
+      sku: product?.sku ?? null,
+      quantity: agg.qty,
+      revenue,
+      avgCost: hasCost ? round2(avgCost) : null,
+      cost,
+      margin,
+      marginPct,
+      hasCost,
+    };
+  }).sort((a, b) => b.margin - a.margin).slice(0, limit);
+
+  const totalRevenue = round2(rows.reduce((s, r) => s + r.revenue, 0));
+  const totalCost = round2(rows.reduce((s, r) => s + r.cost, 0));
+  const withCostRevenue = round2(rows.filter((r) => r.hasCost).reduce((s, r) => s + r.revenue, 0));
+  const totalMargin = round2(withCostRevenue - totalCost);
+  const marginPct = withCostRevenue > 0 ? Math.round((totalMargin / withCostRevenue) * 1000) / 10 : null;
+
+  return { rows, totalRevenue, totalCost, totalMargin, marginPct };
+}
+
+function round2(value: number): number {
+  return Math.round(value * 100) / 100;
+}

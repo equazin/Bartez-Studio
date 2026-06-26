@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { AlertCircle, BarChart3, Clock, DollarSign, ShoppingCart, TrendingUp, Wallet } from "lucide-react";
+import { AlertCircle, BarChart3, Clock, DollarSign, Percent, ShoppingCart, TrendingUp, Wallet } from "lucide-react";
 import { AdminAlert, AdminPanel, AdminSpinner } from "../../../../components/admin/AdminUI";
 
 interface Overview {
@@ -19,6 +19,8 @@ interface TopProduct { productId: string; name: string; quantity: number; total:
 interface TopAccount { accountId: string | null; name: string; total: number; invoiceCount: number; }
 interface TicketSummary { total: number; overdue: number; byStatus: Array<{ status: string; count: number }>; byPriority: Array<{ priority: string; count: number }>; }
 interface DsoResult { dso: number; totalReceivables: number; totalSales: number; }
+interface ProfitRow { productId: string; name: string; sku: string | null; quantity: number; revenue: number; avgCost: number | null; cost: number; margin: number; marginPct: number | null; hasCost: boolean; }
+interface Profitability { rows: ProfitRow[]; totalRevenue: number; totalCost: number; totalMargin: number; marginPct: number | null; }
 
 const PERIODS = [
   { label: "7 días", days: 7 },
@@ -39,6 +41,7 @@ export default function ReportsPage() {
   const [topAccounts, setTopAccounts] = useState<TopAccount[]>([]);
   const [tickets, setTickets] = useState<TicketSummary | null>(null);
   const [dso, setDso] = useState<DsoResult | null>(null);
+  const [profit, setProfit] = useState<Profitability | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -49,13 +52,14 @@ export default function ReportsPage() {
       const from = periodFrom(days).toISOString();
       const to = new Date().toISOString();
       const groupBy = days >= 365 ? "month" : days >= 30 ? "week" : "day";
-      const [a, b, c, d, e, f] = await Promise.all([
+      const [a, b, c, d, e, f, g] = await Promise.all([
         fetch(`/api/admin/reports?type=overview&from=${from}&to=${to}`).then((r) => r.json()),
         fetch(`/api/admin/reports?type=sales-by-period&from=${from}&to=${to}&groupBy=${groupBy}`).then((r) => r.json()),
         fetch(`/api/admin/reports?type=top-products&from=${from}&to=${to}`).then((r) => r.json()),
         fetch(`/api/admin/reports?type=top-accounts&from=${from}&to=${to}`).then((r) => r.json()),
         fetch(`/api/admin/reports?type=tickets&from=${from}&to=${to}`).then((r) => r.json()),
         fetch(`/api/admin/reports?type=dso`).then((r) => r.json()),
+        fetch(`/api/admin/reports?type=profitability&from=${from}&to=${to}`).then((r) => r.json()),
       ]);
       setOverview(a.data);
       setSeries(b.data || []);
@@ -63,6 +67,7 @@ export default function ReportsPage() {
       setTopAccounts(d.data || []);
       setTickets(e.data);
       setDso(f.data);
+      setProfit(g.data);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error");
     } finally {
@@ -217,6 +222,54 @@ export default function ReportsPage() {
           )}
         </AdminPanel>
       </div>
+
+      {/* Rentabilidad por producto */}
+      {profit && (
+        <AdminPanel className="mt-7 overflow-hidden">
+          <div className="flex flex-col gap-3 border-b border-slate-300 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+            <h2 className="flex items-center gap-2 font-display text-[19px] font-bold text-slate-950"><Percent className="size-5 text-brand" />Rentabilidad por producto</h2>
+            <div className="flex flex-wrap gap-4 text-[12.5px]">
+              <span className="text-slate-600">Ingreso neto <b className="text-slate-950">${profit.totalRevenue.toLocaleString()}</b></span>
+              <span className="text-slate-600">Costo <b className="text-slate-950">${profit.totalCost.toLocaleString()}</b></span>
+              <span className="text-slate-600">Margen <b className={profit.totalMargin >= 0 ? "text-emerald-700" : "text-red-600"}>${profit.totalMargin.toLocaleString()}{profit.marginPct != null ? ` (${profit.marginPct}%)` : ""}</b></span>
+            </div>
+          </div>
+          {profit.rows.length === 0 ? (
+            <p className="px-5 py-10 text-center text-[13px] text-slate-600">Sin ventas de productos en el rango. Para calcular margen, los productos deben tener recepciones de compra (costo).</p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[720px] text-[13px]">
+                <thead className="bg-slate-100 text-[11px] font-bold uppercase tracking-[0.06em] text-slate-600">
+                  <tr>
+                    <th className="px-5 py-2.5 text-left">Producto</th>
+                    <th className="px-3 py-2.5 text-right">Unid.</th>
+                    <th className="px-3 py-2.5 text-right">Ingreso neto</th>
+                    <th className="px-3 py-2.5 text-right">Costo prom.</th>
+                    <th className="px-3 py-2.5 text-right">Margen</th>
+                    <th className="px-5 py-2.5 text-right">%</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {profit.rows.map((row) => (
+                    <tr key={row.productId} className="border-t border-slate-200">
+                      <td className="px-5 py-2.5"><span className="font-bold text-slate-950">{row.name}</span>{row.sku && <span className="ml-2 font-mono text-[11px] text-slate-500">{row.sku}</span>}</td>
+                      <td className="px-3 py-2.5 text-right text-slate-700">{row.quantity.toLocaleString("es-AR")}</td>
+                      <td className="px-3 py-2.5 text-right text-slate-700">${row.revenue.toLocaleString()}</td>
+                      <td className="px-3 py-2.5 text-right text-slate-500">{row.avgCost != null ? `$${row.avgCost.toLocaleString()}` : "—"}</td>
+                      <td className={`px-3 py-2.5 text-right font-bold ${!row.hasCost ? "text-slate-400" : row.margin >= 0 ? "text-emerald-700" : "text-red-600"}`}>{row.hasCost ? `$${row.margin.toLocaleString()}` : "sin costo"}</td>
+                      <td className="px-5 py-2.5 text-right">
+                        {row.marginPct != null ? (
+                          <span className={`inline-flex rounded-full px-2 py-0.5 text-[11px] font-bold ${row.marginPct >= 30 ? "bg-emerald-50 text-emerald-700" : row.marginPct >= 0 ? "bg-amber-50 text-amber-700" : "bg-red-50 text-red-700"}`}>{row.marginPct}%</span>
+                        ) : <span className="text-slate-400">—</span>}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </AdminPanel>
+      )}
 
       {/* Tickets */}
       {tickets && (

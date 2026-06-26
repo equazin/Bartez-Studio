@@ -7,6 +7,7 @@ import {
   topAccounts,
   ticketSummary,
   daysSalesOutstanding,
+  productProfitability,
 } from "../../../../lib/modules/reports/report-service.ts";
 import { REPORT_GROUPINGS, type ReportGrouping } from "../../../../lib/modules/reports/schema.ts";
 
@@ -59,6 +60,8 @@ export async function GET(request: Request) {
         return adminOk({ data: await ticketSummary({ organizationId: auth.orgId, from, to }) });
       case "dso":
         return adminOk({ data: await daysSalesOutstanding({ organizationId: auth.orgId }) });
+      case "profitability":
+        return adminOk({ data: await productProfitability({ organizationId: auth.orgId, from, to }) });
       default:
         return adminOk({ data: null, error: `Reporte desconocido: ${type}` });
     }
