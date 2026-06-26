@@ -3,9 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
-  BarChart3, BookOpen, Boxes, Building2, BriefcaseBusiness, CalendarCheck,
+  BarChart3, Bell, BookOpen, Boxes, Building2, BriefcaseBusiness, CalendarCheck,
   ChevronDown, ExternalLink, FileSpreadsheet, FileText, Hash, LayoutDashboard,
   LifeBuoy, LogOut, Menu, MessageSquare, Package, PackageOpen, Receipt,
   Scale, ScrollText, ShieldCheck, ShoppingCart, Tag, Target, Truck, UserCheck,
@@ -25,6 +25,7 @@ const navigation: NavItem[] = [
   { href: "/admin/opportunities",      label: "Oportunidades",       icon: Target,           group: "ops" },
   { href: "/admin/activities",         label: "Actividades",         icon: CalendarCheck,    group: "ops" },
   { href: "/admin/analytics",          label: "Analytics",           icon: BarChart3,        group: "ops" },
+  { href: "/admin/alerts",             label: "Alertas",             icon: Bell,             group: "ops" },
   { href: "/admin/conversations",      label: "WhatsApp",            icon: MessageSquare,    group: "ops" },
   { href: "/admin/quotes",             label: "Presupuestos",        icon: FileSpreadsheet,  group: "sales" },
   { href: "/admin/orders",             label: "Pedidos",             icon: ShoppingCart,     group: "sales" },
@@ -200,6 +201,39 @@ function Brand() {
   );
 }
 
+function AlertsBell() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    let active = true;
+    async function poll() {
+      try {
+        const res = await fetch("/api/admin/alerts");
+        const json = await res.json();
+        if (active && res.ok && json.ok) setCount(json.data.counts.total);
+      } catch { /* noop */ }
+    }
+    void poll();
+    const interval = setInterval(poll, 120_000); // refresca cada 2 min
+    return () => { active = false; clearInterval(interval); };
+  }, []);
+
+  return (
+    <Link
+      href="/admin/alerts"
+      title="Alertas"
+      className="relative flex h-8 w-8 items-center justify-center rounded-md text-slate-400 hover:bg-white/[0.07] hover:text-white"
+    >
+      <Bell className="size-4" strokeWidth={1.8} />
+      {count > 0 && (
+        <span className="absolute -right-0.5 -top-0.5 grid min-w-[16px] place-items-center rounded-full bg-red-500 px-1 text-[9px] font-bold leading-[16px] text-white">
+          {count > 99 ? "99+" : count}
+        </span>
+      )}
+    </Link>
+  );
+}
+
 export function AdminShell({ username, children }: { username: string; children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -229,6 +263,7 @@ export function AdminShell({ username, children }: { username: string; children:
 
           {/* Right side */}
           <div className="ml-auto flex items-center gap-2">
+            <AlertsBell />
             <Copilot />
 
             <a
