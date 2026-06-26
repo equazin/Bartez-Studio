@@ -3,101 +3,195 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Dialog } from "radix-ui";
-import { BarChart3, BookOpen, Boxes, Building2, BriefcaseBusiness, CalendarCheck, ExternalLink, FileSpreadsheet, FileText, Hash, LayoutDashboard, LifeBuoy, LogOut, Menu, MessageSquare, Package, PackageOpen, Receipt, ScrollText, ShieldCheck, ShoppingCart, Tag, Target, Truck, UserCheck, UsersRound, Wallet, Warehouse, Wrench, X } from "lucide-react";
+import { useRef, useState } from "react";
+import {
+  BarChart3, BookOpen, Boxes, Building2, BriefcaseBusiness, CalendarCheck,
+  ChevronDown, ExternalLink, FileSpreadsheet, FileText, Hash, LayoutDashboard,
+  LifeBuoy, LogOut, Menu, MessageSquare, Package, PackageOpen, Receipt,
+  ScrollText, ShieldCheck, ShoppingCart, Tag, Target, Truck, UserCheck,
+  UsersRound, Wallet, Warehouse, Wrench, X,
+} from "lucide-react";
 import { cn } from "../../lib/utils";
-import { AdminButton } from "./AdminUI";
 import { AdminToastProvider, LeadNotificationPoller } from "./AdminToast";
 
-const navigation = [
-  { href: "/admin", label: "Inicio", icon: LayoutDashboard, group: "main" },
-  { href: "/admin/leads", label: "Leads", icon: UserCheck, group: "main" },
-  { href: "/admin/accounts", label: "Cuentas", icon: Building2, group: "main" },
-  { href: "/admin/opportunities", label: "Oportunidades", icon: Target, group: "main" },
-  { href: "/admin/activities", label: "Actividades", icon: CalendarCheck, group: "main" },
-  { href: "/admin/quotes", label: "Presupuestos", icon: FileSpreadsheet, group: "sales" },
-  { href: "/admin/orders", label: "Pedidos", icon: ShoppingCart, group: "sales" },
-  { href: "/admin/delivery-notes", label: "Remitos", icon: Truck, group: "sales" },
-  { href: "/admin/products", label: "Productos", icon: Package, group: "sales" },
-  { href: "/admin/price-lists", label: "Listas de precios", icon: Tag, group: "sales" },
-  { href: "/admin/suppliers", label: "Proveedores", icon: Building2, group: "purchases" },
-  { href: "/admin/purchase-orders", label: "Ordenes de compra", icon: FileSpreadsheet, group: "purchases" },
-  { href: "/admin/goods-receipts", label: "Recepciones", icon: PackageOpen, group: "purchases" },
-  { href: "/admin/warehouses", label: "Depósitos", icon: Warehouse, group: "inventory" },
-  { href: "/admin/stock", label: "Stock", icon: Boxes, group: "inventory" },
-  { href: "/admin/stock-movements", label: "Movimientos", icon: PackageOpen, group: "inventory" },
-  { href: "/admin/invoices", label: "Facturas", icon: Receipt, group: "finance" },
-  { href: "/admin/receipts", label: "Recibos", icon: FileText, group: "finance" },
-  { href: "/admin/customer-accounts", label: "Cuentas corrientes", icon: Wallet, group: "finance" },
-  { href: "/admin/supplier-accounts", label: "Cuentas proveedores", icon: Wallet, group: "finance" },
-  { href: "/admin/cash-accounts", label: "Caja y bancos", icon: Building2, group: "finance" },
-  { href: "/admin/accounting-export", label: "Export contable", icon: FileSpreadsheet, group: "finance" },
-  { href: "/admin/tickets", label: "Tickets", icon: LifeBuoy, group: "support" },
-  { href: "/admin/work-orders", label: "Órdenes de trabajo", icon: Wrench, group: "support" },
-  { href: "/admin/serial-numbers", label: "N° de serie", icon: Hash, group: "support" },
-  { href: "/admin/warranty-terms", label: "Garantías", icon: ShieldCheck, group: "support" },
-  { href: "/admin/knowledge", label: "Base de conocimiento", icon: BookOpen, group: "support" },
-  { href: "/admin/reports", label: "Reportes BI", icon: BarChart3, group: "bi" },
-  { href: "/admin/analytics", label: "Analytics", icon: BarChart3, group: "main" },
-  { href: "/admin/conversations", label: "WhatsApp", icon: MessageSquare, group: "main" },
-  { href: "/admin/posts", label: "Artículos", icon: FileText, group: "content" },
-  { href: "/admin/clients", label: "Clientes", icon: UsersRound, group: "content" },
-  { href: "/admin/cases", label: "Casos de éxito", icon: BriefcaseBusiness, group: "content" },
-  { href: "/admin/audit", label: "Auditoría", icon: ScrollText, group: "system" },
+type NavItem = { href: string; label: string; icon: React.ElementType; group: string };
+
+const navigation: NavItem[] = [
+  { href: "/admin",                    label: "Inicio",              icon: LayoutDashboard,  group: "ops" },
+  { href: "/admin/leads",              label: "Leads",               icon: UserCheck,        group: "ops" },
+  { href: "/admin/accounts",           label: "Cuentas",             icon: Building2,        group: "ops" },
+  { href: "/admin/opportunities",      label: "Oportunidades",       icon: Target,           group: "ops" },
+  { href: "/admin/activities",         label: "Actividades",         icon: CalendarCheck,    group: "ops" },
+  { href: "/admin/analytics",          label: "Analytics",           icon: BarChart3,        group: "ops" },
+  { href: "/admin/conversations",      label: "WhatsApp",            icon: MessageSquare,    group: "ops" },
+  { href: "/admin/quotes",             label: "Presupuestos",        icon: FileSpreadsheet,  group: "sales" },
+  { href: "/admin/orders",             label: "Pedidos",             icon: ShoppingCart,     group: "sales" },
+  { href: "/admin/delivery-notes",     label: "Remitos",             icon: Truck,            group: "sales" },
+  { href: "/admin/products",           label: "Productos",           icon: Package,          group: "sales" },
+  { href: "/admin/price-lists",        label: "Listas de precios",   icon: Tag,              group: "sales" },
+  { href: "/admin/suppliers",          label: "Proveedores",         icon: Building2,        group: "purchases" },
+  { href: "/admin/purchase-orders",    label: "Órdenes de compra",   icon: FileSpreadsheet,  group: "purchases" },
+  { href: "/admin/goods-receipts",     label: "Recepciones",         icon: PackageOpen,      group: "purchases" },
+  { href: "/admin/warehouses",         label: "Depósitos",           icon: Warehouse,        group: "inventory" },
+  { href: "/admin/stock",              label: "Stock",               icon: Boxes,            group: "inventory" },
+  { href: "/admin/stock-movements",    label: "Movimientos",         icon: PackageOpen,      group: "inventory" },
+  { href: "/admin/invoices",           label: "Facturas",            icon: Receipt,          group: "finance" },
+  { href: "/admin/receipts",           label: "Recibos",             icon: FileText,         group: "finance" },
+  { href: "/admin/customer-accounts",  label: "Cta. Cte. Clientes",  icon: Wallet,           group: "finance" },
+  { href: "/admin/supplier-accounts",  label: "Cta. Cte. Proveedores",icon: Wallet,          group: "finance" },
+  { href: "/admin/cash-accounts",      label: "Caja y bancos",       icon: Building2,        group: "finance" },
+  { href: "/admin/accounting-export",  label: "Export contable",     icon: FileSpreadsheet,  group: "finance" },
+  { href: "/admin/tickets",            label: "Tickets",             icon: LifeBuoy,         group: "support" },
+  { href: "/admin/work-orders",        label: "Órdenes de trabajo",  icon: Wrench,           group: "support" },
+  { href: "/admin/serial-numbers",     label: "N° de serie",         icon: Hash,             group: "support" },
+  { href: "/admin/warranty-terms",     label: "Garantías",           icon: ShieldCheck,      group: "support" },
+  { href: "/admin/knowledge",          label: "Base de conocimiento",icon: BookOpen,         group: "support" },
+  { href: "/admin/reports",            label: "Reportes",            icon: BarChart3,        group: "bi" },
+  { href: "/admin/posts",              label: "Artículos",           icon: FileText,         group: "content" },
+  { href: "/admin/clients",            label: "Clientes",            icon: UsersRound,       group: "content" },
+  { href: "/admin/cases",              label: "Casos de éxito",      icon: BriefcaseBusiness,group: "content" },
+  { href: "/admin/audit",              label: "Auditoría",           icon: ScrollText,       group: "system" },
 ];
 
-function NavGroup({ label, items, pathname, close }: { label: string; items: typeof navigation; pathname: string; close?: () => void }) {
+const groups: { key: string; label: string }[] = [
+  { key: "ops",       label: "Operaciones" },
+  { key: "sales",     label: "Ventas" },
+  { key: "purchases", label: "Compras" },
+  { key: "inventory", label: "Inventario" },
+  { key: "finance",   label: "Finanzas" },
+  { key: "support",   label: "Postventa" },
+  { key: "bi",        label: "BI" },
+  { key: "content",   label: "Contenido" },
+  { key: "system",    label: "Sistema" },
+];
+
+function DropdownMenu({ items, pathname }: { items: NavItem[]; pathname: string }) {
   return (
-    <div>
-      <p className="mb-2 px-3 text-[10.5px] font-bold uppercase tracking-[0.14em] text-slate-400">{label}</p>
-      <div className="flex flex-col gap-1">
-        {items.map((item) => {
-          const active = item.href === "/admin" ? pathname === item.href : pathname.startsWith(item.href);
-          return (
-            <Link key={item.href} href={item.href} onClick={close} className={cn(
-              "flex h-10 items-center gap-3 rounded-lg border px-3 text-[13.5px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400",
+    <div className="absolute left-0 top-full z-50 min-w-[200px] rounded-b-lg border border-white/10 bg-[#0d1120] py-1 shadow-xl">
+      {items.map((item) => {
+        const active = item.href === "/admin"
+          ? pathname === item.href
+          : pathname.startsWith(item.href);
+        return (
+          <Link
+            key={item.href}
+            href={item.href}
+            className={cn(
+              "flex items-center gap-2.5 px-4 py-2 text-[13px] font-medium transition-colors",
               active
-                ? "border-brand/40 bg-brand/15 text-white"
-                : "border-transparent text-slate-300 hover:bg-white/[0.06] hover:text-white",
-            )}>
-              <item.icon className="size-[17px]" strokeWidth={1.8} />{item.label}
-            </Link>
-          );
-        })}
-      </div>
+                ? "bg-brand/20 text-white"
+                : "text-slate-300 hover:bg-white/[0.07] hover:text-white",
+            )}
+          >
+            <item.icon className="size-[14px] flex-none" strokeWidth={1.8} />
+            {item.label}
+          </Link>
+        );
+      })}
     </div>
   );
 }
 
-function Navigation({ pathname, close }: { pathname: string; close?: () => void }) {
-  const main = navigation.filter((n) => n.group === "main");
-  const sales = navigation.filter((n) => n.group === "sales");
-  const purchases = navigation.filter((n) => n.group === "purchases");
-  const inventory = navigation.filter((n) => n.group === "inventory");
-  const finance = navigation.filter((n) => n.group === "finance");
-  const support = navigation.filter((n) => n.group === "support");
-  const bi = navigation.filter((n) => n.group === "bi");
-  const content = navigation.filter((n) => n.group === "content");
-  const system = navigation.filter((n) => n.group === "system");
+function TopNav({ pathname }: { pathname: string }) {
+  const [open, setOpen] = useState<string | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  function enter(key: string) {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setOpen(key);
+  }
+
+  function leave() {
+    timeoutRef.current = setTimeout(() => setOpen(null), 120);
+  }
+
   return (
-    <nav aria-label="Navegación principal" className="flex flex-col gap-6">
-      <NavGroup label="Operaciones" items={main} pathname={pathname} close={close} />
-      <NavGroup label="Ventas" items={sales} pathname={pathname} close={close} />
-      <NavGroup label="Compras" items={purchases} pathname={pathname} close={close} />
-      <NavGroup label="Inventario" items={inventory} pathname={pathname} close={close} />
-      <NavGroup label="Finanzas" items={finance} pathname={pathname} close={close} />
-      <NavGroup label="Postventa" items={support} pathname={pathname} close={close} />
-      <NavGroup label="BI" items={bi} pathname={pathname} close={close} />
-      <NavGroup label="Contenido" items={content} pathname={pathname} close={close} />
-      <NavGroup label="Sistema" items={system} pathname={pathname} close={close} />
+    <nav className="flex items-center gap-0.5" aria-label="Navegación principal">
+      {groups.map(({ key, label }) => {
+        const items = navigation.filter((n) => n.group === key);
+        const isGroupActive = items.some((item) =>
+          item.href === "/admin" ? pathname === item.href : pathname.startsWith(item.href)
+        );
+        return (
+          <div
+            key={key}
+            className="relative"
+            onMouseEnter={() => enter(key)}
+            onMouseLeave={leave}
+          >
+            <button
+              className={cn(
+                "flex h-9 items-center gap-1 rounded-md px-3 text-[13px] font-semibold transition-colors",
+                isGroupActive || open === key
+                  ? "bg-white/10 text-white"
+                  : "text-slate-300 hover:bg-white/[0.07] hover:text-white",
+              )}
+            >
+              {label}
+              <ChevronDown
+                className={cn("size-3.5 transition-transform", open === key ? "rotate-180" : "")}
+                strokeWidth={2}
+              />
+            </button>
+            {open === key && <DropdownMenu items={items} pathname={pathname} />}
+          </div>
+        );
+      })}
+    </nav>
+  );
+}
+
+/* Mobile flat navigation used inside the drawer */
+function MobileNav({ pathname, close }: { pathname: string; close: () => void }) {
+  const [openGroup, setOpenGroup] = useState<string | null>(null);
+  return (
+    <nav className="flex flex-col gap-1" aria-label="Navegación móvil">
+      {groups.map(({ key, label }) => {
+        const items = navigation.filter((n) => n.group === key);
+        const isOpen = openGroup === key;
+        return (
+          <div key={key}>
+            <button
+              onClick={() => setOpenGroup(isOpen ? null : key)}
+              className="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-[13px] font-bold text-slate-300 uppercase tracking-wide hover:bg-white/[0.06] hover:text-white"
+            >
+              {label}
+              <ChevronDown className={cn("size-3.5 transition-transform", isOpen ? "rotate-180" : "")} strokeWidth={2} />
+            </button>
+            {isOpen && (
+              <div className="mb-2 flex flex-col gap-0.5 pl-3">
+                {items.map((item) => {
+                  const active = item.href === "/admin" ? pathname === item.href : pathname.startsWith(item.href);
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={close}
+                      className={cn(
+                        "flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium transition-colors",
+                        active
+                          ? "bg-brand/20 text-white"
+                          : "text-slate-300 hover:bg-white/[0.06] hover:text-white",
+                      )}
+                    >
+                      <item.icon className="size-[15px] flex-none" strokeWidth={1.8} />
+                      {item.label}
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        );
+      })}
     </nav>
   );
 }
 
 function Brand() {
   return (
-    <Link href="/admin" className="inline-flex items-center gap-2.5">
-      <Image src="/brand/bartez-logo.png" alt="Bartez Tecnología" width={170} height={52} className="h-7 w-auto brightness-0 invert" priority />
+    <Link href="/admin" className="inline-flex items-center gap-2 flex-none">
+      <Image src="/brand/bartez-logo.png" alt="Bartez Tecnología" width={170} height={52} className="h-6 w-auto brightness-0 invert" priority />
     </Link>
   );
 }
@@ -105,6 +199,7 @@ function Brand() {
 export function AdminShell({ username, children }: { username: string; children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   async function logout() {
     await fetch("/api/admin/logout", { method: "POST" });
@@ -112,70 +207,111 @@ export function AdminShell({ username, children }: { username: string; children:
     router.refresh();
   }
 
-  const secondaryNav = (
-    <a href="/" target="_blank" rel="noopener noreferrer" className="flex h-10 items-center gap-3 rounded-lg border border-transparent px-3 text-[13px] font-semibold text-slate-400 hover:bg-white/[0.06] hover:text-white">
-      <ExternalLink className="size-[17px]" strokeWidth={1.8} />Ver sitio
-    </a>
-  );
-
-  const userSection = (
-    <div className="border-t border-white/10 pt-4">
-      <div className="flex items-center gap-3 px-3">
-        <span className="grid size-8 flex-none place-items-center rounded-full bg-brand/20 text-[12px] font-bold text-sky-300">
-          {username.charAt(0).toUpperCase()}
-        </span>
-        <div className="min-w-0 flex-1">
-          <p className="truncate text-[13px] font-semibold text-white">{username}</p>
-          <p className="text-[10.5px] font-medium text-slate-500">Administrador</p>
-        </div>
-      </div>
-      <button onClick={() => void logout()} className="mt-3 flex h-9 w-full items-center gap-3 rounded-lg border border-transparent px-3 text-[13px] font-semibold text-slate-400 hover:bg-white/[0.06] hover:text-white">
-        <LogOut className="size-[16px]" />Cerrar sesión
-      </button>
-    </div>
-  );
-
   return (
     <div className="min-h-screen bg-slate-50 text-slate-950">
-      {/* Desktop sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-[250px] flex-col border-r border-white/[0.06] bg-[#070a16] p-4 lg:flex">
-        <div className="flex h-12 items-center px-2"><Brand /></div>
-        <div className="mt-7 flex-1 overflow-y-auto">
-          <Navigation pathname={pathname} />
-          <div className="mt-5">{secondaryNav}</div>
-        </div>
-        {userSection}
-      </aside>
-
-      <div className="min-w-0 lg:pl-[250px]">
-        {/* Mobile header */}
-        <header className="sticky top-0 z-20 flex h-14 items-center justify-between border-b border-white/[0.06] bg-[#070a16] px-4 lg:hidden">
-          <Dialog.Root>
-            <Dialog.Trigger asChild>
-              <AdminButton variant="ghost" size="icon" className="text-slate-300 hover:bg-white/10 hover:text-white" aria-label="Abrir navegación"><Menu /></AdminButton>
-            </Dialog.Trigger>
-            <Dialog.Portal>
-              <Dialog.Overlay className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm" />
-              <Dialog.Content className="fixed inset-y-0 left-0 z-50 flex w-[min(300px,85vw)] flex-col border-r border-white/[0.06] bg-[#070a16] p-4 shadow-2xl">
-                <Dialog.Title className="sr-only">Navegación del administrador</Dialog.Title>
-                <div className="flex h-12 items-center justify-between">
-                  <Brand />
-                  <Dialog.Close asChild><AdminButton variant="ghost" size="icon" className="text-slate-300 hover:bg-white/10 hover:text-white" aria-label="Cerrar navegación"><X /></AdminButton></Dialog.Close>
-                </div>
-                <div className="mt-7 flex-1 overflow-y-auto">
-                  <Navigation pathname={pathname} />
-                  <div className="mt-5">{secondaryNav}</div>
-                </div>
-                {userSection}
-              </Dialog.Content>
-            </Dialog.Portal>
-          </Dialog.Root>
+      {/* Top bar */}
+      <header className="fixed inset-x-0 top-0 z-30 flex h-12 items-center border-b border-white/[0.07] bg-[#070a16]">
+        <div className="flex h-full w-full items-center gap-4 px-4">
+          {/* Logo */}
           <Brand />
-          <span className="rounded-md bg-brand/20 px-2 py-1 text-[11px] font-bold text-sky-300">Admin</span>
-        </header>
 
-        <main className="px-4 py-7 sm:px-6 lg:px-8 lg:py-8 xl:px-10">{children}</main>
-      </div>
+          {/* Separator */}
+          <div className="hidden h-5 w-px bg-white/10 lg:block" />
+
+          {/* Desktop nav */}
+          <div className="hidden flex-1 lg:block">
+            <TopNav pathname={pathname} />
+          </div>
+
+          {/* Right side */}
+          <div className="ml-auto flex items-center gap-2">
+            <a
+              href="/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden h-8 items-center gap-1.5 rounded-md px-3 text-[12px] font-semibold text-slate-400 hover:bg-white/[0.07] hover:text-white sm:flex"
+            >
+              <ExternalLink className="size-3.5" strokeWidth={1.8} />
+              Ver sitio
+            </a>
+
+            {/* User chip */}
+            <div className="flex items-center gap-2 rounded-md px-2 py-1">
+              <span className="grid size-6 flex-none place-items-center rounded-full bg-brand/20 text-[11px] font-bold text-sky-300">
+                {username.charAt(0).toUpperCase()}
+              </span>
+              <span className="hidden text-[12px] font-semibold text-slate-300 sm:block">{username}</span>
+            </div>
+
+            <button
+              onClick={() => void logout()}
+              title="Cerrar sesión"
+              className="flex h-8 items-center gap-1.5 rounded-md px-2 text-[12px] font-semibold text-slate-400 hover:bg-white/[0.07] hover:text-white"
+            >
+              <LogOut className="size-3.5" strokeWidth={1.8} />
+              <span className="hidden sm:inline">Salir</span>
+            </button>
+
+            {/* Mobile hamburger */}
+            <button
+              onClick={() => setMobileOpen(true)}
+              className="flex h-8 w-8 items-center justify-center rounded-md text-slate-300 hover:bg-white/10 hover:text-white lg:hidden"
+              aria-label="Abrir menú"
+            >
+              <Menu className="size-5" />
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Mobile drawer */}
+      {mobileOpen && (
+        <>
+          <div
+            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
+            onClick={() => setMobileOpen(false)}
+          />
+          <div className="fixed inset-y-0 left-0 z-50 flex w-[min(300px,85vw)] flex-col border-r border-white/[0.06] bg-[#070a16] p-4 shadow-2xl lg:hidden">
+            <div className="flex items-center justify-between pb-4">
+              <Brand />
+              <button
+                onClick={() => setMobileOpen(false)}
+                className="flex h-8 w-8 items-center justify-center rounded-md text-slate-400 hover:bg-white/10 hover:text-white"
+                aria-label="Cerrar menú"
+              >
+                <X className="size-5" />
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto">
+              <MobileNav pathname={pathname} close={() => setMobileOpen(false)} />
+            </div>
+            <div className="border-t border-white/10 pt-3">
+              <div className="flex items-center gap-2 px-3 py-2">
+                <span className="grid size-7 flex-none place-items-center rounded-full bg-brand/20 text-[11px] font-bold text-sky-300">
+                  {username.charAt(0).toUpperCase()}
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-[13px] font-semibold text-white">{username}</p>
+                  <p className="text-[10.5px] font-medium text-slate-500">Administrador</p>
+                </div>
+              </div>
+              <button
+                onClick={() => void logout()}
+                className="mt-1 flex h-9 w-full items-center gap-2.5 rounded-lg px-3 text-[13px] font-semibold text-slate-400 hover:bg-white/[0.06] hover:text-white"
+              >
+                <LogOut className="size-4" />Cerrar sesión
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Content */}
+      <main className="pt-12">
+        <div className="px-4 py-7 sm:px-6 lg:px-8 lg:py-8 xl:px-10">
+          {children}
+        </div>
+      </main>
 
       <AdminToastProvider />
       <LeadNotificationPoller />
