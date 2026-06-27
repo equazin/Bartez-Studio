@@ -1,10 +1,13 @@
 // ---------------------------------------------------------------------------
 // API pública v1 — autenticación por Bearer token
-// El token se configura via env var API_V1_TOKEN
+// Lee primero de OrgCredential (configurable desde /admin/sistema) y cae a
+// env var API_V1_TOKEN como fallback.
 // ---------------------------------------------------------------------------
 
 import { createHash, timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
+import { getCredential } from "./modules/system/credentials-service.ts";
+import { resolveDefaultOrg } from "./tenant.ts";
 
 /** Comparación en tiempo constante (evita oráculos de tiempo sobre el token). */
 function safeEqual(left: string, right: string): boolean {
@@ -14,8 +17,9 @@ function safeEqual(left: string, right: string): boolean {
   );
 }
 
-export function authorizeV1Request(request: Request): { ok: true } | { ok: false; response: Response } {
-  const token = process.env.API_V1_TOKEN;
+export async function authorizeV1Request(request: Request): Promise<{ ok: true } | { ok: false; response: Response }> {
+  const org = await resolveDefaultOrg();
+  const token = await getCredential(org.id, "api_v1", "token", "API_V1_TOKEN");
   if (!token) {
     return {
       ok: false,

@@ -9,20 +9,35 @@ import { getDb } from "../../db.ts";
  */
 
 export interface OrgSettings {
+  // Datos fiscales / empresa
+  taxCondition: string; // "responsable_inscripto" | "monotributo" | "exento" | ""
+  fiscalAddress: string;
+  pointOfSale: number; // PV default para facturas
+  // Operativo
   purchaseApprovalThreshold: number;
   alertsWhatsappTo: string;
   alertsEmailTo: string;
 }
 
 export const DEFAULT_SETTINGS: OrgSettings = {
+  taxCondition: "",
+  fiscalAddress: "",
+  pointOfSale: 1,
   purchaseApprovalThreshold: 0,
   alertsWhatsappTo: "",
   alertsEmailTo: "",
 };
 
-const optionalTrimmed = z.string().trim().max(120).optional();
+const optionalTrimmed = z.string().trim().max(200).optional();
 
 export const orgSettingsUpdateSchema = z.object({
+  taxCondition: optionalTrimmed,
+  fiscalAddress: z.string().trim().max(300).optional(),
+  pointOfSale: z
+    .union([z.number(), z.string()])
+    .transform((value) => (typeof value === "string" ? Number(value) : value))
+    .refine((value) => Number.isInteger(value) && value >= 1 && value <= 99999, { message: "punto de venta entre 1 y 99999" })
+    .optional(),
   purchaseApprovalThreshold: z
     .union([z.number(), z.string()])
     .transform((value) => (typeof value === "string" ? Number(value) : value))
@@ -36,7 +51,11 @@ export type OrgSettingsUpdate = z.infer<typeof orgSettingsUpdateSchema>;
 function normalize(raw: unknown): OrgSettings {
   const data = (raw ?? {}) as Record<string, unknown>;
   const threshold = Number(data.purchaseApprovalThreshold);
+  const pos = Number(data.pointOfSale);
   return {
+    taxCondition: typeof data.taxCondition === "string" ? data.taxCondition : "",
+    fiscalAddress: typeof data.fiscalAddress === "string" ? data.fiscalAddress : "",
+    pointOfSale: Number.isInteger(pos) && pos >= 1 ? pos : 1,
     purchaseApprovalThreshold: Number.isFinite(threshold) && threshold >= 0 ? threshold : 0,
     alertsWhatsappTo: typeof data.alertsWhatsappTo === "string" ? data.alertsWhatsappTo : "",
     alertsEmailTo: typeof data.alertsEmailTo === "string" ? data.alertsEmailTo : "",
@@ -59,9 +78,12 @@ export async function getOrgSettings(organizationId: string): Promise<OrgSetting
  */
 export function mergeSettings(current: OrgSettings, patch: OrgSettingsUpdate): OrgSettings {
   const next: OrgSettings = { ...current };
+  if (patch.taxCondition !== undefined) next.taxCondition = patch.taxCondition ?? "";
+  if (patch.fiscalAddress !== undefined) next.fiscalAddress = patch.fiscalAddress ?? "";
+  if (patch.pointOfSale !== undefined) next.pointOfSale = patch.pointOfSale;
   if (patch.purchaseApprovalThreshold !== undefined) next.purchaseApprovalThreshold = patch.purchaseApprovalThreshold;
-  if (patch.alertsWhatsappTo !== undefined) next.alertsWhatsappTo = patch.alertsWhatsappTo;
-  if (patch.alertsEmailTo !== undefined) next.alertsEmailTo = patch.alertsEmailTo;
+  if (patch.alertsWhatsappTo !== undefined) next.alertsWhatsappTo = patch.alertsWhatsappTo ?? "";
+  if (patch.alertsEmailTo !== undefined) next.alertsEmailTo = patch.alertsEmailTo ?? "";
   return next;
 }
 

@@ -49,9 +49,12 @@ export async function downloadMedia(mediaId: string): Promise<Buffer> {
  * Sends an audio buffer to OpenAI Whisper API to transcribe it to text.
  */
 export async function transcribeAudio(buffer: Buffer): Promise<string> {
-  const openAiKey = process.env.OPENAI_API_KEY;
+  const { getCredential } = await import("../modules/system/credentials-service.ts");
+  const { resolveDefaultOrg } = await import("../tenant.ts");
+  const org = await resolveDefaultOrg();
+  const openAiKey = await getCredential(org.id, "openai", "api_key", "OPENAI_API_KEY");
   if (!openAiKey) {
-    throw new Error("La variable de entorno OPENAI_API_KEY no está configurada");
+    throw new Error("OpenAI API key no configurada (cargala en /admin/sistema o en env)");
   }
 
   const formData = new FormData();

@@ -75,6 +75,27 @@ model Sequence {
   @@unique([organizationId, docType, pointOfSale])
 }
 
+// ─────────────────────────────────────────────────────────────
+// Credenciales de integraciones cifradas por organización.
+// Cada fila guarda UN valor sensible (token/api-key/cert) cifrado
+// con AES-256-GCM usando CREDENTIAL_ENCRYPTION_KEY (env var maestra).
+// El código consulta primero acá y cae a env var si no existe.
+// ─────────────────────────────────────────────────────────────
+model OrgCredential {
+  id              String   @id @default(cuid())
+  organizationId  String
+  provider        String // "mercadopago" | "afip" | "openai" | "whatsapp" | "resend" | ...
+  key             String // "access_token" | "api_key" | "cert" | "phone_number_id" | ...
+  valueCiphertext String // hex
+  iv              String // hex (12 bytes)
+  authTag         String // hex (16 bytes)
+  updatedAt       DateTime @updatedAt
+  createdAt       DateTime @default(now())
+
+  @@unique([organizationId, provider, key])
+  @@index([organizationId, provider])
+}
+
 model ExchangeRate {
   id        String   @id @default(cuid())
   base      String // "USD"

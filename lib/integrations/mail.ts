@@ -75,20 +75,37 @@ function autoReplyHtml(lead: Lead): string {
   </div>`;
 }
 
+async function getMailCredential(provider: "resend" | "brevo", key: string, envFallback: string): Promise<string> {
+  // Si la BD no responde (tests, problemas de conexión) caemos directo a env
+  // para no romper el envío de mail.
+  try {
+    const { getCredential } = await import("../modules/system/credentials-service.ts");
+    const { resolveDefaultOrg } = await import("../tenant.ts");
+    const org = await resolveDefaultOrg();
+    return await getCredential(org.id, provider, key, envFallback);
+  } catch {
+    return process.env[envFallback] ?? "";
+  }
+}
+
 async function sendResend(to: string, subject: string, html: string, replyTo?: string) {
+  const apiKey = await getMailCredential("resend", "api_key", "RESEND_API_KEY");
+  const from = (await getMailCredential("resend", "from", "MAIL_FROM")) || process.env.MAIL_FROM;
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
-    headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ from: process.env.MAIL_FROM, to, subject, html, reply_to: replyTo }),
+    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ from, to, subject, html, reply_to: replyTo }),
   });
   if (!res.ok) throw new Error(`Resend HTTP ${res.status}`);
 }
 
 async function sendBrevo(to: string, subject: string, html: string) {
-  const [name, addr] = parseFrom(process.env.MAIL_FROM || "");
+  const apiKey = await getMailCredential("brevo", "api_key", "BREVO_API_KEY");
+  const fromRaw = (await getMailCredential("resend", "from", "MAIL_FROM")) || process.env.MAIL_FROM || "";
+  const [name, addr] = parseFrom(fromRaw);
   const res = await fetch("https://api.brevo.com/v3/smtp/email", {
     method: "POST",
-    headers: { "api-key": process.env.BREVO_API_KEY || "", "Content-Type": "application/json" },
+    headers: { "api-key": apiKey, "Content-Type": "application/json" },
     body: JSON.stringify({ sender: { name, email: addr }, to: [{ email: to }], subject, htmlContent: html }),
   });
   if (!res.ok) throw new Error(`Brevo HTTP ${res.status}`);

@@ -5,7 +5,7 @@ import { scoreLeadHeuristic } from "../../../../lib/ai/lead-score";
 export const runtime = "nodejs";
 
 export async function GET(request: Request) {
-  const auth = authorizeV1Request(request);
+  const auth = await authorizeV1Request(request);
   if (!auth.ok) return auth.response;
 
   const { searchParams } = new URL(request.url);

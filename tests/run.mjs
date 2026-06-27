@@ -38,3 +38,4 @@ await import("./team-schema.test.ts");
 await import("./alerts-notify.test.ts");
 await import("./accounting-balance.test.ts");
 await import("./settings-merge.test.ts");
+await import("./crypto-secrets.test.ts");

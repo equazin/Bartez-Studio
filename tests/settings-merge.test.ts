@@ -3,7 +3,7 @@ import test from "node:test";
 import { mergeSettings, DEFAULT_SETTINGS } from "../lib/modules/settings/settings-service.ts";
 
 test("mergeSettings aplica solo las claves provistas", () => {
-  const current = { purchaseApprovalThreshold: 100000, alertsWhatsappTo: "549341", alertsEmailTo: "a@b.com" };
+  const current = { ...DEFAULT_SETTINGS, purchaseApprovalThreshold: 100000, alertsWhatsappTo: "549341", alertsEmailTo: "a@b.com" };
   const next = mergeSettings(current, { purchaseApprovalThreshold: 50000 });
   assert.equal(next.purchaseApprovalThreshold, 50000);
   // No pisa los otros campos
@@ -17,7 +17,7 @@ test("mergeSettings con patch vacío no cambia nada", () => {
 });
 
 test("mergeSettings permite vaciar un campo de texto explícitamente", () => {
-  const current = { purchaseApprovalThreshold: 0, alertsWhatsappTo: "549341", alertsEmailTo: "" };
+  const current = { ...DEFAULT_SETTINGS, alertsWhatsappTo: "549341" };
   const next = mergeSettings(current, { alertsWhatsappTo: "" });
   assert.equal(next.alertsWhatsappTo, "");
 });

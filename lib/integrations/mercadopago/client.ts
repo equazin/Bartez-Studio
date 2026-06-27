@@ -1,15 +1,25 @@
 /**
  * Cliente liviano de MercadoPago (Preferences + Payments).
- * No usa el SDK oficial; sólo fetch + access token desde env.
+ * No usa el SDK oficial; sólo fetch + access token.
  *
- * Env vars:
- *  - MP_ACCESS_TOKEN: APP_USR-... (cuenta del vendedor)
- *  - MP_NOTIFICATION_URL: URL pública del webhook (override)
- *  - NEXT_PUBLIC_SITE_URL: base para construir back_urls
- *
- * Sin MP_ACCESS_TOKEN el módulo entra en modo simulado y devuelve un link
- * dummy. Esto permite probar la UI/UX sin credenciales reales.
+ * El access token se lee primero de `OrgCredential` (configurable desde
+ * /admin/sistema) y cae a `MP_ACCESS_TOKEN` env var si no hay valor en BD.
+ * Sin token configurado el módulo entra en modo simulado y devuelve un link
+ * dummy, permitiendo probar la UI/UX sin credenciales reales.
  */
+import { getCredential } from "../../modules/system/credentials-service.ts";
+import { resolveDefaultOrg } from "../../tenant.ts";
+
+async function mpToken(): Promise<string> {
+  const org = await resolveDefaultOrg();
+  return getCredential(org.id, "mercadopago", "access_token", "MP_ACCESS_TOKEN");
+}
+
+async function mpNotificationUrl(): Promise<string> {
+  const org = await resolveDefaultOrg();
+  const stored = await getCredential(org.id, "mercadopago", "notification_url", "MP_NOTIFICATION_URL");
+  return stored;
+}
 
 const MP_API = "https://api.mercadopago.com";
 
@@ -35,12 +45,18 @@ function siteUrl(): string {
   return process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || "http://localhost:3000";
 }
 
+/** Legacy sync check — válido sólo para el fallback env (deprecated en favor del check async). */
 export function isMpConfigured(): boolean {
   return Boolean(process.env.MP_ACCESS_TOKEN);
 }
 
+export async function isMpConfiguredAsync(): Promise<boolean> {
+  return Boolean(await mpToken());
+}
+
 export async function createPreference(input: MpPreferenceInput): Promise<MpPreferenceResult> {
-  if (!isMpConfigured()) {
+  const token = await mpToken();
+  if (!token) {
     const fakeId = `SIM-${Date.now().toString(36)}`;
     return {
       id: fakeId,
@@ -51,6 +67,7 @@ export async function createPreference(input: MpPreferenceInput): Promise<MpPref
   }
 
   const base = input.back_url_base ?? siteUrl();
+  const notifUrl = await mpNotificationUrl();
   const body = {
     items: [{
       title: input.title.slice(0, 250),
@@ -60,7 +77,7 @@ export async function createPreference(input: MpPreferenceInput): Promise<MpPref
       unit_price: Number(input.unit_price.toFixed(2)),
     }],
     external_reference: input.external_reference,
-    notification_url: input.notification_url ?? process.env.MP_NOTIFICATION_URL ?? `${base}/api/webhooks/mercadopago`,
+    notification_url: input.notification_url ?? notifUrl ?? `${base}/api/webhooks/mercadopago`,
     back_urls: {
       success: `${base}/pago/exito`,
       failure: `${base}/pago/error`,
@@ -73,7 +90,7 @@ export async function createPreference(input: MpPreferenceInput): Promise<MpPref
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`,
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(body),
   });
@@ -101,9 +118,10 @@ export interface MpPayment {
 }
 
 export async function fetchPayment(paymentId: number | string): Promise<MpPayment | null> {
-  if (!isMpConfigured()) return null;
+  const token = await mpToken();
+  if (!token) return null;
   const res = await fetch(`${MP_API}/v1/payments/${paymentId}`, {
-    headers: { Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}` },
+    headers: { Authorization: `Bearer ${token}` },
   });
   if (res.status === 404) return null;
   if (!res.ok) {
