@@ -38,6 +38,8 @@ export default function GlobalError({
           >
             Reintentar
           </button>
+          {/* Recarga completa a propósito: resetea el estado roto del error boundary. */}
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
           <a
             href="/"
             className="inline-flex h-11 items-center justify-center rounded-lg border border-slate-300 bg-white px-6 text-[14px] font-bold text-[#11142a] transition-colors hover:bg-slate-50"

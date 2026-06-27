@@ -43,6 +43,8 @@ export default function SerialNumbersPage() {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  // Timestamp fijado al montar (evita Date.now() impuro durante el render).
+  const [nowTs] = useState(() => Date.now());
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [search, setSearch] = useState("");
@@ -150,7 +152,7 @@ export default function SerialNumbersPage() {
               <span>Serie</span><span>Producto</span><span>Cuenta</span><span>Estado</span><span>Garantía</span>
             </div>
             {items.map((s) => {
-              const expiringSoon = s.warrantyUntil && (new Date(s.warrantyUntil).getTime() - Date.now()) < 30 * 86400_000;
+              const expiringSoon = s.warrantyUntil && (new Date(s.warrantyUntil).getTime() - nowTs) < 30 * 86400_000;
               return (
                 <div key={s.id} className="grid gap-2 border-b border-slate-200 px-5 py-4 last:border-0 sm:px-6 lg:grid-cols-[1.2fr_1.2fr_.7fr_.5fr_.7fr] lg:items-center lg:gap-3">
                   <p className="truncate font-mono text-[12.5px] font-bold text-slate-950">{s.serial}</p>

@@ -96,9 +96,10 @@ export function QuoteEditor({ initial }: { initial: QuoteEditorValue }) {
       .then((r) => r.json())
       .then((j) => {
         setPriceListDetail(j.data);
-        // Si la lista define moneda, alinearla.
-        if (j.data?.currency && j.data.currency !== value.currency) {
-          setValue((v) => ({ ...v, currency: j.data.currency }));
+        // Si la lista define moneda, alinearla (comparación dentro del updater
+        // para no depender de value.currency y evitar re-ejecutar el effect).
+        if (j.data?.currency) {
+          setValue((v) => (v.currency === j.data.currency ? v : { ...v, currency: j.data.currency }));
         }
       })
       .catch(() => {});

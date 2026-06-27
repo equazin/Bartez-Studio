@@ -19,13 +19,10 @@ function emit(level: LogLevel, context: string, payload?: unknown): void {
   }
   const serialized = JSON.stringify(entry);
   if (level === "error") {
-    // eslint-disable-next-line no-console
     console.error(serialized);
   } else if (level === "warn") {
-    // eslint-disable-next-line no-console
     console.warn(serialized);
   } else {
-    // eslint-disable-next-line no-console
     console.log(serialized);
   }
 }
