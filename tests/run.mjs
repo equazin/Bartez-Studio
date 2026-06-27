@@ -1,3 +1,10 @@
+// Env de WhatsApp fijada ANTES de cualquier import: lib/whatsapp/config.ts
+// captura estos valores en sus const al cargar, así los tests del router/webhook
+// no dependen del orden de importación entre archivos.
+process.env.WHATSAPP_API_TOKEN ||= "test-wa-token";
+process.env.WHATSAPP_PHONE_NUMBER_ID ||= "123456789";
+process.env.WHATSAPP_APP_SECRET ||= "test-wa-secret";
+
 await import("./rate-limit.test.ts");
 await import("./schema.test.ts");
 await import("./ai.test.ts");

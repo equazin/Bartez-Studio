@@ -70,6 +70,11 @@ class PrismaMock {
       this.messages.push(msg);
       return msg;
     },
+    update: async (args: any) => {
+      const msg = this.messages.find((m) => m.id === args.where.id);
+      if (msg) Object.assign(msg, args.data);
+      return msg ?? { id: args.where.id, ...args.data };
+    },
   };
 }
 
