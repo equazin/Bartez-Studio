@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
@@ -110,9 +110,9 @@ export default function PriceListsPage() {
                 <Tag className="size-4 text-slate-400" />
                 <div className="min-w-0 flex-1">
                   <Link href={`/admin/price-lists/${l.id}`} className="text-[13.5px] font-bold text-slate-950 hover:text-brand hover:underline">{l.name}</Link>
-                  <p className="text-[11.5px] text-slate-600">
+                  <p className="text-[12px] text-slate-600">
                     {l.currency} · {l._count?.items ?? 0} productos
-                    {l.isDefault && <span className="ml-2 inline-flex items-center rounded-full border border-brand/30 bg-brand/10 px-2 py-0.5 text-[10px] font-bold text-brand">Por defecto</span>}
+                    {l.isDefault && <span className="ml-2 inline-flex items-center rounded-full border border-brand/30 bg-brand/10 px-2 py-0.5 text-[11px] font-bold text-brand">Por defecto</span>}
                     {!l.active && <span className="ml-2 text-slate-500">Inactiva</span>}
                   </p>
                 </div>

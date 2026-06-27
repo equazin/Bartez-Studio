@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
@@ -253,10 +253,10 @@ export default function AdminPosts() {
           <div className="grid min-h-56 place-items-center p-8 text-center"><div><FileText className="mx-auto size-8 text-slate-300" /><p className="mt-4 text-[14px] font-semibold text-slate-950">{debouncedSearch ? "No encontramos artículos para esa búsqueda." : "No hay artículos todavía."}</p>{!debouncedSearch ? <AdminButton className="mt-5" onClick={createPost}><Plus />Crear el primero</AdminButton> : null}</div></div>
         ) : (
           <div>
-            <div className="hidden grid-cols-[minmax(0,1fr)_150px_120px_90px] gap-4 border-b border-slate-300 bg-slate-100 px-5 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-slate-700 md:grid"><span>Contenido</span><span>Fecha</span><span>Estado</span><span className="text-right">Acciones</span></div>
+            <div className="hidden grid-cols-[minmax(0,1fr)_150px_120px_90px] gap-4 border-b border-slate-300 bg-slate-100 px-5 py-3 text-[12px] font-semibold text-slate-700 md:grid"><span>Contenido</span><span>Fecha</span><span>Estado</span><span className="text-right">Acciones</span></div>
             {posts.map((post) => (
               <div key={post.id} className="grid gap-3 border-b border-slate-200 px-5 py-4 last:border-0 md:grid-cols-[minmax(0,1fr)_150px_120px_90px] md:items-center md:gap-4">
-                <div className="min-w-0"><p className="truncate text-[13.5px] font-bold text-slate-950">{post.title}</p><p className="mt-1 truncate text-[11.5px] text-slate-600">/recursos/{post.slug}</p></div>
+                <div className="min-w-0"><p className="truncate text-[13.5px] font-bold text-slate-950">{post.title}</p><p className="mt-1 truncate text-[12px] text-slate-600">/recursos/{post.slug}</p></div>
                 <time className="text-[12px] font-medium text-slate-700">{new Date(post.date).toLocaleDateString("es-AR")}</time>
                 <div><StatusBadge active={post.published} /></div>
                 <div className="flex justify-end gap-1">

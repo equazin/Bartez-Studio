@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import { Pencil, Plus, Save, Trash2, Warehouse, X } from "lucide-react";
@@ -110,9 +110,9 @@ export default function WarehousesPage() {
                 <Warehouse className="size-4 text-slate-400" />
                 <div className="min-w-0 flex-1">
                   <p className="font-bold text-slate-950">{w.code} · {w.name}</p>
-                  <p className="text-[11.5px] text-slate-600">
+                  <p className="text-[12px] text-slate-600">
                     {w._count?.stockItems ?? 0} productos con stock
-                    {w.isDefault && <span className="ml-2 inline-flex items-center rounded-full border border-brand/30 bg-brand/10 px-2 py-0.5 text-[10px] font-bold text-brand">Por defecto</span>}
+                    {w.isDefault && <span className="ml-2 inline-flex items-center rounded-full border border-brand/30 bg-brand/10 px-2 py-0.5 text-[11px] font-bold text-brand">Por defecto</span>}
                     {!w.active && <span className="ml-2 text-slate-500">Inactivo</span>}
                   </p>
                 </div>

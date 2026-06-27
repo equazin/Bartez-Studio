@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import { AlertTriangle, Boxes, Save } from "lucide-react";
@@ -97,7 +97,7 @@ export default function StockPage() {
           </div>
         ) : (
           <div>
-            <div className="hidden grid-cols-[1.4fr_.7fr_.5fr_.5fr_.5fr_.7fr] gap-3 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-slate-700 lg:grid">
+            <div className="hidden grid-cols-[1.4fr_.7fr_.5fr_.5fr_.5fr_.7fr] gap-3 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[12px] font-semibold text-slate-700 lg:grid">
               <span>Producto</span><span>Depósito</span><span>Stock</span><span>Reservado</span><span>Disponible</span><span>Reposición</span>
             </div>
             {rows.map((r) => <StockRow key={r.id} row={r} onSaved={load} />)}
@@ -137,7 +137,7 @@ function StockRow({ row, onSaved }: { row: StockRow; onSaved: () => void }) {
     <div className="grid gap-2 border-b border-slate-200 px-5 py-3 last:border-0 sm:px-6 lg:grid-cols-[1.4fr_.7fr_.5fr_.5fr_.5fr_.7fr] lg:items-center lg:gap-3">
       <div className="min-w-0">
         <p className="truncate text-[13.5px] font-bold text-slate-950">{row.product.name}</p>
-        {row.product.sku && <p className="text-[11.5px] text-slate-500">SKU {row.product.sku}</p>}
+        {row.product.sku && <p className="text-[12px] text-slate-600">SKU {row.product.sku}</p>}
       </div>
       <p className="truncate text-[12.5px] text-slate-700">{row.warehouse.code}</p>
       <p className="text-[13px] font-bold text-slate-950">{qty.toLocaleString()}</p>

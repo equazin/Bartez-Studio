@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Ban, BookOpen, Plus, Save, Scale, Trash2 } from "lucide-react";
@@ -262,7 +262,7 @@ export default function AccountingPage() {
                           <p className="text-[13px] font-bold text-slate-950">
                             <span className="font-mono">{entry.number}</span>
                             <span className="ml-2 font-normal text-slate-500">{new Date(entry.date).toLocaleDateString("es-AR")}</span>
-                            {entry.source === "auto" && <span className="ml-2 rounded bg-blue-100 px-1.5 py-px text-[10px] font-bold text-blue-700">AUTO</span>}
+                            {entry.source === "auto" && <span className="ml-2 rounded bg-blue-100 px-1.5 py-px text-[11px] font-bold text-blue-700">AUTO</span>}
                             {entry.voidedAt && <span className="ml-2 text-[11px] font-bold text-red-600">ANULADO</span>}
                           </p>
                           <p className="mt-0.5 text-[13px] text-slate-700">{entry.description}</p>
@@ -298,7 +298,7 @@ export default function AccountingPage() {
               </div>
               <AdminField label="Descripción" htmlFor="entry-desc"><AdminInput id="entry-desc" value={entryDescription} onChange={(e) => setEntryDescription(e.target.value)} placeholder="Ej: Cobro factura A-0001" /></AdminField>
               <div className="rounded-lg border border-slate-300">
-                <div className="grid grid-cols-[1fr_90px_90px_28px] gap-2 border-b border-slate-200 bg-slate-100 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.06em] text-slate-600">
+                <div className="grid grid-cols-[1fr_90px_90px_28px] gap-2 border-b border-slate-200 bg-slate-100 px-3 py-2 text-[12px] font-semibold text-slate-700">
                   <span>Cuenta</span><span className="text-right">Debe</span><span className="text-right">Haber</span><span />
                 </div>
                 <div className="grid gap-2 p-3">
@@ -366,12 +366,12 @@ export default function AccountingPage() {
             <div className="flex items-center justify-center py-16"><AdminSpinner /></div>
           ) : (
             <div>
-              <div className="hidden grid-cols-[.5fr_1.4fr_.7fr_.7fr_.7fr] gap-3 border-b border-slate-300 bg-slate-100 px-5 py-3 text-[11px] font-bold uppercase tracking-[0.06em] text-slate-600 lg:grid">
+              <div className="hidden grid-cols-[.5fr_1.4fr_.7fr_.7fr_.7fr] gap-3 border-b border-slate-300 bg-slate-100 px-5 py-3 text-[12px] font-semibold text-slate-700 lg:grid">
                 <span>Código</span><span>Cuenta</span><span className="text-right">Debe</span><span className="text-right">Haber</span><span className="text-right">Saldo</span>
               </div>
               {trial.rows.filter((row) => row.debit > 0 || row.credit > 0).map((row) => (
                 <div key={row.id} className="grid gap-2 border-b border-slate-100 px-5 py-2.5 lg:grid-cols-[.5fr_1.4fr_.7fr_.7fr_.7fr] lg:items-center">
-                  <span className="font-mono text-[12px] text-slate-500">{row.code}</span>
+                  <span className="font-mono text-[12px] text-slate-600">{row.code}</span>
                   <span className="text-[13px] text-slate-800">{row.name}</span>
                   <span className="text-right text-[13px] text-slate-700">{row.debit ? money(row.debit) : "-"}</span>
                   <span className="text-right text-[13px] text-slate-700">{row.credit ? money(row.credit) : "-"}</span>
@@ -406,12 +406,12 @@ export default function AccountingPage() {
                 <div className="px-5 py-14 text-center text-[13px] font-bold text-slate-700">Sin movimientos en esta cuenta.</div>
               ) : (
                 <div>
-                  <div className="hidden grid-cols-[.6fr_.7fr_1.4fr_.7fr_.7fr_.7fr] gap-3 border-b border-slate-300 bg-slate-100 px-5 py-3 text-[11px] font-bold uppercase tracking-[0.06em] text-slate-600 lg:grid">
+                  <div className="hidden grid-cols-[.6fr_.7fr_1.4fr_.7fr_.7fr_.7fr] gap-3 border-b border-slate-300 bg-slate-100 px-5 py-3 text-[12px] font-semibold text-slate-700 lg:grid">
                     <span>Asiento</span><span>Fecha</span><span>Detalle</span><span className="text-right">Debe</span><span className="text-right">Haber</span><span className="text-right">Saldo</span>
                   </div>
                   {ledger.movements.map((mov, idx) => (
                     <div key={idx} className="grid gap-2 border-b border-slate-100 px-5 py-2.5 lg:grid-cols-[.6fr_.7fr_1.4fr_.7fr_.7fr_.7fr] lg:items-center">
-                      <span className="font-mono text-[12px] text-slate-500">{mov.entryNumber}</span>
+                      <span className="font-mono text-[12px] text-slate-600">{mov.entryNumber}</span>
                       <span className="text-[12px] text-slate-600">{new Date(mov.date).toLocaleDateString("es-AR")}</span>
                       <span className="text-[13px] text-slate-800">{mov.description}</span>
                       <span className="text-right text-[13px] text-slate-700">{mov.debit ? money(mov.debit) : "-"}</span>

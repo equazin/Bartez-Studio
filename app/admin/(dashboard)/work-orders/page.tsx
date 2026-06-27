@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
@@ -153,7 +153,7 @@ export default function WorkOrdersPage() {
           </div>
         ) : (
           <div>
-            <div className="hidden grid-cols-[.7fr_1.4fr_.6fr_.6fr_.6fr_.6fr] gap-3 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-slate-700 lg:grid">
+            <div className="hidden grid-cols-[.7fr_1.4fr_.6fr_.6fr_.6fr_.6fr] gap-3 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[12px] font-semibold text-slate-700 lg:grid">
               <span>Nº</span><span>Título</span><span>Cuenta</span><span>Estado</span><span>Tipo</span><span>Programada</span>
             </div>
             {items.map((wo) => (

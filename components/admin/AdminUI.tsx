@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import * as React from "react";
 import { AlertDialog, Slot, Switch } from "radix-ui";
@@ -33,7 +33,7 @@ export function AdminButton({ asChild, className, variant, size, ...props }: Adm
 export const AdminInput = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(
   ({ className, ...props }, ref) => (
     <input ref={ref} className={cn(
-      "h-11 w-full rounded-lg border border-slate-400 bg-white px-3.5 text-[14px] font-medium text-slate-950 outline-none placeholder:font-normal placeholder:text-slate-500 hover:border-slate-500 focus:border-brand focus:ring-2 focus:ring-brand/15 disabled:bg-slate-100 disabled:text-slate-600",
+      "h-11 w-full rounded-lg border border-slate-400 bg-white px-3.5 text-[14px] font-medium text-slate-950 outline-none placeholder:font-normal placeholder:text-slate-600 hover:border-slate-500 focus:border-brand focus:ring-2 focus:ring-brand/15 disabled:bg-slate-100 disabled:text-slate-600",
       className,
     )} {...props} />
   ),
@@ -43,7 +43,7 @@ AdminInput.displayName = "AdminInput";
 export const AdminTextarea = React.forwardRef<HTMLTextAreaElement, React.TextareaHTMLAttributes<HTMLTextAreaElement>>(
   ({ className, ...props }, ref) => (
     <textarea ref={ref} className={cn(
-      "min-h-28 w-full resize-y rounded-lg border border-slate-400 bg-white px-3.5 py-3 text-[14px] font-medium leading-relaxed text-slate-950 outline-none placeholder:font-normal placeholder:text-slate-500 hover:border-slate-500 focus:border-brand focus:ring-2 focus:ring-brand/15 disabled:bg-slate-100 disabled:text-slate-600",
+      "min-h-28 w-full resize-y rounded-lg border border-slate-400 bg-white px-3.5 py-3 text-[14px] font-medium leading-relaxed text-slate-950 outline-none placeholder:font-normal placeholder:text-slate-600 hover:border-slate-500 focus:border-brand focus:ring-2 focus:ring-brand/15 disabled:bg-slate-100 disabled:text-slate-600",
       className,
     )} {...props} />
   ),
@@ -69,7 +69,7 @@ export function AdminPanel({ className, children }: { className?: string; childr
 export function StatusBadge({ active, activeLabel = "Publicado", inactiveLabel = "Borrador" }: { active: boolean; activeLabel?: string; inactiveLabel?: string }) {
   return (
     <span className={cn(
-      "inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-[11.5px] font-bold",
+      "inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-[12px] font-bold",
       active ? "border-green-300 bg-green-50 text-green-900" : "border-amber-300 bg-amber-50 text-amber-900",
     )}>
       <span className={cn("size-1.5 rounded-full", active ? "bg-green-700" : "bg-amber-600")} />

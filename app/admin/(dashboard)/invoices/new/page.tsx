@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
@@ -271,7 +271,7 @@ export default function NewInvoicePage() {
         </div>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[900px] text-[13px]">
-            <thead className="bg-slate-100 text-[11px] font-bold uppercase tracking-[0.08em] text-slate-700">
+            <thead className="bg-slate-100 text-[12px] font-semibold text-slate-700">
               <tr>
                 <th className="px-3 py-2 text-left">Producto</th>
                 <th className="px-3 py-2 text-left">Descripción</th>

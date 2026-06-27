@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Ban, DollarSign, Landmark, Plus, Save, Wallet } from "lucide-react";
@@ -208,7 +208,7 @@ export default function CashAccountsPage() {
               <AdminPanel key={account.id} className="p-5">
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <p className="text-[11px] font-bold uppercase tracking-[0.08em] text-slate-500">{account.type === "bank" ? "Banco" : "Caja"} / {account.currency}</p>
+                    <p className="text-[12px] font-semibold text-slate-600">{account.type === "bank" ? "Banco" : "Caja"} / {account.currency}</p>
                     <p className="mt-1 text-[14px] font-bold text-slate-950">{account.name}</p>
                   </div>
                   <span className={`rounded-md border px-2 py-0.5 text-[11px] font-bold ${account.active ? "border-emerald-200 bg-emerald-50 text-emerald-900" : "border-slate-200 bg-slate-50 text-slate-700"}`}>{account.active ? "Activa" : "Inactiva"}</span>
@@ -231,7 +231,7 @@ export default function CashAccountsPage() {
               <div className="px-5 py-14 text-center"><Landmark className="mx-auto size-10 text-slate-400" /><p className="mt-4 text-[14px] font-bold text-slate-950">No hay movimientos de tesoreria.</p></div>
             ) : (
               <div>
-                <div className="hidden grid-cols-[.55fr_.8fr_1.2fr_.6fr_.7fr_40px] gap-3 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-slate-700 lg:grid">
+                <div className="hidden grid-cols-[.55fr_.8fr_1.2fr_.6fr_.7fr_40px] gap-3 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[12px] font-semibold text-slate-700 lg:grid">
                   <span>Fecha</span><span>Cuenta</span><span>Descripcion</span><span>Tipo</span><span>Importe</span><span />
                 </div>
                 {movements.map((movement) => (
@@ -265,7 +265,7 @@ export default function CashAccountsPage() {
                 ? <>Vigente: <b className="text-slate-950">USD 1 = ARS {Number(latestRate.rate).toLocaleString("es-AR", { minimumFractionDigits: 2 })}</b> <span className="text-slate-500">({new Date(latestRate.date).toLocaleDateString("es-AR")})</span></>
                 : "Todavía no cargaste ninguna cotización."}
             </p>
-            <p className="mt-1 text-[11.5px] text-slate-500">Se autocompleta en facturas y pagos a proveedores en otra moneda.</p>
+            <p className="mt-1 text-[12px] text-slate-600">Se autocompleta en facturas y pagos a proveedores en otra moneda.</p>
             <div className="mt-4 grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
               <AdminField label="USD 1 = ARS" htmlFor="rate-input">
                 <AdminInput id="rate-input" type="number" min="0" step="0.01" placeholder="Ej: 1050" value={rateInput} onChange={(event) => setRateInput(event.target.value)} />

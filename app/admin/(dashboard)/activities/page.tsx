@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import { CalendarCheck, Check, Pencil, Plus, Save, Trash2, X } from "lucide-react";
@@ -211,7 +211,7 @@ export default function ActivitiesPage() {
                 <CalendarCheck className={`size-4 ${a.status === "done" ? "text-emerald-600" : a.status === "cancelled" ? "text-slate-400" : "text-amber-600"}`} />
                 <div className="min-w-0">
                   <p className="truncate text-[13.5px] font-bold text-slate-950">{a.subject}</p>
-                  <p className="mt-0.5 text-[11.5px] text-slate-500">
+                  <p className="mt-0.5 text-[12px] text-slate-600">
                     {TYPES.find((t) => t.value === a.type)?.label || a.type}
                     {a.account ? ` · ${a.account.name}` : a.opportunity ? ` · ${a.opportunity.title}` : ""}
                   </p>

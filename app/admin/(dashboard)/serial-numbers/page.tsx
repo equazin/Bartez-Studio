@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import { AlertTriangle, Hash, Plus, X } from "lucide-react";
@@ -148,7 +148,7 @@ export default function SerialNumbersPage() {
           </div>
         ) : (
           <div>
-            <div className="hidden grid-cols-[1.2fr_1.2fr_.7fr_.5fr_.7fr] gap-3 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-slate-700 lg:grid">
+            <div className="hidden grid-cols-[1.2fr_1.2fr_.7fr_.5fr_.7fr] gap-3 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[12px] font-semibold text-slate-700 lg:grid">
               <span>Serie</span><span>Producto</span><span>Cuenta</span><span>Estado</span><span>Garantía</span>
             </div>
             {items.map((s) => {

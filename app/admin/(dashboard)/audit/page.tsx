@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import { ScrollText } from "lucide-react";
@@ -73,7 +73,7 @@ export default function AdminAudit() {
           </div>
         ) : (
           <>
-            <div className="hidden grid-cols-[150px_100px_120px_minmax(0,1fr)_140px] gap-4 border-b border-slate-300 bg-slate-100 px-5 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-slate-700 md:grid">
+            <div className="hidden grid-cols-[150px_100px_120px_minmax(0,1fr)_140px] gap-4 border-b border-slate-300 bg-slate-100 px-5 py-3 text-[12px] font-semibold text-slate-700 md:grid">
               <span>Fecha</span><span>Acción</span><span>Entidad</span><span>Cambios</span><span>Usuario</span>
             </div>
             {entries.map((entry) => (
@@ -85,9 +85,9 @@ export default function AdminAudit() {
                   {entry.action}
                 </span>
                 <span className="text-[12.5px] font-semibold text-slate-900">
-                  {entityLabels[entry.entity] ?? entry.entity} <span className="font-mono text-[11px] text-slate-500">#{entry.entityId}</span>
+                  {entityLabels[entry.entity] ?? entry.entity} <span className="font-mono text-[12px] text-slate-600">#{entry.entityId}</span>
                 </span>
-                <span className="truncate font-mono text-[11.5px] text-slate-600">
+                <span className="truncate font-mono text-[12px] text-slate-600">
                   {entry.changes ? JSON.stringify(entry.changes) : "—"}
                 </span>
                 <span className="text-[12px] font-medium text-slate-700">{entry.adminUser}</span>

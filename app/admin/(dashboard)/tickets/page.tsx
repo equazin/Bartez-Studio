@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
@@ -170,7 +170,7 @@ export default function TicketsPage() {
           </div>
         ) : (
           <div>
-            <div className="hidden grid-cols-[.7fr_1.4fr_.6fr_.6fr_.6fr_.6fr_.5fr] gap-3 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-slate-700 lg:grid">
+            <div className="hidden grid-cols-[.7fr_1.4fr_.6fr_.6fr_.6fr_.6fr_.5fr] gap-3 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[12px] font-semibold text-slate-700 lg:grid">
               <span>Nº</span><span>Asunto</span><span>Cuenta</span><span>Estado</span><span>Prioridad</span><span>Asignado</span><span>Vence</span>
             </div>
             {tickets.map((t) => {
@@ -180,7 +180,7 @@ export default function TicketsPage() {
                   <Link href={`/admin/tickets/${t.id}`} className="truncate font-mono text-[12.5px] font-bold text-brand hover:underline">{t.number}</Link>
                   <div className="min-w-0">
                     <p className="truncate text-[13px] font-bold text-slate-950">{t.subject}</p>
-                    <p className="text-[11px] text-slate-500">{TYPES.find((x) => x.value === t.type)?.label} · {t._count.messages} mensajes</p>
+                    <p className="text-[12px] text-slate-600">{TYPES.find((x) => x.value === t.type)?.label} · {t._count.messages} mensajes</p>
                   </div>
                   <p className="truncate text-[12.5px] text-slate-700">{t.account?.name || "—"}</p>
                   <span className={`inline-flex w-fit items-center rounded-full border px-2.5 py-0.5 text-[11px] font-bold ${statusMeta(t.status).color}`}>{statusMeta(t.status).label}</span>

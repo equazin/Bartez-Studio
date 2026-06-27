@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
@@ -177,14 +177,14 @@ export default function AccountsPage() {
           </div>
         ) : (
           <div>
-            <div className="hidden grid-cols-[1.4fr_.7fr_.6fr_.5fr_.5fr] gap-3 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-slate-700 lg:grid">
+            <div className="hidden grid-cols-[1.4fr_.7fr_.6fr_.5fr_.5fr] gap-3 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[12px] font-semibold text-slate-700 lg:grid">
               <span>Cuenta</span><span>Industria / Ciudad</span><span>Contacto</span><span>Contactos · Opp.</span><span>Acciones</span>
             </div>
             {accounts.map((acc) => (
               <div key={acc.id} className="grid gap-2 border-b border-slate-200 px-5 py-4 last:border-0 sm:px-6 lg:grid-cols-[1.4fr_.7fr_.6fr_.5fr_.5fr] lg:items-center lg:gap-3">
                 <div className="min-w-0">
                   <Link href={`/admin/accounts/${acc.id}`} className="truncate text-[13.5px] font-bold text-slate-950 hover:text-brand hover:underline">{acc.name}</Link>
-                  {acc.taxId && <p className="mt-0.5 text-[11.5px] text-slate-500">CUIT {acc.taxId}</p>}
+                  {acc.taxId && <p className="mt-0.5 text-[12px] text-slate-600">CUIT {acc.taxId}</p>}
                 </div>
                 <p className="truncate text-[12.5px] text-slate-700">
                   {acc.industry || "—"}

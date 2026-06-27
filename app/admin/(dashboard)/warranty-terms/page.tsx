@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import { Plus, ShieldCheck, X } from "lucide-react";
@@ -101,7 +101,7 @@ export default function WarrantyTermsPage() {
             {items.map((t) => (
               <div key={t.id} className="border-b border-slate-200 px-5 py-4 last:border-0 sm:px-6">
                 <p className="text-[13.5px] font-bold text-slate-950">{t.product.name}</p>
-                <p className="text-[11.5px] text-slate-500">{t.product.sku ? `SKU ${t.product.sku} · ` : ""}{t.durationDays} días {!t.active && "(inactiva)"}</p>
+                <p className="text-[12px] text-slate-600">{t.product.sku ? `SKU ${t.product.sku} · ` : ""}{t.durationDays} días {!t.active && "(inactiva)"}</p>
                 {t.coverage && <p className="mt-2 text-[12.5px] text-slate-700">{t.coverage}</p>}
               </div>
             ))}

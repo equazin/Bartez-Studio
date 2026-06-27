@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Image from "next/image";
 import { useRef, useState } from "react";
@@ -64,7 +64,7 @@ export function ImageUpload({
           <AdminButton type="button" variant="secondary" size="sm" disabled={uploading} onClick={() => input.current?.click()}>
             {uploading ? <Loader2 className="animate-spin" /> : <Upload />} {uploading ? "Subiendo…" : label}
           </AdminButton>
-          <p className="text-[11.5px] font-medium text-slate-600">PNG, JPG, WebP o AVIF · máximo 5 MB</p>
+          <p className="text-[12px] font-medium text-slate-600">PNG, JPG, WebP o AVIF · máximo 5 MB</p>
         </div>
       </div>
       {error ? <AdminAlert>{error}</AdminAlert> : null}

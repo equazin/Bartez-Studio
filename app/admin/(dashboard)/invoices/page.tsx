@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
@@ -107,7 +107,7 @@ export default function InvoicesPage() {
           </div>
         ) : (
           <div>
-            <div className="hidden grid-cols-[.6fr_.5fr_1.2fr_.6fr_.7fr_.5fr_.4fr] gap-3 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-slate-700 lg:grid">
+            <div className="hidden grid-cols-[.6fr_.5fr_1.2fr_.6fr_.7fr_.5fr_.4fr] gap-3 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[12px] font-semibold text-slate-700 lg:grid">
               <span>Tipo / PV</span><span>Nº</span><span>Receptor</span><span>Estado</span><span>Total</span><span>Fecha</span><span></span>
             </div>
             {invoices.map((inv) => (

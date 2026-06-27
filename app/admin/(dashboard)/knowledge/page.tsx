@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
@@ -198,7 +198,7 @@ export default function KnowledgePage() {
               <div key={a.id} className="grid gap-2 border-b border-slate-200 px-5 py-4 last:border-0 sm:px-6 lg:grid-cols-[1.6fr_.6fr_.5fr_.4fr] lg:items-center lg:gap-3">
                 <button onClick={() => void loadOne(a.id)} className="truncate text-left text-[13.5px] font-bold text-brand hover:underline">{a.title}</button>
                 <p className="truncate text-[12.5px] text-slate-600">{a.category || "—"}</p>
-                <p className="text-[12px] text-slate-500">{a.views} vistas {a.published ? "" : "· Borrador"}</p>
+                <p className="text-[12px] text-slate-600">{a.views} vistas {a.published ? "" : "· Borrador"}</p>
                 <div className="flex gap-1">
                   <AdminButton variant="ghost" size="icon" onClick={() => setDeleteTarget(a)} aria-label="Eliminar"><Trash2 className="size-4 text-red-600" /></AdminButton>
                 </div>

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
@@ -107,7 +107,7 @@ export default function NewPurchaseOrderPage() {
         </div>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[880px] text-[13px]">
-            <thead className="bg-slate-100 text-[11px] font-bold uppercase tracking-[0.08em] text-slate-700"><tr><th className="px-3 py-2 text-left">Producto</th><th className="px-3 py-2 text-left">Descripcion</th><th className="px-3 py-2 text-right">Cant.</th><th className="px-3 py-2 text-right">Costo</th><th className="px-3 py-2 text-right">IVA</th><th className="px-3 py-2 text-right">Total</th><th className="w-12"></th></tr></thead>
+            <thead className="bg-slate-100 text-[12px] font-semibold text-slate-700"><tr><th className="px-3 py-2 text-left">Producto</th><th className="px-3 py-2 text-left">Descripcion</th><th className="px-3 py-2 text-right">Cant.</th><th className="px-3 py-2 text-right">Costo</th><th className="px-3 py-2 text-right">IVA</th><th className="px-3 py-2 text-right">Total</th><th className="w-12"></th></tr></thead>
             <tbody>{lines.map((line, idx) => (
               <tr key={idx} className="border-t border-slate-200">
                 <td className="px-3 py-2"><select value={line.productId || ""} onChange={(e) => pickProduct(idx, e.target.value)} className="h-9 w-44 rounded-md border border-slate-300 bg-white px-2 text-[12.5px]"><option value="">Manual</option>{products.map((p) => <option key={p.id} value={p.id}>{p.sku ? `${p.sku} - ` : ""}{p.name}</option>)}</select></td>

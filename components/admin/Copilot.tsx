@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { Bot, ChevronRight, Loader2, Send, Sparkles, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -182,7 +182,7 @@ export function Copilot() {
               <div>
                 <Sparkles className="mx-auto mb-3 size-9 text-brand/40" strokeWidth={1.5} />
                 <p className="text-[14px] font-bold text-slate-300">¿En qué te ayudo?</p>
-                <p className="mt-1 text-[12px] text-slate-500">Consultá datos del negocio en lenguaje natural.</p>
+                <p className="mt-1 text-[12px] text-slate-600">Consultá datos del negocio en lenguaje natural.</p>
               </div>
               <div className="flex w-full flex-col gap-1.5">
                 {QUICK_PROMPTS.map((p) => (
@@ -256,7 +256,7 @@ export function Copilot() {
               }}
               onKeyDown={handleKey}
               placeholder="Preguntame sobre leads, ventas, stock…"
-              className="flex-1 resize-none bg-transparent text-[13px] text-white placeholder:text-slate-500 focus:outline-none"
+              className="flex-1 resize-none bg-transparent text-[13px] text-white placeholder:text-slate-600 focus:outline-none"
             />
             {loading ? (
               <button onClick={stop} className="mb-0.5 flex size-7 flex-none items-center justify-center rounded-lg bg-red-500/15 text-red-400 hover:bg-red-500/25">

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import { Building2, DollarSign, Download, Mail, MessageSquare, Pencil, Phone, Plus, Save, Trash2, User, X } from "lucide-react";
@@ -254,7 +254,7 @@ export default function LeadsPage() {
           </div>
         ) : (
           <div>
-            <div className="hidden grid-cols-[1.2fr_.8fr_.6fr_.5fr_.4fr_.5fr] gap-3 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-slate-700 lg:grid">
+            <div className="hidden grid-cols-[1.2fr_.8fr_.6fr_.5fr_.4fr_.5fr] gap-3 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[12px] font-semibold text-slate-700 lg:grid">
               <span>Contacto</span><span>Empresa</span><span>Origen</span><span>Estado</span><span>Valor</span><span>Acciones</span>
             </div>
             {leads.map((lead) => (
@@ -276,7 +276,7 @@ export default function LeadsPage() {
                     const s = scoreLeadHeuristic({ ...lead, createdAt: new Date(lead.createdAt), updatedAt: new Date(lead.updatedAt) });
                     const cls = s.color === "red" ? "bg-red-50 text-red-700" : s.color === "amber" ? "bg-amber-50 text-amber-700" : "bg-slate-100 text-slate-500";
                     return (
-                      <span className={`inline-flex w-fit items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold ${cls}`}>
+                      <span className={`inline-flex w-fit items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-bold ${cls}`}>
                         <span>{s.score}</span>
                         <span>{s.label}</span>
                       </span>

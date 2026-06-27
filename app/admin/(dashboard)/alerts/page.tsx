@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
@@ -161,10 +161,10 @@ export default function AlertsPage() {
               <div>
                 {data.lowStock.map((item) => (
                   <div key={`${item.productId}-${item.warehouseName}`} className="grid gap-2 border-b border-slate-200 px-5 py-3.5 last:border-0 lg:grid-cols-[1.4fr_.9fr_.6fr_.6fr] lg:items-center">
-                    <span className="truncate text-[13px] font-bold text-slate-950">{item.productName}{item.sku && <span className="ml-2 font-mono text-[11px] text-slate-500">{item.sku}</span>}</span>
+                    <span className="truncate text-[13px] font-bold text-slate-950">{item.productName}{item.sku && <span className="ml-2 font-mono text-[12px] text-slate-600">{item.sku}</span>}</span>
                     <span className="text-[12.5px] text-slate-600">{item.warehouseName}</span>
                     <span className="text-[13px] font-bold text-amber-700">{item.quantity.toLocaleString("es-AR")} u.</span>
-                    <span className="text-right text-[12px] text-slate-500">repone en {item.reorderPoint.toLocaleString("es-AR")}</span>
+                    <span className="text-right text-[12px] text-slate-600">repone en {item.reorderPoint.toLocaleString("es-AR")}</span>
                   </div>
                 ))}
               </div>

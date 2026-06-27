@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import { AlertCircle, BarChart3, Clock, DollarSign, Percent, ShoppingCart, TrendingUp, Wallet } from "lucide-react";
@@ -109,7 +109,7 @@ export default function ReportsPage() {
       {/* Aging + AP + Cash */}
       <div className="mt-6 grid gap-5 lg:grid-cols-3">
         <AdminPanel className="p-5">
-          <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-slate-500">Cuentas por cobrar</p>
+          <p className="text-[12px] font-semibold text-slate-600">Cuentas por cobrar</p>
           <p className="mt-1 font-display text-[26px] font-bold leading-none text-slate-950">${overview.accountsReceivable.total.toLocaleString()}</p>
           <div className="mt-4 space-y-1.5 text-[12.5px]">
             {[
@@ -133,13 +133,13 @@ export default function ReportsPage() {
         </AdminPanel>
 
         <AdminPanel className="p-5">
-          <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-slate-500">Cuentas por pagar</p>
+          <p className="text-[12px] font-semibold text-slate-600">Cuentas por pagar</p>
           <p className="mt-1 font-display text-[26px] font-bold leading-none text-slate-950">${overview.accountsPayable.total.toLocaleString()}</p>
           <p className="mt-4 text-[12.5px] text-slate-600">Saldo total a proveedores. Pagos del período: ${overview.supplierPayments.total.toLocaleString()}.</p>
         </AdminPanel>
 
         <AdminPanel className="p-5">
-          <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-slate-500">Tesorería</p>
+          <p className="text-[12px] font-semibold text-slate-600">Tesorería</p>
           <div className="mt-2 space-y-1">
             {overview.cashBalances.length === 0 ? (
               <p className="text-[12.5px] text-slate-500">Sin cuentas activas.</p>
@@ -192,7 +192,7 @@ export default function ReportsPage() {
                 <div key={p.productId} className="flex items-center gap-3 border-b border-slate-200 px-5 py-3 last:border-0 sm:px-6">
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-[13px] font-bold text-slate-950">{p.name}</p>
-                    <p className="text-[11.5px] text-slate-600">{p.quantity.toLocaleString()} unidades</p>
+                    <p className="text-[12px] text-slate-600">{p.quantity.toLocaleString()} unidades</p>
                   </div>
                   <span className="font-bold text-slate-950">${p.total.toLocaleString()}</span>
                 </div>
@@ -213,7 +213,7 @@ export default function ReportsPage() {
                 <div key={acc.accountId} className="flex items-center gap-3 border-b border-slate-200 px-5 py-3 last:border-0 sm:px-6">
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-[13px] font-bold text-slate-950">{acc.name}</p>
-                    <p className="text-[11.5px] text-slate-600">{acc.invoiceCount} facturas</p>
+                    <p className="text-[12px] text-slate-600">{acc.invoiceCount} facturas</p>
                   </div>
                   <span className="font-bold text-slate-950">${acc.total.toLocaleString()}</span>
                 </div>
@@ -239,7 +239,7 @@ export default function ReportsPage() {
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full min-w-[720px] text-[13px]">
-                <thead className="bg-slate-100 text-[11px] font-bold uppercase tracking-[0.06em] text-slate-600">
+                <thead className="bg-slate-100 text-[12px] font-semibold text-slate-700">
                   <tr>
                     <th className="px-5 py-2.5 text-left">Producto</th>
                     <th className="px-3 py-2.5 text-right">Unid.</th>
@@ -252,7 +252,7 @@ export default function ReportsPage() {
                 <tbody>
                   {profit.rows.map((row) => (
                     <tr key={row.productId} className="border-t border-slate-200">
-                      <td className="px-5 py-2.5"><span className="font-bold text-slate-950">{row.name}</span>{row.sku && <span className="ml-2 font-mono text-[11px] text-slate-500">{row.sku}</span>}</td>
+                      <td className="px-5 py-2.5"><span className="font-bold text-slate-950">{row.name}</span>{row.sku && <span className="ml-2 font-mono text-[12px] text-slate-600">{row.sku}</span>}</td>
                       <td className="px-3 py-2.5 text-right text-slate-700">{row.quantity.toLocaleString("es-AR")}</td>
                       <td className="px-3 py-2.5 text-right text-slate-700">${row.revenue.toLocaleString()}</td>
                       <td className="px-3 py-2.5 text-right text-slate-500">{row.avgCost != null ? `$${row.avgCost.toLocaleString()}` : "—"}</td>
@@ -280,12 +280,12 @@ export default function ReportsPage() {
           </div>
           <div className="grid grid-cols-2 gap-5 p-5 sm:grid-cols-4">
             <div>
-              <p className="text-[10.5px] font-bold uppercase tracking-[0.1em] text-slate-500">Total</p>
+              <p className="text-[12px] font-semibold text-slate-600">Total</p>
               <p className="mt-1 font-display text-[24px] font-bold text-slate-950">{tickets.total}</p>
             </div>
             {tickets.byStatus.map((s) => (
               <div key={s.status}>
-                <p className="text-[10.5px] font-bold uppercase tracking-[0.1em] text-slate-500">{s.status}</p>
+                <p className="text-[12px] font-semibold text-slate-600">{s.status}</p>
                 <p className="mt-1 font-display text-[20px] font-bold text-slate-950">{s.count}</p>
               </div>
             ))}

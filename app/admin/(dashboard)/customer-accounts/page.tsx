@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
@@ -78,14 +78,14 @@ export default function CustomerAccountsPage() {
           </div>
         ) : (
           <div>
-            <div className="hidden grid-cols-[1.2fr_.7fr_1fr_.3fr] gap-3 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-slate-700 lg:grid">
+            <div className="hidden grid-cols-[1.2fr_.7fr_1fr_.3fr] gap-3 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[12px] font-semibold text-slate-700 lg:grid">
               <span>Cuenta</span><span>CUIT</span><span>Saldo</span><span></span>
             </div>
             {accounts.map((account) => (
               <div key={account.id} className="grid gap-2 border-b border-slate-200 px-5 py-4 last:border-0 sm:px-6 lg:grid-cols-[1.2fr_.7fr_1fr_.3fr] lg:items-center lg:gap-3">
                 <div className="min-w-0">
                   <Link href={`/admin/customer-accounts/${account.id}`} className="truncate text-[13.5px] font-bold text-brand hover:underline">{account.name}</Link>
-                  {account.email && <p className="truncate text-[11.5px] text-slate-500">{account.email}</p>}
+                  {account.email && <p className="truncate text-[12px] text-slate-600">{account.email}</p>}
                 </div>
                 <p className="text-[12.5px] text-slate-700">{account.taxId || "-"}</p>
                 <p className="text-[13px] font-bold text-slate-950">{formatBalances(account.balances)}</p>

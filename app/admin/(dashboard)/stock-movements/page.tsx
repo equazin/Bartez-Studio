@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import { ArrowDownLeft, ArrowRightLeft, ArrowUpRight, Plus, Save, Settings, X } from "lucide-react";
@@ -159,14 +159,14 @@ export default function StockMovementsPage() {
                   <Icon className={`size-4 ${meta.color}`} />
                   <div className="min-w-0">
                     <p className="truncate text-[13.5px] font-bold text-slate-950">{m.product.name}</p>
-                    <p className="text-[11.5px] text-slate-500">{m.reason || "—"}</p>
+                    <p className="text-[12px] text-slate-600">{m.reason || "—"}</p>
                   </div>
                   <span className={`text-[12px] font-bold ${meta.color}`}>{meta.label}</span>
                   <span className="text-[13px] font-bold text-slate-950">{Number(m.quantity).toLocaleString()}</span>
                   <span className="text-[12px] text-slate-700">
                     {m.type === "transfer" ? `${m.fromWarehouse?.code} → ${m.toWarehouse?.code}` : m.warehouse?.code || "—"}
                   </span>
-                  <span className="text-[11.5px] text-slate-600">{new Date(m.createdAt).toLocaleString("es-AR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}</span>
+                  <span className="text-[12px] text-slate-600">{new Date(m.createdAt).toLocaleString("es-AR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}</span>
                 </div>
               );
             })}

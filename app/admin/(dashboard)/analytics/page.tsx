@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import {
@@ -233,7 +233,7 @@ export default function AnalyticsPage() {
                   </span>
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-[13px] font-bold text-slate-950">{lead.name}</p>
-                    <p className="text-[11.5px] text-slate-600">{lead.company || lead.source} · {new Date(lead.createdAt).toLocaleDateString("es-AR", { day: "2-digit", month: "short" })}</p>
+                    <p className="text-[12px] text-slate-600">{lead.company || lead.source} · {new Date(lead.createdAt).toLocaleDateString("es-AR", { day: "2-digit", month: "short" })}</p>
                   </div>
                   <span
                     className="inline-flex items-center rounded-full border px-2 py-0.5 text-[10.5px] font-bold"
@@ -263,7 +263,7 @@ export default function AnalyticsPage() {
                     {entry.action === "create" ? "creó" : entry.action === "update" ? "editó" : "eliminó"}{" "}
                     {entry.entity} #{entry.entityId}
                   </p>
-                  <time className="flex-none text-[11.5px] text-slate-500">{new Date(entry.createdAt).toLocaleDateString("es-AR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}</time>
+                  <time className="flex-none text-[12px] text-slate-600">{new Date(entry.createdAt).toLocaleDateString("es-AR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}</time>
                 </div>
               ))}
             </div>

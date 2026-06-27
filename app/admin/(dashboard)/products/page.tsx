@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import { Package, Pencil, Plus, Save, Trash2, X } from "lucide-react";
@@ -197,7 +197,7 @@ export default function ProductsPage() {
           </div>
         ) : (
           <div>
-            <div className="hidden grid-cols-[.5fr_1.4fr_.7fr_.5fr_.4fr_.4fr] gap-3 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-slate-700 lg:grid">
+            <div className="hidden grid-cols-[.5fr_1.4fr_.7fr_.5fr_.4fr_.4fr] gap-3 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[12px] font-semibold text-slate-700 lg:grid">
               <span>SKU</span><span>Nombre</span><span>Marca</span><span>Tipo</span><span>IVA</span><span>Acciones</span>
             </div>
             {products.map((p) => (

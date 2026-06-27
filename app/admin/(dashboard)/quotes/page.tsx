@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
@@ -114,7 +114,7 @@ export default function QuotesPage() {
           </div>
         ) : (
           <div>
-            <div className="hidden grid-cols-[.7fr_1.4fr_.6fr_.5fr_.5fr_.5fr_.4fr] gap-3 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-slate-700 lg:grid">
+            <div className="hidden grid-cols-[.7fr_1.4fr_.6fr_.5fr_.5fr_.5fr_.4fr] gap-3 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[12px] font-semibold text-slate-700 lg:grid">
               <span>N°</span><span>Cuenta</span><span>Estado</span><span>Total</span><span>Fecha</span><span>Vence</span><span>Acciones</span>
             </div>
             {quotes.map((q) => (

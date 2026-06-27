@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import { Pencil, Plus, Save, Target, Trash2, X } from "lucide-react";
@@ -229,14 +229,14 @@ export default function OpportunitiesPage() {
           </div>
         ) : (
           <div>
-            <div className="hidden grid-cols-[1.4fr_.8fr_.6fr_.5fr_.5fr_.4fr] gap-3 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-slate-700 lg:grid">
+            <div className="hidden grid-cols-[1.4fr_.8fr_.6fr_.5fr_.5fr_.4fr] gap-3 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[12px] font-semibold text-slate-700 lg:grid">
               <span>Título</span><span>Cuenta</span><span>Etapa</span><span>Importe</span><span>Cierre</span><span>Acciones</span>
             </div>
             {opps.map((o) => (
               <div key={o.id} className="grid gap-2 border-b border-slate-200 px-5 py-4 last:border-0 sm:px-6 lg:grid-cols-[1.4fr_.8fr_.6fr_.5fr_.5fr_.4fr] lg:items-center lg:gap-3">
                 <div className="min-w-0">
                   <p className="truncate text-[13.5px] font-bold text-slate-950">{o.title}</p>
-                  <p className="mt-0.5 text-[11px] text-slate-500">Prob. {o.probability}%</p>
+                  <p className="mt-0.5 text-[12px] text-slate-600">Prob. {o.probability}%</p>
                 </div>
                 <p className="truncate text-[13px] text-slate-700">{o.account?.name || "—"}</p>
                 <span className={`inline-flex w-fit items-center rounded-full border px-2.5 py-0.5 text-[11px] font-bold ${stageMeta(o.stage).color}`}>{stageMeta(o.stage).label}</span>

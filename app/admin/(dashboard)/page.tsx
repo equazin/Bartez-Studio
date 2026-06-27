@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { BarChart3, BriefcaseBusiness, FileClock, FileText, MessageSquare, Plus, TrendingUp, UserCheck, UsersRound } from "lucide-react";
 import { AdminButton, AdminPanel, StatusBadge } from "../../../components/admin/AdminUI";
 import { getDb } from "../../../lib/db";
@@ -93,7 +93,7 @@ export default async function AdminDashboard() {
         </div>
         {recent.length > 0 ? (
           <div>
-            <div className="hidden grid-cols-[1.6fr_.6fr_.55fr_.7fr] gap-4 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-slate-700 md:grid">
+            <div className="hidden grid-cols-[1.6fr_.6fr_.55fr_.7fr] gap-4 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[12px] font-semibold text-slate-700 md:grid">
               <span>Contenido</span><span>Tipo</span><span>Estado</span><span>Actualizado</span>
             </div>
             {recent.map((item) => (

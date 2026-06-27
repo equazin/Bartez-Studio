@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
@@ -85,7 +85,7 @@ export default function DeliveryNotesPage() {
           </div>
         ) : (
           <div>
-            <div className="hidden grid-cols-[.8fr_1.2fr_.9fr_.7fr_.6fr_.3fr] gap-3 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-slate-700 lg:grid">
+            <div className="hidden grid-cols-[.8fr_1.2fr_.9fr_.7fr_.6fr_.3fr] gap-3 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[12px] font-semibold text-slate-700 lg:grid">
               <span>Numero</span><span>Receptor</span><span>Cuenta/Pedido</span><span>Estado</span><span>Fecha</span><span></span>
             </div>
             {items.map((item) => {

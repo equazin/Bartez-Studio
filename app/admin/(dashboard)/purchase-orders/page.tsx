@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
@@ -118,7 +118,7 @@ export default function PurchaseOrdersPage() {
           <div className="px-5 py-14 text-center"><FileSpreadsheet className="mx-auto size-10 text-slate-400" /><p className="mt-4 text-[14px] font-bold text-slate-950">No hay ordenes de compra.</p></div>
         ) : (
           <div>
-            <div className="hidden grid-cols-[.8fr_1.2fr_.7fr_.7fr_.5fr_.3fr] gap-3 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-slate-700 lg:grid">
+            <div className="hidden grid-cols-[.8fr_1.2fr_.7fr_.7fr_.5fr_.3fr] gap-3 border-b border-slate-300 bg-slate-100 px-6 py-3 text-[12px] font-semibold text-slate-700 lg:grid">
               <span>Numero</span><span>Proveedor</span><span>Estado</span><span>Total</span><span>Fecha</span><span></span>
             </div>
             {items.map((item) => {
@@ -129,8 +129,8 @@ export default function PurchaseOrdersPage() {
                   <p className="truncate text-[13px] font-bold text-slate-950">{item.supplier.name}</p>
                   <span className="flex flex-wrap items-center gap-1.5">
                     <span className={`inline-flex w-fit rounded-full border px-2.5 py-0.5 text-[11px] font-bold ${status.color}`}>{status.label}</span>
-                    {item.approvalStatus === "pending" && <span className="inline-flex w-fit items-center gap-1 rounded-full border border-amber-300 bg-amber-50 px-2 py-0.5 text-[10px] font-bold text-amber-800"><ShieldAlert className="size-3" />Aprobar</span>}
-                    {item.approvalStatus === "rejected" && <span className="inline-flex w-fit rounded-full border border-red-200 bg-red-50 px-2 py-0.5 text-[10px] font-bold text-red-700">Rechazada</span>}
+                    {item.approvalStatus === "pending" && <span className="inline-flex w-fit items-center gap-1 rounded-full border border-amber-300 bg-amber-50 px-2 py-0.5 text-[11px] font-bold text-amber-800"><ShieldAlert className="size-3" />Aprobar</span>}
+                    {item.approvalStatus === "rejected" && <span className="inline-flex w-fit rounded-full border border-red-200 bg-red-50 px-2 py-0.5 text-[11px] font-bold text-red-700">Rechazada</span>}
                   </span>
                   <p className="text-[13px] font-bold text-slate-950">{item.currency} {Number(item.total).toLocaleString("es-AR")}</p>
                   <p className="text-[12px] text-slate-600">{new Date(item.issueDate).toLocaleDateString("es-AR")}</p>

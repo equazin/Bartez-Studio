@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import {
@@ -371,11 +371,11 @@ export default function AdminConversations() {
                           <span className="font-bold text-[14px] text-slate-950 truncate max-w-[150px]">
                             {c.profileName || c.waId}
                           </span>
-                          <span className="text-[11px] text-slate-500 font-medium whitespace-nowrap">
+                          <span className="text-[12px] text-slate-600 font-medium whitespace-nowrap">
                             {formatDate(c.updatedAt)}
                           </span>
                         </div>
-                        <div className="text-[12px] text-slate-500 truncate">
+                        <div className="text-[12px] text-slate-600 truncate">
                           {c.profileName ? c.waId : ""}
                         </div>
 
@@ -450,7 +450,7 @@ export default function AdminConversations() {
                   <div className="flex flex-wrap items-center gap-3">
                     {/* Status Select */}
                     <div className="flex items-center gap-1.5">
-                      <label className="text-[11.5px] font-bold text-slate-600 uppercase tracking-wider">
+                      <label className="text-[12px] font-bold text-slate-600 uppercase tracking-wider">
                         Estado:
                       </label>
                       <select
@@ -468,7 +468,7 @@ export default function AdminConversations() {
 
                     {/* Category Select */}
                     <div className="flex items-center gap-1.5">
-                      <label className="text-[11.5px] font-bold text-slate-600 uppercase tracking-wider">
+                      <label className="text-[12px] font-bold text-slate-600 uppercase tracking-wider">
                         Categoría:
                       </label>
                       <select
@@ -514,7 +514,7 @@ export default function AdminConversations() {
 
                             {/* Interactive details */}
                             {m.type === "interactive_reply" && (
-                              <span className="mt-1 block text-[10px] uppercase font-bold tracking-wider opacity-60">
+                              <span className="mt-1 block text-[11px] uppercase font-bold tracking-wider opacity-60">
                                 🔘 Botón pulsado
                               </span>
                             )}
@@ -529,7 +529,7 @@ export default function AdminConversations() {
                           </div>
 
                           <div className="flex items-center gap-1.5 px-1">
-                            <span className="text-[10px] text-slate-500">
+                            <span className="text-[12px] text-slate-600">
                               {formatDate(m.createdAt)}
                             </span>
                             {!inbound && m.category && (

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
@@ -168,7 +168,7 @@ export default function AdminClients() {
             {items.map((item) => (
               <div key={item.id} className="grid gap-4 border-b border-slate-200 px-5 py-4 last:border-0 sm:grid-cols-[84px_minmax(0,1fr)_110px_110px] sm:items-center">
                 <div className="grid h-14 w-20 place-items-center overflow-hidden rounded-lg border border-slate-300 bg-white p-2"><Image src={item.logoUrl} alt="" width={72} height={48} className="max-h-full max-w-full object-contain grayscale" /></div>
-                <div><p className="text-[13.5px] font-bold text-slate-950">{item.name}</p><p className="mt-1 text-[11.5px] font-medium text-slate-600">Orden {item.displayOrder}</p></div>
+                <div><p className="text-[13.5px] font-bold text-slate-950">{item.name}</p><p className="mt-1 text-[12px] font-medium text-slate-600">Orden {item.displayOrder}</p></div>
                 <button className="justify-self-start" onClick={() => void toggle(item)}><StatusBadge active={item.active} activeLabel="Activo" inactiveLabel="Inactivo" /></button>
                 <div className="flex justify-end gap-1"><AdminButton variant="ghost" size="icon" onClick={() => editItem(item)} aria-label="Editar"><Pencil /></AdminButton><AdminButton variant="ghost" size="icon" onClick={() => setDeleteTarget(item)} aria-label="Eliminar"><Trash2 /></AdminButton></div>
               </div>

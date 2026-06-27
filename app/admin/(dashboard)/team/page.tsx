@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import { KeyRound, Save, ShieldCheck, UserPlus, UsersRound } from "lucide-react";
@@ -172,11 +172,11 @@ export default function TeamPage() {
                   <p className="text-[12.5px] text-slate-600">{member.email}</p>
                 </div>
                 <div className="sm:w-72">
-                  <label className="text-[11px] font-bold uppercase tracking-[0.06em] text-slate-500" htmlFor={`role-${member.userId}`}>Rol</label>
+                  <label className="text-[12px] font-semibold text-slate-600" htmlFor={`role-${member.userId}`}>Rol</label>
                   <select id={`role-${member.userId}`} value={member.role} onChange={(e) => patchMember(member.userId, { role: e.target.value })} className="mt-1 h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-[13.5px]">
                     {ROLE_OPTIONS.map((opt) => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
                   </select>
-                  <p className="mt-1 text-[11.5px] text-slate-500">{ROLE_HINT[member.role]}</p>
+                  <p className="mt-1 text-[12px] text-slate-600">{ROLE_HINT[member.role]}</p>
                 </div>
               </div>
 
@@ -197,7 +197,7 @@ export default function TeamPage() {
 
               <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                 <div className="sm:w-72">
-                  <label className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.06em] text-slate-500" htmlFor={`pw-${member.userId}`}><KeyRound className="size-3.5" />Resetear contraseña</label>
+                  <label className="flex items-center gap-1.5 text-[12px] font-semibold text-slate-600" htmlFor={`pw-${member.userId}`}><KeyRound className="size-3.5" />Resetear contraseña</label>
                   <AdminInput id={`pw-${member.userId}`} type="password" autoComplete="new-password" placeholder="Dejar vacío para no cambiar" value={pwById[member.userId] ?? ""} onChange={(e) => setPwById((prev) => ({ ...prev, [member.userId]: e.target.value }))} />
                 </div>
                 <AdminButton size="sm" onClick={() => void saveMember(member)} disabled={savingId === member.userId}><Save />{savingId === member.userId ? "Guardando..." : "Guardar"}</AdminButton>
