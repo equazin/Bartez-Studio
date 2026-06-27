@@ -63,7 +63,7 @@ export function AdminField({ label, htmlFor, hint, error, children }: {
 }
 
 export function AdminPanel({ className, children }: { className?: string; children: React.ReactNode }) {
-  return <section className={cn("rounded-xl border border-slate-300 bg-white", className)}>{children}</section>;
+  return <section className={cn("rounded-xl border border-slate-200 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04)]", className)}>{children}</section>;
 }
 
 export function StatusBadge({ active, activeLabel = "Publicado", inactiveLabel = "Borrador" }: { active: boolean; activeLabel?: string; inactiveLabel?: string }) {

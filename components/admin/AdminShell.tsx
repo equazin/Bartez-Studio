@@ -246,9 +246,9 @@ export function AdminShell({ username, children }: { username: string; children:
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-950">
+    <div className="min-h-screen bg-[#f5f5f7] text-slate-950">
       {/* Top bar */}
-      <header className="fixed inset-x-0 top-0 z-30 flex h-12 items-center border-b border-white/[0.07] bg-[#070a16]">
+      <header className="fixed inset-x-0 top-0 z-30 flex h-12 items-center border-b border-white/[0.07] bg-[#070a16]/95 backdrop-blur-md">
         <div className="flex h-full w-full items-center gap-4 px-4">
           {/* Logo */}
           <Brand />
