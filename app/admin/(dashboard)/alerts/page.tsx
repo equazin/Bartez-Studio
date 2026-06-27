@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { Boxes, CheckCircle2, Clock, ShieldAlert } from "lucide-react";
-import { AdminAlert, AdminPanel, AdminSpinner } from "../../../../components/admin/AdminUI";
+import { Bell, Boxes, CheckCircle2, Clock, Save, Send, ShieldAlert } from "lucide-react";
+import { AdminAlert, AdminButton, AdminField, AdminInput, AdminPanel, AdminSpinner } from "../../../../components/admin/AdminUI";
 
 interface OverdueInvoice { id: string; number: string; receiverName: string; currency: string; total: number; pending: number; paymentDueDate: string | null; daysOverdue: number; }
 interface LowStockItem { productId: string; productName: string; sku: string | null; warehouseName: string; quantity: number; reorderPoint: number; }
@@ -23,15 +23,30 @@ export default function AlertsPage() {
   const [data, setData] = useState<AlertsResult | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [okMessage, setOkMessage] = useState<string | null>(null);
+
+  // Config de notificaciones
+  const [waTo, setWaTo] = useState("");
+  const [emailTo, setEmailTo] = useState("");
+  const [savingCfg, setSavingCfg] = useState(false);
+  const [sending, setSending] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/admin/alerts");
-      const json = await res.json();
-      if (!res.ok || !json.ok) throw new Error(json.error || "No pudimos cargar las alertas");
+      const [alertsRes, cfgRes] = await Promise.all([
+        fetch("/api/admin/alerts"),
+        fetch("/api/admin/settings"),
+      ]);
+      const json = await alertsRes.json();
+      const cfgJson = await cfgRes.json();
+      if (!alertsRes.ok || !json.ok) throw new Error(json.error || "No pudimos cargar las alertas");
       setData(json.data);
+      if (cfgRes.ok && cfgJson.ok) {
+        setWaTo(cfgJson.data.alertsWhatsappTo || "");
+        setEmailTo(cfgJson.data.alertsEmailTo || "");
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error desconocido");
     } finally {
@@ -40,6 +55,44 @@ export default function AlertsPage() {
   }, []);
 
   useEffect(() => { void load(); }, [load]);
+
+  async function saveConfig() {
+    setSavingCfg(true);
+    setError(null);
+    setOkMessage(null);
+    try {
+      const res = await fetch("/api/admin/settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ alertsWhatsappTo: waTo.trim(), alertsEmailTo: emailTo.trim() }),
+      });
+      const json = await res.json();
+      if (!res.ok || !json.ok) throw new Error(json.error || "No pudimos guardar la configuración");
+      setOkMessage("Configuración de notificaciones guardada.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Error desconocido");
+    } finally {
+      setSavingCfg(false);
+    }
+  }
+
+  async function sendNow() {
+    setSending(true);
+    setError(null);
+    setOkMessage(null);
+    try {
+      const res = await fetch("/api/admin/alerts", { method: "POST" });
+      const json = await res.json();
+      if (!res.ok || !json.ok) throw new Error(json.error || "No pudimos enviar");
+      const r = json.data;
+      if (r.total === 0) setOkMessage("No hay alertas para enviar en este momento.");
+      else setOkMessage(`Enviado (${r.total} alertas) — WhatsApp: ${r.whatsapp}, Email: ${r.email}.`);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Error desconocido");
+    } finally {
+      setSending(false);
+    }
+  }
 
   if (loading) return <div className="flex items-center justify-center py-32"><AdminSpinner /></div>;
 
@@ -51,6 +104,20 @@ export default function AlertsPage() {
       </div>
 
       {error && <div className="mt-5"><AdminAlert tone="error">{error}</AdminAlert></div>}
+      {okMessage && <div className="mt-5"><AdminAlert tone="success">{okMessage}</AdminAlert></div>}
+
+      <AdminPanel className="mt-6 p-5">
+        <div className="flex items-center gap-2"><Bell className="size-[18px] text-brand" /><h2 className="font-display text-[16px] font-bold text-slate-950">Notificaciones automáticas</h2></div>
+        <p className="mt-1.5 text-[12.5px] text-slate-600">Recibí un resumen diario de estas alertas. Dejá un campo vacío para no usar ese canal. El envío automático corre cada mañana.</p>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          <AdminField label="WhatsApp (con código país, ej: 5493416684350)" htmlFor="wa-to"><AdminInput id="wa-to" value={waTo} onChange={(e) => setWaTo(e.target.value)} placeholder="5493416684350" /></AdminField>
+          <AdminField label="Email" htmlFor="email-to"><AdminInput id="email-to" type="email" value={emailTo} onChange={(e) => setEmailTo(e.target.value)} placeholder="vos@empresa.com" /></AdminField>
+        </div>
+        <div className="mt-4 flex flex-wrap justify-end gap-2">
+          <AdminButton variant="secondary" size="sm" onClick={() => void sendNow()} disabled={sending}><Send />{sending ? "Enviando..." : "Probar ahora"}</AdminButton>
+          <AdminButton size="sm" onClick={() => void saveConfig()} disabled={savingCfg}><Save />{savingCfg ? "Guardando..." : "Guardar"}</AdminButton>
+        </div>
+      </AdminPanel>
 
       {data && data.counts.total === 0 && (
         <AdminPanel className="mt-6 p-10 text-center">

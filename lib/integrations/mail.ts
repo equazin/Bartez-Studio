@@ -100,6 +100,25 @@ function parseFrom(from: string): [string, string] {
   return ["Bartez", from];
 }
 
+/** ¿Hay un provider de email configurado (resend|brevo)? */
+export function isMailConfigured(): boolean {
+  const p = process.env.MAIL_PROVIDER;
+  return Boolean(
+    (p === "resend" && process.env.RESEND_API_KEY) ||
+      (p === "brevo" && process.env.BREVO_API_KEY),
+  );
+}
+
+/** Envío genérico de un email (notificaciones internas). Lanza si falla. */
+export async function sendEmail(to: string, subject: string, html: string): Promise<void> {
+  if (!isMailConfigured()) throw new Error("MAIL_PROVIDER no configurado");
+  if (process.env.MAIL_PROVIDER === "brevo") {
+    await sendBrevo(to, subject, html);
+  } else {
+    await sendResend(to, subject, html);
+  }
+}
+
 export const mailSink: LeadSink = {
   name: "Email (notificación + autorespuesta)",
   isConfigured() {

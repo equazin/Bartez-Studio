@@ -10,17 +10,26 @@ import { getDb } from "../../db.ts";
 
 export interface OrgSettings {
   purchaseApprovalThreshold: number;
+  alertsWhatsappTo: string;
+  alertsEmailTo: string;
 }
 
 export const DEFAULT_SETTINGS: OrgSettings = {
   purchaseApprovalThreshold: 0,
+  alertsWhatsappTo: "",
+  alertsEmailTo: "",
 };
+
+const optionalTrimmed = z.string().trim().max(120).optional();
 
 export const orgSettingsUpdateSchema = z.object({
   purchaseApprovalThreshold: z
     .union([z.number(), z.string()])
     .transform((value) => (typeof value === "string" ? Number(value) : value))
-    .refine((value) => !Number.isNaN(value) && value >= 0, { message: "debe ser >= 0" }),
+    .refine((value) => !Number.isNaN(value) && value >= 0, { message: "debe ser >= 0" })
+    .optional(),
+  alertsWhatsappTo: optionalTrimmed,
+  alertsEmailTo: optionalTrimmed,
 });
 export type OrgSettingsUpdate = z.infer<typeof orgSettingsUpdateSchema>;
 
@@ -29,6 +38,8 @@ function normalize(raw: unknown): OrgSettings {
   const threshold = Number(data.purchaseApprovalThreshold);
   return {
     purchaseApprovalThreshold: Number.isFinite(threshold) && threshold >= 0 ? threshold : 0,
+    alertsWhatsappTo: typeof data.alertsWhatsappTo === "string" ? data.alertsWhatsappTo : "",
+    alertsEmailTo: typeof data.alertsEmailTo === "string" ? data.alertsEmailTo : "",
   };
 }
 
@@ -44,7 +55,12 @@ export async function getOrgSettings(organizationId: string): Promise<OrgSetting
 export async function updateOrgSettings(organizationId: string, patch: OrgSettingsUpdate): Promise<OrgSettings> {
   const db = getDb();
   const current = await getOrgSettings(organizationId);
-  const next: OrgSettings = { ...current, ...patch };
+  // Solo se aplican las claves realmente provistas (no undefined), para que un
+  // guardado parcial no pise otros campos de la configuración.
+  const next: OrgSettings = { ...current };
+  if (patch.purchaseApprovalThreshold !== undefined) next.purchaseApprovalThreshold = patch.purchaseApprovalThreshold;
+  if (patch.alertsWhatsappTo !== undefined) next.alertsWhatsappTo = patch.alertsWhatsappTo;
+  if (patch.alertsEmailTo !== undefined) next.alertsEmailTo = patch.alertsEmailTo;
   await db.organization.update({
     where: { id: organizationId },
     data: { settings: next as unknown as object },
