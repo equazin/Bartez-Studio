@@ -1,0 +1,32 @@
+version: 2
+updates:
+  # Dependencias npm — actualizaciones semanales agrupadas.
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    open-pull-requests-limit: 5
+    groups:
+      # Parches y minors juntos para no inundar de PRs.
+      minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+    commit-message:
+      prefix: "chore(deps)"
+    labels:
+      - "dependencies"
+
+  # Actualizaciones de las GitHub Actions usadas en los workflows.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    commit-message:
+      prefix: "chore(ci)"
+    labels:
+      - "dependencies"
+      - "ci"

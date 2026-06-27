@@ -4,6 +4,9 @@ on:
   push:
     branches: [main, "claude/**"]
   pull_request:
+  schedule:
+    # Auditoría semanal de dependencias (lunes 06:00 UTC) aunque no haya commits.
+    - cron: "0 6 * * 1"
 
 jobs:
   verify:
@@ -19,3 +22,15 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
+
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # Falla solo ante vulnerabilidades high/critical en deps de producción.
+      - run: npm run audit:ci

@@ -29,3 +29,5 @@ await import("./accounting-schema.test.ts");
 await import("./json-ld.test.ts");
 await import("./team-schema.test.ts");
 await import("./alerts-notify.test.ts");
+await import("./accounting-balance.test.ts");
+await import("./settings-merge.test.ts");

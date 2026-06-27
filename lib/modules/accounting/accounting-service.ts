@@ -10,6 +10,17 @@ function round2(value: number) {
 }
 
 /**
+ * Saldo de una cuenta según su naturaleza contable (partida doble).
+ * Activo/Egreso → saldo deudor (debe - haber).
+ * Pasivo/PN/Ingreso → saldo acreedor (haber - debe).
+ * Función pura (testeable sin DB).
+ */
+export function accountBalance(type: string, debit: number, credit: number): number {
+  const isDebitNature = type === "asset" || type === "expense";
+  return round2(isDebitNature ? debit - credit : credit - debit);
+}
+
+/**
  * Plan de cuentas básico argentino. Los grupos (sin punto final de detalle)
  * son títulos; las cuentas imputables son las hojas. El seed sólo corre si la
  * organización todavía no tiene cuentas.
@@ -278,9 +289,7 @@ export async function getLedger(options: { organizationId: string; accountId: st
   const movements = lines.map((line) => {
     const debit = Number(line.debit);
     const credit = Number(line.credit);
-    // Activo/Egreso: saldo deudor (debe - haber). Pasivo/PN/Ingreso: saldo acreedor.
-    const isDebitNature = account.type === "asset" || account.type === "expense";
-    balance += isDebitNature ? debit - credit : credit - debit;
+    balance += accountBalance(account.type, debit, credit);
     return {
       entryNumber: line.entry.number,
       date: line.entry.date,
@@ -316,8 +325,6 @@ export async function getTrialBalance(options: { organizationId: string; from?: 
 
   const rows = accounts.map((account) => {
     const totals = byAccount.get(account.id) ?? { debit: 0, credit: 0 };
-    const isDebitNature = account.type === "asset" || account.type === "expense";
-    const balance = isDebitNature ? totals.debit - totals.credit : totals.credit - totals.debit;
     return {
       id: account.id,
       code: account.code,
@@ -325,7 +332,7 @@ export async function getTrialBalance(options: { organizationId: string; from?: 
       type: account.type,
       debit: round2(totals.debit),
       credit: round2(totals.credit),
-      balance: round2(balance),
+      balance: accountBalance(account.type, totals.debit, totals.credit),
     };
   });
 

@@ -52,15 +52,23 @@ export async function getOrgSettings(organizationId: string): Promise<OrgSetting
   return normalize(org?.settings);
 }
 
-export async function updateOrgSettings(organizationId: string, patch: OrgSettingsUpdate): Promise<OrgSettings> {
-  const db = getDb();
-  const current = await getOrgSettings(organizationId);
-  // Solo se aplican las claves realmente provistas (no undefined), para que un
-  // guardado parcial no pise otros campos de la configuración.
+/**
+ * Aplica un patch parcial sobre la config actual. Solo las claves realmente
+ * provistas (no undefined) se modifican, para que un guardado parcial no pise
+ * otros campos. Función pura (testeable sin DB).
+ */
+export function mergeSettings(current: OrgSettings, patch: OrgSettingsUpdate): OrgSettings {
   const next: OrgSettings = { ...current };
   if (patch.purchaseApprovalThreshold !== undefined) next.purchaseApprovalThreshold = patch.purchaseApprovalThreshold;
   if (patch.alertsWhatsappTo !== undefined) next.alertsWhatsappTo = patch.alertsWhatsappTo;
   if (patch.alertsEmailTo !== undefined) next.alertsEmailTo = patch.alertsEmailTo;
+  return next;
+}
+
+export async function updateOrgSettings(organizationId: string, patch: OrgSettingsUpdate): Promise<OrgSettings> {
+  const db = getDb();
+  const current = await getOrgSettings(organizationId);
+  const next = mergeSettings(current, patch);
   await db.organization.update({
     where: { id: organizationId },
     data: { settings: next as unknown as object },

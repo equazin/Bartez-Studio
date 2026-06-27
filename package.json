@@ -10,6 +10,7 @@
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
     "test": "node --no-warnings --experimental-strip-types tests/run.mjs",
+    "audit:ci": "npm audit --omit=dev --audit-level=high",
     "db:seed-tenant": "tsx prisma/seed-tenant.ts",
     "db:migrate": "prisma migrate deploy",
     "db:generate": "prisma generate"
