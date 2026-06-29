@@ -101,7 +101,7 @@ async function sendResend(to: string, subject: string, html: string, replyTo?: s
 
 async function sendBrevo(to: string, subject: string, html: string) {
   const apiKey = await getMailCredential("brevo", "api_key", "BREVO_API_KEY");
-  const fromRaw = (await getMailCredential("resend", "from", "MAIL_FROM")) || process.env.MAIL_FROM || "";
+  const fromRaw = (await getMailCredential("brevo", "from", "MAIL_FROM")) || process.env.MAIL_FROM || "";
   const [name, addr] = parseFrom(fromRaw);
   const res = await fetch("https://api.brevo.com/v3/smtp/email", {
     method: "POST",
@@ -117,18 +117,24 @@ function parseFrom(from: string): [string, string] {
   return ["Bartez", from];
 }
 
-/** ¿Hay un provider de email configurado (resend|brevo)? */
-export function isMailConfigured(): boolean {
+/** ¿Hay un provider de email configurado (resend|brevo)? Chequea BD + env. */
+export async function isMailConfigured(): Promise<boolean> {
   const p = process.env.MAIL_PROVIDER;
-  return Boolean(
-    (p === "resend" && process.env.RESEND_API_KEY) ||
-      (p === "brevo" && process.env.BREVO_API_KEY),
-  );
+  if (!p) return false;
+  if (p === "resend") {
+    const key = await getMailCredential("resend", "api_key", "RESEND_API_KEY");
+    return Boolean(key);
+  }
+  if (p === "brevo") {
+    const key = await getMailCredential("brevo", "api_key", "BREVO_API_KEY");
+    return Boolean(key);
+  }
+  return false;
 }
 
 /** Envío genérico de un email (notificaciones internas). Lanza si falla. */
 export async function sendEmail(to: string, subject: string, html: string): Promise<void> {
-  if (!isMailConfigured()) throw new Error("MAIL_PROVIDER no configurado");
+  if (!(await isMailConfigured())) throw new Error("MAIL_PROVIDER no configurado");
   if (process.env.MAIL_PROVIDER === "brevo") {
     await sendBrevo(to, subject, html);
   } else {
@@ -138,15 +144,11 @@ export async function sendEmail(to: string, subject: string, html: string): Prom
 
 export const mailSink: LeadSink = {
   name: "Email (notificación + autorespuesta)",
-  isConfigured() {
-    const p = process.env.MAIL_PROVIDER;
-    return Boolean(
-      (p === "resend" && process.env.RESEND_API_KEY) ||
-        (p === "brevo" && process.env.BREVO_API_KEY)
-    );
+  async isConfigured() {
+    return isMailConfigured();
   },
   async handle(lead: Lead): Promise<IntegrationResult> {
-    if (!this.isConfigured()) {
+    if (!(await this.isConfigured())) {
       return { name: this.name, ok: false, skipped: true, detail: "MAIL_PROVIDER no configurado" };
     }
     const to = process.env.MAIL_TO || contact.email;

@@ -13,7 +13,7 @@ export interface LeadSink {
   /** true cuando el destino conserva el lead para recuperarlo luego */
   durable?: boolean;
   /** true si está configurada (env vars presentes) */
-  isConfigured(): boolean;
+  isConfigured(): boolean | Promise<boolean>;
   /** Procesa el lead. No debe lanzar: devuelve un IntegrationResult. */
   handle(lead: Lead): Promise<IntegrationResult>;
 }

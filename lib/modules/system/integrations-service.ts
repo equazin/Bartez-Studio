@@ -41,6 +41,19 @@ function mask(value: string, multiline?: boolean): string {
 }
 
 export async function getIntegrationsStatus(organizationId: string): Promise<IntegrationStatus[]> {
+  // Single query: all BD credentials for this org (avoids N+1 per field)
+  let bdKeys: Set<string>;
+  try {
+    const { getDb } = await import("../../db.ts");
+    const rows = await getDb().orgCredential.findMany({
+      where: { organizationId },
+      select: { provider: true, key: true },
+    });
+    bdKeys = new Set(rows.map((r) => `${r.provider}::${r.key}`));
+  } catch {
+    bdKeys = new Set();
+  }
+
   const out: IntegrationStatus[] = [];
 
   for (const integ of INTEGRATIONS) {
@@ -51,19 +64,7 @@ export async function getIntegrationsStatus(organizationId: string): Promise<Int
       const value = await getCredential(organizationId, integ.id, f.key, f.env);
       let source: IntegrationFieldStatus["source"] = null;
       if (value) {
-        // Si la BD no tiene la key pero hay env, source = "env". Si BD tiene, "bd".
-        // Heurística: si setteás el env y nunca tocaste la BD, source = env.
-        // Para diferenciar consultamos directamente la BD.
-        try {
-          const { getDb } = await import("../../db.ts");
-          const row = await getDb().orgCredential.findUnique({
-            where: { organizationId_provider_key: { organizationId, provider: integ.id, key: f.key } },
-            select: { id: true },
-          });
-          source = row ? "bd" : "env";
-        } catch {
-          source = "env";
-        }
+        source = bdKeys.has(`${integ.id}::${f.key}`) ? "bd" : "env";
       }
 
       const hasValue = Boolean(value);

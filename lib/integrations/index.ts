@@ -39,7 +39,8 @@ export async function processLead(lead: Lead): Promise<{
     })
   );
 
-  const anyConfigured = sinks.some((s) => s.isConfigured());
+  const configuredFlags = await Promise.all(sinks.map((s) => s.isConfigured()));
+  const anyConfigured = configuredFlags.some(Boolean);
   const persisted = sinks.some((sink, index) => Boolean(sink.durable && results[index]?.ok));
   return { results, anyConfigured, persisted };
 }

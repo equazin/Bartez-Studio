@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
 export async function GET(request: Request) {
-  const auth = await authorizeModule(request, "sistema:credentials:manage");
+  const auth = await authorizeModule(request, "sistema:sequences:manage");
   if (!auth.ok) return auth.response;
   try {
     const data = await getDb().sequence.findMany({
@@ -29,7 +29,7 @@ const updateSchema = z.object({
 });
 
 export async function PUT(request: Request) {
-  const auth = await authorizeModule(request, "sistema:credentials:manage", { mutation: true });
+  const auth = await authorizeModule(request, "sistema:sequences:manage", { mutation: true });
   if (!auth.ok) return auth.response;
   const body = await readAdminJson(request);
   if (!body.ok) return body.response;
@@ -37,6 +37,24 @@ export async function PUT(request: Request) {
   if (!parsed.success) return invalidAdminInput(parsed.error.issues);
 
   try {
+    // Validar que no retroceda (riesgo fiscal: AFIP requiere numeración ascendente)
+    const existing = await getDb().sequence.findUnique({
+      where: {
+        organizationId_docType_pointOfSale: {
+          organizationId: auth.orgId,
+          docType: parsed.data.docType,
+          pointOfSale: parsed.data.pointOfSale,
+        },
+      },
+      select: { nextNumber: true },
+    });
+    if (existing && parsed.data.nextNumber < existing.nextNumber) {
+      return NextResponse.json(
+        { ok: false, error: `No se puede retroceder la numeración (actual: ${existing.nextNumber})` },
+        { status: 400 },
+      );
+    }
+
     const updated = await getDb().sequence.upsert({
       where: {
         organizationId_docType_pointOfSale: {

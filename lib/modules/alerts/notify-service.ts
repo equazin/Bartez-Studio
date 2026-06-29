@@ -86,7 +86,7 @@ export async function sendAlertsDigest(organizationId: string): Promise<DigestRe
 
   // Canal email (cae a MAIL_TO si no hay destinatario específico)
   const emailTo = settings.alertsEmailTo || process.env.MAIL_TO || "";
-  if (emailTo && isMailConfigured()) {
+  if (emailTo && (await isMailConfigured())) {
     try {
       await sendEmail(emailTo, `Alertas Bartez (${alerts.counts.total})`, buildAlertsHtml(alerts));
       result.email = "sent";

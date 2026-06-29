@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
 export async function GET(request: Request) {
-  const auth = await authorizeModule(request, "sistema:credentials:manage");
+  const auth = await authorizeModule(request, "sistema:health:read");
   if (!auth.ok) return auth.response;
 
   const start = Date.now();

@@ -45,6 +45,7 @@ const ROLE_PERMISSIONS: Record<Role, readonly string[]> = {
     "finanzas:*",
     "postventa:*",
     "contenido:*",
+    "sistema:*",
     "analytics:read",
     "auditoria:read",
   ],
