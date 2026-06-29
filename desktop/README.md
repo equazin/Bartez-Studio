@@ -57,12 +57,24 @@ if (window.bartezDesktop?.isDesktop) {
   await window.bartezDesktop.print({ silent: true });      // imprimir factura
   await window.bartezDesktop.notify({ title, body });       // notificación SO
   const printers = await window.bartezDesktop.listPrinters();
+  await window.bartezDesktop.setLaunchAtStartup(true);      // abrir con Windows
 }
 ```
 
+## Capacidades nativas implementadas
+
+- Splash de arranque con validaciÃ³n de servidor y pantalla offline con reintento.
+- Selector multi-servidor con historial de servidores recientes.
+- SesiÃ³n persistente aislada (`persist:bartez`) para conservar la cookie del ERP.
+- ImpresiÃ³n nativa desde la web con fallback a `window.print()`.
+- Notificaciones nativas para nuevos leads y alertas operativas.
+- Tray icon con abrir, cambiar servidor, soporte, inicio automÃ¡tico y salir.
+- Minimizar/cerrar a bandeja; "Salir" finaliza realmente la app.
+- Deeplinks `bartez://open?path=/admin/...` para abrir rutas internas del ERP.
+- AsociaciÃ³n del protocolo `bartez://` en el instalador.
+
 ## Pendiente antes de distribuir comercialmente
 
-- [ ] Agregar `build/icon.ico` (256×256) y descomentar `win.icon` en `electron-builder.yml`.
 - [ ] Configurar `publish:` (GitHub Releases o S3) para auto-update.
 - [ ] **Firma de código** (certificado EV/OV) para evitar el bloqueo de Windows SmartScreen.
 - [ ] Probar el instalador en una VM Windows limpia.

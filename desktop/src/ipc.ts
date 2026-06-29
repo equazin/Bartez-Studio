@@ -11,6 +11,7 @@
  */
 import { app, BrowserWindow, ipcMain, net, Notification } from "electron";
 import {
+  getLaunchAtStartup,
   getServerUrl,
   setServerUrl,
   clearServerUrl,
@@ -18,6 +19,7 @@ import {
   getServerHistory,
   removeFromHistory,
 } from "./config";
+import { setLaunchAtStartupEnabled } from "./tray";
 
 interface IpcDeps {
   onServerChanged: () => void;
@@ -67,6 +69,11 @@ export function probeServer(url: string): Promise<ServerValidationResult> {
 export function registerIpcHandlers(deps: IpcDeps): void {
   // --- App info ------------------------------------------------------------
   ipcMain.handle("app:version", () => app.getVersion());
+  ipcMain.handle("app:launch-at-startup:get", () => getLaunchAtStartup());
+  ipcMain.handle("app:launch-at-startup:set", (_event, value: unknown) => {
+    setLaunchAtStartupEnabled(Boolean(value));
+    return { ok: true, enabled: getLaunchAtStartup() };
+  });
 
   // --- Configuración de servidor -------------------------------------------
   ipcMain.handle("server:get", () => getServerUrl());

@@ -10,12 +10,17 @@ files:
   - dist/**/*
   - package.json
 
+protocols:
+  - name: Bartez ERP
+    schemes:
+      - bartez
+
 # Windows: instalador NSIS (.exe). Para .msi agregar target "msi".
 win:
   target:
     - nsis
   artifactName: ${productName}-Setup-${version}.${ext}
-  # icon: build/icon.ico   # ← agregar un .ico 256x256 antes de distribuir
+  icon: build/icon.ico
 
 nsis:
   oneClick: false

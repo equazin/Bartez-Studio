@@ -36,6 +36,10 @@ const api = {
 
   /** Vuelve al selector de servidor (cambiar de cliente). */
   changeServer: () => ipcRenderer.invoke("server:change"),
+
+  /** Lee o cambia el inicio automatico con Windows/macOS. */
+  getLaunchAtStartup: () => ipcRenderer.invoke("app:launch-at-startup:get"),
+  setLaunchAtStartup: (enabled: boolean) => ipcRenderer.invoke("app:launch-at-startup:set", enabled),
 };
 
 contextBridge.exposeInMainWorld("bartezDesktop", api);

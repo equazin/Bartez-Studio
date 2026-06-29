@@ -71,6 +71,17 @@ export function setLaunchAtStartup(value: boolean): void {
   store.set("launchAtStartup", value);
 }
 
+export function getServerLabel(url = getServerUrl()): string {
+  if (!url) return "Sin servidor";
+  const entry = getServerHistory().find((item) => item.url === url);
+  if (entry?.label) return entry.label;
+  try {
+    return new URL(url).hostname;
+  } catch {
+    return url;
+  }
+}
+
 // --- Server history --------------------------------------------------------
 
 export function getServerHistory(): ServerEntry[] {

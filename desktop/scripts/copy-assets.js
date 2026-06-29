@@ -20,3 +20,17 @@ for (const file of files) {
     console.log(`[copy-assets] ${file} → dist/`);
   }
 }
+
+const brandIcon = path.join(root, "..", "public", "brand", "bartez-isologo.png");
+const brandIconOut = path.join(distDir, "bartez-isologo.png");
+if (fs.existsSync(brandIcon)) {
+  fs.copyFileSync(brandIcon, brandIconOut);
+  console.log("[copy-assets] bartez-isologo.png -> dist/");
+}
+
+const appIcon = path.join(root, "build", "icon.png");
+const appIconOut = path.join(distDir, "icon.png");
+if (fs.existsSync(appIcon)) {
+  fs.copyFileSync(appIcon, appIconOut);
+  console.log("[copy-assets] icon.png -> dist/");
+}

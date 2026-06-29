@@ -12,6 +12,7 @@ import { app, BrowserWindow, session, shell } from "electron";
 import * as path from "node:path";
 import {
   getServerUrl,
+  getServerLabel,
   getWindowBounds,
   setWindowBounds,
   type WindowBounds,
@@ -19,16 +20,19 @@ import {
 import { buildAppMenu } from "./menu";
 import { registerIpcHandlers, probeServer } from "./ipc";
 import { initAutoUpdater } from "./updater";
+import { initTray, isQuitting, rebuildTrayMenu, syncLaunchAtStartup } from "./tray";
 
 const SESSION_PARTITION = "persist:bartez";
 
 const PICKER_FILE = path.join(__dirname, "picker.html");
 const SPLASH_FILE = path.join(__dirname, "splash.html");
 const OFFLINE_FILE = path.join(__dirname, "offline.html");
+const APP_ICON_FILE = path.join(__dirname, "icon.png");
 
 let mainWindow: BrowserWindow | null = null;
 let pickerWindow: BrowserWindow | null = null;
 let splashWindow: BrowserWindow | null = null;
+let pendingAdminPath: string | null = null;
 
 function isDev(): boolean {
   return process.env.BARTEZ_DEV === "1" || !app.isPackaged;
@@ -42,6 +46,49 @@ function currentOrigin(): string | null {
   } catch {
     return null;
   }
+}
+
+function normalizeAdminPath(input: string | null): string {
+  if (!input) return "/admin";
+  const raw = input.startsWith("/") ? input : `/${input}`;
+  if (!raw.startsWith("/admin")) return "/admin";
+  return raw;
+}
+
+function adminUrl(pathname = "/admin"): string | null {
+  const serverUrl = getServerUrl();
+  if (!serverUrl) return null;
+  const url = new URL(normalizeAdminPath(pathname), serverUrl);
+  return url.toString();
+}
+
+function consumePendingAdminPath(): string {
+  const next = pendingAdminPath ?? "/admin";
+  pendingAdminPath = null;
+  return normalizeAdminPath(next);
+}
+
+function readDeepLink(argv: string[]): string | null {
+  const raw = argv.find((arg) => arg.startsWith("bartez://"));
+  if (!raw) return null;
+  try {
+    const url = new URL(raw);
+    const pathParam = url.searchParams.get("path");
+    if (pathParam) return normalizeAdminPath(pathParam);
+    const combined = `${url.hostname}${url.pathname}`.replace(/^open\/?/, "");
+    return normalizeAdminPath(combined || "/admin");
+  } catch {
+    return null;
+  }
+}
+
+function registerProtocolHandler(): void {
+  if (process.defaultApp) {
+    const script = process.argv[1];
+    if (script) app.setAsDefaultProtocolClient("bartez", process.execPath, [script]);
+    return;
+  }
+  app.setAsDefaultProtocolClient("bartez");
 }
 
 function hardenNavigation(window: BrowserWindow): void {
@@ -84,7 +131,8 @@ function createSplashWindow(): BrowserWindow {
     transparent: false,
     show: false,
     backgroundColor: "#070a16",
-    title: "Bartez ERP",
+    title: `Bartez ERP - ${getServerLabel()}`,
+    icon: APP_ICON_FILE,
     webPreferences: {
       preload: path.join(__dirname, "splash-preload.js"),
       contextIsolation: true,
@@ -115,6 +163,13 @@ function closeSplash(): void {
   }
 }
 
+function destroyMainWindow(): void {
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    mainWindow.destroy();
+  }
+  mainWindow = null;
+}
+
 // ---------------------------------------------------------------------------
 // Main window
 // ---------------------------------------------------------------------------
@@ -132,6 +187,7 @@ function createMainWindow(): BrowserWindow {
     show: false,
     backgroundColor: "#070a16",
     title: "Bartez ERP",
+    icon: APP_ICON_FILE,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
@@ -151,7 +207,13 @@ function createMainWindow(): BrowserWindow {
   };
   window.on("resize", scheduleSave);
   window.on("move", scheduleSave);
-  window.on("close", () => persistBounds(window));
+  window.on("close", (event) => {
+    persistBounds(window);
+    if (!isQuitting()) {
+      event.preventDefault();
+      window.hide();
+    }
+  });
 
   hardenNavigation(window);
   window.on("closed", () => {
@@ -179,8 +241,10 @@ async function loadWithSplash(): Promise<void> {
   sendSplashProgress(40, "Servidor encontrado");
 
   if (!mainWindow) mainWindow = createMainWindow();
+  mainWindow.setTitle(`Bartez ERP - ${getServerLabel(serverUrl)}`);
 
   if (probe.ok) {
+    const targetUrl = adminUrl(consumePendingAdminPath()) ?? `${serverUrl}/admin`;
     sendSplashProgress(60, "Cargando el ERP…");
 
     mainWindow.webContents.once("did-finish-load", () => {
@@ -195,7 +259,7 @@ async function loadWithSplash(): Promise<void> {
       showOffline();
     });
 
-    void mainWindow.loadURL(`${serverUrl}/admin`);
+    void mainWindow.loadURL(targetUrl);
   } else {
     showOffline();
   }
@@ -213,6 +277,7 @@ function showOffline(): void {
     show: false,
     backgroundColor: "#070a16",
     title: "Bartez ERP — Sin conexión",
+    icon: APP_ICON_FILE,
     webPreferences: {
       preload: offlinePreload,
       contextIsolation: true,
@@ -232,8 +297,7 @@ function showOffline(): void {
   offlineWindow.on("closed", () => {
     // If main window still has no content, close it too
     if (mainWindow && !mainWindow.isDestroyed() && !mainWindow.isVisible()) {
-      mainWindow.close();
-      mainWindow = null;
+      destroyMainWindow();
     }
   });
 }
@@ -250,6 +314,7 @@ function createPickerWindow(): BrowserWindow {
     show: false,
     backgroundColor: "#070a16",
     title: "Bartez ERP — Configuración",
+    icon: APP_ICON_FILE,
     webPreferences: {
       preload: path.join(__dirname, "picker-preload.js"),
       contextIsolation: true,
@@ -281,6 +346,8 @@ function openAppropriateWindow(): void {
 }
 
 function onServerChanged(): void {
+  buildAppMenu({ isDev: isDev(), onServerChanged, openApp });
+  rebuildTrayMenu();
   if (getServerUrl()) {
     if (pickerWindow) {
       pickerWindow.close();
@@ -290,8 +357,7 @@ function onServerChanged(): void {
   } else {
     closeSplash();
     if (mainWindow) {
-      mainWindow.close();
-      mainWindow = null;
+      destroyMainWindow();
     }
     if (!pickerWindow) pickerWindow = createPickerWindow();
   }
@@ -303,10 +369,24 @@ function onRetry(): void {
     if (w !== mainWindow) w.close();
   });
   if (mainWindow) {
-    mainWindow.close();
-    mainWindow = null;
+    destroyMainWindow();
   }
   void loadWithSplash();
+}
+
+function openApp(pathname?: string): void {
+  if (pathname) pendingAdminPath = normalizeAdminPath(pathname);
+
+  const targetUrl = adminUrl(pendingAdminPath ?? "/admin");
+  if (mainWindow && !mainWindow.isDestroyed() && targetUrl) {
+    mainWindow.show();
+    mainWindow.focus();
+    void mainWindow.loadURL(targetUrl);
+    pendingAdminPath = null;
+    return;
+  }
+
+  openAppropriateWindow();
 }
 
 export function getMainWindow(): BrowserWindow | null {
@@ -320,10 +400,22 @@ const gotLock = app.requestSingleInstanceLock();
 if (!gotLock) {
   app.quit();
 } else {
-  app.on("second-instance", () => {
+  pendingAdminPath = readDeepLink(process.argv);
+  registerProtocolHandler();
+
+  app.on("open-url", (event, url) => {
+    event.preventDefault();
+    const linkPath = readDeepLink([url]);
+    if (linkPath) openApp(linkPath);
+  });
+
+  app.on("second-instance", (_event, argv) => {
+    const linkPath = readDeepLink(argv);
+    if (linkPath) openApp(linkPath);
     const target = mainWindow ?? pickerWindow;
     if (target) {
       if (target.isMinimized()) target.restore();
+      target.show();
       target.focus();
     }
   });
@@ -335,7 +427,9 @@ if (!gotLock) {
     );
 
     registerIpcHandlers({ onServerChanged, getMainWindow, onRetry });
-    buildAppMenu({ isDev: isDev(), onServerChanged });
+    buildAppMenu({ isDev: isDev(), onServerChanged, openApp });
+    syncLaunchAtStartup();
+    initTray({ getMainWindow, openApp, onServerChanged });
 
     openAppropriateWindow();
 

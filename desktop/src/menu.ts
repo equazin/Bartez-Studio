@@ -5,7 +5,8 @@
  * cambio de servidor y accesos de ayuda. DevTools sólo en modo desarrollo.
  */
 import { app, BrowserWindow, Menu, shell, type MenuItemConstructorOptions } from "electron";
-import { clearServerUrl } from "./config";
+import { clearServerUrl, getLaunchAtStartup, getServerHistory, getServerLabel, setServerUrl } from "./config";
+import { setLaunchAtStartupEnabled } from "./tray";
 
 function focusedContents() {
   return BrowserWindow.getFocusedWindow()?.webContents;
@@ -14,13 +15,20 @@ function focusedContents() {
 interface MenuDeps {
   isDev: boolean;
   onServerChanged: () => void;
+  openApp: (pathname?: string) => void;
 }
 
 export function buildAppMenu(deps: MenuDeps): void {
+  const recentServers = getServerHistory();
   const template: MenuItemConstructorOptions[] = [
     {
       label: "Archivo",
       submenu: [
+        {
+          label: "Abrir inicio",
+          accelerator: "CmdOrCtrl+1",
+          click: () => deps.openApp("/admin"),
+        },
         {
           label: "Imprimir…",
           accelerator: "CmdOrCtrl+P",
@@ -28,11 +36,28 @@ export function buildAppMenu(deps: MenuDeps): void {
         },
         { type: "separator" },
         {
+          label: "Servidores recientes",
+          enabled: recentServers.length > 0,
+          submenu: recentServers.map((entry) => ({
+            label: getServerLabel(entry.url),
+            click: () => {
+              setServerUrl(entry.url);
+              deps.onServerChanged();
+            },
+          })),
+        },
+        {
           label: "Cambiar de servidor…",
           click: () => {
             clearServerUrl();
             deps.onServerChanged();
           },
+        },
+        {
+          label: "Abrir al iniciar Windows",
+          type: "checkbox",
+          checked: getLaunchAtStartup(),
+          click: (item) => setLaunchAtStartupEnabled(item.checked),
         },
         { type: "separator" },
         { role: "quit", label: "Salir" },

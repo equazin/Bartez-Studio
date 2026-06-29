@@ -6,6 +6,8 @@ interface BartezDesktopApi {
   notify: (payload: { title?: string; body?: string }) => Promise<{ ok: boolean }>;
   getServerUrl: () => Promise<string>;
   changeServer: () => Promise<{ ok: boolean }>;
+  getLaunchAtStartup: () => Promise<boolean>;
+  setLaunchAtStartup: (enabled: boolean) => Promise<{ ok: boolean; enabled: boolean }>;
 }
 
 declare global {
