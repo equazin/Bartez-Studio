@@ -15,6 +15,7 @@ import { Copilot } from "./Copilot";
 import { OnboardingTour } from "./OnboardingTour";
 import { cn } from "../../lib/utils";
 import { AdminToastProvider, LeadNotificationPoller } from "./AdminToast";
+import { HotkeyManager } from "./HotkeyManager";
 
 type NavItem = { href: string; label: string; icon: React.ElementType; group: string };
 
@@ -355,6 +356,7 @@ export function AdminShell({ username, children }: { username: string; children:
         </div>
       </main>
 
+      <HotkeyManager />
       <OnboardingTour pathname={pathname} />
       <AdminToastProvider />
       <LeadNotificationPoller />
