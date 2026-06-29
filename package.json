@@ -7,7 +7,7 @@
     "build": "prisma generate && next build",
     "vercel-build": "prisma generate && next build",
     "start": "next start",
-    "lint": "eslint . --max-warnings=0",
+    "lint": "eslint . --max-warnings=0 --ignore-pattern \"desktop/**\"",
     "typecheck": "tsc --noEmit",
     "test": "node --no-warnings --experimental-strip-types tests/run.mjs",
     "audit:ci": "npm audit --omit=dev --audit-level=high",

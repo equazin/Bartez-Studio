@@ -1,0 +1,35 @@
+appId: ar.com.bartez.erp
+productName: Bartez ERP
+copyright: © Bartez Tecnología
+
+directories:
+  output: release
+  buildResources: build
+
+files:
+  - dist/**/*
+  - package.json
+
+# Windows: instalador NSIS (.exe). Para .msi agregar target "msi".
+win:
+  target:
+    - nsis
+  artifactName: ${productName}-Setup-${version}.${ext}
+  # icon: build/icon.ico   # ← agregar un .ico 256x256 antes de distribuir
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: Bartez ERP
+
+# Canal de actualizaciones (auto-update). Configurar antes de publicar releases.
+# Ejemplo con GitHub Releases privado:
+# publish:
+#   provider: github
+#   owner: equazin
+#   repo: Bartez-Studio
+#   private: true
+publish: null
