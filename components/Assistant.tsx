@@ -4,6 +4,7 @@ import Image from "next/image";
 import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
+import { getAttribution } from "../lib/attribution";
 
 const SESSION_KEY = "bartez_assistant_messages";
 
@@ -157,6 +158,7 @@ export function Assistant() {
           resumenIA: transcript,
           canalPreferido: lead.telefono ? "whatsapp" : "email",
           origen: "ai-assistant",
+          attribution: getAttribution(),
           website: lead.website,
         }),
       });

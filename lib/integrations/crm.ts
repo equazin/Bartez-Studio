@@ -42,6 +42,7 @@ export const crmSink: LeadSink = {
         return { name: "crm", ok: true, detail: `Updated existing lead #${existing.id}` };
       }
 
+      const attribution = lead.attribution ?? {};
       const created = await getDb().lead.create({
         data: {
           name: lead.nombre,
@@ -52,6 +53,14 @@ export const crmSink: LeadSink = {
           status: mapStatus(lead.tipoConsulta),
           notes: lead.mensaje || lead.resumenIA || null,
           waId: lead.telefono || null,
+          utmSource: attribution.utmSource || null,
+          utmMedium: attribution.utmMedium || null,
+          utmCampaign: attribution.utmCampaign || null,
+          utmContent: attribution.utmContent || null,
+          utmTerm: attribution.utmTerm || null,
+          gclid: attribution.gclid || null,
+          fbclid: attribution.fbclid || null,
+          landingUrl: attribution.landingUrl || null,
         },
       });
 

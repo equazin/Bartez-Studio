@@ -6,6 +6,22 @@ export const quoteItemSchema = z.object({
   variant: z.string().optional(),
 });
 
+/** Atribución publicitaria capturada en el sitio (UTMs + click IDs de Google/Meta). */
+export const attributionSchema = z
+  .object({
+    utmSource: z.string().max(120).optional(),
+    utmMedium: z.string().max(120).optional(),
+    utmCampaign: z.string().max(200).optional(),
+    utmContent: z.string().max(200).optional(),
+    utmTerm: z.string().max(200).optional(),
+    gclid: z.string().max(255).optional(),
+    fbclid: z.string().max(255).optional(),
+    landingUrl: z.string().max(500).optional(),
+  })
+  .optional();
+
+export type Attribution = z.infer<typeof attributionSchema>;
+
 export const leadSchema = z.object({
   empresa: z.string().min(2, "Ingresá el nombre de la empresa"),
   nombre: z.string().min(2, "Ingresá tu nombre"),
@@ -21,6 +37,7 @@ export const leadSchema = z.object({
   canalPreferido: z.enum(["email", "whatsapp", "teléfono", "telefono"]).optional(),
   resumenIA: z.string().max(4000).optional(),
   origen: z.string().max(40).optional(),
+  attribution: attributionSchema,
   website: z.string().optional(),
 });
 

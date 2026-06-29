@@ -8,6 +8,7 @@ import { Analytics } from "../components/Analytics";
 import { Analytics as VercelAnalytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { WhatsAppFloat } from "../components/WhatsAppFloat";
+import { AttributionTracker } from "../components/AttributionTracker";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -126,6 +127,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Ir al contenido principal
         </a>
         {children}
+        <AttributionTracker />
         <WhatsAppFloat />
         <Analytics />
         <VercelAnalytics />
