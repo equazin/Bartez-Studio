@@ -5,6 +5,8 @@ import { adminOk, adminServerError, invalidAdminInput, readAdminJson } from "../
 import { invoiceCreateSchema } from "../../../../lib/modules/billing/schema.ts";
 import { createInvoice, InvoiceValidationError } from "../../../../lib/modules/billing/invoice-service.ts";
 import { authorizeModule, parseModulePagination } from "../../../../lib/modules/admin-module.ts";
+import { findDocType } from "../../../../lib/modules/afip/catalog.ts";
+import { sendSaleConversions } from "../../../../lib/modules/ads/conversions-service.ts";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -61,6 +63,18 @@ export async function POST(request: Request) {
   try {
     const { invoice, qrUrl, simulated } = await createInvoice({ organizationId: auth.orgId, data: parsed.data });
     await logAudit("create", "invoice", invoice.id, { number: invoice.number, cae: invoice.cae }, { organizationId: auth.orgId });
+
+    // Conversiones publicitarias (Google/Meta Ads): fire-and-forget, no bloquea
+    // la respuesta y nunca rompe la facturación si falla.
+    void sendSaleConversions({
+      organizationId: auth.orgId,
+      accountId: invoice.accountId,
+      orderId: invoice.id,
+      value: Number(invoice.total),
+      currency: invoice.currency,
+      isCreditNote: findDocType(invoice.docTypeCode)?.isCreditNote ?? false,
+    });
+
     return NextResponse.json({ ok: true, data: invoice, qrUrl, simulated }, { status: 201, headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     if (error instanceof InvoiceValidationError) {

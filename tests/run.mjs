@@ -40,3 +40,4 @@ await import("./accounting-balance.test.ts");
 await import("./settings-merge.test.ts");
 await import("./crypto-secrets.test.ts");
 await import("./attribution.test.ts");
+await import("./ads-conversions.test.ts");

@@ -1,9 +1,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { captureFirstTouch, getAttribution } from "../lib/attribution.ts";
 
 /**
- * La utilidad de atribución depende de `window` y `document`. Los mockeamos
- * a nivel global antes de importar el módulo, simulando un navegador.
+ * La utilidad de atribución lee `window`/`document` en cada llamada (sin estado
+ * de módulo), así que un único import alcanza: cada test prepara un navegador
+ * falso y luego invoca las funciones.
  */
 interface FakeWindow {
   location: { search: string; href: string };
@@ -32,38 +34,32 @@ function setupBrowser(search: string, cookie = ""): { cookieJar: { value: string
   return { cookieJar };
 }
 
-test("captureFirstTouch persiste UTMs y gclid de la URL", async () => {
+test("captureFirstTouch persiste UTMs y gclid de la URL", () => {
   setupBrowser("?utm_source=google&utm_campaign=verano&gclid=abc123");
-  const mod = await import(`../lib/attribution.ts?case=1`);
-  mod.captureFirstTouch();
-  const attr = mod.getAttribution();
-  assert.equal(attr.utmSource, "google");
-  assert.equal(attr.utmCampaign, "verano");
-  assert.equal(attr.gclid, "abc123");
-  assert.ok(attr.landingUrl);
+  captureFirstTouch();
+  const attr = getAttribution();
+  assert.equal(attr?.utmSource, "google");
+  assert.equal(attr?.utmCampaign, "verano");
+  assert.equal(attr?.gclid, "abc123");
+  assert.ok(attr?.landingUrl);
 });
 
-test("getAttribution sin señales devuelve undefined", async () => {
+test("getAttribution sin señales devuelve undefined", () => {
   setupBrowser("?foo=bar");
-  const mod = await import(`../lib/attribution.ts?case=2`);
-  const attr = mod.getAttribution();
-  assert.equal(attr, undefined);
+  assert.equal(getAttribution(), undefined);
 });
 
-test("first-touch no se pisa si ya hay cookie", async () => {
+test("first-touch no se pisa si ya hay cookie", () => {
   // Cookie previa con campaña "invierno"; la URL trae "verano".
   const stored = encodeURIComponent(JSON.stringify({ utmCampaign: "invierno", gclid: "old" }));
   setupBrowser("?utm_campaign=verano&gclid=new", `bz_attr=${stored}`);
-  const mod = await import(`../lib/attribution.ts?case=3`);
-  mod.captureFirstTouch(); // no debe sobreescribir
-  const attr = mod.getAttribution();
-  assert.equal(attr.utmCampaign, "invierno");
-  assert.equal(attr.gclid, "old");
+  captureFirstTouch(); // no debe sobreescribir
+  const attr = getAttribution();
+  assert.equal(attr?.utmCampaign, "invierno");
+  assert.equal(attr?.gclid, "old");
 });
 
-test("getAttribution lee fbclid de la URL como fallback", async () => {
+test("getAttribution lee fbclid de la URL como fallback", () => {
   setupBrowser("?fbclid=fb_xyz");
-  const mod = await import(`../lib/attribution.ts?case=4`);
-  const attr = mod.getAttribution();
-  assert.equal(attr.fbclid, "fb_xyz");
+  assert.equal(getAttribution()?.fbclid, "fb_xyz");
 });
