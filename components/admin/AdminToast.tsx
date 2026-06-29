@@ -16,6 +16,9 @@ let addToastGlobal: ((toast: Omit<Toast, "id" | "at">) => void) | null = null;
 
 export function showToast(toast: Omit<Toast, "id" | "at">) {
   addToastGlobal?.(toast);
+  if (typeof window !== "undefined" && window.bartezDesktop?.isDesktop) {
+    void window.bartezDesktop.notify({ title: toast.title, body: toast.body });
+  }
 }
 
 export function AdminToastProvider() {

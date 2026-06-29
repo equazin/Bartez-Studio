@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface PdfQuote {
   id: string;
@@ -40,15 +40,54 @@ const fmt = (v: { toString(): string }) => Number(v.toString()).toLocaleString("
 const fmtQty = (v: { toString(): string }) => Number(v.toString()).toLocaleString("es-AR", { maximumFractionDigits: 4 });
 const fmtDate = (d: Date | string) => new Date(d).toLocaleDateString("es-AR");
 
+type DesktopPrinter = {
+  name?: string;
+  displayName?: string;
+  isDefault?: boolean;
+};
+
+function isDesktopPrinter(value: unknown): value is DesktopPrinter {
+  return Boolean(value && typeof value === "object" && "name" in value);
+}
+
+function printQuote(options?: { silent?: boolean; deviceName?: string }) {
+  if (window.bartezDesktop?.isDesktop) {
+    void window.bartezDesktop.print({
+      silent: Boolean(options?.silent),
+      ...(options?.deviceName ? { deviceName: options.deviceName } : {}),
+    });
+    return;
+  }
+  window.print();
+}
+
 /**
  * Render print-friendly del presupuesto. CSS @media print oculta el botón
  * de "Imprimir" y ajusta márgenes para A4.
  */
 export function QuotePdfView({ quote }: { quote: PdfQuote }) {
+  const [printers, setPrinters] = useState<DesktopPrinter[]>([]);
+  const [selectedPrinter, setSelectedPrinter] = useState("");
+  const [silentPrint, setSilentPrint] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    if (!window.bartezDesktop?.isDesktop) return;
+    setIsDesktop(true);
+    let active = true;
+    window.bartezDesktop.listPrinters().then((list) => {
+      if (!active) return;
+      const parsed = list.filter(isDesktopPrinter);
+      setPrinters(parsed);
+      setSelectedPrinter(parsed.find((printer) => printer.isDefault)?.name ?? parsed[0]?.name ?? "");
+    }).catch(() => {});
+    return () => { active = false; };
+  }, []);
+
   // Disparar print dialog si el usuario llega con ?print=1
   useEffect(() => {
     if (typeof window !== "undefined" && new URLSearchParams(window.location.search).get("print") === "1") {
-      const t = setTimeout(() => window.print(), 400);
+      const t = setTimeout(printQuote, 400);
       return () => clearTimeout(t);
     }
   }, []);
@@ -66,7 +105,34 @@ export function QuotePdfView({ quote }: { quote: PdfQuote }) {
 
       <div className="no-print mx-auto flex max-w-[820px] items-center justify-between gap-3 px-6 py-3 text-[13px]">
         <span className="font-bold">Vista de impresión — {quote.number}</span>
-        <button onClick={() => window.print()} className="rounded-md border border-slate-300 bg-white px-3 py-1.5 font-bold hover:bg-slate-50">Imprimir / Guardar PDF</button>
+        <div className="flex flex-wrap items-center justify-end gap-2">
+          {isDesktop && printers.length > 0 && (
+            <>
+              <select
+                value={selectedPrinter}
+                onChange={(event) => setSelectedPrinter(event.target.value)}
+                className="h-8 max-w-[220px] rounded-md border border-slate-300 bg-white px-2 text-[12px] font-semibold"
+                aria-label="Impresora"
+              >
+                {printers.map((printer) => (
+                  <option key={printer.name} value={printer.name}>
+                    {printer.displayName || printer.name}{printer.isDefault ? " (default)" : ""}
+                  </option>
+                ))}
+              </select>
+              <label className="flex h-8 items-center gap-1.5 rounded-md border border-slate-300 bg-white px-2 text-[12px] font-semibold">
+                <input type="checkbox" checked={silentPrint} onChange={(event) => setSilentPrint(event.target.checked)} />
+                Sin diálogo
+              </label>
+            </>
+          )}
+          <button
+            onClick={() => printQuote({ silent: silentPrint, deviceName: selectedPrinter })}
+            className="rounded-md border border-slate-300 bg-white px-3 py-1.5 font-bold hover:bg-slate-50"
+          >
+            Imprimir / Guardar PDF
+          </button>
+        </div>
       </div>
 
       <div className="pdf-shell mx-auto max-w-[820px] bg-white px-10 py-12">

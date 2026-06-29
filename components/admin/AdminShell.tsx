@@ -52,6 +52,7 @@ const navigation: NavItem[] = [
   { href: "/admin/warranty-terms",     label: "Garantías",           icon: ShieldCheck,      group: "support" },
   { href: "/admin/knowledge",          label: "Base de conocimiento",icon: BookOpen,         group: "support" },
   { href: "/admin/reports",            label: "Reportes",            icon: BarChart3,        group: "bi" },
+  { href: "/admin/ads",                label: "Ads / ROAS",          icon: Target,           group: "bi" },
   { href: "/admin/posts",              label: "Artículos",           icon: FileText,         group: "content" },
   { href: "/admin/clients",            label: "Clientes",            icon: UsersRound,       group: "content" },
   { href: "/admin/cases",              label: "Casos de éxito",      icon: BriefcaseBusiness,group: "content" },
@@ -205,6 +206,7 @@ function Brand() {
 
 function AlertsBell() {
   const [count, setCount] = useState(0);
+  const previousCountRef = useRef<number | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -212,7 +214,21 @@ function AlertsBell() {
       try {
         const res = await fetch("/api/admin/alerts");
         const json = await res.json();
-        if (active && res.ok && json.ok) setCount(json.data.counts.total);
+        if (active && res.ok && json.ok) {
+          const nextCount = json.data.counts.total;
+          if (
+            previousCountRef.current !== null &&
+            nextCount > previousCountRef.current &&
+            window.bartezDesktop?.isDesktop
+          ) {
+            void window.bartezDesktop.notify({
+              title: "Nuevas alertas operativas",
+              body: `${nextCount} alertas pendientes en Bartez ERP`,
+            });
+          }
+          previousCountRef.current = nextCount;
+          setCount(nextCount);
+        }
       } catch { /* noop */ }
     }
     void poll();

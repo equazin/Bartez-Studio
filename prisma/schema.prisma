@@ -124,6 +124,42 @@ model DomainEvent {
   @@index([type, status])
 }
 
+model AdCampaign {
+  id                 String          @id @default(cuid())
+  organizationId     String
+  platform           String // google_ads | meta_ads
+  externalCampaignId String
+  name               String
+  status             String          @default("unknown")
+  dailyBudget        Decimal?        @db.Decimal(14, 2)
+  lastSyncedAt       DateTime?
+  metrics            AdMetricDaily[]
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+
+  @@unique([organizationId, platform, externalCampaignId])
+  @@index([organizationId, platform])
+  @@index([status])
+}
+
+model AdMetricDaily {
+  id          String     @id @default(cuid())
+  campaignId  String
+  campaign    AdCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  date        DateTime
+  spend       Decimal    @default(0) @db.Decimal(14, 2)
+  impressions Int        @default(0)
+  clicks      Int        @default(0)
+  leads       Int        @default(0)
+  conversions Int        @default(0)
+  revenue     Decimal    @default(0) @db.Decimal(14, 2)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@unique([campaignId, date])
+  @@index([date])
+}
+
 model Post {
   id              Int      @id @default(autoincrement())
   organizationId  String?
