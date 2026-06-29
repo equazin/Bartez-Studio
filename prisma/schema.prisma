@@ -113,11 +113,15 @@ model DomainEvent {
   organizationId String?
   type           String
   payload        Json
+  status         String    @default("processed")
+  attemptCount   Int       @default(0)
+  lastAttemptAt  DateTime?
   processedAt    DateTime?
   createdAt      DateTime  @default(now())
 
   @@index([type, processedAt])
   @@index([organizationId])
+  @@index([type, status])
 }
 
 model Post {

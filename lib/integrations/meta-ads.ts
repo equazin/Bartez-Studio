@@ -71,7 +71,7 @@ export async function sendMetaConversion(input: MetaConversionInput): Promise<Co
     };
     if (input.email) userData.em = [hashPii(input.email)];
 
-    const url = `https://graph.facebook.com/${GRAPH_VERSION}/${creds.pixelId}/events?access_token=${encodeURIComponent(creds.accessToken)}`;
+    const url = `https://graph.facebook.com/${GRAPH_VERSION}/${creds.pixelId}/events`;
 
     const body: Record<string, unknown> = {
       data: [
@@ -93,7 +93,10 @@ export async function sendMetaConversion(input: MetaConversionInput): Promise<Co
 
     const res = await fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${creds.accessToken}`,
+      },
       body: JSON.stringify(body),
     });
 
