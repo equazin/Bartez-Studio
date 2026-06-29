@@ -73,8 +73,34 @@ if (window.bartezDesktop?.isDesktop) {
 - Deeplinks `bartez://open?path=/admin/...` para abrir rutas internas del ERP.
 - AsociaciÃ³n del protocolo `bartez://` en el instalador.
 
-## Pendiente antes de distribuir comercialmente
+## Publicar una nueva versión
 
-- [ ] Configurar `publish:` (GitHub Releases o S3) para auto-update.
-- [ ] **Firma de código** (certificado EV/OV) para evitar el bloqueo de Windows SmartScreen.
-- [ ] Probar el instalador en una VM Windows limpia.
+```bash
+cd desktop
+# 1. Bump version
+npm version patch   # o minor/major
+
+# 2. Tag para el CI
+git tag desktop-v$(node -p "require('./package.json').version")
+git push && git push --tags
+```
+
+El workflow `desktop-release.yml` se activa con tags `desktop-v*`:
+- Compila la app en Windows
+- Empaqueta el instalador NSIS (.exe)
+- Publica un GitHub Release con el .exe y `latest.yml` (para auto-update)
+
+### Smoke test local
+
+```bash
+npm run smoke-test    # lanza la app, espera 5s, verifica que no crashee
+```
+
+### Firma de código (pendiente)
+
+Para evitar el bloqueo de Windows SmartScreen, se necesita un certificado EV/OV.
+Cuando se tenga, agregar como GitHub Secrets:
+- `WIN_CSC_LINK` — archivo .pfx en base64
+- `WIN_CSC_KEY_PASSWORD` — contraseña del certificado
+
+Y descomentar las líneas de signing en `electron-builder.yml` y `desktop-release.yml`.

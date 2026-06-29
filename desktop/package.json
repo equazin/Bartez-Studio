@@ -16,6 +16,8 @@
     "start": "npm run build && electron .",
     "dist": "npm run build && electron-builder",
     "dist:dir": "npm run build && electron-builder --dir",
+    "smoke-test": "npm run build && node scripts/smoke-test.js",
+    "release": "npm run build && electron-builder --publish always",
     "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\""
   },
   "dependencies": {
