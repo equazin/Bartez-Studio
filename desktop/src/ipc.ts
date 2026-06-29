@@ -3,21 +3,26 @@
  *
  * Exponen al renderer (vía preload/contextBridge) sólo lo necesario:
  *  - configuración de servidor (multi-cliente)
+ *  - historial de servidores
  *  - impresión nativa
  *  - notificaciones del SO
+ *  - retry de conexión offline
  * Todo input que cruza el puente se valida acá; nunca se confía en el renderer.
  */
-import { BrowserWindow, ipcMain, net, Notification } from "electron";
+import { app, BrowserWindow, ipcMain, net, Notification } from "electron";
 import {
   getServerUrl,
   setServerUrl,
   clearServerUrl,
   normalizeServerUrl,
+  getServerHistory,
+  removeFromHistory,
 } from "./config";
 
 interface IpcDeps {
   onServerChanged: () => void;
   getMainWindow: () => BrowserWindow | null;
+  onRetry: () => void;
 }
 
 export interface ServerValidationResult {
@@ -28,10 +33,8 @@ export interface ServerValidationResult {
 
 /**
  * Verifica que la URL responda y parezca un servidor BARTEZ.
- * Hace un GET liviano al origen con timeout; no exige status 200 exacto
- * (algunas rutas redirigen), sólo que el host conteste por HTTP.
  */
-function probeServer(url: string): Promise<ServerValidationResult> {
+export function probeServer(url: string): Promise<ServerValidationResult> {
   return new Promise((resolve) => {
     const request = net.request({ method: "GET", url });
     const timeout = setTimeout(() => {
@@ -42,7 +45,6 @@ function probeServer(url: string): Promise<ServerValidationResult> {
     request.on("response", (response) => {
       clearTimeout(timeout);
       const status = response.statusCode;
-      // Consumir y descartar el cuerpo para liberar el socket.
       response.on("data", () => {});
       response.on("end", () => {
         if (status >= 200 && status < 500) {
@@ -63,7 +65,10 @@ function probeServer(url: string): Promise<ServerValidationResult> {
 }
 
 export function registerIpcHandlers(deps: IpcDeps): void {
-  // --- Configuración de servidor ---------------------------------------
+  // --- App info ------------------------------------------------------------
+  ipcMain.handle("app:version", () => app.getVersion());
+
+  // --- Configuración de servidor -------------------------------------------
   ipcMain.handle("server:get", () => getServerUrl());
 
   ipcMain.handle("server:validate", async (_event, raw: unknown) => {
@@ -92,9 +97,24 @@ export function registerIpcHandlers(deps: IpcDeps): void {
     return { ok: true } satisfies ServerValidationResult;
   });
 
-  // --- Impresión nativa -------------------------------------------------
-  // Imprime el contenido actual de la ventana. Si silent=true usa la
-  // impresora por defecto sin diálogo (útil para facturas/remitos en serie).
+  // --- Historial de servidores ---------------------------------------------
+  ipcMain.handle("server:history", () => getServerHistory());
+
+  ipcMain.handle("server:history:remove", (_event, url: unknown) => {
+    removeFromHistory(String(url ?? ""));
+    return getServerHistory();
+  });
+
+  // --- Retry (offline screen) ----------------------------------------------
+  ipcMain.handle("offline:retry", async () => {
+    const url = getServerUrl();
+    if (!url) return { ok: false, error: "Sin servidor configurado." };
+    const probe = await probeServer(url);
+    if (probe.ok) deps.onRetry();
+    return probe;
+  });
+
+  // --- Impresión nativa ----------------------------------------------------
   ipcMain.handle("print:current", async (_event, opts: unknown) => {
     const window = deps.getMainWindow();
     if (!window) return { ok: false, error: "No hay ventana activa." };
@@ -113,7 +133,6 @@ export function registerIpcHandlers(deps: IpcDeps): void {
     });
   });
 
-  // Lista de impresoras disponibles (para que la UI permita elegir).
   ipcMain.handle("print:list", async () => {
     const window = deps.getMainWindow();
     if (!window) return [];
@@ -124,7 +143,7 @@ export function registerIpcHandlers(deps: IpcDeps): void {
     }
   });
 
-  // --- Notificaciones del SO -------------------------------------------
+  // --- Notificaciones del SO -----------------------------------------------
   ipcMain.handle("notify:show", (_event, payload: unknown) => {
     if (!Notification.isSupported()) return { ok: false };
     const data = (payload ?? {}) as { title?: string; body?: string };

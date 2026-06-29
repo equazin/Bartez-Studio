@@ -1,15 +1,12 @@
 /**
  * Proceso principal de Bartez ERP Desktop.
  *
- * Estrategia (ver roadmap): la app NO empaqueta el frontend. Carga la web
- * remota del ERP (`${serverUrl}/admin`) dentro de una ventana nativa con sesión
- * persistente, de modo que la cookie de sesión sobreviva reinicios y el deploy
- * de la web actualice la app al instante. Encima se agrega la capa nativa
- * (impresión, notificaciones, multi-servidor, auto-update).
+ * Estrategia: la app NO empaqueta el frontend. Carga la web remota del ERP
+ * (`${serverUrl}/admin`) dentro de una ventana nativa con sesión persistente.
  *
  * Flujo de ventanas:
- *  - Primer arranque (sin servidor) → ventana "picker" para elegir servidor.
- *  - Con servidor configurado → ventana principal cargando el ERP remoto.
+ *  - Sin servidor configurado → ventana "picker" para elegir servidor.
+ *  - Con servidor → splash screen → carga web → ventana principal o pantalla offline.
  */
 import { app, BrowserWindow, session, shell } from "electron";
 import * as path from "node:path";
@@ -20,20 +17,23 @@ import {
   type WindowBounds,
 } from "./config";
 import { buildAppMenu } from "./menu";
-import { registerIpcHandlers } from "./ipc";
+import { registerIpcHandlers, probeServer } from "./ipc";
 import { initAutoUpdater } from "./updater";
 
 const SESSION_PARTITION = "persist:bartez";
+
 const PICKER_FILE = path.join(__dirname, "picker.html");
+const SPLASH_FILE = path.join(__dirname, "splash.html");
+const OFFLINE_FILE = path.join(__dirname, "offline.html");
 
 let mainWindow: BrowserWindow | null = null;
 let pickerWindow: BrowserWindow | null = null;
+let splashWindow: BrowserWindow | null = null;
 
 function isDev(): boolean {
   return process.env.BARTEZ_DEV === "1" || !app.isPackaged;
 }
 
-/** Origen del servidor configurado (para la whitelist de navegación). */
 function currentOrigin(): string | null {
   const url = getServerUrl();
   if (!url) return null;
@@ -44,10 +44,6 @@ function currentOrigin(): string | null {
   }
 }
 
-/**
- * Navegación segura: dentro del origen del servidor se permite; cualquier otro
- * destino (links externos, target=_blank) se abre en el navegador del sistema.
- */
 function hardenNavigation(window: BrowserWindow): void {
   window.webContents.on("will-navigate", (event, navUrl) => {
     const allowedOrigin = currentOrigin();
@@ -75,6 +71,54 @@ function persistBounds(window: BrowserWindow): void {
   setWindowBounds(next);
 }
 
+// ---------------------------------------------------------------------------
+// Splash screen
+// ---------------------------------------------------------------------------
+
+function createSplashWindow(): BrowserWindow {
+  const window = new BrowserWindow({
+    width: 420,
+    height: 320,
+    resizable: false,
+    frame: false,
+    transparent: false,
+    show: false,
+    backgroundColor: "#070a16",
+    title: "Bartez ERP",
+    webPreferences: {
+      preload: path.join(__dirname, "splash-preload.js"),
+      contextIsolation: true,
+      nodeIntegration: false,
+      sandbox: true,
+    },
+  });
+
+  window.once("ready-to-show", () => window.show());
+  window.on("closed", () => {
+    splashWindow = null;
+  });
+
+  void window.loadFile(SPLASH_FILE);
+  return window;
+}
+
+function sendSplashProgress(pct: number, msg: string): void {
+  if (splashWindow && !splashWindow.isDestroyed()) {
+    splashWindow.webContents.send("splash:progress", pct, msg);
+  }
+}
+
+function closeSplash(): void {
+  if (splashWindow && !splashWindow.isDestroyed()) {
+    splashWindow.close();
+    splashWindow = null;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Main window
+// ---------------------------------------------------------------------------
+
 function createMainWindow(): BrowserWindow {
   const saved = getWindowBounds();
 
@@ -99,7 +143,6 @@ function createMainWindow(): BrowserWindow {
   });
 
   if (saved.maximized) window.maximize();
-  window.once("ready-to-show", () => window.show());
 
   let saveTimer: NodeJS.Timeout | null = null;
   const scheduleSave = () => {
@@ -115,14 +158,94 @@ function createMainWindow(): BrowserWindow {
     mainWindow = null;
   });
 
-  void window.loadURL(`${getServerUrl()}/admin`);
   return window;
 }
+
+/**
+ * Loads the ERP with splash screen flow:
+ * 1. Show splash
+ * 2. Probe server
+ * 3. If OK → load ERP in main window, close splash when ready
+ * 4. If fail → show offline screen in main window, close splash
+ */
+async function loadWithSplash(): Promise<void> {
+  const serverUrl = getServerUrl();
+  if (!serverUrl) return;
+
+  splashWindow = createSplashWindow();
+  sendSplashProgress(10, "Verificando servidor…");
+
+  const probe = await probeServer(serverUrl);
+  sendSplashProgress(40, "Servidor encontrado");
+
+  if (!mainWindow) mainWindow = createMainWindow();
+
+  if (probe.ok) {
+    sendSplashProgress(60, "Cargando el ERP…");
+
+    mainWindow.webContents.once("did-finish-load", () => {
+      sendSplashProgress(100, "Listo");
+      setTimeout(() => {
+        if (mainWindow && !mainWindow.isDestroyed()) mainWindow.show();
+        closeSplash();
+      }, 300);
+    });
+
+    mainWindow.webContents.once("did-fail-load", () => {
+      showOffline();
+    });
+
+    void mainWindow.loadURL(`${serverUrl}/admin`);
+  } else {
+    showOffline();
+  }
+}
+
+function showOffline(): void {
+  closeSplash();
+  if (!mainWindow) mainWindow = createMainWindow();
+
+  const offlinePreload = path.join(__dirname, "offline-preload.js");
+  const offlineWindow = new BrowserWindow({
+    width: 520,
+    height: 480,
+    resizable: false,
+    show: false,
+    backgroundColor: "#070a16",
+    title: "Bartez ERP — Sin conexión",
+    webPreferences: {
+      preload: offlinePreload,
+      contextIsolation: true,
+      nodeIntegration: false,
+      sandbox: true,
+    },
+  });
+
+  offlineWindow.once("ready-to-show", () => offlineWindow.show());
+  void offlineWindow.loadFile(OFFLINE_FILE);
+
+  // Hide main window while offline is shown
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    mainWindow.hide();
+  }
+
+  offlineWindow.on("closed", () => {
+    // If main window still has no content, close it too
+    if (mainWindow && !mainWindow.isDestroyed() && !mainWindow.isVisible()) {
+      mainWindow.close();
+      mainWindow = null;
+    }
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Picker (server selection)
+// ---------------------------------------------------------------------------
 
 function createPickerWindow(): BrowserWindow {
   const window = new BrowserWindow({
     width: 520,
-    height: 580,
+    height: 620,
     resizable: false,
     show: false,
     backgroundColor: "#070a16",
@@ -144,37 +267,46 @@ function createPickerWindow(): BrowserWindow {
   return window;
 }
 
-/** Decide qué ventana mostrar según haya o no servidor configurado. */
+// ---------------------------------------------------------------------------
+// Window orchestration
+// ---------------------------------------------------------------------------
+
 function openAppropriateWindow(): void {
   if (getServerUrl()) {
-    if (!mainWindow) mainWindow = createMainWindow();
-    else mainWindow.focus();
+    void loadWithSplash();
   } else {
     if (!pickerWindow) pickerWindow = createPickerWindow();
     else pickerWindow.focus();
   }
 }
 
-/**
- * Transición tras cambiar la configuración de servidor:
- *  - Si ahora hay servidor → abrir app y cerrar picker.
- *  - Si se limpió el servidor → abrir picker y cerrar app.
- */
 function onServerChanged(): void {
   if (getServerUrl()) {
-    if (!mainWindow) mainWindow = createMainWindow();
-    else void mainWindow.loadURL(`${getServerUrl()}/admin`);
     if (pickerWindow) {
       pickerWindow.close();
       pickerWindow = null;
     }
+    void loadWithSplash();
   } else {
-    if (!pickerWindow) pickerWindow = createPickerWindow();
+    closeSplash();
     if (mainWindow) {
       mainWindow.close();
       mainWindow = null;
     }
+    if (!pickerWindow) pickerWindow = createPickerWindow();
   }
+}
+
+function onRetry(): void {
+  // Close all windows and restart the splash flow
+  BrowserWindow.getAllWindows().forEach((w) => {
+    if (w !== mainWindow) w.close();
+  });
+  if (mainWindow) {
+    mainWindow.close();
+    mainWindow = null;
+  }
+  void loadWithSplash();
 }
 
 export function getMainWindow(): BrowserWindow | null {
@@ -182,7 +314,7 @@ export function getMainWindow(): BrowserWindow | null {
 }
 
 // ---------------------------------------------------------------------------
-// Single-instance lock.
+// Single-instance lock
 // ---------------------------------------------------------------------------
 const gotLock = app.requestSingleInstanceLock();
 if (!gotLock) {
@@ -202,7 +334,7 @@ if (!gotLock) {
       `${persistentSession.getUserAgent()} BartezDesktop/${app.getVersion()}`,
     );
 
-    registerIpcHandlers({ onServerChanged, getMainWindow });
+    registerIpcHandlers({ onServerChanged, getMainWindow, onRetry });
     buildAppMenu({ isDev: isDev(), onServerChanged });
 
     openAppropriateWindow();
