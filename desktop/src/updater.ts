@@ -10,6 +10,7 @@
  * no hace nada dañino: loguea y sale si no hay feed.
  */
 import { app, dialog } from "electron";
+import { notifyUpdateAvailable } from "./tray";
 
 export function initAutoUpdater(): void {
   // Carga perezosa: electron-updater sólo tiene sentido empaquetado.
@@ -24,6 +25,7 @@ export function initAutoUpdater(): void {
   autoUpdater.autoInstallOnAppQuit = true;
 
   autoUpdater.on("update-downloaded", (info) => {
+    notifyUpdateAvailable(info.version);
     void dialog
       .showMessageBox({
         type: "info",

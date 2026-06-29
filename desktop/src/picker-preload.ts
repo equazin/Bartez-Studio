@@ -10,6 +10,9 @@ const api = {
   getCurrent: () => ipcRenderer.invoke("server:get"),
   getHistory: () => ipcRenderer.invoke("server:history"),
   removeFromHistory: (url: string) => ipcRenderer.invoke("server:history:remove", url),
+  setLabel: (url: string, label: string) => ipcRenderer.invoke("server:history:label", url, label),
+  isOnboardingDone: () => ipcRenderer.invoke("onboarding:status"),
+  completeOnboarding: () => ipcRenderer.invoke("onboarding:done"),
 };
 
 contextBridge.exposeInMainWorld("bartezSetup", api);

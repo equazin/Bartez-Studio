@@ -18,6 +18,9 @@ import {
   normalizeServerUrl,
   getServerHistory,
   removeFromHistory,
+  updateHistoryLabel,
+  hasCompletedOnboarding,
+  setOnboardingDone,
 } from "./config";
 import { setLaunchAtStartupEnabled } from "./tray";
 
@@ -110,6 +113,18 @@ export function registerIpcHandlers(deps: IpcDeps): void {
   ipcMain.handle("server:history:remove", (_event, url: unknown) => {
     removeFromHistory(String(url ?? ""));
     return getServerHistory();
+  });
+
+  ipcMain.handle("server:history:label", (_event, url: unknown, label: unknown) => {
+    updateHistoryLabel(String(url ?? ""), String(label ?? ""));
+    return getServerHistory();
+  });
+
+  // --- Onboarding ------------------------------------------------------------
+  ipcMain.handle("onboarding:status", () => hasCompletedOnboarding());
+  ipcMain.handle("onboarding:done", () => {
+    setOnboardingDone();
+    return { ok: true };
   });
 
   // --- Retry (offline screen) ----------------------------------------------

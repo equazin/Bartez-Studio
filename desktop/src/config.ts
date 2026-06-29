@@ -99,6 +99,21 @@ export function removeFromHistory(url: string): void {
   store.set("serverHistory", history);
 }
 
+export function updateHistoryLabel(url: string, label: string): void {
+  const history = getServerHistory().map((e) =>
+    e.url === url ? { ...e, label: label.trim() || undefined } : e,
+  );
+  store.set("serverHistory", history);
+}
+
+export function hasCompletedOnboarding(): boolean {
+  return (store as unknown as { get(key: string, def: boolean): boolean }).get("onboardingDone", false);
+}
+
+export function setOnboardingDone(): void {
+  (store as unknown as { set(key: string, val: boolean): void }).set("onboardingDone", true);
+}
+
 /**
  * Normaliza y valida una URL de servidor ingresada por el usuario.
  * Acepta "bartez.com.ar" → "https://bartez.com.ar". Rechaza esquemas no http(s).

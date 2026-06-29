@@ -1,6 +1,8 @@
-import { app, Menu, nativeImage, shell, Tray, type BrowserWindow } from "electron";
+import { app, Menu, nativeImage, Notification, shell, Tray, type BrowserWindow } from "electron";
 import * as path from "node:path";
 import { clearServerUrl, getLaunchAtStartup, getServerLabel, setLaunchAtStartup } from "./config";
+
+let updateAvailable: string | null = null;
 
 let tray: Tray | null = null;
 let quitting = false;
@@ -105,6 +107,17 @@ export function rebuildTrayMenu(): void {
       click: (item) => setLaunchAtStartupEnabled(item.checked),
     },
     { type: "separator" },
+    ...(updateAvailable
+      ? [{
+          label: `Actualización ${updateAvailable} disponible`,
+          click: () => {
+            try {
+              const { autoUpdater } = require("electron-updater");
+              autoUpdater.quitAndInstall();
+            } catch {}
+          },
+        }]
+      : []),
     {
       label: "Salir",
       click: () => {
@@ -113,4 +126,17 @@ export function rebuildTrayMenu(): void {
       },
     },
   ]));
+}
+
+export function notifyUpdateAvailable(version: string): void {
+  updateAvailable = version;
+  rebuildTrayMenu();
+  if (tray) tray.setToolTip(`Bartez ERP - Actualización ${version} lista`);
+  if (Notification.isSupported()) {
+    const notification = new Notification({
+      title: "Bartez ERP",
+      body: `Versión ${version} lista para instalar. Reiniciá para actualizar.`,
+    });
+    notification.show();
+  }
 }
