@@ -43,7 +43,16 @@ interface OrderDetail {
   owner: { id: string; name: string } | null;
   quote: { id: string; number: string } | null;
   lines: OrderLine[];
+  airPreorder: { id: string; number: string; status: string; total: string; currency: string } | null;
 }
+
+const PREORDER_STATUSES: Record<string, string> = {
+  preorden: "Pre-orden (sin emitir)",
+  issued: "Emitida",
+  partially_received: "Recibida parcial",
+  received: "Recibida",
+  cancelled: "Anulada",
+};
 
 const STATUSES: Record<string, { label: string; color: string }> = {
   draft: { label: "Borrador", color: "border-slate-200 bg-slate-50 text-slate-700" },
@@ -147,6 +156,24 @@ export default function OrderDetailPage() {
           <AdminAlert tone="error">
             Este pedido tiene líneas marcadas como <strong>bajo pedido</strong>. No se reserva stock — habrá que comprarlas o producirlas antes de entregar.
           </AdminAlert>
+        </div>
+      )}
+
+      {order.airPreorder && (
+        <div className="mt-5 rounded-xl border border-orange-300 bg-orange-50 p-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <p className="text-[13px] font-bold text-orange-900">Pre-orden de compra a AIR derivada de este pedido</p>
+              <p className="mt-0.5 text-[13px] text-orange-800">
+                <Link href={`/admin/purchase-orders/${order.airPreorder.id}`} className="font-mono font-bold text-brand hover:underline">{order.airPreorder.number}</Link>
+                {" · "}{PREORDER_STATUSES[order.airPreorder.status] ?? order.airPreorder.status}
+                {" · "}{order.airPreorder.currency} {Number(order.airPreorder.total).toLocaleString("es-AR")}
+              </p>
+            </div>
+            <AdminButton variant="secondary" size="sm" asChild>
+              <Link href={`/admin/purchase-orders/${order.airPreorder.id}`}>Ver pre-orden</Link>
+            </AdminButton>
+          </div>
         </div>
       )}
 

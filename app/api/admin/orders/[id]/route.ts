@@ -28,7 +28,15 @@ export async function GET(request: Request, ctx: RouteParams) {
         },
       },
     });
-    return adminOk({ data: order });
+    if (!order) return adminOk({ data: null });
+
+    // Pre-orden de compra derivada (vínculo suelto por originSaleOrderId, sin FK).
+    const airPreorder = await getDb().purchaseOrder.findFirst({
+      where: { organizationId: auth.orgId, originSaleOrderId: id, supplierSource: "air", deletedAt: null },
+      orderBy: { createdAt: "desc" },
+      select: { id: true, number: true, status: true, total: true, currency: true },
+    });
+    return adminOk({ data: { ...order, airPreorder } });
   } catch (error) {
     return adminServerError("orders.get", error);
   }

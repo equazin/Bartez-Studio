@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { Ban, CheckCircle2, ChevronLeft, PackageCheck, ShieldAlert, XCircle } from "lucide-react";
+import { Ban, CheckCircle2, ChevronLeft, ClipboardList, PackageCheck, Send, ShieldAlert, XCircle } from "lucide-react";
 import { AdminAlert, AdminButton, AdminField, AdminInput, AdminPanel, AdminSpinner, AdminTextarea, ConfirmDialog } from "../../../../../components/admin/AdminUI";
 
 interface Line {
@@ -25,6 +25,8 @@ interface PurchaseOrder {
   currency: string;
   issueDate: string;
   total: string | number;
+  originSaleOrderId: string | null;
+  supplierSource: string | null;
   supplier: { id: string; name: string; taxId: string | null };
   lines: Line[];
   receipts: Array<{ id: string; number: string; receivedAt: string; warehouse: { id: string; name: string }; lines: Array<{ id: string }> }>;
@@ -104,6 +106,21 @@ export default function PurchaseOrderDetailPage() {
     else await load();
   }
 
+  async function issue() {
+    setSaving(true);
+    setError(null);
+    try {
+      const res = await fetch(`/api/admin/purchase-orders/${params.id}/issue`, { method: "POST" });
+      const json = await res.json();
+      if (!res.ok || !json.ok) throw new Error(json.error || "No pudimos emitir la pre-orden");
+      await load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Error desconocido");
+    } finally {
+      setSaving(false);
+    }
+  }
+
   async function decideApproval(decision: "approved" | "rejected") {
     setSaving(true);
     setError(null);
@@ -130,10 +147,42 @@ export default function PurchaseOrderDetailPage() {
     <div className="mx-auto max-w-[1100px]">
       <Link href="/admin/purchase-orders" className="inline-flex items-center gap-1 text-[13px] font-bold text-brand hover:underline"><ChevronLeft className="size-4" />Volver a compras</Link>
       <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <div><h1 className="font-display text-[clamp(26px,3vw,34px)] font-bold tracking-[-0.035em] text-slate-950">{po.number}</h1><p className="mt-1 text-[13px] text-slate-600">{po.supplier.name} - {new Date(po.issueDate).toLocaleDateString("es-AR")}</p></div>
-        {po.status === "issued" && <AdminButton variant="secondary" onClick={() => setCancelOpen(true)}><Ban />Anular</AdminButton>}
+        <div>
+          <h1 className="font-display text-[clamp(26px,3vw,34px)] font-bold tracking-[-0.035em] text-slate-950">{po.number}</h1>
+          <p className="mt-1 text-[13px] text-slate-600">{po.supplier.name} - {new Date(po.issueDate).toLocaleDateString("es-AR")}</p>
+          {po.supplierSource === "air" && (
+            <p className="mt-2 flex flex-wrap items-center gap-2">
+              <span className="inline-flex items-center gap-1 rounded-full border border-orange-300 bg-orange-50 px-2.5 py-0.5 text-[11px] font-bold text-orange-800">Catálogo AIR</span>
+              {po.originSaleOrderId && (
+                <Link href={`/admin/orders/${po.originSaleOrderId}`} className="inline-flex items-center gap-1 text-[12.5px] font-bold text-brand hover:underline">
+                  <ClipboardList className="size-3.5" />Ver pedido de venta origen
+                </Link>
+              )}
+            </p>
+          )}
+        </div>
+        {(po.status === "issued" || po.status === "preorden") && <AdminButton variant="secondary" onClick={() => setCancelOpen(true)}><Ban />Anular</AdminButton>}
       </div>
       {error && <div className="mt-5"><AdminAlert tone="error">{error}</AdminAlert></div>}
+
+      {po.status === "preorden" && (
+        <div className="mt-5 rounded-xl border border-orange-300 bg-orange-50 p-4">
+          <div className="flex items-start gap-3">
+            <Send className="mt-0.5 size-5 shrink-0 text-orange-600" />
+            <div className="flex-1">
+              <p className="text-[14px] font-bold text-orange-900">Pre-orden de compra</p>
+              <p className="mt-0.5 text-[13px] text-orange-800">
+                Generada automáticamente desde un pedido de venta. Cuando la pidas efectivamente a AIR
+                (portal, teléfono o email), emitila: recién ahí impacta en la cuenta corriente del proveedor
+                y se puede recepcionar.
+              </p>
+              <AdminButton size="sm" className="mt-3" onClick={() => void issue()} disabled={saving}>
+                <Send />{saving ? "Emitiendo..." : "Emitir OC"}
+              </AdminButton>
+            </div>
+          </div>
+        </div>
+      )}
 
       {po.approvalStatus === "pending" && (
         <div className="mt-5 rounded-xl border border-amber-300 bg-amber-50 p-4">
@@ -165,7 +214,7 @@ export default function PurchaseOrderDetailPage() {
         <div className="border-t border-slate-300 bg-slate-50 px-5 py-4 text-right font-display text-lg font-bold text-slate-950">Total {po.currency} {Number(po.total).toLocaleString("es-AR")}</div>
       </AdminPanel>
 
-      {receivableLines.length > 0 && po.status !== "cancelled" && po.approvalStatus !== "pending" && po.approvalStatus !== "rejected" && (
+      {receivableLines.length > 0 && po.status !== "cancelled" && po.status !== "preorden" && po.approvalStatus !== "pending" && po.approvalStatus !== "rejected" && (
         <AdminPanel className="mt-5 p-5">
           <h2 className="font-display text-[16px] font-bold text-slate-950">Recepcionar mercaderia</h2>
           <div className="mt-4 grid gap-4 sm:grid-cols-2">

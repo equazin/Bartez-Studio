@@ -18,6 +18,7 @@ interface PurchaseOrder {
 }
 
 const STATUS_META: Record<string, { label: string; color: string }> = {
+  preorden: { label: "Pre-orden", color: "border-orange-200 bg-orange-50 text-orange-900" },
   issued: { label: "Emitida", color: "border-sky-200 bg-sky-50 text-sky-900" },
   partially_received: { label: "Parcial", color: "border-amber-200 bg-amber-50 text-amber-900" },
   received: { label: "Recibida", color: "border-emerald-200 bg-emerald-50 text-emerald-900" },
