@@ -6,6 +6,7 @@ import { OutOfStockError, deliverStock, releaseStock, reserveStock } from "../in
 import type { Currency } from "../catalog/schema.ts";
 import { CURRENCIES } from "../catalog/schema.ts";
 import type { OrderCreate, OrderStatus } from "./schema.ts";
+import { createAirPreorderTx } from "../../integrations/air/preorder.ts";
 
 function asCurrency(value: string | null | undefined): Currency {
   return (CURRENCIES as readonly string[]).includes(value ?? "") ? (value as Currency) : "USD";
@@ -210,6 +211,15 @@ export async function transitionOrderStatus(options: { organizationId: string; i
         }
       }
       data.confirmedAt = now;
+
+      // Derivación venta → compra: si el pedido tiene líneas de catálogo AIR,
+      // se crea (idempotente) la pre-orden de compra interna al proveedor AIR.
+      await createAirPreorderTx(tx, {
+        organizationId: options.organizationId,
+        saleOrderId: existing.id,
+        saleOrderNumber: existing.number,
+        lines: existing.lines,
+      });
     }
 
     if (options.target === "in_preparation") {

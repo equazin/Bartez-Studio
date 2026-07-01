@@ -115,6 +115,15 @@ export async function cancelPurchaseOrder(options: { organizationId: string; id:
       throw new PurchaseValidationError("No se puede anular una OC con recepciones");
     }
 
+    // Una pre-orden nunca asentó crédito en la cta. cte. del proveedor,
+    // así que se cancela sin contra-asiento.
+    if (existing.status === "preorden") {
+      return tx.purchaseOrder.update({
+        where: { id: existing.id },
+        data: { status: "cancelled", cancelledAt: new Date() },
+      });
+    }
+
     await tx.supplierAccountEntry.create({
       data: {
         organizationId: options.organizationId,
@@ -177,6 +186,7 @@ export async function receivePurchaseOrder(options: { organizationId: string; da
     });
     if (!order) throw new PurchaseValidationError("La orden de compra no existe");
     if (order.status === "cancelled") throw new PurchaseValidationError("La orden de compra esta anulada");
+    if (order.status === "preorden") throw new PurchaseValidationError("La pre-orden debe emitirse antes de recibir mercaderia");
     if (order.approvalStatus === "pending") throw new PurchaseValidationError("La orden de compra requiere aprobacion antes de recibirse");
     if (order.approvalStatus === "rejected") throw new PurchaseValidationError("La orden de compra fue rechazada");
 

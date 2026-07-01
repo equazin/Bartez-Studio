@@ -45,3 +45,4 @@ await import("./ads-performance.test.ts");
 await import("./air-config.test.ts");
 await import("./air-mapper.test.ts");
 await import("./air-client.test.ts");
+await import("./air-preorder.test.ts");
