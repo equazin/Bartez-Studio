@@ -19,11 +19,30 @@ export type OrderStatus = (typeof ORDER_STATUSES)[number];
 
 export const orderLineSchema = z.object({
   productId: z.string().trim().min(1).max(40).nullish().transform((v) => v || null),
+  sourceSystem: z.enum(["air"]).nullish().transform((v) => v || null),
+  sourceCode: z.string().trim().min(1).max(80).nullish().transform((v) => v || null),
   description: z.string().trim().min(1).max(500),
   quantity: decimalString.refine((v) => v > 0, { message: "cantidad debe ser > 0" }),
+  unitCost: decimalString.nullish(),
+  markupPct: decimalString.refine((v) => v <= 1000).nullish(),
   unitPrice: decimalString,
   discountPct: decimalString.refine((v) => v <= 100).default(0),
   taxRate: decimalString.refine((v) => v <= 100).default(21),
+}).superRefine((line, ctx) => {
+  if (line.sourceSystem && !line.sourceCode) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["sourceCode"],
+      message: "sourceCode es obligatorio para líneas externas",
+    });
+  }
+  if (line.sourceCode && !line.sourceSystem) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["sourceSystem"],
+      message: "sourceSystem es obligatorio para líneas externas",
+    });
+  }
 });
 
 export const orderCreateSchema = z.object({

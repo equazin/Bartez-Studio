@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   BarChart3, Bell, BookOpen, Boxes, Building2, BriefcaseBusiness, CalendarCheck,
   ChevronDown, ExternalLink, FileSpreadsheet, FileText, Hash, LayoutDashboard,
-  LifeBuoy, LogOut, Menu, MessageSquare, Package, PackageOpen, Receipt,
+  LifeBuoy, LogOut, Menu, MessageSquare, Package, PackageOpen, Plug, Receipt,
   Scale, ScrollText, Settings, ShieldCheck, ShoppingCart, Tag, Target, Truck, UserCheck,
   UsersRound, Wallet, Warehouse, Wrench, X,
 } from "lucide-react";
@@ -58,6 +58,7 @@ const navigation: NavItem[] = [
   { href: "/admin/cases",              label: "Casos de éxito",      icon: BriefcaseBusiness,group: "content" },
   { href: "/admin/team",               label: "Equipo",              icon: UsersRound,       group: "system" },
   { href: "/admin/sistema",            label: "Configuración",       icon: Settings,         group: "system" },
+  { href: "/admin/integraciones/air",  label: "Integración AIR",     icon: Plug,             group: "system" },
   { href: "/admin/audit",              label: "Auditoría",           icon: ScrollText,       group: "system" },
 ];
 

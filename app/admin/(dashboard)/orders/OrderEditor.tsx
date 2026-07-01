@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ChevronLeft, Plus, Save, Trash2, X } from "lucide-react";
+import { ChevronLeft, Plus, Save, Search, Trash2, X } from "lucide-react";
 import {
   AdminAlert,
   AdminButton,
@@ -17,11 +17,24 @@ import { calcQuote } from "../../../../lib/modules/sales/calc";
 interface Account { id: string; name: string; }
 interface Product { id: string; sku: string | null; name: string; taxRate: string | number; stockTracked: boolean; }
 interface Warehouse { id: string; code: string; name: string; isDefault: boolean; }
+interface AirProduct {
+  id: string;
+  codiart: string;
+  name: string;
+  rubro: string | null;
+  grupo: string | null;
+  price: number | null;
+  stockDisp: number;
+}
 
 export interface OrderEditorLine {
   productId: string | null;
+  sourceSystem: "air" | null;
+  sourceCode: string | null;
   description: string;
   quantity: number;
+  unitCost: number | null;
+  markupPct: number | null;
   unitPrice: number;
   discountPct: number;
   taxRate: number;
@@ -41,8 +54,12 @@ export interface OrderEditorValue {
 
 const emptyLine: OrderEditorLine = {
   productId: null,
+  sourceSystem: null,
+  sourceCode: null,
   description: "",
   quantity: 1,
+  unitCost: null,
+  markupPct: null,
   unitPrice: 0,
   discountPct: 0,
   taxRate: 21,
@@ -56,6 +73,12 @@ export function OrderEditor({ initial }: { initial: OrderEditorValue }) {
   const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [airOpenLine, setAirOpenLine] = useState<number | null>(null);
+  const [airQuery, setAirQuery] = useState("");
+  const [airProducts, setAirProducts] = useState<AirProduct[]>([]);
+  const [airLoading, setAirLoading] = useState(false);
+  const [airError, setAirError] = useState<string | null>(null);
+  const [airEnabled, setAirEnabled] = useState<boolean | null>(null);
 
   useEffect(() => {
     fetch("/api/admin/accounts?limit=100").then((r) => r.json()).then((j) => setAccounts(j.data || [])).catch(() => {});
@@ -88,14 +111,63 @@ export function OrderEditor({ initial }: { initial: OrderEditorValue }) {
   function pickProduct(idx: number, productId: string) {
     const product = products.find((p) => p.id === productId);
     if (!product) {
-      setLine(idx, { productId: null });
+      setLine(idx, { productId: null, sourceSystem: null, sourceCode: null, unitCost: null, markupPct: null });
       return;
     }
     setLine(idx, {
       productId,
+      sourceSystem: null,
+      sourceCode: null,
       description: product.name,
+      unitCost: null,
+      markupPct: null,
       taxRate: Number(product.taxRate),
     });
+  }
+
+  const searchAirProducts = useCallback(async (query: string) => {
+    setAirLoading(true);
+    setAirError(null);
+    try {
+      const params = new URLSearchParams({ q: query, limit: "12" });
+      const res = await fetch(`/api/admin/air/products?${params.toString()}`, { cache: "no-store" });
+      const json = (await res.json()) as {
+        ok: boolean;
+        data?: { enabled: boolean; products: AirProduct[] };
+        error?: string;
+      };
+      if (!res.ok || !json.ok) throw new Error(json.error ?? `HTTP ${res.status}`);
+      setAirEnabled(json.data?.enabled ?? false);
+      setAirProducts(json.data?.products ?? []);
+      if (json.data && !json.data.enabled) setAirError("La integración AIR está deshabilitada.");
+    } catch (err) {
+      setAirProducts([]);
+      setAirError(err instanceof Error ? err.message : "No se pudo buscar en AIR.");
+    } finally {
+      setAirLoading(false);
+    }
+  }, []);
+
+  function openAirPicker(idx: number) {
+    const query = value.lines[idx]?.description ?? "";
+    setAirOpenLine(idx);
+    setAirQuery(query);
+    void searchAirProducts(query);
+  }
+
+  function pickAirProduct(idx: number, product: AirProduct) {
+    const price = product.price ?? value.lines[idx]?.unitPrice ?? 0;
+    setLine(idx, {
+      productId: null,
+      sourceSystem: "air",
+      sourceCode: product.codiart,
+      description: product.name,
+      unitCost: product.price,
+      markupPct: null,
+      unitPrice: price,
+      taxRate: value.lines[idx]?.taxRate ?? 21,
+    });
+    setAirOpenLine(null);
   }
 
   async function save() {
@@ -211,15 +283,92 @@ export function OrderEditor({ initial }: { initial: OrderEditorValue }) {
                 {value.lines.map((line, idx) => {
                   const product = line.productId ? products.find((p) => p.id === line.productId) : null;
                   const isBackorder = product && !product.stockTracked;
+                  const isAirLine = line.sourceSystem === "air" && line.sourceCode;
                   return (
                     <tr key={idx} className="border-t border-slate-200">
                       <td className="px-3 py-2 align-top">
-                        <select value={line.productId || ""} onChange={(e) => pickProduct(idx, e.target.value)}
-                          className="h-9 w-44 rounded-md border border-slate-300 bg-white px-2 text-[12.5px] font-medium text-slate-950 outline-none focus:border-brand focus:ring-1 focus:ring-brand/30">
-                          <option value="">— Manual —</option>
-                          {products.map((p) => <option key={p.id} value={p.id}>{p.sku ? `${p.sku} · ` : ""}{p.name}</option>)}
-                        </select>
+                        <div className="flex gap-1.5">
+                          <select value={line.productId || ""} onChange={(e) => pickProduct(idx, e.target.value)}
+                            className="h-9 w-44 rounded-md border border-slate-300 bg-white px-2 text-[12.5px] font-medium text-slate-950 outline-none focus:border-brand focus:ring-1 focus:ring-brand/30">
+                            <option value="">— Manual —</option>
+                            {products.map((p) => <option key={p.id} value={p.id}>{p.sku ? `${p.sku} · ` : ""}{p.name}</option>)}
+                          </select>
+                          <button
+                            type="button"
+                            onClick={() => openAirPicker(idx)}
+                            className="inline-flex h-9 items-center gap-1 rounded-md border border-slate-300 bg-white px-2 text-[12px] font-bold text-slate-700 hover:border-brand hover:text-brand"
+                          >
+                            <Search className="size-3.5" /> AIR
+                          </button>
+                        </div>
+                        {isAirLine && (
+                          <p className="mt-1 text-[10.5px] font-bold text-sky-700">
+                            AIR {line.sourceCode}{line.unitCost !== null ? ` · costo ${Number(line.unitCost).toLocaleString("es-AR")}` : ""}
+                          </p>
+                        )}
                         {isBackorder && <p className="mt-1 text-[10.5px] font-bold text-amber-700">Bajo pedido</p>}
+                        {airOpenLine === idx && (
+                          <div className="mt-2 w-[360px] rounded-lg border border-slate-300 bg-white p-2 shadow-lg">
+                            <div className="flex gap-2">
+                              <input
+                                value={airQuery}
+                                onChange={(e) => setAirQuery(e.target.value)}
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter") {
+                                    e.preventDefault();
+                                    void searchAirProducts(airQuery);
+                                  }
+                                  if (e.key === "Escape") setAirOpenLine(null);
+                                }}
+                                placeholder="Código o descripción AIR"
+                                className="h-8 flex-1 rounded-md border border-slate-300 px-2 text-[12.5px] text-slate-950 outline-none focus:border-brand"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => void searchAirProducts(airQuery)}
+                                className="rounded-md bg-slate-950 px-2 text-[12px] font-bold text-white disabled:opacity-50"
+                                disabled={airLoading}
+                              >
+                                {airLoading ? "..." : "Buscar"}
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => setAirOpenLine(null)}
+                                className="grid size-8 place-items-center rounded-md text-slate-500 hover:bg-slate-100"
+                                aria-label="Cerrar picker AIR"
+                              >
+                                <X className="size-4" />
+                              </button>
+                            </div>
+                            {airError && <p className="mt-2 text-[12px] font-semibold text-red-600">{airError}</p>}
+                            {!airError && airEnabled === true && airProducts.length === 0 && !airLoading && (
+                              <p className="mt-2 text-[12px] text-slate-500">Sin resultados.</p>
+                            )}
+                            {airProducts.length > 0 && (
+                              <div className="mt-2 max-h-64 overflow-y-auto">
+                                {airProducts.map((p) => (
+                                  <button
+                                    key={p.id}
+                                    type="button"
+                                    onClick={() => pickAirProduct(idx, p)}
+                                    className="block w-full rounded-md px-2 py-2 text-left hover:bg-slate-100"
+                                  >
+                                    <div className="flex items-start justify-between gap-3">
+                                      <div className="min-w-0">
+                                        <p className="truncate text-[12.5px] font-bold text-slate-950">{p.codiart} · {p.name}</p>
+                                        <p className="text-[11px] text-slate-500">{[p.rubro, p.grupo].filter(Boolean).join(" / ") || "Sin rubro"}</p>
+                                      </div>
+                                      <div className="shrink-0 text-right">
+                                        <p className="text-[12px] font-bold text-slate-950">{p.price !== null ? p.price.toLocaleString("es-AR") : "s/precio"}</p>
+                                        <p className="text-[11px] text-slate-500">Stock {p.stockDisp}</p>
+                                      </div>
+                                    </div>
+                                  </button>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        )}
                       </td>
                       <td className="px-3 py-2 align-top">
                         <input value={line.description} onChange={(e) => setLine(idx, { description: e.target.value })}

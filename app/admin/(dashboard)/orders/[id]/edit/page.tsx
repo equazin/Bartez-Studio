@@ -26,15 +26,23 @@ export default function EditOrderPage() {
           notes: o.notes,
           lines: o.lines.map((l: {
             productId: string | null;
+            sourceSystem: "air" | null;
+            sourceCode: string | null;
             description: string;
             quantity: string | number;
+            unitCost: string | number | null;
+            markupPct: string | number | null;
             unitPrice: string | number;
             discountPct: string | number;
             taxRate: string | number;
           }) => ({
             productId: l.productId,
+            sourceSystem: l.sourceSystem,
+            sourceCode: l.sourceCode,
             description: l.description,
             quantity: Number(l.quantity),
+            unitCost: l.unitCost === null ? null : Number(l.unitCost),
+            markupPct: l.markupPct === null ? null : Number(l.markupPct),
             unitPrice: Number(l.unitPrice),
             discountPct: Number(l.discountPct),
             taxRate: Number(l.taxRate),

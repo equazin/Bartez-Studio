@@ -22,8 +22,37 @@ test("orderLineSchema rechaza cantidad 0 o negativa", () => {
 test("orderLineSchema permite descripción manual sin productId", () => {
   const r = orderLineSchema.parse({ description: "Servicio especial", quantity: 1, unitPrice: 100 });
   assert.equal(r.productId, null);
+  assert.equal(r.sourceSystem, null);
+  assert.equal(r.sourceCode, null);
   assert.equal(r.taxRate, 21);
   assert.equal(r.discountPct, 0);
+});
+
+test("orderLineSchema acepta líneas AIR con referencia externa", () => {
+  const r = orderLineSchema.parse({
+    sourceSystem: "air",
+    sourceCode: "214402",
+    description: "Bomba centrífuga 1HP",
+    quantity: 2,
+    unitCost: 98500.5,
+    unitPrice: 120000,
+  });
+  assert.equal(r.productId, null);
+  assert.equal(r.sourceSystem, "air");
+  assert.equal(r.sourceCode, "214402");
+  assert.equal(r.unitCost, 98500.5);
+  assert.equal(r.unitPrice, 120000);
+});
+
+test("orderLineSchema rechaza línea AIR sin código externo", () => {
+  assert.equal(
+    orderLineSchema.safeParse({ sourceSystem: "air", description: "x", quantity: 1, unitPrice: 10 }).success,
+    false,
+  );
+  assert.equal(
+    orderLineSchema.safeParse({ sourceCode: "214402", description: "x", quantity: 1, unitPrice: 10 }).success,
+    false,
+  );
 });
 
 test("orderCreateSchema requiere al menos una línea", () => {
