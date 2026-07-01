@@ -13,7 +13,7 @@ export const runtime = "nodejs";
 export async function GET(request: Request) {
   const auth = await authorizeModule(request, "sistema:integracion:read");
   if (!auth.ok) return auth.response;
-  if (!isAirEnabled()) {
+  if (!(await isAirEnabled(auth.orgId))) {
     return adminOk({ data: { enabled: false } });
   }
   try {
@@ -31,7 +31,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   const auth = await authorizeModule(request, "sistema:integracion:update", { mutation: true });
   if (!auth.ok) return auth.response;
-  if (!isAirEnabled()) {
+  if (!(await isAirEnabled(auth.orgId))) {
     return NextResponse.json({ ok: false, error: "AIR está deshabilitada" }, { status: 400 });
   }
   const kindParam = new URL(request.url).searchParams.get("kind");

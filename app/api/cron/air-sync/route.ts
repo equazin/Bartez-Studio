@@ -18,11 +18,12 @@ export const maxDuration = 60;
  * Query: ?kind=catalog|syp (default catalog).
  */
 export async function GET(request: Request) {
-  if (!isAirEnabled()) {
+  const org = await resolveDefaultOrg();
+  if (!(await isAirEnabled(org.id))) {
     return NextResponse.json({ ok: false, error: "not_found" }, { status: 404 });
   }
 
-  const cfg = getAirConfig();
+  const cfg = await getAirConfig(org.id);
   const vercelSecret = process.env.CRON_SECRET;
   const auth = request.headers.get("authorization") || "";
   const authorized =
@@ -40,7 +41,6 @@ export async function GET(request: Request) {
   const kind: AirSyncKind = kindParam === "syp" ? "syp" : "catalog";
 
   try {
-    const org = await resolveDefaultOrg();
     const result = await runAirSync(org.id, kind);
     logger.info("cron.air-sync", { kind, itemsTouched: result.itemsTouched, status: result.status });
     return NextResponse.json(

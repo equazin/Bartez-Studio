@@ -31,7 +31,7 @@ export interface IntegrationDef {
   /** Si está en standby (esperando que el usuario obtenga credenciales) */
   standby?: boolean;
   /** Categoría para agrupar en la UI */
-  category: "facturacion" | "cobros" | "comunicacion" | "ia" | "marketing" | "api";
+  category: "facturacion" | "cobros" | "comunicacion" | "ia" | "marketing" | "api" | "proveedores";
   /**
    * true: el reader del lib/ usa getCredential() → guardar desde la UI tiene efecto inmediato.
    * false: el reader sigue leyendo de env → guardar desde la UI NO se aplica hasta migrar
@@ -186,6 +186,22 @@ export const INTEGRATIONS: IntegrationDef[] = [
       { key: "token", label: "Bearer Token", env: "API_V1_TOKEN", secret: true, hint: "Compartilo con cada cliente que consuma tu API" },
     ],
   },
+  {
+    id: "air",
+    label: "AIR S.R.L. — Catálogo y stock",
+    description: "Sincroniza stock y precios del proveedor AIR S.R.L. cada 15 minutos e integra el selector de productos en los pedidos de venta.",
+    docsUrl: "https://api.air-intra.com/v2",
+    category: "proveedores",
+    readerMigrated: true,
+    fields: [
+      { key: "username", label: "Usuario API", env: "AIR_USERNAME", required: true },
+      { key: "password", label: "Contraseña API", env: "AIR_PASSWORD", secret: true, required: true },
+      { key: "enabled", label: "Habilitar (true/false)", env: "AIR_INTEGRATION_ENABLED", hint: "Escribí 'true' para encender la sincronización y el picker" },
+      { key: "base_url", label: "Base URL de la API", env: "AIR_BASE_URL", hint: "Default: https://api.air-intra.com/v2" },
+      { key: "sync_interval", label: "Intervalo de sincronización (minutos)", env: "AIR_SYNC_INTERVAL_MINUTES", hint: "Default: 15" },
+      { key: "cron_secret", label: "Cron Secret", env: "AIR_CRON_SECRET", secret: true, hint: "Token para validar el endpoint cron" },
+    ],
+  },
 ];
 
 export function findIntegration(id: string): IntegrationDef | undefined {
@@ -198,5 +214,6 @@ export const INTEGRATION_CATEGORIES: { id: IntegrationDef["category"]; label: st
   { id: "comunicacion", label: "Comunicación" },
   { id: "ia", label: "Inteligencia artificial" },
   { id: "marketing", label: "Marketing y leads" },
+  { id: "proveedores", label: "Proveedores y catálogos" },
   { id: "api", label: "API propia" },
 ];

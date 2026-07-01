@@ -18,7 +18,7 @@ export async function GET(request: Request) {
   const auth = await authorizeModule(request, "ventas:order:read");
   if (!auth.ok) return auth.response;
 
-  if (!isAirEnabled()) {
+  if (!(await isAirEnabled(auth.orgId))) {
     return adminOk({ data: { enabled: false, products: [] } });
   }
 

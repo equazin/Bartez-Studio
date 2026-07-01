@@ -22,7 +22,8 @@ export type CredentialProvider =
   | "brevo"
   | "monday"
   | "apollo"
-  | "api_v1";
+  | "api_v1"
+  | "air";
 
 /** Cache por proceso para reducir hits a la BD en hot paths (webhooks, IA). */
 const cache = new Map<string, { value: string; at: number }>();

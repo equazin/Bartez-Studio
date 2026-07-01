@@ -57,7 +57,7 @@ async function loadPersistedToken(orgId: string): Promise<string | null> {
 }
 
 async function persistToken(orgId: string, token: string, expiresAt: Date, username: string): Promise<void> {
-  const cfg = getAirConfig();
+  const cfg = await getAirConfig(orgId);
   try {
     await getDb().airCredential.upsert({
       where: { organizationId: orgId },
@@ -74,7 +74,7 @@ async function login(orgId: string): Promise<string> {
   if (!username || !password) {
     throw new Error("AIR: faltan credenciales (configurá AIR_USERNAME/AIR_PASSWORD o OrgCredential 'air').");
   }
-  const cfg = getAirConfig();
+  const cfg = await getAirConfig(orgId);
   const url = `${cfg.baseUrl}/?q=login&user=${encodeURIComponent(username)}&pass=${encodeURIComponent(password)}`;
   const res = await fetch(url, { method: "GET" });
   if (!res.ok) throw new Error(`AIR login HTTP ${res.status}`);
@@ -108,7 +108,7 @@ function asArray(json: unknown): unknown[] {
 }
 
 async function airRequest(orgId: string, query: string): Promise<unknown[]> {
-  const cfg = getAirConfig();
+  const cfg = await getAirConfig(orgId);
   const doFetch = (token: string): Promise<Response> =>
     fetch(`${cfg.baseUrl}/${query}`, {
       method: "POST",
@@ -139,7 +139,7 @@ export function fetchSypPage(orgId: string, page: number): Promise<unknown[]> {
 
 /** Verifica que el token vigente sea válido. */
 export async function checkToken(orgId: string): Promise<boolean> {
-  const cfg = getAirConfig();
+  const cfg = await getAirConfig(orgId);
   try {
     const token = await getToken(orgId);
     const res = await fetch(`${cfg.baseUrl}/?q=check_token`, { headers: { Authorization: `Bearer ${token}` } });

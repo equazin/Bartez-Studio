@@ -48,7 +48,7 @@ async function upsertProduct(orgId: string, p: AirProductNormalized, syncedAt: D
 }
 
 export async function runAirSync(orgId: string, kind: AirSyncKind = "catalog"): Promise<AirSyncResult> {
-  if (!isAirEnabled()) {
+  if (!(await isAirEnabled(orgId))) {
     throw new Error("AIR: integración deshabilitada (AIR_INTEGRATION_ENABLED).");
   }
 
