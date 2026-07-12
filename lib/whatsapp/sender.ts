@@ -168,6 +168,40 @@ export async function sendInteractiveList(
 }
 
 /**
+ * Send a pre-approved template message. Es la ÚNICA forma de escribirle a un
+ * contacto fuera de la ventana de 24h (Meta bloquea el texto libre ahí).
+ *
+ * @param templateName nombre EXACTO de la plantilla aprobada en Meta
+ * @param languageCode código de idioma de la plantilla (ej. "es_AR" o "es")
+ * @param bodyParams   valores para las variables {{1}}, {{2}}… del cuerpo
+ */
+export async function sendTemplateMessage(
+  to: string,
+  templateName: string,
+  languageCode: string,
+  bodyParams: string[] = [],
+): Promise<SendResult> {
+  const components =
+    bodyParams.length > 0
+      ? [{
+          type: "body",
+          parameters: bodyParams.map((text) => ({ type: "text", text })),
+        }]
+      : [];
+
+  return post({
+    recipient_type: "individual",
+    to,
+    type: "template",
+    template: {
+      name: templateName,
+      language: { code: languageCode },
+      ...(components.length ? { components } : {}),
+    },
+  });
+}
+
+/**
  * Mark a received message as read (double blue ticks).
  */
 export async function markAsRead(messageId: string): Promise<void> {
