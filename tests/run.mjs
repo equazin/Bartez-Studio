@@ -42,6 +42,7 @@ await import("./crypto-secrets.test.ts");
 await import("./attribution.test.ts");
 await import("./ads-conversions.test.ts");
 await import("./ads-performance.test.ts");
+await import("./marketing-social.test.ts");
 await import("./air-config.test.ts");
 await import("./air-mapper.test.ts");
 await import("./air-client.test.ts");

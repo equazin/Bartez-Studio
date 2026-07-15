@@ -53,6 +53,7 @@ const navigation: NavItem[] = [
   { href: "/admin/knowledge",          label: "Base de conocimiento",icon: BookOpen,         group: "support" },
   { href: "/admin/reports",            label: "Reportes",            icon: BarChart3,        group: "bi" },
   { href: "/admin/ads",                label: "Ads / ROAS",          icon: Target,           group: "bi" },
+  { href: "/admin/marketing",          label: "Redes sociales",      icon: MessageSquare,    group: "content" },
   { href: "/admin/posts",              label: "Artículos",           icon: FileText,         group: "content" },
   { href: "/admin/clients",            label: "Clientes",            icon: UsersRound,       group: "content" },
   { href: "/admin/cases",              label: "Casos de éxito",      icon: BriefcaseBusiness,group: "content" },

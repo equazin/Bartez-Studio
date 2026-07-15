@@ -160,6 +160,63 @@ model AdMetricDaily {
   @@index([date])
 }
 
+// ─────────────────────────────────────────────────────────────
+// Redes sociales (Meta: Facebook + Instagram).
+// SocialAccount guarda la cuenta conectada por OAuth (page id o
+// IG business id). El access_token se guarda cifrado en
+// OrgCredential (provider "meta_social", key "<accountId>:token").
+// SocialPost representa un post (draft/scheduled/publishing/published).
+// ─────────────────────────────────────────────────────────────
+model SocialAccount {
+  id             String       @id @default(cuid())
+  organizationId String
+  provider       String // 'facebook' | 'instagram'
+  externalId     String // page id o IG business id
+  name           String
+  avatarUrl      String?
+  pageId         String? // FB page id (necesario para publicar IG)
+  igBusinessId   String? // IG business account id
+  tokenExpiresAt DateTime?
+  scopes         String?
+  connectedById  String?
+  connectedAt    DateTime     @default(now())
+  disconnectedAt DateTime?
+  lastError      String?
+  posts          SocialPost[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@unique([organizationId, provider, externalId])
+  @@index([organizationId, provider])
+}
+
+model SocialPost {
+  id               String        @id @default(cuid())
+  organizationId   String
+  socialAccountId  String
+  account          SocialAccount @relation(fields: [socialAccountId], references: [id], onDelete: Cascade)
+  kind             String // 'text' | 'image' | 'carousel' | 'video'
+  caption          String        @default("")
+  mediaUrls        Json          @default("[]")
+  linkUrl          String?
+  scheduledAt      DateTime?
+  publishedAt      DateTime?
+  externalPostId   String?
+  permalink        String?
+  status           String        @default("draft") // draft|scheduled|publishing|published|failed|canceled
+  error            String?
+  attempts         Int           @default(0)
+  insights         Json?
+  insightsSyncedAt DateTime?
+  createdById      String?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@index([organizationId, status])
+  @@index([socialAccountId])
+  @@index([scheduledAt])
+}
+
 model Post {
   id              Int      @id @default(autoincrement())
   organizationId  String?
