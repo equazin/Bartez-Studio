@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { CalendarClock, CheckCircle2, ExternalLink, Facebook, Instagram, Link2, Loader2, Plug, Plus, RefreshCw, Send, Trash2, XCircle } from "lucide-react";
+import { CalendarClock, CheckCircle2, ExternalLink, Facebook, Instagram, Link2, Loader2, Pause, Pencil, Play, Plug, Plus, RefreshCw, Save, Send, Target, Trash2, XCircle } from "lucide-react";
 import { AdminAlert, AdminButton, AdminField, AdminInput, AdminPanel, AdminSpinner, AdminTextarea, ConfirmDialog } from "../../../../components/admin/AdminUI";
 
 type Provider = "facebook" | "instagram";
@@ -38,8 +38,20 @@ const TABS = [
   { id: "scheduled", label: "Programados" },
   { id: "history", label: "Historial" },
   { id: "accounts", label: "Cuentas" },
+  { id: "google_ads", label: "Google Ads" },
 ] as const;
 type TabId = (typeof TABS)[number]["id"];
+
+interface GoogleAdsCampaign {
+  id: string;
+  resourceName: string;
+  name: string;
+  status: "ENABLED" | "PAUSED" | "REMOVED" | "UNSPECIFIED";
+  dailyBudget: number | null;
+  budgetResourceName: string | null;
+  spendLast7d: number;
+  advertisingChannelType: string | null;
+}
 
 function providerIcon(provider: Provider) {
   return provider === "instagram" ? Instagram : Facebook;
@@ -177,8 +189,10 @@ export default function MarketingPage() {
           <PostList posts={posts.filter((p) => p.status === "scheduled" || p.status === "draft")} emptyLabel="No hay posts programados." onChanged={() => void loadAll()} />
         ) : tab === "history" ? (
           <PostList posts={posts.filter((p) => ["published", "failed", "canceled"].includes(p.status))} emptyLabel="Todavía no hay historial." onChanged={() => void loadAll()} showInsights />
-        ) : (
+        ) : tab === "accounts" ? (
           <AccountsTab accounts={accounts} onConnect={connectMeta} connecting={connecting} onDisconnect={setDisconnectTarget} disabled={!appConfigured} />
+        ) : (
+          <GoogleAdsTab />
         )}
       </div>
 
@@ -448,6 +462,154 @@ function PostList({ posts, emptyLabel, onChanged, showInsights }: {
                   </a>
                 ) : null}
               </div>
+            </div>
+          </div>
+        );
+      })}
+    </AdminPanel>
+  );
+}
+
+function GoogleAdsTab() {
+  const [state, setState] = useState<{ configured: boolean; campaigns: GoogleAdsCampaign[] } | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [busyId, setBusyId] = useState<string | null>(null);
+  const [editingBudget, setEditingBudget] = useState<{ resource: string; value: string } | null>(null);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch("/api/admin/marketing/google-ads/campaigns", { cache: "no-store" });
+      const data = await res.json();
+      if (!res.ok || !data.ok) throw new Error(data.error || "No pudimos traer campañas.");
+      setState({ configured: Boolean(data.configured), campaigns: data.campaigns ?? [] });
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => { void load(); }, [load]);
+
+  async function toggleStatus(campaign: GoogleAdsCampaign) {
+    const next = campaign.status === "ENABLED" ? "PAUSED" : "ENABLED";
+    setBusyId(campaign.id);
+    try {
+      const res = await fetch(`/api/admin/marketing/google-ads/campaigns/${campaign.id}/status`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: next }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) throw new Error(data.error || "No pudimos actualizar el estado.");
+      await load();
+    } catch (err) {
+      alert((err as Error).message);
+    } finally {
+      setBusyId(null);
+    }
+  }
+
+  async function saveBudget(campaign: GoogleAdsCampaign) {
+    if (!editingBudget || !campaign.budgetResourceName) return;
+    const amount = Number(editingBudget.value.replace(",", "."));
+    if (!Number.isFinite(amount) || amount <= 0) { alert("Budget inválido"); return; }
+    setBusyId(campaign.id);
+    try {
+      const res = await fetch("/api/admin/marketing/google-ads/budget", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ budgetResourceName: campaign.budgetResourceName, dailyAmount: amount }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) throw new Error(data.error || "No pudimos actualizar el budget.");
+      setEditingBudget(null);
+      await load();
+    } catch (err) {
+      alert((err as Error).message);
+    } finally {
+      setBusyId(null);
+    }
+  }
+
+  if (loading) return <AdminPanel className="grid min-h-56 place-items-center"><AdminSpinner label="Cargando campañas…" /></AdminPanel>;
+  if (error) return <AdminAlert>{error}</AdminAlert>;
+  if (!state) return null;
+  if (!state.configured) {
+    return (
+      <AdminPanel className="p-8 text-center">
+        <Target className="mx-auto size-9 text-slate-400" />
+        <p className="mt-4 text-[14px] font-bold text-slate-950">Google Ads no está configurado.</p>
+        <p className="mt-1 text-[13px] text-slate-600">Cargá GOOGLE_ADS_DEVELOPER_TOKEN, CLIENT_ID/SECRET, REFRESH_TOKEN y CUSTOMER_ID en credenciales.</p>
+      </AdminPanel>
+    );
+  }
+  if (state.campaigns.length === 0) {
+    return <AdminPanel className="p-8 text-center text-slate-600">No hay campañas activas en la cuenta.</AdminPanel>;
+  }
+
+  return (
+    <AdminPanel className="overflow-hidden">
+      <div className="border-b border-slate-300 bg-slate-100 px-5 py-3 text-[12px] font-semibold text-slate-700">
+        {state.campaigns.length} campañas — spend de los últimos 7 días
+      </div>
+      {state.campaigns.map((c) => {
+        const enabled = c.status === "ENABLED";
+        const isEditing = editingBudget?.resource === c.budgetResourceName;
+        return (
+          <div key={c.id} className="grid gap-3 border-b border-slate-200 px-5 py-4 last:border-0 sm:grid-cols-[minmax(0,1fr)_180px_200px_140px] sm:items-center">
+            <div className="min-w-0">
+              <p className="truncate text-[13.5px] font-bold text-slate-950">{c.name}</p>
+              <p className="mt-0.5 font-mono text-[11px] text-slate-500">
+                {c.id} · {c.advertisingChannelType ?? "—"}
+              </p>
+            </div>
+            <div className="text-[12.5px]">
+              <span className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10.5px] font-bold ${enabled ? "border-emerald-200 bg-emerald-50 text-emerald-800" : "border-slate-200 bg-slate-50 text-slate-700"}`}>
+                {enabled ? "ACTIVA" : c.status}
+              </span>
+              <span className="ml-2 text-slate-600">Spend 7d: ${c.spendLast7d.toLocaleString("es-AR", { maximumFractionDigits: 0 })}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              {isEditing ? (
+                <>
+                  <AdminInput
+                    type="number"
+                    step="0.01"
+                    min={1}
+                    value={editingBudget.value}
+                    onChange={(e) => setEditingBudget({ ...editingBudget, value: e.target.value })}
+                    className="h-8 w-24"
+                  />
+                  <AdminButton size="sm" onClick={() => void saveBudget(c)} disabled={busyId === c.id}><Save />Guardar</AdminButton>
+                  <AdminButton variant="ghost" size="sm" onClick={() => setEditingBudget(null)}>Cancelar</AdminButton>
+                </>
+              ) : (
+                <>
+                  <span className="text-[13px] font-bold text-slate-950">
+                    {c.dailyBudget != null ? `$${c.dailyBudget.toLocaleString("es-AR", { maximumFractionDigits: 2 })}/día` : "—"}
+                  </span>
+                  {c.budgetResourceName ? (
+                    <AdminButton variant="ghost" size="icon" onClick={() => setEditingBudget({ resource: c.budgetResourceName!, value: String(c.dailyBudget ?? "") })} aria-label="Editar budget">
+                      <Pencil />
+                    </AdminButton>
+                  ) : null}
+                </>
+              )}
+            </div>
+            <div className="flex justify-end">
+              <AdminButton
+                variant={enabled ? "secondary" : "primary"}
+                size="sm"
+                onClick={() => void toggleStatus(c)}
+                disabled={busyId === c.id}
+              >
+                {busyId === c.id ? <Loader2 className="animate-spin" /> : enabled ? <Pause /> : <Play />}
+                {enabled ? "Pausar" : "Activar"}
+              </AdminButton>
             </div>
           </div>
         );
