@@ -1,8 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { CalendarClock, CheckCircle2, ExternalLink, Facebook, Instagram, Link2, Loader2, Pause, Pencil, Play, Plug, Plus, RefreshCw, Save, Send, Target, Trash2, XCircle } from "lucide-react";
-import { AdminAlert, AdminButton, AdminField, AdminInput, AdminPanel, AdminSpinner, AdminTextarea, ConfirmDialog } from "../../../../components/admin/AdminUI";
+import { CheckCircle2, ExternalLink, Facebook, Instagram, Link2, Loader2, Pause, Pencil, Play, Plug, Plus, RefreshCw, Save, Send, Target, Trash2, XCircle } from "lucide-react";
+import { AdminAlert, AdminButton, AdminInput, AdminPanel, AdminSpinner, ConfirmDialog } from "../../../../components/admin/AdminUI";
+import { Composer, type ComposerAccount } from "../../../../components/admin/marketing/Composer";
+import { Calendar } from "../../../../components/admin/marketing/Calendar";
 
 type Provider = "facebook" | "instagram";
 type PostStatus = "draft" | "scheduled" | "publishing" | "published" | "failed" | "canceled";
@@ -35,6 +37,7 @@ interface SocialPost {
 
 const TABS = [
   { id: "compose", label: "Publicar" },
+  { id: "calendar", label: "Calendario" },
   { id: "scheduled", label: "Programados" },
   { id: "history", label: "Historial" },
   { id: "accounts", label: "Cuentas" },
@@ -184,7 +187,17 @@ export default function MarketingPage() {
         {loading ? (
           <AdminPanel className="grid min-h-56 place-items-center"><AdminSpinner label="Cargando…" /></AdminPanel>
         ) : tab === "compose" ? (
-          <ComposeTab accounts={accounts} onSaved={() => void loadAll()} />
+          accounts.length === 0 ? (
+            <AdminPanel className="p-8 text-center">
+              <Plug className="mx-auto size-9 text-slate-400" />
+              <p className="mt-4 text-[14px] font-bold text-slate-950">Todavía no hay cuentas conectadas.</p>
+              <p className="mt-1 text-[13px] text-slate-600">Andá a la pestaña &quot;Cuentas&quot; y conectá Meta.</p>
+            </AdminPanel>
+          ) : (
+            <Composer accounts={accounts as ComposerAccount[]} onSaved={() => void loadAll()} />
+          )
+        ) : tab === "calendar" ? (
+          <Calendar posts={posts} />
         ) : tab === "scheduled" ? (
           <PostList posts={posts.filter((p) => p.status === "scheduled" || p.status === "draft")} emptyLabel="No hay posts programados." onChanged={() => void loadAll()} />
         ) : tab === "history" ? (
@@ -204,124 +217,6 @@ export default function MarketingPage() {
         onConfirm={() => disconnectTarget ? void disconnect(disconnectTarget) : undefined}
       />
     </div>
-  );
-}
-
-function ComposeTab({ accounts, onSaved }: { accounts: SocialAccount[]; onSaved: () => void }) {
-  const [socialAccountId, setSocialAccountId] = useState("");
-  const [caption, setCaption] = useState("");
-  const [mediaInput, setMediaInput] = useState("");
-  const [linkUrl, setLinkUrl] = useState("");
-  const [scheduledAt, setScheduledAt] = useState("");
-  const [saving, setSaving] = useState(false);
-  const [publishing, setPublishing] = useState(false);
-  const [error, setError] = useState("");
-  const [notice, setNotice] = useState("");
-
-  useEffect(() => {
-    if (!socialAccountId && accounts.length > 0) setSocialAccountId(accounts[0].id);
-  }, [accounts, socialAccountId]);
-
-  const account = accounts.find((a) => a.id === socialAccountId);
-  const mediaUrls = useMemo(
-    () => mediaInput.split(/\s+/).map((s) => s.trim()).filter(Boolean),
-    [mediaInput],
-  );
-
-  async function submit(action: "save" | "publish_now") {
-    setError("");
-    setNotice("");
-    if (!socialAccountId) { setError("Elegí una cuenta."); return; }
-    if (account?.provider === "instagram" && mediaUrls.length === 0) {
-      setError("Instagram requiere al menos una imagen o video.");
-      return;
-    }
-    if (action === "publish_now") setPublishing(true); else setSaving(true);
-    try {
-      const res = await fetch("/api/admin/marketing/posts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          socialAccountId,
-          caption,
-          mediaUrls,
-          linkUrl: linkUrl || undefined,
-          scheduledAt: action === "publish_now" ? null : (scheduledAt ? new Date(scheduledAt).toISOString() : null),
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok || !data.ok) throw new Error(data.error || "No pudimos guardar el post.");
-      if (action === "publish_now") {
-        const pubRes = await fetch(`/api/admin/marketing/posts/${data.post.id}/publish`, { method: "POST" });
-        const pubData = await pubRes.json();
-        if (!pubRes.ok || !pubData.ok) throw new Error(pubData.error || "El post se guardó pero no se pudo publicar.");
-        setNotice("Publicado correctamente.");
-      } else {
-        setNotice(scheduledAt ? "Programado." : "Guardado como borrador.");
-      }
-      setCaption(""); setMediaInput(""); setLinkUrl(""); setScheduledAt("");
-      onSaved();
-    } catch (err) {
-      setError((err as Error).message);
-    } finally {
-      setSaving(false); setPublishing(false);
-    }
-  }
-
-  if (accounts.length === 0) {
-    return (
-      <AdminPanel className="p-8 text-center">
-        <Plug className="mx-auto size-9 text-slate-400" />
-        <p className="mt-4 text-[14px] font-bold text-slate-950">Todavía no hay cuentas conectadas.</p>
-        <p className="mt-1 text-[13px] text-slate-600">Andá a la pestaña &quot;Cuentas&quot; y conectá Meta.</p>
-      </AdminPanel>
-    );
-  }
-
-  return (
-    <AdminPanel className="p-5 sm:p-6">
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_320px]">
-        <div className="flex flex-col gap-5">
-          <AdminField label="Cuenta" htmlFor="post-account">
-            <select
-              id="post-account"
-              value={socialAccountId}
-              onChange={(e) => setSocialAccountId(e.target.value)}
-              className="h-10 w-full rounded-md border border-slate-300 bg-white px-3 text-[13px]"
-            >
-              {accounts.map((a) => (
-                <option key={a.id} value={a.id}>{providerLabel(a.provider)} · {a.name}</option>
-              ))}
-            </select>
-          </AdminField>
-          <AdminField label="Texto" htmlFor="post-caption" hint={`${caption.length} caracteres`}>
-            <AdminTextarea id="post-caption" value={caption} onChange={(e) => setCaption(e.target.value)} rows={6} placeholder="Escribí el post…" />
-          </AdminField>
-          <AdminField label="Imágenes o video (URLs, separadas por espacio)" htmlFor="post-media" hint="IG requiere al menos una URL pública. FB puede ir solo texto.">
-            <AdminTextarea id="post-media" value={mediaInput} onChange={(e) => setMediaInput(e.target.value)} rows={2} placeholder="https://…/imagen.jpg" />
-          </AdminField>
-          {account?.provider === "facebook" ? (
-            <AdminField label="Link (opcional, solo Facebook)" htmlFor="post-link">
-              <AdminInput id="post-link" type="url" value={linkUrl} onChange={(e) => setLinkUrl(e.target.value)} placeholder="https://…" />
-            </AdminField>
-          ) : null}
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <AdminField label="Programar (opcional)" htmlFor="post-scheduled" hint="Si queda vacío, se guarda como borrador.">
-            <AdminInput id="post-scheduled" type="datetime-local" value={scheduledAt} onChange={(e) => setScheduledAt(e.target.value)} />
-          </AdminField>
-          <AdminButton onClick={() => void submit("publish_now")} disabled={publishing || saving}>
-            {publishing ? <><Loader2 className="animate-spin" />Publicando…</> : <><Send />Publicar ahora</>}
-          </AdminButton>
-          <AdminButton variant="secondary" onClick={() => void submit("save")} disabled={publishing || saving}>
-            {scheduledAt ? <><CalendarClock />Programar</> : <><Plus />Guardar borrador</>}
-          </AdminButton>
-          {error ? <AdminAlert>{error}</AdminAlert> : null}
-          {notice ? <AdminAlert tone="success">{notice}</AdminAlert> : null}
-        </div>
-      </div>
-    </AdminPanel>
   );
 }
 
