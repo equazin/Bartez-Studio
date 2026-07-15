@@ -161,6 +161,20 @@ export const INTEGRATIONS: IntegrationDef[] = [
     ],
   },
   {
+    id: "meta_app",
+    label: "Meta App — Facebook + Instagram (publicación)",
+    description: "App de Meta for Developers usada para conectar páginas de FB e IG Business y publicar desde /admin/marketing. Distinta de Meta Ads (que solo atribuye conversiones).",
+    docsUrl: "https://developers.facebook.com/docs/facebook-login/guides/access-tokens/get-long-lived",
+    standby: true,
+    category: "marketing",
+    readerMigrated: true,
+    fields: [
+      { key: "app_id", label: "App ID", env: "META_APP_ID", required: true, hint: "Settings → Basic → App ID" },
+      { key: "app_secret", label: "App Secret", env: "META_APP_SECRET", secret: true, required: true, hint: "Settings → Basic → App Secret" },
+      { key: "redirect_uri", label: "OAuth Redirect URI", env: "META_APP_REDIRECT_URI", required: true, hint: "Debe estar autorizada en Facebook Login for Business. Ej: https://<dominio>/api/admin/marketing/oauth/meta/callback" },
+    ],
+  },
+  {
     id: "meta_ads",
     label: "Meta Ads — Atribución y conversiones (CAPI)",
     description: "Atribuye leads/ventas a campañas de Facebook/Instagram y envía eventos de compra por Conversions API.",
