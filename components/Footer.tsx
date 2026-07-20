@@ -120,7 +120,7 @@ export function Footer() {
             </li>
           </ul>
           <p className="mt-5 text-[11.5px] font-medium text-slate-600">
-            {company.legalName} · CUIT {company.cuit}
+            {company.legalNotice} · CUIT {company.cuit} · {company.address}
           </p>
         </div>
       </div>
