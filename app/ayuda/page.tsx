@@ -39,7 +39,7 @@ export default function AyudaPage() {
         eyebrow="Centro de ayuda"
         title={
           <>
-            Respuestas para avanzar <span className="text-[#1236d8]">con claridad.</span>
+            Respuestas para avanzar <span className="text-[#0046EA]">con claridad.</span>
           </>
         }
         intro="Información comercial y de soporte para avanzar con claridad. Si tu caso depende de un modelo u operación específica, escribinos por WhatsApp."
@@ -69,10 +69,10 @@ export default function AyudaPage() {
         <div className="grid gap-5 md:grid-cols-2">
           {helpLinks.map((item) => (
             <Link key={item.href} href={item.href} className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200">
-              <item.icon className="size-7 text-[#1236d8]" strokeWidth={1.7} />
+              <item.icon className="size-7 text-[#0046EA]" strokeWidth={1.7} />
               <h2 className="mt-5 font-display text-[20px] font-extrabold text-[#11142a]">{item.title}</h2>
               <p className="mt-2 text-[13.5px] leading-relaxed text-slate-600">{item.description}</p>
-              <span className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-bold text-[#1236d8]">
+              <span className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-bold text-[#0046EA]">
                 {item.action} <ArrowRight size={15} />
               </span>
             </Link>

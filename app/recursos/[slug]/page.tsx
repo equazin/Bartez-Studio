@@ -106,7 +106,7 @@ export default async function Articulo({ params, searchParams }: { params: Promi
 
         <InternalSection tone="soft">
           <article className="mx-auto max-w-[820px] rounded-lg border border-slate-200 bg-white p-7 shadow-sm md:p-10">
-            <Link href="/recursos" className="mb-8 inline-flex items-center gap-1.5 text-[13px] font-bold text-[#1236d8] hover:underline">
+            <Link href="/recursos" className="mb-8 inline-flex items-center gap-1.5 text-[13px] font-bold text-[#0046EA] hover:underline">
               <ArrowLeft size={15} /> Recursos
             </Link>
             <div>

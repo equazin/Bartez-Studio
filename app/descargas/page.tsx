@@ -34,7 +34,7 @@ export default function Descargas() {
         eyebrow="Centro de descargas"
         title={
           <>
-            Material comercial y <span className="text-[#1236d8]">documentación útil.</span>
+            Material comercial y <span className="text-[#0046EA]">documentación útil.</span>
           </>
         }
         intro="Accede a catálogos, brochure y recursos de ayuda. Las condiciones, disponibilidad y garantías se confirman para cada cotización."
@@ -64,11 +64,11 @@ export default function Descargas() {
         <div className="grid gap-5">
           {resources.map((resource) => (
             <article key={resource.href} className="grid gap-5 rounded-lg border border-slate-200 bg-white p-6 shadow-sm sm:grid-cols-[48px_1fr_auto] sm:items-center">
-              <span className="grid size-12 place-items-center rounded-lg border border-blue-100 bg-blue-50 text-[#1236d8]">
+              <span className="grid size-12 place-items-center rounded-lg border border-blue-100 bg-blue-50 text-[#0046EA]">
                 <resource.icon size={21} />
               </span>
               <div>
-                <p className="text-[12px] font-bold text-[#1236d8]">{resource.category}</p>
+                <p className="text-[12px] font-bold text-[#0046EA]">{resource.category}</p>
                 <h2 className="mt-1 font-display text-[19px] font-extrabold text-[#11142a]">{resource.title}</h2>
                 <p className="mt-1 text-[13.5px] leading-relaxed text-slate-600">{resource.description}</p>
               </div>
@@ -79,15 +79,15 @@ export default function Descargas() {
           ))}
 
           <article className="grid gap-5 rounded-lg border border-slate-200 bg-white p-6 shadow-sm sm:grid-cols-[48px_1fr_auto] sm:items-center">
-            <span className="grid size-12 place-items-center rounded-lg border border-blue-100 bg-blue-50 text-[#1236d8]">
+            <span className="grid size-12 place-items-center rounded-lg border border-blue-100 bg-blue-50 text-[#0046EA]">
               <ShieldCheck size={21} />
             </span>
             <div>
-              <p className="text-[12px] font-bold text-[#1236d8]">Soporte</p>
+              <p className="text-[12px] font-bold text-[#0046EA]">Soporte</p>
               <h2 className="mt-1 font-display text-[19px] font-extrabold text-[#11142a]">Garantías y RMA</h2>
               <p className="mt-1 text-[13.5px] leading-relaxed text-slate-600">Pasos, información necesaria y canal de inicio para cada consulta.</p>
             </div>
-            <Link href="/garantias-rma" className="inline-flex items-center justify-center gap-2 rounded-lg border border-blue-200 bg-white px-4 py-2.5 text-[13px] font-bold text-[#1236d8] hover:border-[#1236d8] hover:bg-blue-50">
+            <Link href="/garantias-rma" className="inline-flex items-center justify-center gap-2 rounded-lg border border-blue-200 bg-white px-4 py-2.5 text-[13px] font-bold text-[#0046EA] hover:border-[#0046EA] hover:bg-blue-50">
               Ver guía <ArrowRight size={15} />
             </Link>
           </article>

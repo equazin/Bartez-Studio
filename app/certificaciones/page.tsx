@@ -66,7 +66,7 @@ export default function CertificacionesPage() {
         eyebrow="Respaldos verificables"
         title={
           <>
-            Certificaciones y documentación <span className="text-[#1236d8]">sin promesas infladas.</span>
+            Certificaciones y documentación <span className="text-[#0046EA]">sin promesas infladas.</span>
           </>
         }
         intro="Esta sección reune documentación vigente y comprobable. No utilizamos niveles de partnership, certificaciones o autorizaciones sin respaldo documental."
@@ -102,12 +102,12 @@ export default function CertificacionesPage() {
 
       <InternalSection tone="blue" eyebrow="Compromiso">
         <div className="mx-auto max-w-[680px] text-center">
-          <Award className="mx-auto size-10 text-[#1236d8]" strokeWidth={1.5} />
+          <Award className="mx-auto size-10 text-[#0046EA]" strokeWidth={1.5} />
           <h2 className="mt-5 font-display text-[clamp(24px,3.2vw,36px)] font-extrabold leading-tight text-[#11142a]">Transparencia como principio operativo</h2>
           <p className="mt-4 text-[15.5px] leading-relaxed text-slate-600">
             Publicamos solo lo que podemos respaldar. Cuando una certificación vence, se retira. Cuando un acuerdo cambia de nivel, se actualiza. No hay letra chica ni promesas sin documentación.
           </p>
-          <div className="mt-6 inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-[12.5px] font-semibold text-[#1236d8]">
+          <div className="mt-6 inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-[12.5px] font-semibold text-[#0046EA]">
             <Recycle className="size-4" /> Actualización periódica verificable
           </div>
         </div>

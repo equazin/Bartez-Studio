@@ -79,7 +79,7 @@ export default function EmpresasPage() {
         eyebrow="Canal corporativo"
         title={
           <>
-            Soluciones IT completas <span className="text-[#1236d8]">para tu empresa.</span>
+            Soluciones IT completas <span className="text-[#0046EA]">para tu empresa.</span>
           </>
         }
         intro="Equipamos empresas de todos los rubros con tecnología de primera línea. Notebooks, servidores, redes, workstations y periféricos con asesoramiento profesional y cobertura nacional."
@@ -122,7 +122,7 @@ export default function EmpresasPage() {
       >
         <div className="grid gap-8 lg:grid-cols-[0.75fr_1.25fr] lg:items-start">
           <div className="rounded-lg border border-slate-200 bg-[#f7f9fc] p-6">
-            <Network className="size-7 text-[#1236d8]" strokeWidth={1.7} />
+            <Network className="size-7 text-[#0046EA]" strokeWidth={1.7} />
             <h3 className="mt-5 font-display text-[22px] font-extrabold text-[#11142a]">Compra corporativa sin friccion</h3>
             <p className="mt-3 text-[14px] leading-relaxed text-slate-600">
               Relevamos necesidad, cantidad, sedes y tiempos para que la propuesta llegue ordenada y con alternativas reales.

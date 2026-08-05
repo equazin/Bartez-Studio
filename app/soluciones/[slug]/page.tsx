@@ -124,7 +124,7 @@ export default async function VerticalPage({
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {vertical.bullets.map((bullet) => (
               <article key={bullet.title} className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200">
-                <CheckCircle2 className="size-6 text-[#1236d8]" strokeWidth={1.8} />
+                <CheckCircle2 className="size-6 text-[#0046EA]" strokeWidth={1.8} />
                 <h3 className="mt-5 font-display text-[17px] font-extrabold text-[#11142a]">{bullet.title}</h3>
                 <p className="mt-2 text-[13.5px] leading-relaxed text-slate-600">{bullet.desc}</p>
               </article>
@@ -141,7 +141,7 @@ export default async function VerticalPage({
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {vertical.capabilities.map((capability) => (
               <article key={capability.title} className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-                <Icon name={capability.icon} className="size-6 text-[#1236d8]" />
+                <Icon name={capability.icon} className="size-6 text-[#0046EA]" />
                 <h3 className="mt-4 font-display text-[16px] font-extrabold text-[#11142a]">{capability.title}</h3>
                 <p className="mt-2 text-[12.8px] leading-relaxed text-slate-600">{capability.desc}</p>
               </article>
@@ -153,10 +153,10 @@ export default async function VerticalPage({
           <ol className="grid gap-5 md:grid-cols-4">
             {processSteps.map((step, index) => (
               <li key={step.title} className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-                <span className="grid size-10 place-items-center rounded-lg border border-blue-100 bg-blue-50 font-display text-[13px] font-extrabold text-[#1236d8]">
+                <span className="grid size-10 place-items-center rounded-lg border border-blue-100 bg-blue-50 font-display text-[13px] font-extrabold text-[#0046EA]">
                   {index + 1}
                 </span>
-                <step.icon className="mt-6 size-6 text-[#1236d8]" strokeWidth={1.7} />
+                <step.icon className="mt-6 size-6 text-[#0046EA]" strokeWidth={1.7} />
                 <h3 className="mt-4 font-display text-[16px] font-extrabold text-[#11142a]">{step.title}</h3>
                 <p className="mt-2 text-[13px] leading-relaxed text-slate-600">{step.description}</p>
               </li>
@@ -184,11 +184,11 @@ export default async function VerticalPage({
                   href={`/soluciones/${item.slug}`}
                   className="group flex items-center gap-4 rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200"
                 >
-                  <span className="grid size-11 place-items-center rounded-lg border border-blue-100 bg-blue-50 text-[#1236d8]">
+                  <span className="grid size-11 place-items-center rounded-lg border border-blue-100 bg-blue-50 text-[#0046EA]">
                     <Icon name={item.icon} className="size-5" />
                   </span>
                   <span className="font-display text-[16px] font-extrabold text-[#11142a]">{item.navLabel}</span>
-                  <ArrowRight className="ml-auto size-4 text-[#1236d8] transition-transform group-hover:translate-x-1" />
+                  <ArrowRight className="ml-auto size-4 text-[#0046EA] transition-transform group-hover:translate-x-1" />
                 </Link>
               ))}
             </div>

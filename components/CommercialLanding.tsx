@@ -215,7 +215,7 @@ export function CommercialLanding({
       >
         <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
           <div className="rounded-lg border border-slate-200 bg-[#f7f9fc] p-6">
-            <CheckCircle2 className="size-7 text-[#1236d8]" strokeWidth={1.7} />
+            <CheckCircle2 className="size-7 text-[#0046EA]" strokeWidth={1.7} />
             <h3 className="mt-5 font-display text-[22px] font-extrabold text-[#11142a]">Propuesta con respaldo</h3>
             <p className="mt-3 text-[14px] leading-relaxed text-slate-600">
               No publicamos precios o promesas genéricas. Confirmamos el alcance según disponibilidad, marcas posibles y condiciones vigentes.
@@ -238,9 +238,9 @@ export function CommercialLanding({
             const Icon = step.icon;
             return (
               <div key={step.num} className="relative rounded-lg border border-blue-200/60 bg-white p-6 shadow-sm">
-                <span className="font-display text-[32px] font-extrabold leading-none text-[#1236d8]/15">{step.num}</span>
+                <span className="font-display text-[32px] font-extrabold leading-none text-[#0046EA]/15">{step.num}</span>
                 <span className="mt-3 grid size-10 place-items-center rounded-lg border border-blue-100 bg-blue-50">
-                  <Icon className="size-5 text-[#1236d8]" strokeWidth={1.7} />
+                  <Icon className="size-5 text-[#0046EA]" strokeWidth={1.7} />
                 </span>
                 <h3 className="mt-4 font-display text-[16px] font-extrabold text-[#11142a]">{step.title}</h3>
                 <p className="mt-2 text-[13px] leading-relaxed text-slate-600">{step.description}</p>

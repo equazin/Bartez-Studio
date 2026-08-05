@@ -31,7 +31,7 @@ const options: Option[] = [
     id: "notebook",
     name: "Notebook corporativa",
     icon: Laptop,
-    color: "#1236d8",
+    color: "#0046EA",
     ideal: "Movilidad y puestos híbridos",
     scale: "1 a 200+ equipos",
     strengths: ["Movilidad", "Bajo consumo", "Despliegue por flota"],
@@ -97,7 +97,7 @@ export default function ComparadorPage() {
       <main id="main-content" className="min-h-screen bg-white">
         {/* Hero */}
         <section className="relative overflow-hidden bg-[#070a16] pb-16 pt-24 text-white md:pb-20 md:pt-28">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-10%,rgba(18,54,216,0.25),transparent)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-10%,rgba(0,70,234,0.25),transparent)]" />
           <div className="relative mx-auto max-w-[1100px] px-6">
             <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 text-[12px] font-semibold text-blue-200">
               <span className="size-1.5 rounded-full bg-[#ff8f1f]" />
@@ -133,7 +133,7 @@ export default function ComparadorPage() {
                       aria-pressed={active}
                       className={`inline-flex items-center gap-2.5 rounded-xl border-2 px-4 py-3 text-[13px] font-bold transition ${
                         active
-                          ? "border-[#1236d8] bg-[#1236d8] text-white shadow-glow"
+                          ? "border-[#0046EA] bg-[#0046EA] text-white shadow-glow"
                           : "border-slate-100 text-slate-700 hover:border-slate-200"
                       }`}
                     >

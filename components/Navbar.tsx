@@ -56,8 +56,8 @@ const channelLinks = [
 
 const navLinkBase =
   "relative flex items-center h-[60px] px-3.5 text-[13px] font-semibold text-white/80 transition-colors hover:text-white after:absolute after:bottom-0 after:left-3.5 after:right-3.5 after:h-[2px] after:rounded-t after:transition-colors";
-const navLinkHover = "hover:after:bg-[#1236d8]/40";
-const navLinkActive = "text-white after:bg-[#1236d8]";
+const navLinkHover = "hover:after:bg-[#0046EA]/40";
+const navLinkActive = "text-white after:bg-[#0046EA]";
 const dropdownPanel =
   "invisible absolute left-1/2 top-[56px] -translate-x-1/2 translate-y-2 rounded-2xl border border-white/10 bg-[#0c1020] p-[18px] opacity-0 shadow-2xl transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100";
 
@@ -91,7 +91,7 @@ export function Navbar() {
   const isBarposActive = isActive("/barpos");
 
   return (
-    <header className="sticky inset-x-0 top-0 z-50 bg-[linear-gradient(180deg,#080b18,#060914)] text-white shadow-[0_1px_0_0_rgba(18,54,216,0.15),0_12px_32px_-16px_rgba(0,0,0,0.5)]">
+    <header className="sticky inset-x-0 top-0 z-50 bg-[linear-gradient(180deg,#080b18,#060914)] text-white shadow-[0_1px_0_0_rgba(0,70,234,0.15),0_12px_32px_-16px_rgba(0,0,0,0.5)]">
       <div className="mx-auto flex h-[60px] max-w-[1320px] min-w-0 items-center justify-between px-5 sm:px-6">
         {/* Left: logo + nav */}
         <div className="flex min-w-0 items-center">
@@ -139,7 +139,7 @@ export function Navbar() {
                 <div className="grid grid-cols-[1.1fr_1fr_1fr_0.85fr] gap-3">
                   <Link
                     href="/barpos"
-                    className="min-h-[188px] rounded-xl border border-[#ff8f1f]/25 bg-[radial-gradient(circle_at_24px_20px,rgba(255,143,31,0.23),transparent_34px),linear-gradient(145deg,rgba(255,143,31,0.16),rgba(18,54,216,0.14))] p-[18px] transition hover:border-[#ff8f1f]/45"
+                    className="min-h-[188px] rounded-xl border border-[#ff8f1f]/25 bg-[radial-gradient(circle_at_24px_20px,rgba(255,143,31,0.23),transparent_34px),linear-gradient(145deg,rgba(255,143,31,0.16),rgba(0,70,234,0.14))] p-[18px] transition hover:border-[#ff8f1f]/45"
                   >
                     <span className="text-[11px] font-bold uppercase tracking-[0.08em] text-[#ffd38b]">Acceso destacado</span>
                     <span className="mt-4 block text-[20px] font-extrabold leading-[1.05] tracking-[-0.035em] text-white">BarPOS punto de venta</span>
@@ -156,7 +156,7 @@ export function Navbar() {
                       ))}
                     </div>
                   ))}
-                  <div className="rounded-xl border border-[#1236d8]/20 bg-[#1236d8]/[0.06] p-3">
+                  <div className="rounded-xl border border-[#0046EA]/20 bg-[#0046EA]/[0.06] p-3">
                     <div className="mx-1 mb-2 mt-1 flex items-center gap-1.5">
                       <SlidersHorizontal size={12} className="text-[#8fb5ff]" />
                       <h3 className="text-[11px] font-bold uppercase tracking-[0.11em] text-[#8fb5ff]">Herramientas</h3>
@@ -228,7 +228,7 @@ export function Navbar() {
             href={whatsappLinks.quote}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-lg bg-[#1236d8] px-4 py-2 text-[12.5px] font-bold text-white shadow-[0_8px_20px_-8px_rgba(18,54,216,0.5)] transition hover:bg-[#0f2bb8]"
+            className="inline-flex items-center gap-2 rounded-lg bg-[#0046EA] px-4 py-2 text-[12.5px] font-bold text-white shadow-[0_8px_20px_-8px_rgba(0,70,234,0.5)] transition hover:bg-[#0038C4]"
             data-track="navbar_whatsapp_quote"
           >
             <MessageCircle size={15} strokeWidth={1.8} /> Cotizar
@@ -307,7 +307,7 @@ export function Navbar() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setOpen(false)}
-                className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-[#1236d8] px-5 py-3 text-[13px] font-bold text-white"
+                className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-[#0046EA] px-5 py-3 text-[13px] font-bold text-white"
               >
                 <MessageCircle size={16} /> Cotizar por WhatsApp
               </a>

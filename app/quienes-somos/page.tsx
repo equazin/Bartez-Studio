@@ -95,7 +95,7 @@ export default function QuienesSomosPage() {
         eyebrow="Distribuidora IT - Rosario"
         title={
           <>
-            Distribuyendo tecnología <span className="text-[#1236d8]">hace 18 años.</span>
+            Distribuyendo tecnología <span className="text-[#0046EA]">hace 18 años.</span>
           </>
         }
         intro={company.description}
@@ -129,7 +129,7 @@ export default function QuienesSomosPage() {
       >
         <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
           <div className="rounded-lg border border-slate-200 bg-[#f7f9fc] p-6">
-            <CheckCircle2 className="size-7 text-[#1236d8]" strokeWidth={1.7} />
+            <CheckCircle2 className="size-7 text-[#0046EA]" strokeWidth={1.7} />
             <h3 className="mt-5 font-display text-[22px] font-extrabold text-[#11142a]">Nuestra ventaja competitiva</h3>
             <p className="mt-3 text-[14.5px] leading-relaxed text-slate-600">
               Combinamos experiencia en el rubro, asesoramiento personalizado y una atención cercana para traducir necesidades reales en propuestas concretas.
@@ -161,7 +161,7 @@ export default function QuienesSomosPage() {
                 <span
                   className={`relative z-10 grid size-11 sm:size-14 flex-none place-items-center rounded-full border-2 ${
                     isLast
-                      ? "border-brand bg-brand text-white shadow-[0_18px_36px_-18px_rgba(18,54,216,0.7)]"
+                      ? "border-brand bg-brand text-white shadow-[0_18px_36px_-18px_rgba(0,70,234,0.7)]"
                       : "border-blue-200 bg-white text-brand shadow-sm"
                   }`}
                 >

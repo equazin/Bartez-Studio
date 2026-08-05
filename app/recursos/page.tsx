@@ -27,7 +27,7 @@ export default async function Recursos() {
         eyebrow="Recursos"
         title={
           <>
-            Criterio para mejores <span className="text-[#1236d8]">decisiones IT.</span>
+            Criterio para mejores <span className="text-[#0046EA]">decisiones IT.</span>
           </>
         }
         intro="Contenido práctico para tomar mejores decisiones de tecnología en tu organización: infraestructura, equipos, continuidad y compras B2B."
@@ -69,7 +69,7 @@ export default async function Recursos() {
                 </div>
                 <h2 className="mt-3 font-display text-[21px] font-extrabold leading-snug text-[#11142a]">{article.title}</h2>
                 <p className="mt-2 flex-1 text-[14px] leading-relaxed text-slate-600">{article.excerpt}</p>
-                <span className="mt-5 inline-flex items-center gap-1.5 text-[14px] font-bold text-[#1236d8]">
+                <span className="mt-5 inline-flex items-center gap-1.5 text-[14px] font-bold text-[#0046EA]">
                   Leer guía <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
                 </span>
               </div>

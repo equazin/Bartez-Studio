@@ -4,7 +4,7 @@
 
 :root {
   --bartez-ink: #11142a;
-  --bartez-brand: #1236d8;
+  --bartez-brand: #0046EA;
 }
 
 html {
@@ -20,7 +20,7 @@ body {
 }
 
 ::selection {
-  background: rgba(18, 54, 216, 0.15);
+  background: rgba(0, 70, 234, 0.15);
 }
 
 :focus-visible {
@@ -94,13 +94,13 @@ body {
   }
   /* gradiente de marca para textos / líneas */
   .brand-gradient {
-    background-image: linear-gradient(90deg, #1236d8, #006dff);
+    background-image: linear-gradient(90deg, #0046EA, #006dff);
   }
   .cta-gradient {
     background-image: linear-gradient(90deg, #ff7a18, #ff8f1f, #ffb000);
   }
   .text-gradient {
-    background: linear-gradient(90deg, #1236d8, #0ea5ff);
+    background: linear-gradient(90deg, #0046EA, #0ea5ff);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;

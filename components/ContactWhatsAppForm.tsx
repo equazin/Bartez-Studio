@@ -6,7 +6,7 @@ import { track } from "@/components/Analytics";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 const topics = ["Cotización de equipos", "Programa de revendedores", "Garantía / RMA", "Educación", "Sector público", "Servicios IT", "Otro"];
-const inputClass = "w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-[14px] text-[#11142a] outline-none transition placeholder:text-slate-400 focus:border-[#1236d8] focus:ring-2 focus:ring-blue-100 disabled:cursor-not-allowed disabled:opacity-60";
+const inputClass = "w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-[14px] text-[#11142a] outline-none transition placeholder:text-slate-400 focus:border-[#0046EA] focus:ring-2 focus:ring-blue-100 disabled:cursor-not-allowed disabled:opacity-60";
 
 export function ContactWhatsAppForm() {
   const [form, setForm] = useState({ nombre: "", empresa: "", provincia: "", tema: "Cotización de equipos", mensaje: "" });

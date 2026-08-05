@@ -11,8 +11,8 @@ const config: Config = {
       colors: {
         ink: "#11142a",
         navy: "#070a16",
-        brand: "#1236d8",
-        "brand-bright": "#0f2bb8",
+        brand: "#0046EA",
+        "brand-bright": "#0038C4",
         accent: "#0ea5ff",
         sky: "#0ea5ff",
         emerald: "#10B981",
@@ -36,7 +36,7 @@ const config: Config = {
       boxShadow: {
         soft: "0 1px 2px rgba(15,23,42,.06)",
         card: "0 24px 50px -28px rgba(15,39,71,.45)",
-        glow: "0 14px 34px -12px rgba(18,54,216,.4)",
+        glow: "0 14px 34px -12px rgba(0,70,234,.4)",
         ring: "0 0 0 1px rgba(226,232,240,1)",
       },
       backgroundImage: {

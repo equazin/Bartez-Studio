@@ -53,7 +53,7 @@ export default function MarcasPage() {
         eyebrow="Portfolio de fabricantes"
         title={
           <>
-            Marcas que trabajamos <span className="text-[#1236d8]">para cada proyecto.</span>
+            Marcas que trabajamos <span className="text-[#0046EA]">para cada proyecto.</span>
           </>
         }
         intro="Trabajamos con fabricantes reconocidos en equipamiento, infraestructura, redes, componentes y punto de venta. Consultanos disponibilidad, alternativas y condiciones para tu empresa o canal."
@@ -76,7 +76,7 @@ export default function MarcasPage() {
             ))}
           </div>
           <div className="border-t border-slate-200 bg-[#f7f9fc] p-6">
-            <p className="text-[13px] font-bold text-[#1236d8]">Hardware, software, energía y conectividad</p>
+            <p className="text-[13px] font-bold text-[#0046EA]">Hardware, software, energía y conectividad</p>
             <h2 className="mt-2 font-display text-[24px] font-extrabold text-[#11142a]">Selección por categoría, disponibilidad y contexto.</h2>
             <p className="mt-2 text-[13.5px] leading-relaxed text-slate-600">
               No empujamos una sola marca. Comparamos alternativas según uso, presupuesto y plazo de entrega.
@@ -109,21 +109,21 @@ export default function MarcasPage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`Cotizar productos de ${brand.name} por WhatsApp`}
-                className="group flex flex-col rounded-lg border border-slate-200 bg-white p-6 shadow-[0_18px_50px_-40px_rgba(17,20,42,0.35)] transition hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-[0_24px_60px_-36px_rgba(18,54,216,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50"
+                className="group flex flex-col rounded-lg border border-slate-200 bg-white p-6 shadow-[0_18px_50px_-40px_rgba(17,20,42,0.35)] transition hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-[0_24px_60px_-36px_rgba(0,70,234,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50"
               >
-                <p className="text-[12px] font-bold text-[#1236d8]">{brand.category}</p>
+                <p className="text-[12px] font-bold text-[#0046EA]">{brand.category}</p>
                 <div className="mt-4 flex h-14 items-center">
                   <Image src={brand.logo} alt={brand.name} width={180} height={52} className="h-12 w-auto object-contain object-left" />
                 </div>
                 <div className="mt-5 grid grid-cols-2 gap-2">
                   {brand.products.map((product) => (
                     <div key={product} className="flex min-w-0 items-center gap-2 rounded-lg border border-slate-200 bg-[#f7f9fc] px-3 py-2">
-                      <Package className="size-3.5 flex-none text-[#1236d8]" strokeWidth={1.7} />
+                      <Package className="size-3.5 flex-none text-[#0046EA]" strokeWidth={1.7} />
                       <span className="min-w-0 text-[12px] font-medium leading-snug text-slate-700">{product}</span>
                     </div>
                   ))}
                 </div>
-                <span className="mt-5 inline-flex items-center gap-1.5 text-[12.5px] font-bold text-[#1236d8] opacity-0 transition group-hover:opacity-100 group-focus-visible:opacity-100">
+                <span className="mt-5 inline-flex items-center gap-1.5 text-[12.5px] font-bold text-[#0046EA] opacity-0 transition group-hover:opacity-100 group-focus-visible:opacity-100">
                   Cotizar {brand.name} por WhatsApp <ArrowRight size={13} />
                 </span>
               </a>
@@ -136,7 +136,7 @@ export default function MarcasPage() {
         <div className="grid gap-5 md:grid-cols-3">
           {["Modelos equivalentes cuando no hay stock", "Plazos confirmados al momento de cotizar", "Condiciones por volumen para empresas y canal"].map((item) => (
             <div key={item} className="flex gap-3 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-              <CheckCircle2 className="mt-0.5 size-5 flex-none text-[#1236d8]" strokeWidth={1.8} />
+              <CheckCircle2 className="mt-0.5 size-5 flex-none text-[#0046EA]" strokeWidth={1.8} />
               <p className="text-[14px] font-semibold leading-relaxed text-[#11142a]">{item}</p>
             </div>
           ))}

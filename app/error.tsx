@@ -17,8 +17,8 @@ export default function GlobalError({
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-center px-6 text-center">
       <div className="mx-auto max-w-md">
-        <div className="mx-auto mb-6 flex size-16 items-center justify-center rounded-full bg-[#1236d8]/10">
-          <AlertTriangle className="size-8 text-[#1236d8]" />
+        <div className="mx-auto mb-6 flex size-16 items-center justify-center rounded-full bg-[#0046EA]/10">
+          <AlertTriangle className="size-8 text-[#0046EA]" />
         </div>
         <h2 className="font-display text-2xl font-bold text-[#11142a]">
           Algo salio mal
@@ -34,7 +34,7 @@ export default function GlobalError({
         <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <button
             onClick={reset}
-            className="inline-flex h-11 items-center justify-center rounded-lg bg-[#1236d8] px-6 text-[14px] font-bold text-white transition-colors hover:bg-[#0f2fb8]"
+            className="inline-flex h-11 items-center justify-center rounded-lg bg-[#0046EA] px-6 text-[14px] font-bold text-white transition-colors hover:bg-[#0f2fb8]"
           >
             Reintentar
           </button>

@@ -16,7 +16,7 @@ export default function Gracias() {
     <main id="main-content" className="grid min-h-screen place-items-center bg-[linear-gradient(135deg,#070a16_0%,#11142a_100%)] px-7 text-white">
       <ConversionTracker />
       <div className="max-w-[520px] text-center">
-        <span className="mx-auto mb-7 grid h-16 w-16 place-items-center rounded-full bg-[#1236d8]/15 text-[#0ea5ff]">
+        <span className="mx-auto mb-7 grid h-16 w-16 place-items-center rounded-full bg-[#0046EA]/15 text-[#0ea5ff]">
           <CheckCircle2 size={36} />
         </span>
         <h1 className="font-display text-[clamp(32px,5vw,50px)] font-bold leading-tight tracking-[-0.02em]">¡Gracias! Recibimos tu consulta.</h1>

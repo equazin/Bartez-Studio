@@ -111,7 +111,7 @@ export default function RevendedoresPage() {
         eyebrowIcon={Handshake}
         title={
           <>
-            Revende tecnología de <span className="text-violet-700">primera línea.</span>
+            Revende tecnología de <span className="text-brand">primera línea.</span>
           </>
         }
         intro="Sumate al canal de distribución de Bartez. Condiciones comerciales competitivas, marcas líderes y 18 años de experiencia para acompañar el crecimiento de tu negocio."
@@ -155,7 +155,7 @@ export default function RevendedoresPage() {
         <ol className="grid gap-5 md:grid-cols-4">
           {steps.map((step) => (
             <li key={step.num} className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-              <span className="grid size-10 place-items-center rounded-lg border border-blue-100 bg-blue-50 font-display text-[13px] font-extrabold text-[#1236d8]">
+              <span className="grid size-10 place-items-center rounded-lg border border-blue-100 bg-blue-50 font-display text-[13px] font-extrabold text-[#0046EA]">
                 {step.num}
               </span>
               <h3 className="mt-5 font-display text-[17px] font-extrabold text-[#11142a]">{step.title}</h3>
@@ -168,7 +168,7 @@ export default function RevendedoresPage() {
       <section id="registro" className="scroll-mt-24 border-y border-slate-200 bg-[#f7f9fc] py-16 md:py-20">
         <div className="mx-auto grid max-w-[1200px] gap-10 px-6 lg:grid-cols-[0.74fr_1.26fr] lg:gap-14">
           <div>
-            <p className="text-[13px] font-bold text-[#1236d8]">Registro de canal</p>
+            <p className="text-[13px] font-bold text-[#0046EA]">Registro de canal</p>
             <h2 className="mt-2 font-display text-[clamp(30px,4vw,46px)] font-extrabold leading-[1.05] text-[#11142a]">
               Contaños sobre tu negocio.
             </h2>
@@ -179,7 +179,7 @@ export default function RevendedoresPage() {
               href={whatsappLinks.reseller}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-7 inline-flex items-center gap-2 rounded-lg border border-blue-200 bg-white px-5 py-3 text-[14px] font-bold text-[#1236d8] shadow-sm hover:border-[#1236d8] hover:bg-blue-50"
+              className="mt-7 inline-flex items-center gap-2 rounded-lg border border-blue-200 bg-white px-5 py-3 text-[14px] font-bold text-[#0046EA] shadow-sm hover:border-[#0046EA] hover:bg-blue-50"
             >
               <MessageCircle size={17} /> Prefiero WhatsApp
             </a>
@@ -198,7 +198,7 @@ export default function RevendedoresPage() {
           {faqs.map((item) => (
             <article key={item.q} className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
               <div className="flex gap-3">
-                <CheckCircle2 className="mt-0.5 size-5 flex-none text-[#1236d8]" strokeWidth={1.8} />
+                <CheckCircle2 className="mt-0.5 size-5 flex-none text-[#0046EA]" strokeWidth={1.8} />
                 <div>
                   <h3 className="font-display text-[16px] font-extrabold text-[#11142a]">{item.q}</h3>
                   <p className="mt-2 text-[13.5px] leading-relaxed text-slate-600">{item.a}</p>

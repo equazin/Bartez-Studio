@@ -105,7 +105,7 @@ export default function BarposPage() {
           <div className="mx-auto grid max-w-[1320px] gap-10 px-5 py-14 sm:px-6 md:py-18 lg:grid-cols-[0.82fr_1.18fr] lg:items-center lg:py-20">
             <div className="relative z-10">
               <p className="text-[13px] font-black uppercase tracking-[0.13em] text-[#071033]">
-                Punto de venta <span className="text-[#1236d8]">electronico</span>
+                Punto de venta <span className="text-[#0046EA]">electronico</span>
               </p>
               <h1 className="mt-4 font-display text-[clamp(52px,7vw,92px)] font-black leading-[0.94] tracking-[-0.055em] text-[#071033] text-balance">
                 Bar<span className="text-[#1254e8]">POS 4.0</span>
@@ -138,7 +138,7 @@ export default function BarposPage() {
             </div>
 
             <div className="relative z-10 min-h-[360px] lg:min-h-[560px]">
-              <div className="absolute right-0 top-6 z-20 hidden rotate-1 rounded-lg border-4 border-[#1254e8] bg-[#0845c8] px-5 py-4 text-center font-display text-[22px] font-black uppercase leading-[0.95] text-white shadow-[0_18px_32px_-18px_rgba(18,54,216,0.8)] md:block">
+              <div className="absolute right-0 top-6 z-20 hidden rotate-1 rounded-lg border-4 border-[#1254e8] bg-[#0845c8] px-5 py-4 text-center font-display text-[22px] font-black uppercase leading-[0.95] text-white shadow-[0_18px_32px_-18px_rgba(0,70,234,0.8)] md:block">
                 Mejor precio<br />del mercado
                 <div className="mx-auto mt-2 grid size-14 place-items-center rounded-full border-4 border-white bg-white text-[#1254e8]">
                   <BadgeCheck size={28} fill="currentColor" strokeWidth={1.6} />
@@ -238,7 +238,7 @@ export default function BarposPage() {
               <Link href="#consulta" className="mt-8 inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-[#1254e8] bg-white px-5 py-3 text-[14px] font-extrabold text-[#1254e8] transition hover:bg-blue-50">
                 Conocer BarPOS 4.0 <ArrowRight size={17} strokeWidth={2} />
               </Link>
-              <div className="relative mt-9 overflow-hidden rounded-lg border border-[#cbdcfb] bg-[#071033] p-2 shadow-[0_28px_70px_-48px_rgba(18,54,216,0.7)]">
+              <div className="relative mt-9 overflow-hidden rounded-lg border border-[#cbdcfb] bg-[#071033] p-2 shadow-[0_28px_70px_-48px_rgba(0,70,234,0.7)]">
                 <Image src="/photos/barpos/software.png" alt="Pantalla principal del software BarPOS 4.0" width={1749} height={1001} className="rounded-md object-cover" />
               </div>
             </div>

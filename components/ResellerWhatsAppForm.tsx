@@ -6,7 +6,7 @@ import { track } from "@/components/Analytics";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 const inputClass =
-  "w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-[14px] text-[#11142a] outline-none transition placeholder:text-slate-400 focus:border-[#1236d8] focus:ring-2 focus:ring-blue-100";
+  "w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-[14px] text-[#11142a] outline-none transition placeholder:text-slate-400 focus:border-[#0046EA] focus:ring-2 focus:ring-blue-100";
 
 export function ResellerWhatsAppForm() {
   const [form, setForm] = useState({

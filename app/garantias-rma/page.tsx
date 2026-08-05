@@ -55,7 +55,7 @@ export default function GarantiasRmaPage() {
         eyebrowIcon={Shield}
         title={
           <>
-            Tu compra está respaldada. <span className="text-[#1236d8]">Siempre.</span>
+            Tu compra está respaldada. <span className="text-[#0046EA]">Siempre.</span>
           </>
         }
         intro="Si un producto presenta una falla, te ayudamos a identificar el procedimiento aplicable y acompañamos el seguimiento con información clara en cada paso."
@@ -85,7 +85,7 @@ export default function GarantiasRmaPage() {
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {brands.map((brand) => (
             <article key={brand.name} className="flex gap-4 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-              <Package className="mt-0.5 size-5 flex-none text-[#1236d8]" strokeWidth={1.7} />
+              <Package className="mt-0.5 size-5 flex-none text-[#0046EA]" strokeWidth={1.7} />
               <div>
                 <p className="font-display text-[16px] font-extrabold text-[#11142a]">{brand.name}</p>
                 <p className="mt-1 text-[13.5px] leading-relaxed text-slate-600">{brand.warranty}</p>
@@ -99,8 +99,8 @@ export default function GarantiasRmaPage() {
         <ol className="grid gap-5 md:grid-cols-4">
           {steps.map((step) => (
             <li key={step.num} className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-              <span className="grid size-10 place-items-center rounded-lg border border-blue-100 bg-blue-50 font-display text-[13px] font-extrabold text-[#1236d8]">{step.num}</span>
-              <step.icon className="mt-6 size-6 text-[#1236d8]" strokeWidth={1.7} />
+              <span className="grid size-10 place-items-center rounded-lg border border-blue-100 bg-blue-50 font-display text-[13px] font-extrabold text-[#0046EA]">{step.num}</span>
+              <step.icon className="mt-6 size-6 text-[#0046EA]" strokeWidth={1.7} />
               <h3 className="mt-4 font-display text-[16px] font-extrabold text-[#11142a]">{step.title}</h3>
               <p className="mt-2 text-[13px] leading-relaxed text-slate-600">{step.desc}</p>
             </li>
@@ -112,7 +112,7 @@ export default function GarantiasRmaPage() {
         <div className="grid gap-8 lg:grid-cols-2">
           <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
             <h3 className="flex items-center gap-2 font-display text-[22px] font-extrabold text-[#11142a]">
-              <CheckCircle2 className="size-6 text-[#1236d8]" strokeWidth={1.8} /> Qué cubre
+              <CheckCircle2 className="size-6 text-[#0046EA]" strokeWidth={1.8} /> Qué cubre
             </h3>
             <InternalChecklist items={covered} className="mt-6" />
           </div>

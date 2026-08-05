@@ -44,7 +44,7 @@ const profiles: Profile[] = [
     description:
       "Tareas diarias, herramientas SaaS, paquete Office y navegación fluida.",
     icon: Laptop,
-    color: "#1236d8",
+    color: "#0046EA",
     recommendation: {
       cpu: "Intel Core i5 / AMD Ryzen 5 (Última generación)",
       ram: "16 GB DDR4 Dual Channel",
@@ -160,7 +160,7 @@ export default function Configurador() {
       <main id="main-content" className="min-h-screen bg-white">
         {/* Hero */}
         <section className="relative overflow-hidden bg-[#070a16] pb-16 pt-24 text-white md:pb-20 md:pt-28">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-10%,rgba(18,54,216,0.25),transparent)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-10%,rgba(0,70,234,0.25),transparent)]" />
           <div className="relative mx-auto max-w-[900px] px-6 text-center">
             <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 text-[12px] font-semibold text-blue-200">
               <span className="size-1.5 rounded-full bg-[#0ea5ff]" />
@@ -194,16 +194,16 @@ export default function Configurador() {
                     }}
                     className={`flex items-center gap-2 rounded-xl px-3 py-2.5 text-[13px] font-semibold transition sm:px-4 ${
                       step === s.num
-                        ? "bg-[#1236d8] text-white shadow-glow"
+                        ? "bg-[#0046EA] text-white shadow-glow"
                         : step > s.num
-                          ? "bg-blue-50 text-[#1236d8] hover:bg-blue-100"
+                          ? "bg-blue-50 text-[#0046EA] hover:bg-blue-100"
                           : "text-slate-400"
                     }`}
                   >
                     <span
                       className={`grid size-6 place-items-center rounded-full text-[11px] font-bold ${
                         step > s.num
-                          ? "bg-[#1236d8] text-white"
+                          ? "bg-[#0046EA] text-white"
                           : step === s.num
                             ? "bg-white/20 text-white"
                             : "bg-slate-100 text-slate-400"
@@ -215,7 +215,7 @@ export default function Configurador() {
                   </button>
                   {s.num < 3 && (
                     <span
-                      className={`mx-1 h-px w-6 sm:w-10 ${step > s.num ? "bg-[#1236d8]" : "bg-slate-200"}`}
+                      className={`mx-1 h-px w-6 sm:w-10 ${step > s.num ? "bg-[#0046EA]" : "bg-slate-200"}`}
                     />
                   )}
                 </div>
@@ -246,12 +246,12 @@ export default function Configurador() {
                           onClick={() => setSelectedProfile(p.id)}
                           className={`group relative flex flex-col text-left rounded-xl border-2 p-5 transition-all ${
                             active
-                              ? "border-[#1236d8] bg-[#1236d8]/[0.03] shadow-[0_0_0_1px_rgba(18,54,216,0.15)]"
+                              ? "border-[#0046EA] bg-[#0046EA]/[0.03] shadow-[0_0_0_1px_rgba(0,70,234,0.15)]"
                               : "border-slate-100 hover:border-slate-200 hover:shadow-soft"
                           }`}
                         >
                           {active && (
-                            <span className="absolute right-3 top-3 grid size-6 place-items-center rounded-full bg-[#1236d8] text-white">
+                            <span className="absolute right-3 top-3 grid size-6 place-items-center rounded-full bg-[#0046EA] text-white">
                               <Check size={13} />
                             </span>
                           )}
@@ -281,7 +281,7 @@ export default function Configurador() {
                     <button
                       onClick={handleNext}
                       disabled={!selectedProfile}
-                      className="inline-flex items-center gap-2 rounded-xl bg-[#1236d8] px-7 py-3 text-[14px] font-bold text-white shadow-glow transition hover:bg-[#0f2bb8] disabled:opacity-30 disabled:shadow-none"
+                      className="inline-flex items-center gap-2 rounded-xl bg-[#0046EA] px-7 py-3 text-[14px] font-bold text-white shadow-glow transition hover:bg-[#0038C4] disabled:opacity-30 disabled:shadow-none"
                     >
                       Siguiente <ArrowRight size={16} />
                     </button>
@@ -312,7 +312,7 @@ export default function Configurador() {
                             onClick={() => setQuantity(q)}
                             className={`rounded-xl border-2 py-3.5 text-center text-[14px] font-bold transition ${
                               quantity === q
-                                ? "border-[#1236d8] bg-[#1236d8] text-white shadow-glow"
+                                ? "border-[#0046EA] bg-[#0046EA] text-white shadow-glow"
                                 : "border-slate-100 text-slate-700 hover:border-slate-200"
                             }`}
                           >
@@ -353,7 +353,7 @@ export default function Configurador() {
                             onClick={() => setIntensity(item.name)}
                             className={`rounded-xl border-2 p-4 text-left transition ${
                               intensity === item.name
-                                ? "border-[#1236d8] bg-[#1236d8]/[0.03] shadow-[0_0_0_1px_rgba(18,54,216,0.15)]"
+                                ? "border-[#0046EA] bg-[#0046EA]/[0.03] shadow-[0_0_0_1px_rgba(0,70,234,0.15)]"
                                 : "border-slate-100 hover:border-slate-200"
                             }`}
                           >
@@ -365,7 +365,7 @@ export default function Configurador() {
                                 {[1, 2, 3].map((i) => (
                                   <span
                                     key={i}
-                                    className={`size-1.5 rounded-full ${i <= item.level ? "bg-[#1236d8]" : "bg-slate-200"}`}
+                                    className={`size-1.5 rounded-full ${i <= item.level ? "bg-[#0046EA]" : "bg-slate-200"}`}
                                   />
                                 ))}
                               </span>
@@ -388,7 +388,7 @@ export default function Configurador() {
                     </button>
                     <button
                       onClick={handleNext}
-                      className="inline-flex items-center gap-2 rounded-xl bg-[#1236d8] px-7 py-3 text-[14px] font-bold text-white shadow-glow transition hover:bg-[#0f2bb8]"
+                      className="inline-flex items-center gap-2 rounded-xl bg-[#0046EA] px-7 py-3 text-[14px] font-bold text-white shadow-glow transition hover:bg-[#0038C4]"
                     >
                       Generar recomendación <ArrowRight size={16} />
                     </button>
@@ -456,7 +456,7 @@ export default function Configurador() {
                             key={spec.key}
                             className="flex items-start gap-4 rounded-xl border border-slate-100 bg-slate-50/50 p-4"
                           >
-                            <span className="mt-0.5 grid size-9 flex-none place-items-center rounded-lg bg-[#1236d8]/10 text-[#1236d8]">
+                            <span className="mt-0.5 grid size-9 flex-none place-items-center rounded-lg bg-[#0046EA]/10 text-[#0046EA]">
                               <Icon size={18} />
                             </span>
                             <div>
@@ -487,7 +487,7 @@ export default function Configurador() {
                         {profileData.recommendation.brands.map((b) => (
                           <span
                             key={b}
-                            className="rounded-full bg-[#1236d8]/8 px-3 py-0.5 text-[12px] font-semibold text-[#1236d8]"
+                            className="rounded-full bg-[#0046EA]/8 px-3 py-0.5 text-[12px] font-semibold text-[#0046EA]"
                           >
                             {b}
                           </span>

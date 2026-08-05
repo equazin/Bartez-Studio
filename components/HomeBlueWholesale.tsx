@@ -134,7 +134,7 @@ export function HomeBlueWholesale() {
         <Navbar />
 
         <section className="relative overflow-hidden border-b border-slate-200 bg-white">
-          <div className="absolute inset-y-0 right-0 hidden w-[46%] bg-[linear-gradient(132deg,transparent_0%,transparent_25%,rgba(18,54,216,0.08)_25%,rgba(18,54,216,0.08)_62%,transparent_62%)] lg:block" />
+          <div className="absolute inset-y-0 right-0 hidden w-[46%] bg-[linear-gradient(132deg,transparent_0%,transparent_25%,rgba(0,70,234,0.08)_25%,rgba(0,70,234,0.08)_62%,transparent_62%)] lg:block" />
           <div className="absolute right-0 top-20 hidden h-64 w-40 bg-[radial-gradient(circle,#b8cdfd_1px,transparent_1.6px)] opacity-55 [background-size:10px_10px] lg:block" />
           <div className="relative mx-auto grid max-w-[1320px] items-center gap-8 px-6 pb-8 pt-12 lg:grid-cols-[0.82fr_1.18fr] lg:px-10 lg:pb-10 lg:pt-14">
             <div className="relative z-10 min-w-0">
@@ -151,7 +151,7 @@ export function HomeBlueWholesale() {
                   href={whatsappLinks.quote}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-6 py-3.5 text-[14px] font-black text-white shadow-[0_18px_38px_-18px_rgba(18,54,216,0.65)] transition hover:-translate-y-0.5 hover:bg-brand-bright"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-6 py-3.5 text-[14px] font-black text-white shadow-[0_18px_38px_-18px_rgba(0,70,234,0.65)] transition hover:-translate-y-0.5 hover:bg-brand-bright"
                 >
                   <MessageCircle size={19} /> Cotizar por WhatsApp
                 </a>
@@ -161,7 +161,7 @@ export function HomeBlueWholesale() {
               </div>
             </div>
 
-            <div className="relative z-10 min-h-[300px] overflow-hidden rounded-3xl border border-blue-100 bg-[#f7f9ff] shadow-[0_34px_90px_-62px_rgba(18,54,216,0.6)] lg:min-h-[430px]">
+            <div className="relative z-10 min-h-[300px] overflow-hidden rounded-3xl border border-blue-100 bg-[#f7f9ff] shadow-[0_34px_90px_-62px_rgba(0,70,234,0.6)] lg:min-h-[430px]">
               <div className="absolute inset-y-0 right-0 w-[78%] origin-bottom-left -skew-x-12 overflow-hidden rounded-l-[48px] bg-brand/10">
                 <Image
                   src="/photos/home/warehouse-hero.png"
@@ -171,7 +171,7 @@ export function HomeBlueWholesale() {
                   sizes="(max-width: 1024px) 80vw, 620px"
                   className="scale-110 object-cover object-center opacity-80 skew-x-12"
                 />
-                <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(50,20,180,0.62),rgba(18,54,216,0.22)_45%,rgba(255,255,255,0.08))]" />
+                <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(50,20,180,0.62),rgba(0,70,234,0.22)_45%,rgba(255,255,255,0.08))]" />
               </div>
               <div className="absolute inset-0 bg-[linear-gradient(90deg,#fff_0%,rgba(255,255,255,0.9)_20%,rgba(255,255,255,0.22)_54%,rgba(255,255,255,0)_100%)]" />
               <Image
@@ -202,9 +202,9 @@ export function HomeBlueWholesale() {
         <section className="bg-white py-10 lg:py-16">
           <div className="mx-auto grid max-w-[1320px] gap-5 px-6 sm:grid-cols-2 lg:grid-cols-4 lg:px-10">
             {audienceCards.map((card) => (
-              <article key={card.title} className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_22px_70px_-54px_rgba(15,23,42,0.75)] transition hover:-translate-y-1 hover:shadow-[0_28px_80px_-48px_rgba(18,54,216,0.5)]">
+              <article key={card.title} className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_22px_70px_-54px_rgba(15,23,42,0.75)] transition hover:-translate-y-1 hover:shadow-[0_28px_80px_-48px_rgba(0,70,234,0.5)]">
                 <div className="p-6">
-                  <span className="grid size-14 place-items-center rounded-full bg-gradient-to-br from-[#1236d8] via-[#006dff] to-[#0ea5ff] text-white">
+                  <span className="grid size-14 place-items-center rounded-full bg-gradient-to-br from-[#0046EA] via-[#006dff] to-[#0ea5ff] text-white">
                     <card.icon size={27} strokeWidth={1.7} />
                   </span>
                   <h3 className="mt-5 font-display text-[22px] font-black tracking-[-0.035em] text-ink">{card.title}</h3>
@@ -266,20 +266,20 @@ export function HomeBlueWholesale() {
                 <span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-black text-brand">Usar herramienta <ArrowRight size={15} /></span>
               </Link>
               <Link href="/comparador" className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-soft transition hover:-translate-y-1 hover:shadow-card">
-                <span className="grid size-12 place-items-center rounded-xl bg-[#7c3aed]/10 text-[#7c3aed] transition group-hover:bg-[#7c3aed] group-hover:text-white">
+                <span className="grid size-12 place-items-center rounded-xl bg-brand/10 text-brand transition group-hover:bg-brand group-hover:text-white">
                   <GitCompareArrows size={24} strokeWidth={1.8} />
                 </span>
                 <h3 className="mt-4 font-display text-[20px] font-black tracking-[-0.03em] text-ink">Comparador orientativo</h3>
                 <p className="mt-2 text-[13px] leading-relaxed text-slate-600">Compará hasta 3 familias de equipos para ordenar la decisión según tu escenario real.</p>
-                <span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-black text-[#7c3aed]">Comparar equipos <ArrowRight size={15} /></span>
+                <span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-black text-brand">Comparar equipos <ArrowRight size={15} /></span>
               </Link>
               <Link href="/rfq" className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-soft transition hover:-translate-y-1 hover:shadow-card">
-                <span className="grid size-12 place-items-center rounded-xl bg-sunset/10 text-sunset transition group-hover:bg-sunset group-hover:text-white">
+                <span className="grid size-12 place-items-center rounded-xl bg-brand/10 text-brand transition group-hover:bg-brand group-hover:text-white">
                   <ClipboardList size={24} strokeWidth={1.8} />
                 </span>
                 <h3 className="mt-4 font-display text-[20px] font-black tracking-[-0.03em] text-ink">Cotización masiva (RFQ)</h3>
                 <p className="mt-2 text-[13px] leading-relaxed text-slate-600">Cargá tu pliego o lista técnica y recibí una propuesta formal con condiciones B2B en 24 hs.</p>
-                <span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-black text-sunset">Iniciar RFQ <ArrowRight size={15} /></span>
+                <span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-black text-brand">Iniciar RFQ <ArrowRight size={15} /></span>
               </Link>
             </div>
           </div>
@@ -330,7 +330,7 @@ export function HomeBlueWholesale() {
 
         <section className="bg-white py-10">
           <div className="mx-auto max-w-[1320px] px-6 lg:px-10">
-            <div className="relative overflow-hidden rounded-[28px] bg-gradient-to-br from-[#071d78] via-[#1236d8] to-[#0ea5ff] p-7 text-white shadow-[0_34px_80px_-44px_rgba(0,109,255,0.85)] md:p-10">
+            <div className="relative overflow-hidden rounded-[28px] bg-gradient-to-br from-[#071d78] via-[#0046EA] to-[#0ea5ff] p-7 text-white shadow-[0_34px_80px_-44px_rgba(0,109,255,0.85)] md:p-10">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_50%,rgba(255,255,255,0.24),transparent_20%),radial-gradient(circle_at_88%_0%,rgba(255,176,0,0.18),transparent_26%)]" />
               <div className="relative grid items-center gap-8 lg:grid-cols-[1fr_auto]">
                 <div className="flex items-center gap-5">

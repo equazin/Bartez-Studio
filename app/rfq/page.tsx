@@ -101,7 +101,7 @@ export default function Rfq() {
       <main id="main-content" className="min-h-screen bg-white">
         {/* Hero */}
         <section className="relative overflow-hidden bg-navy pb-16 pt-24 text-white md:pb-20 md:pt-28">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-10%,rgba(18,54,216,0.25),transparent)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-10%,rgba(0,70,234,0.25),transparent)]" />
           <div className="relative mx-auto max-w-[1200px] px-6">
             <div className="grid items-center gap-10 lg:grid-cols-[1fr_1.1fr]">
               <div>
@@ -400,7 +400,7 @@ export default function Rfq() {
             </div>
 
             {/* Reseller callout */}
-            <div className="mt-8 rounded-2xl border border-[#1236d8]/15 bg-brand/[0.03] p-5 text-center">
+            <div className="mt-8 rounded-2xl border border-[#0046EA]/15 bg-brand/[0.03] p-5 text-center">
               <p className="text-[13px] text-slate-600">
                 <strong className="text-ink">
                   ¿Sos revendedor de tecnología?

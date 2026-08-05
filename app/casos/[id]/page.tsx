@@ -69,13 +69,13 @@ export default async function CasePage({ params }: { params: Promise<{ id: strin
 
       <InternalSection tone="soft">
         <article className="mx-auto max-w-[820px] rounded-lg border border-slate-200 bg-white p-7 shadow-sm md:p-10">
-          <Link href="/casos" className="mb-8 inline-flex items-center gap-1.5 text-[13px] font-bold text-[#1236d8] hover:underline">
+          <Link href="/casos" className="mb-8 inline-flex items-center gap-1.5 text-[13px] font-bold text-[#0046EA] hover:underline">
             <ArrowLeft size={15} /> Casos
           </Link>
           {item.metrics.length > 0 ? (
             <div className="mb-8 grid gap-3 border-b border-slate-200 pb-8 sm:grid-cols-2">
               {item.metrics.map((metric) => (
-                <p key={metric} className="rounded-lg border border-blue-100 bg-blue-50 px-4 py-3 text-[13px] font-bold text-[#1236d8]">{metric}</p>
+                <p key={metric} className="rounded-lg border border-blue-100 bg-blue-50 px-4 py-3 text-[13px] font-bold text-[#0046EA]">{metric}</p>
               ))}
             </div>
           ) : null}

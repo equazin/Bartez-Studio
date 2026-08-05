@@ -239,8 +239,8 @@ export function CorporateSolutionsShowcase() {
                   onClick={() => setSelectedId(item.id)}
                   className={`group flex w-full min-w-0 items-center gap-3 rounded-2xl px-3.5 py-3.5 text-left text-[12.5px] font-black transition sm:px-4 sm:py-4 sm:text-[13.5px] ${
                     isActive
-                      ? "bg-gradient-to-r from-[#1236d8] via-[#006dff] to-[#0ea5ff] text-white shadow-[0_18px_36px_-22px_rgba(0,109,255,0.9)]"
-                      : "text-slate-700 hover:bg-blue-50 hover:text-[#1236d8]"
+                      ? "bg-gradient-to-r from-[#0046EA] via-[#006dff] to-[#0ea5ff] text-white shadow-[0_18px_36px_-22px_rgba(0,109,255,0.9)]"
+                      : "text-slate-700 hover:bg-blue-50 hover:text-[#0046EA]"
                   }`}
                 >
                   <item.icon size={21} strokeWidth={1.8} />
@@ -255,7 +255,7 @@ export function CorporateSolutionsShowcase() {
           <article className="grid min-w-0 overflow-hidden rounded-3xl border border-blue-100 bg-white shadow-[0_28px_80px_-52px_rgba(15,23,42,0.65)] lg:grid-cols-[1.05fr_0.95fr]">
             <div className="min-w-0 p-7 lg:p-10 flex flex-col justify-between">
               <div>
-                <span className="inline-flex rounded-full bg-gradient-to-r from-[#1236d8] via-[#006dff] to-[#0ea5ff] px-3 py-1.5 text-[11px] font-black uppercase tracking-[0.08em] text-white">
+                <span className="inline-flex rounded-full bg-gradient-to-r from-[#0046EA] via-[#006dff] to-[#0ea5ff] px-3 py-1.5 text-[11px] font-black uppercase tracking-[0.08em] text-white">
                   {selected.eyebrow}
                 </span>
                 <h3 className="mt-6 max-w-[14ch] font-display text-[clamp(29px,3.6vw,42px)] font-black leading-[1.02] tracking-[-0.05em] text-[#11142a]">
@@ -273,7 +273,7 @@ export function CorporateSolutionsShowcase() {
                     >
                       <CheckCircle2
                         size={17}
-                        className="mt-0.5 flex-none text-[#1236d8]"
+                        className="mt-0.5 flex-none text-[#0046EA]"
                       />{" "}
                       <span>{item}</span>
                     </li>
@@ -285,7 +285,7 @@ export function CorporateSolutionsShowcase() {
               <div className="mt-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6 pt-6 border-t border-slate-100">
                 <Link
                   href={selected.href}
-                  className="inline-flex items-center gap-2 rounded-2xl border-2 border-[#1236d8] px-6 py-3 text-[14px] font-black text-[#1236d8] transition hover:bg-[#1236d8]/5"
+                  className="inline-flex items-center gap-2 rounded-2xl border-2 border-[#0046EA] px-6 py-3 text-[14px] font-black text-[#0046EA] transition hover:bg-[#0046EA]/5"
                 >
                   Ver más <ArrowRight size={17} />
                 </Link>
@@ -307,7 +307,7 @@ export function CorporateSolutionsShowcase() {
             {/* Columna de la Imagen */}
             <div className="relative p-6 lg:p-8 flex items-stretch justify-center min-h-[340px] lg:min-h-auto">
               <div
-                className="relative w-full min-h-[280px] lg:min-h-[360px] bg-gradient-to-br from-[#1236d8] via-[#006dff] to-[#0ea5ff] p-[3px] shadow-2xl transition-all duration-300 hover:scale-[1.01]"
+                className="relative w-full min-h-[280px] lg:min-h-[360px] bg-gradient-to-br from-[#0046EA] via-[#006dff] to-[#0ea5ff] p-[3px] shadow-2xl transition-all duration-300 hover:scale-[1.01]"
                 style={{
                   clipPath: "polygon(22% 0%, 100% 0%, 100% 100%, 20% 100%, 0% 48%)",
                 }}

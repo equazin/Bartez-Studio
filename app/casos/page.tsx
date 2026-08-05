@@ -25,7 +25,7 @@ export default async function CasosPage() {
         eyebrow="Casos documentados"
         title={
           <>
-            Casos de éxito <span className="text-[#1236d8]">verificables.</span>
+            Casos de éxito <span className="text-[#0046EA]">verificables.</span>
           </>
         }
         intro="Publicamos únicamente proyectos con información y autorización suficiente para respaldar alcance, contexto y resultados."
@@ -60,10 +60,10 @@ export default async function CasosPage() {
                   <Image src={item.coverImage} alt={item.title} fill className="object-cover transition duration-500 group-hover:scale-[1.03]" />
                 </div>
                 <div className="p-6">
-                  <p className="text-[12px] font-bold text-[#1236d8]">{item.clientName}</p>
+                  <p className="text-[12px] font-bold text-[#0046EA]">{item.clientName}</p>
                   <h2 className="mt-2 font-display text-[21px] font-extrabold text-[#11142a]">{item.title}</h2>
                   <p className="mt-3 text-[13.5px] leading-relaxed text-slate-600">{item.description}</p>
-                  <span className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-bold text-[#1236d8]">
+                  <span className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-bold text-[#0046EA]">
                     Ver caso <ArrowRight size={15} />
                   </span>
                 </div>

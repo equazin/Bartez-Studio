@@ -36,7 +36,7 @@ export default function CatalogoPage() {
         eyebrow="Catálogo de soluciones"
         title={
           <>
-            Familias IT para elegir <span className="text-[#1236d8]">por necesidad.</span>
+            Familias IT para elegir <span className="text-[#0046EA]">por necesidad.</span>
           </>
         }
         intro="Explora el tipo de solución que necesitás. No publicamos precios ni stock en tiempo real: confirmamos modelos, alternativas y plazos cuando recibimos tu consulta."
@@ -79,7 +79,7 @@ export default function CatalogoPage() {
                 <p className="mt-3 text-[13.5px] leading-relaxed text-slate-600">{family.use}</p>
                 <p className="mt-4 text-[12px] font-bold text-slate-500">{family.brands}</p>
                 <div className="mt-5 flex items-center justify-between gap-3 border-t border-slate-200 pt-4">
-                  <Link href={family.href} className="inline-flex items-center gap-1.5 text-[13px] font-bold text-[#1236d8]">
+                  <Link href={family.href} className="inline-flex items-center gap-1.5 text-[13px] font-bold text-[#0046EA]">
                     Ver opciones <ArrowRight size={15} />
                   </Link>
                   <a href={buildWhatsAppUrl("quote", [`Familia de interés: ${family.title}`])} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-[13px] font-bold text-[#11142a]">
