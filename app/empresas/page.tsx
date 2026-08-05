@@ -40,7 +40,7 @@ const services = [
   {
     icon: Network,
     title: "Redes e infraestructura",
-    description: "Switches, firewalls, WiFi y cableado estructurado para planta, deposito u oficina.",
+    description: "Switches, firewalls, WiFi y cableado estructurado para planta, depósito u oficina.",
   },
   {
     icon: Monitor,

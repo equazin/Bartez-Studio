@@ -130,7 +130,7 @@ function ProofItem({ icon: Icon, title, text }: { icon: LucideIcon; title: strin
 export function HomeBlueWholesale() {
   return (
     <>
-      <main className="home-blue min-h-screen w-full max-w-full overflow-hidden bg-white text-ink">
+      <main id="main-content" className="home-blue min-h-screen w-full max-w-full overflow-hidden bg-white text-ink">
         <Navbar />
 
         <section className="relative overflow-hidden border-b border-slate-200 bg-white">

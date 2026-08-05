@@ -28,7 +28,7 @@ const quantities = [
 ];
 
 const implementationOptions = [
-  "Si, necesito instalación e implementación",
+  "Sí, necesito instalación e implementación",
   "Solo quiero cotizar el equipamiento",
   "Quiero consultar condiciones para revender",
 ];
@@ -53,7 +53,7 @@ function buildFormHref(form: HTMLFormElement) {
     `Rubro: ${businessType}`,
     city ? `Localidad/provincia: ${city}` : "Localidad/provincia: a confirmar",
     `Cantidad estimada: ${quantity}`,
-    `Instalacion: ${needsImplementation}`,
+    `Instalación: ${needsImplementation}`,
     notes ? `Comentario: ${notes}` : null,
     "Origen: landing BarPOS 4.0",
   ]);
@@ -65,7 +65,7 @@ export function BarposWhatsAppForm() {
     `Rubro: ${businessTypes[0]}`,
     "Localidad/provincia: a confirmar",
     `Cantidad estimada: ${quantities[0]}`,
-    `Instalacion: ${implementationOptions[0]}`,
+    `Instalación: ${implementationOptions[0]}`,
     "Origen: landing BarPOS 4.0",
   ]);
 
@@ -171,7 +171,7 @@ export function BarposWhatsAppForm() {
 
         <label className="grid min-w-0 gap-2 text-[11px] font-bold uppercase tracking-[0.11em] text-slate-500 sm:col-span-2">
           Comentanos tu necesidad (opcional)
-          <textarea name="notes" rows={4} placeholder="Ej: necesito factura A, formas de pago, entrega en zona, integracion con controladora fiscal..." className="w-full min-w-0 resize-none rounded-lg border border-slate-200 bg-white px-3 py-3 text-[14px] font-medium normal-case tracking-normal text-ink outline-none transition placeholder:text-slate-400 focus:border-brand focus:ring-4 focus:ring-blue-100" />
+          <textarea name="notes" rows={4} placeholder="Ej: necesito factura A, formas de pago, entrega en zona, integración con controladora fiscal..." className="w-full min-w-0 resize-none rounded-lg border border-slate-200 bg-white px-3 py-3 text-[14px] font-medium normal-case tracking-normal text-ink outline-none transition placeholder:text-slate-400 focus:border-brand focus:ring-4 focus:ring-blue-100" />
         </label>
       </div>
 
