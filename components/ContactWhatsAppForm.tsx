@@ -48,7 +48,7 @@ export function ContactWhatsAppForm() {
         <input value={form.provincia} onChange={(event) => update("provincia", event.target.value)} className={inputClass} placeholder="Rosario, Santa Fe" />
       </label>
       <label className="sm:col-span-2">
-        <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-700">Sobre qué querés consultar?</span>
+        <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-700">¿Sobre qué querés consultar?</span>
         <select value={form.tema} onChange={(event) => update("tema", event.target.value)} className={inputClass}>
           {topics.map((topic) => (
             <option key={topic}>{topic}</option>

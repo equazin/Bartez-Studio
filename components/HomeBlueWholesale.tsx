@@ -31,7 +31,7 @@ import { Navbar } from "@/components/Navbar";
 import { buildWhatsAppUrl, whatsappLinks } from "@/lib/whatsapp";
 
 const heroProof = [
-  { icon: PackageCheck, title: "Stock real", text: "y disponibilidad inmediata" },
+  { icon: PackageCheck, title: "Cotización en 24 hs", text: "hábiles" },
   { icon: Truck, title: "Envíos a todo", text: "el país" },
   { icon: Headphones, title: "Asesoramiento", text: "especializado" },
   { icon: ShieldCheck, title: "Respaldo y garantía", text: "en cada solución" },
@@ -79,7 +79,7 @@ const audienceCards = [
 const stats = [
   { icon: Users, value: company.clients, label: "clientes" },
   { icon: ShieldCheck, value: company.experienceYears, label: "años en el rubro" },
-  { icon: PackageCheck, value: "Stock real", label: "y entregas ágiles" },
+  { icon: PackageCheck, value: "Entregas ágiles", label: "a todo el país" },
   { icon: Headphones, value: "Soporte técnico", label: "especializado" },
 ];
 
@@ -139,11 +139,12 @@ export function HomeBlueWholesale() {
           <div className="relative mx-auto grid max-w-[1320px] items-center gap-8 px-6 pb-8 pt-12 lg:grid-cols-[0.82fr_1.18fr] lg:px-10 lg:pb-10 lg:pt-14">
             <div className="relative z-10 min-w-0">
               <p className="text-[12px] font-black uppercase tracking-[0.17em] text-brand">Mayorista IT en Argentina</p>
-              <h1 className="mt-5 max-w-[660px] font-display text-[clamp(42px,6vw,76px)] font-black leading-[0.96] tracking-[-0.065em] text-ink">
+              <h1 className="mt-5 max-w-[660px] font-display text-[clamp(38px,4.6vw,56px)] font-semibold leading-[1.04] tracking-[-0.04em] text-ink">
                 Distribución IT para <span className="text-brand">empresas y revendedores</span>
               </h1>
               <p className="mt-6 max-w-[58ch] text-[15.5px] leading-relaxed text-slate-600 lg:text-[17px]">
-                Brindamos stock real, precios competitivos y asesoramiento especializado para que tu negocio crezca.
+                Cotizamos en 24 hs hábiles, conseguimos el equipamiento con los principales mayoristas del país y lo
+                entregamos con garantía oficial.
               </p>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">

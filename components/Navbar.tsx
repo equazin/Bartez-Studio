@@ -55,7 +55,7 @@ const channelLinks = [
 ];
 
 const navLinkBase =
-  "relative flex items-center h-[60px] px-3.5 text-[13px] font-semibold text-white/80 transition-colors hover:text-white after:absolute after:bottom-0 after:left-3.5 after:right-3.5 after:h-[2px] after:rounded-t after:transition-colors";
+  "relative flex items-center h-[60px] px-3.5 text-[14px] font-semibold text-white/90 transition-colors hover:text-white after:absolute after:bottom-0 after:left-3.5 after:right-3.5 after:h-[2px] after:rounded-t after:transition-colors";
 const navLinkHover = "hover:after:bg-[#0046EA]/40";
 const navLinkActive = "text-white after:bg-[#0046EA]";
 const dropdownPanel =
@@ -148,7 +148,7 @@ export function Navbar() {
                   </Link>
                   {solutionGroups.map((group) => (
                     <div key={group.title} className="rounded-xl p-2">
-                      <h3 className="mx-2 mb-2 mt-1 text-[11px] font-bold uppercase tracking-[0.11em] text-white">{group.title}</h3>
+                      <p className="mx-2 mb-2 mt-1 text-[11px] font-bold uppercase tracking-[0.11em] text-white">{group.title}</p>
                       {group.links.map((link) => (
                         <Link key={link.href} href={link.href} className="block rounded-lg px-2 py-2.5 text-[13px] font-medium text-slate-300 transition hover:bg-white/5 hover:text-[#8fb5ff]">
                           {link.label}
@@ -159,7 +159,7 @@ export function Navbar() {
                   <div className="rounded-xl border border-[#0046EA]/20 bg-[#0046EA]/[0.06] p-3">
                     <div className="mx-1 mb-2 mt-1 flex items-center gap-1.5">
                       <SlidersHorizontal size={12} className="text-[#8fb5ff]" />
-                      <h3 className="text-[11px] font-bold uppercase tracking-[0.11em] text-[#8fb5ff]">Herramientas</h3>
+                      <p className="text-[11px] font-bold uppercase tracking-[0.11em] text-[#8fb5ff]">Herramientas</p>
                     </div>
                     {toolLinks.map((link) => (
                       <Link key={link.href} href={link.href} className="block rounded-lg px-2 py-2.5 text-[13px] font-medium text-slate-300 transition hover:bg-white/5 hover:text-[#8fb5ff]">
@@ -219,7 +219,7 @@ export function Navbar() {
         <div className="hidden items-center gap-3 lg:flex">
           <a
             href={`tel:${contact.phoneDisplay.replace(/\s/g, "")}`}
-            className="inline-flex items-center gap-2 rounded-lg border border-white/10 px-3.5 py-2 text-[12.5px] font-semibold text-white/70 transition hover:border-white/20 hover:text-white"
+            className="inline-flex items-center gap-2 rounded-lg border border-white/10 px-3.5 py-2.5 text-[14px] font-semibold text-white/90 transition hover:border-white/20 hover:text-white"
           >
             <Phone size={14} strokeWidth={1.8} />
             {contact.phoneDisplay}
@@ -228,7 +228,7 @@ export function Navbar() {
             href={whatsappLinks.quote}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-lg bg-[#0046EA] px-4 py-2 text-[12.5px] font-bold text-white shadow-[0_8px_20px_-8px_rgba(0,70,234,0.5)] transition hover:bg-[#0038C4]"
+            className="inline-flex items-center gap-2 rounded-lg bg-[#0046EA] px-4 py-2.5 text-[14px] font-bold text-white shadow-[0_8px_20px_-8px_rgba(0,70,234,0.5)] transition hover:bg-[#0038C4]"
             data-track="navbar_whatsapp_quote"
           >
             <MessageCircle size={15} strokeWidth={1.8} /> Cotizar

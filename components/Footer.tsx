@@ -70,11 +70,11 @@ export function Footer() {
 
         {/* Secondary nav — reduced opacity */}
         <div>
-          <h2 className="text-[11.5px] font-bold uppercase tracking-[0.13em] text-slate-300">Navegación</h2>
+          <p className="text-[11.5px] font-bold uppercase tracking-[0.13em] text-slate-300">Navegación</p>
           <ul className="mt-4 grid gap-2.5">
             {navLinks.map((link) => (
               <li key={link.href}>
-                <Link href={link.href} className="text-[13px] font-medium text-slate-500 transition-colors hover:text-sky">
+                <Link href={link.href} className="text-[13px] font-medium text-slate-300 transition-colors hover:text-sky">
                   {link.label}
                 </Link>
               </li>
@@ -84,8 +84,8 @@ export function Footer() {
 
         {/* Tools and resources — reduced opacity */}
         <div>
-          <h2 className="text-[11.5px] font-bold uppercase tracking-[0.13em] text-slate-300">Herramientas</h2>
-          <ul className="mt-4 grid gap-2.5 text-[13px] font-medium text-slate-500">
+          <p className="text-[11.5px] font-bold uppercase tracking-[0.13em] text-slate-300">Herramientas</p>
+          <ul className="mt-4 grid gap-2.5 text-[13px] font-medium text-slate-300">
             {toolsLinks.map((link) => (
               <li key={link.href}>
                 <Link href={link.href} className="transition-colors hover:text-sky">{link.label}</Link>
@@ -96,7 +96,7 @@ export function Footer() {
 
         {/* Contact — highlighted with icons and brighter colors */}
         <div>
-          <h2 className="text-[11.5px] font-bold uppercase tracking-[0.13em] text-sky">Contacto</h2>
+          <p className="text-[11.5px] font-bold uppercase tracking-[0.13em] text-sky">Contacto</p>
           <ul className="mt-4 grid gap-3 text-[13.5px]">
             <li>
               <a href={`tel:${contact.phoneDisplay.replace(/\s/g, "")}`} className="group flex items-start gap-2 font-semibold text-slate-200 transition-colors hover:text-sky">
@@ -111,22 +111,22 @@ export function Footer() {
               </a>
             </li>
             <li className="flex items-start gap-2 font-medium text-slate-400">
-              <MapPin size={15} className="mt-0.5 flex-none text-slate-500" />
+              <MapPin size={15} className="mt-0.5 flex-none text-slate-400" />
               <span>{company.address}</span>
             </li>
             <li className="flex items-start gap-2 font-medium text-slate-400">
-              <Clock size={15} className="mt-0.5 flex-none text-slate-500" />
+              <Clock size={15} className="mt-0.5 flex-none text-slate-400" />
               <span>{contact.hours}</span>
             </li>
           </ul>
-          <p className="mt-5 text-[11.5px] font-medium text-slate-600">
+          <p className="mt-5 text-[11.5px] font-medium text-slate-400">
             {company.legalNotice} · CUIT {company.cuit} · {company.address}
           </p>
         </div>
       </div>
 
       <div className="border-t border-white/5 bg-[#020306]">
-        <div className="mx-auto flex max-w-[1200px] flex-col gap-3 px-6 py-5 text-[11.5px] font-semibold text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mx-auto flex max-w-[1200px] flex-col gap-3 px-6 py-5 text-[11.5px] font-semibold text-slate-400 sm:flex-row sm:items-center sm:justify-between">
           <span>© {new Date().getFullYear()} {company.name}. Todos los derechos reservados.</span>
           <span className="flex gap-5">
             <Link href="/legales/privacidad" className="transition-colors hover:text-sky">Privacidad</Link>

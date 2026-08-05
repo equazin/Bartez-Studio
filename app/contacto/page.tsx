@@ -21,7 +21,7 @@ const channels = [
     icon: MessageCircle,
     title: "WhatsApp",
     value: contact.phoneDisplay,
-    sub: "Respuesta rapida en horario comercial",
+    sub: "Respuesta rápida en horario comercial",
     href: whatsappLinks.general,
     cta: "Escribir por WhatsApp",
   },
@@ -116,13 +116,13 @@ export default function ContactoPage() {
 
       <InternalSection
         tone="white"
-        eyebrow="Consulta guíada"
-        title="Mandaños el contexto y dejamos armado el mensaje."
+        eyebrow="Consulta guiada"
+        title="Contanos el contexto y dejamos armado el mensaje."
         intro="El formulario abre WhatsApp con la consulta lista para revisar antes de enviarla."
       >
         <div className="grid gap-8 lg:grid-cols-[1.08fr_0.92fr]">
           <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-[0_20px_60px_-48px_rgba(17,20,42,0.42)] md:p-8">
-            <h2 className="font-display text-[22px] font-extrabold text-ink">Prepara tu consulta</h2>
+            <h2 className="font-display text-[22px] font-extrabold text-ink">Prepará tu consulta</h2>
             <p className="mt-2 text-[13.5px] text-slate-600">Sin compromiso. Respondemos en 24 hs hábiles.</p>
             <ContactWhatsAppForm />
           </div>
@@ -131,12 +131,12 @@ export default function ContactoPage() {
             <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
               <Map />
               <div className="border-t border-slate-200 bg-[#f7f9fc] px-5 py-3">
-                <p className="text-[12px] font-semibold text-slate-600">{company.address}, Rosario, Santa Fe</p>
+                <p className="text-[12px] font-semibold text-slate-600">{company.address}</p>
               </div>
             </div>
 
             <div className="rounded-lg border border-slate-200 bg-[#f7f9fc] p-6">
-              <p className="text-[13px] font-bold text-brand">Atencion nacional</p>
+              <p className="text-[13px] font-bold text-brand">Atención nacional</p>
               <p className="mt-2 text-[14.5px] leading-relaxed text-slate-700">
                 Aunque nuestra sede está en Rosario, coordinamos proyectos y entregas en toda la Argentina.
               </p>
