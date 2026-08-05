@@ -1,26 +1,30 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { extractToken } from "../lib/integrations/air/client.ts";
+import { isAirConfiguredSync, invalidateAirToken } from "../lib/integrations/air/client.ts";
 
-test("extractToken: string directo", () => {
-  assert.equal(extractToken("abc.def.ghi"), "abc.def.ghi");
-  assert.equal(extractToken("  spaced  "), "spaced");
+test("isAirConfiguredSync: false sin AIR_TOKEN", () => {
+  const prev = process.env.AIR_TOKEN;
+  delete process.env.AIR_TOKEN;
+  assert.equal(isAirConfiguredSync(), false);
+  if (prev !== undefined) process.env.AIR_TOKEN = prev;
 });
 
-test("extractToken: variantes de clave", () => {
-  assert.equal(extractToken({ token: "t1" }), "t1");
-  assert.equal(extractToken({ access_token: "t2" }), "t2");
-  assert.equal(extractToken({ accessToken: "t3" }), "t3");
-  assert.equal(extractToken({ jwt: "t4" }), "t4");
+test("isAirConfiguredSync: false con AIR_TOKEN vacío o en blanco", () => {
+  const prev = process.env.AIR_TOKEN;
+  process.env.AIR_TOKEN = "   ";
+  assert.equal(isAirConfiguredSync(), false);
+  if (prev !== undefined) process.env.AIR_TOKEN = prev;
+  else delete process.env.AIR_TOKEN;
 });
 
-test("extractToken: anidado en data", () => {
-  assert.equal(extractToken({ data: { token: "nested" } }), "nested");
+test("isAirConfiguredSync: true con AIR_TOKEN presente", () => {
+  const prev = process.env.AIR_TOKEN;
+  process.env.AIR_TOKEN = "token-fijo";
+  assert.equal(isAirConfiguredSync(), true);
+  if (prev !== undefined) process.env.AIR_TOKEN = prev;
+  else delete process.env.AIR_TOKEN;
 });
 
-test("extractToken: sin token devuelve null", () => {
-  assert.equal(extractToken({ foo: "bar" }), null);
-  assert.equal(extractToken(null), null);
-  assert.equal(extractToken(42), null);
-  assert.equal(extractToken(""), null);
+test("invalidateAirToken: no lanza", () => {
+  assert.doesNotThrow(() => invalidateAirToken());
 });

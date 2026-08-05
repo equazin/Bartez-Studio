@@ -1,101 +1,47 @@
 /**
  * Cliente HTTP de la API de AIR (https://api.air-intra.com/v2).
  *
- * Sólo lectura. Auth: token bearer obtenido con `?q=login`. El token se cachea
- * en memoria y se persiste en AirCredential para reuso entre invocaciones del
- * cron (serverless). En 401 se re-loguea una vez y reintenta.
+ * Sólo lectura. Auth: token bearer fijo, provisto por AIR. Se lee desde
+ * OrgCredential provider "air" key "token" (cifrado) con fallback a la env
+ * `AIR_TOKEN`. En 401 no hay refresh posible; se propaga el error para que el
+ * operador rote el token en el panel.
  *
- * Credenciales (user/pass): OrgCredential provider "air" (cifrado) con fallback
- * a env AIR_USERNAME / AIR_PASSWORD. Nunca se persiste el password.
+ * El token se cachea en memoria por proceso (60s) para evitar hits repetidos
+ * a la BD desde el cron y las APIs del panel; la credencial ya trae su propio
+ * cache en credentials-service, así que esto es solo un cinturón extra.
  */
 import { getAirConfig } from "./config.ts";
 import { getCredential } from "../../modules/system/credentials-service.ts";
-import { getDb } from "../../db.ts";
-import { logger } from "../../logger.ts";
 
-const TOKEN_TTL_MS = 50 * 60 * 1000; // conservador: la doc no especifica expiración
-const TOKEN_SKEW_MS = 30_000;
+const TOKEN_CACHE_TTL_MS = 60_000;
 
-let memToken: { orgId: string; token: string; expiresAt: number } | null = null;
+let memToken: { orgId: string; token: string; at: number } | null = null;
 
-/** Extrae el token de una respuesta de login de shape desconocido. */
-export function extractToken(json: unknown): string | null {
-  if (typeof json === "string") return json.trim() || null;
-  if (json && typeof json === "object") {
-    const o = json as Record<string, unknown>;
-    for (const k of ["token", "access_token", "accessToken", "bearer", "jwt", "Token", "auth"]) {
-      const v = o[k];
-      if (typeof v === "string" && v.trim()) return v.trim();
-    }
-    if (o.data) return extractToken(o.data);
+async function readToken(orgId: string): Promise<string> {
+  const token = (await getCredential(orgId, "air", "token", "AIR_TOKEN")).trim();
+  if (!token) {
+    throw new Error("AIR: token no configurado (seteá AIR_TOKEN o cargalo en /admin/integraciones/air).");
   }
-  return null;
-}
-
-async function airCredentials(orgId: string): Promise<{ username: string; password: string }> {
-  const username = await getCredential(orgId, "air", "username", "AIR_USERNAME");
-  const password = await getCredential(orgId, "air", "password", "AIR_PASSWORD");
-  return { username, password };
-}
-
-/** ¿Hay credenciales por env? (check sincrónico para gating rápido). */
-export function isAirConfiguredSync(): boolean {
-  return Boolean(process.env.AIR_USERNAME && process.env.AIR_PASSWORD);
-}
-
-async function loadPersistedToken(orgId: string): Promise<string | null> {
-  try {
-    const row = await getDb().airCredential.findUnique({ where: { organizationId: orgId } });
-    if (row?.token && row.tokenExpiresAt && row.tokenExpiresAt.getTime() > Date.now() + TOKEN_SKEW_MS) {
-      memToken = { orgId, token: row.token, expiresAt: row.tokenExpiresAt.getTime() };
-      return row.token;
-    }
-  } catch {
-    // tabla vacía / sin credencial: seguimos a login
-  }
-  return null;
-}
-
-async function persistToken(orgId: string, token: string, expiresAt: Date, username: string): Promise<void> {
-  const cfg = await getAirConfig(orgId);
-  try {
-    await getDb().airCredential.upsert({
-      where: { organizationId: orgId },
-      create: { organizationId: orgId, baseUrl: cfg.baseUrl, username, token, tokenExpiresAt: expiresAt },
-      update: { token, tokenExpiresAt: expiresAt, baseUrl: cfg.baseUrl, username },
-    });
-  } catch (err) {
-    logger.warn("air.token.persist_failed", err);
-  }
-}
-
-async function login(orgId: string): Promise<string> {
-  const { username, password } = await airCredentials(orgId);
-  if (!username || !password) {
-    throw new Error("AIR: faltan credenciales (configurá AIR_USERNAME/AIR_PASSWORD o OrgCredential 'air').");
-  }
-  const cfg = await getAirConfig(orgId);
-  const url = `${cfg.baseUrl}/?q=login&user=${encodeURIComponent(username)}&pass=${encodeURIComponent(password)}`;
-  const res = await fetch(url, { method: "GET" });
-  if (!res.ok) throw new Error(`AIR login HTTP ${res.status}`);
-  const json: unknown = await res.json().catch(() => null);
-  const token = extractToken(json);
-  if (!token) throw new Error("AIR login: no se encontró token en la respuesta.");
-  const expiresAt = new Date(Date.now() + TOKEN_TTL_MS);
-  memToken = { orgId, token, expiresAt: expiresAt.getTime() };
-  await persistToken(orgId, token, expiresAt, username);
   return token;
 }
 
 export async function getToken(orgId: string, force = false): Promise<string> {
-  if (!force && memToken && memToken.orgId === orgId && memToken.expiresAt > Date.now() + TOKEN_SKEW_MS) {
+  if (!force && memToken && memToken.orgId === orgId && Date.now() - memToken.at < TOKEN_CACHE_TTL_MS) {
     return memToken.token;
   }
-  if (!force) {
-    const persisted = await loadPersistedToken(orgId);
-    if (persisted) return persisted;
-  }
-  return login(orgId);
+  const token = await readToken(orgId);
+  memToken = { orgId, token, at: Date.now() };
+  return token;
+}
+
+/** Invalida el cache local del token (útil tras rotarlo desde el panel). */
+export function invalidateAirToken(): void {
+  memToken = null;
+}
+
+/** ¿Hay token por env? (check sincrónico para gating rápido). */
+export function isAirConfiguredSync(): boolean {
+  return Boolean((process.env.AIR_TOKEN ?? "").trim());
 }
 
 /** Extrae el array de items de una respuesta (array directo o {data:[...]}). */
@@ -109,18 +55,15 @@ function asArray(json: unknown): unknown[] {
 
 async function airRequest(orgId: string, query: string): Promise<unknown[]> {
   const cfg = await getAirConfig(orgId);
-  const doFetch = (token: string): Promise<Response> =>
-    fetch(`${cfg.baseUrl}/${query}`, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-      body: "{}",
-    });
-
-  let token = await getToken(orgId);
-  let res = await doFetch(token);
+  const token = await getToken(orgId);
+  const res = await fetch(`${cfg.baseUrl}/${query}`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    body: "{}",
+  });
   if (res.status === 401) {
-    token = await getToken(orgId, true); // re-login una vez
-    res = await doFetch(token);
+    invalidateAirToken();
+    throw new Error("AIR: token rechazado (401). Rotá el token en /admin/integraciones/air.");
   }
   if (!res.ok) throw new Error(`AIR ${query} HTTP ${res.status}`);
   const json: unknown = await res.json().catch(() => null);
@@ -137,7 +80,7 @@ export function fetchSypPage(orgId: string, page: number): Promise<unknown[]> {
   return airRequest(orgId, `?q=syp&page=${page}`);
 }
 
-/** Verifica que el token vigente sea válido. */
+/** Verifica que el token vigente sea válido contra ?q=check_token. */
 export async function checkToken(orgId: string): Promise<boolean> {
   const cfg = await getAirConfig(orgId);
   try {
