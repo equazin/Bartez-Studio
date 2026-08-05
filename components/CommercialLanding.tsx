@@ -67,7 +67,9 @@ const defaultProfile = {
 };
 
 function getProfile(title: string, intent: WhatsAppIntent) {
-  const text = title.toLowerCase();
+  // Los títulos llevan tilde ("renovación", "logística") y las claves de abajo no:
+  // se comparan sin diacríticos para que el perfil coincida igual.
+  const text = title.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 
   if (text.includes("ciberseguridad")) {
     return {

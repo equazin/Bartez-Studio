@@ -255,7 +255,7 @@ export function CorporateSolutionsShowcase() {
           <article className="grid min-w-0 overflow-hidden rounded-3xl border border-blue-100 bg-white shadow-[0_28px_80px_-52px_rgba(15,23,42,0.65)] lg:grid-cols-[1.05fr_0.95fr]">
             <div className="min-w-0 p-7 lg:p-10 flex flex-col justify-between">
               <div>
-                <span className="inline-flex rounded-full bg-gradient-to-r from-[#0046EA] via-[#006dff] to-[#0ea5ff] px-3 py-1.5 text-[11px] font-black uppercase tracking-[0.08em] text-white">
+                <span className="inline-flex rounded-full bg-gradient-to-r from-[#0046EA] via-[#006dff] to-[#0ea5ff] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-white">
                   {selected.eyebrow}
                 </span>
                 <h3 className="mt-6 max-w-[14ch] font-display text-[clamp(29px,3.6vw,42px)] font-semibold leading-[1.02] tracking-[-0.05em] text-[#11142a]">

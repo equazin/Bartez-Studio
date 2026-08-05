@@ -142,7 +142,7 @@ export function Navbar() {
                     className="min-h-[188px] rounded-xl border border-[#ff8f1f]/25 bg-[radial-gradient(circle_at_24px_20px,rgba(255,143,31,0.23),transparent_34px),linear-gradient(145deg,rgba(255,143,31,0.16),rgba(0,70,234,0.14))] p-[18px] transition hover:border-[#ff8f1f]/45"
                   >
                     <span className="text-[11px] font-bold uppercase tracking-[0.08em] text-[#ffd38b]">Acceso destacado</span>
-                    <span className="mt-4 block text-[20px] font-extrabold leading-[1.05] tracking-[-0.035em] text-white">BarPOS punto de venta</span>
+                    <span className="mt-4 block text-[20px] font-semibold leading-[1.05] tracking-[-0.035em] text-white">BarPOS punto de venta</span>
                     <span className="mt-2 block text-[13px] font-medium leading-[1.45] text-slate-300">Solución para comercios con caja, software, periféricos, implementación y soporte.</span>
                     <span className="mt-4 inline-flex text-[13px] font-bold text-white">Ver landing BarPOS →</span>
                   </Link>

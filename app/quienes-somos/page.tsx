@@ -32,7 +32,7 @@ const channels = [
   {
     icon: Landmark,
     title: "Sector público y privado",
-    description: "Organismos e instituciónes con necesidades de equipamiento masivo y condiciones instituciónales.",
+    description: "Organismos e instituciones con necesidades de equipamiento masivo y condiciones institucionales.",
   },
   {
     icon: School,
@@ -104,7 +104,7 @@ export default function QuienesSomosPage() {
         imagePriority
         mediaLabel="Bartez Tecnología"
         mediaTitle="Experiencia comercial directa desde 2008."
-        mediaSubtitle="Atendemos empresas, organismos, instituciónes educativas y revendedores en toda Argentina."
+        mediaSubtitle="Atendemos empresas, organismos, instituciones educativas y revendedores en toda Argentina."
         mediaItems={[
           { icon: Building2, title: "Empresas", description: "Soluciones IT y equipamiento B2B." },
           { icon: Store, title: "Canal", description: "Revendedores e integradores." },

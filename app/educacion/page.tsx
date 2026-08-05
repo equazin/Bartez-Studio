@@ -13,11 +13,11 @@ import { contact } from "@/constants";
 export const metadata: Metadata = {
   title: "Tecnología para Educación - Bartez Tecnología",
   description:
-    "Equipamiento IT para escuelas, colegios, institutos y universidades. Laboratorios de computacion, tablets, redes y servidores para el sector educativo argentino.",
+    "Equipamiento IT para escuelas, colegios, institutos y universidades. Laboratorios de computación, tablets, redes y servidores para el sector educativo argentino.",
 };
 
 const solutions = [
-  { icon: Laptop, title: "Laboratorios de computacion", description: "PCs y notebooks para aulas de informática, con imagen educativa y acceso a red." },
+  { icon: Laptop, title: "Laboratorios de computación", description: "PCs y notebooks para aulas de informática, con imagen educativa y acceso a red." },
   { icon: Monitor, title: "Equipos para docentes", description: "Notebooks y accesorios para personal docente y administrativo." },
   { icon: Network, title: "Conectividad y redes", description: "Redes WiFi y cableadas para aulas, gestión centralizada y acceso seguro." },
   { icon: Server, title: "Servidores educativos", description: "Servidores para gestión académica, plataformas LMS y bases de datos." },
@@ -33,7 +33,7 @@ const levels = [
 ];
 
 const proof = [
-  "Presupuestos formales para procesos de compra instituciónal.",
+  "Presupuestos formales para procesos de compra institucional.",
   "Productos de marcas líderes y orientación sobre garantías.",
   "Factura A en todas las operaciones.",
   "Cobertura nacional con entrega a cualquier punto del país.",
@@ -55,11 +55,11 @@ export default function EducacionPage() {
             Tecnología que <span className="text-amber-700">transforma la educación.</span>
           </>
         }
-        intro="Equipamos instituciónes educativas de todos los niveles con tecnología de primera línea: laboratorios de computacion, tablets, redes, servidores y audiovisuales."
+        intro="Equipamos instituciones educativas de todos los niveles con tecnología de primera línea: laboratorios de computación, tablets, redes, servidores y audiovisuales."
         image="/photos/office.jpg"
         imageAlt="Equipamiento tecnológico para educación"
         imagePriority
-        mediaLabel="Compras instituciónales"
+        mediaLabel="Compras institucionales"
         mediaTitle="Soluciones por nivel, escala y uso."
         mediaSubtitle="Adaptamos la propuesta a aula, laboratorio, administración, campus o conectividad."
         mediaItems={[
@@ -70,10 +70,10 @@ export default function EducacionPage() {
         metrics={[
           { value: "18", label: "años en IT" },
           { value: "ARG", label: "cobertura nacional" },
-          { value: "B2B", label: "compras instituciónales" },
+          { value: "B2B", label: "compras institucionales" },
         ]}
         actions={[
-          { label: "Pedir cotización instituciónal", href: whatsappHref, external: true, icon: MessageCircle },
+          { label: "Pedir cotización institucional", href: whatsappHref, external: true, icon: MessageCircle },
           { label: "Consultar por email", href: `mailto:${contact.email}?subject=Cotización%20educativa`, variant: "secondary", icon: Mail },
         ]}
       />

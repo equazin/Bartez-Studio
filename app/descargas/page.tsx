@@ -18,7 +18,7 @@ const resources = [
     action: "Descargar catálogo",
   },
   {
-    title: "Brochure instituciónal Bartez",
+    title: "Brochure institucional Bartez",
     category: "Empresa",
     description: "Presentacion de capacidades, segmentos atendidos y formas de trabajo.",
     href: "/brochure.pdf",
@@ -47,7 +47,7 @@ export default function Descargas() {
         mediaItems={[
           { icon: FileText, title: "Catálogos", description: "Familias, marcas y soluciones." },
           { icon: ShieldCheck, title: "Soporte", description: "Garantías y RMA." },
-          { icon: Download, title: "Materiales", description: "Brochure instituciónal." },
+          { icon: Download, title: "Materiales", description: "Brochure institucional." },
         ]}
         metrics={[
           { value: "PDF", label: "material descargable" },

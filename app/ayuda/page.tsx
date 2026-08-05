@@ -65,7 +65,7 @@ export default function AyudaPage() {
         ]}
       />
 
-      <InternalSection tone="soft" eyebrow="Accesos rapidos" title="Elegí el camino más directo.">
+      <InternalSection tone="soft" eyebrow="Accesos rápidos" title="Elegí el camino más directo.">
         <div className="grid gap-5 md:grid-cols-2">
           {helpLinks.map((item) => (
             <Link key={item.href} href={item.href} className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200">

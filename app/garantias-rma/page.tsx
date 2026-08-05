@@ -31,7 +31,7 @@ const covered = [
 
 const notCovered = [
   "Daños por golpes, líquidos o mal uso del equipo.",
-  "Modificaciones o reparaciónes realizadas por terceros.",
+  "Modificaciones o reparaciones realizadas por terceros.",
   "Desgaste normal por uso y consumibles fuera de cobertura.",
   "Pérdida de datos: recomendamos backup previo a cualquier gestión.",
 ];

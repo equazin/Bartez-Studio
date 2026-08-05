@@ -211,7 +211,7 @@ export default function RevendedoresPage() {
 
       <InternalCta
         title="¿Listo para evaluar condiciones de canal?"
-        intro="Enviamos el primer contacto por WhatsApp y despues ordenamos el circuito comercial según tu operación."
+        intro="Enviamos el primer contacto por WhatsApp y después ordenamos el circuito comercial según tu operación."
         actions={[
           { label: "Iniciar consulta de canal", href: whatsappLinks.reseller, external: true, icon: MessageCircle },
           { label: "Ver marcas", href: "/marcas", variant: "secondary", icon: ArrowRight },

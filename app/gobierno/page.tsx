@@ -22,11 +22,11 @@ const offerings = [
   { icon: ShieldCheck, title: "Factura A garantizada", description: "Somos Responsable Inscripto. Todas las operaciones con documentación fiscal correcta." },
   { icon: Package, title: "Equipamiento para cada requerimiento", description: "Productos de marcas reconocidas y acompañamiento según garantía de cada fabricante." },
   { icon: Globe, title: "Cobertura nacional", description: "Coordinamos provision y entrega en cualquier punto del país." },
-  { icon: Headphones, title: "Soporte técnico", description: "Acompañamiento técnico durante y despues de la implementación." },
+  { icon: Headphones, title: "Soporte técnico", description: "Acompañamiento técnico durante y después de la implementación." },
 ];
 
 const sectors = [
-  { icon: Landmark, title: "Municipios y comunas", description: "PCs, notebooks, impresoras, redes y servidores para administraciónes locales." },
+  { icon: Landmark, title: "Municipios y comunas", description: "PCs, notebooks, impresoras, redes y servidores para administraciones locales." },
   { icon: GraduationCap, title: "Educación pública", description: "Laboratorios, proyectores, tablets y conectividad para escuelas e institutos." },
   { icon: HeartPulse, title: "Salud pública", description: "Terminales, servidores, redes y equipamiento para hospitales y centros de salud." },
   { icon: Building, title: "Organismos provinciales y nacionales", description: "Proyectos de mayor escala con coordinación técnica y logística multi-sede." },
@@ -47,9 +47,9 @@ export default function GobiernoPage() {
         image="/photos/datacenter.jpg"
         imageAlt="Infraestructura tecnológica para organismos públicos"
         imagePriority
-        mediaLabel="Compras instituciónales"
+        mediaLabel="Compras institucionales"
         mediaTitle="Cotización formal con documentación clara."
-        mediaSubtitle="Acompanamos compras directas, pedidos instituciónales y procesos con requisitos administrativos."
+        mediaSubtitle="Acompanamos compras directas, pedidos institucionales y procesos con requisitos administrativos."
         mediaItems={[
           { icon: FileText, title: "Formal", description: "Presupuestos y documentación." },
           { icon: Globe, title: "Nacional", description: "Entrega y coordinación en Argentina." },
@@ -68,7 +68,7 @@ export default function GobiernoPage() {
 
       <InternalSection
         tone="soft"
-        eyebrow="Alcance instituciónal"
+        eyebrow="Alcance institucional"
         title="Soluciones para el sector público."
         intro="Entendemos requisitos y procesos del sector público argentino. Preparamos la documentación necesaria para cada etapa."
       >

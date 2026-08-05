@@ -16,15 +16,15 @@ export const metadata: Metadata = {
 };
 
 const families = [
-  { title: "Notebooks corporativas", image: "/photos/products/laptop1.jpg", use: "Administración, ventas, dirección, movilidad y renovación de flotas.", brands: "Dell, Lenovo, HP", href: "/soluciones/notebooks-corporativas" },
-  { title: "PCs y workstations", image: "/photos/products/desktop.jpg", use: "Oficina, diseño, ingeniería, CAD, desarrollo y alto desempeño.", brands: "Dell, Lenovo, HP, Intel, AMD", href: "/configurador" },
-  { title: "BarPOS punto de venta", image: "/photos/products/desktop.jpg", use: "Puesto de venta electrónico completo para comercios, con software, periféricos, implementación y soporte.", brands: "BarPOS, OCOM, controladora fiscal", href: "/barpos" },
-  { title: "Servidores y almacenamiento", image: "/photos/products/server.jpg", use: "Virtualización, archivos, bases de datos, aplicaciones y continuidad.", brands: "Dell, HPE, Lenovo, Kingston", href: "/soluciones/servidores" },
-  { title: "Redes e infraestructura", image: "/photos/products/switch.jpg", use: "Switching, WiFi, routing, segmentación y conectividad multi-sede.", brands: "Cisco y alternativas según proyecto", href: "/soluciones/redes-infraestructura" },
-  { title: "Monitores y periféricos", image: "/photos/products/monitor.jpg", use: "Puestos completos, videollamadas, productividad y ergonomía.", brands: "Líneas corporativas y profesionales", href: "/comparador" },
-  { title: "Componentes y upgrades", image: "/photos/products/storage.jpg", use: "Memoria, SSD, almacenamiento, procesadores y ampliaciones.", brands: "Intel, AMD, Kingston y más", href: "/comparador" },
-  { title: "Energía y continuidad", image: "/photos/products/ups.jpg", use: "UPS, protección eléctrica y continuidad para puestos e infraestructura.", brands: "Alternativas según potencia y autonomía", href: "/soluciones/servidores" },
-  { title: "Videovigilancia", image: "/photos/products/cctv.jpg", use: "Cámaras IP, grabación, almacenamiento y monitoreo empresarial.", brands: "Opciones dimensionadas por cobertura y retención", href: "/soluciones/videovigilancia-cctv" },
+  { anchor: "notebooks", title: "Notebooks corporativas", image: "/photos/products/laptop1.jpg", use: "Administración, ventas, dirección, movilidad y renovación de flotas.", brands: "Dell, Lenovo, HP", href: "/soluciones/notebooks-corporativas" },
+  { anchor: "pcs", title: "PCs y workstations", image: "/photos/products/desktop.jpg", use: "Oficina, diseño, ingeniería, CAD, desarrollo y alto desempeño.", brands: "Dell, Lenovo, HP, Intel, AMD", href: "/configurador" },
+  { anchor: "pos", title: "BarPOS punto de venta", image: "/photos/products/desktop.jpg", use: "Puesto de venta electrónico completo para comercios, con software, periféricos, implementación y soporte.", brands: "BarPOS, OCOM, controladora fiscal", href: "/barpos" },
+  { anchor: "almacenamiento", title: "Servidores y almacenamiento", image: "/photos/products/server.jpg", use: "Virtualización, archivos, bases de datos, aplicaciones y continuidad.", brands: "Dell, HPE, Lenovo, Kingston", href: "/soluciones/servidores" },
+  { anchor: "redes", title: "Redes e infraestructura", image: "/photos/products/switch.jpg", use: "Switching, WiFi, routing, segmentación y conectividad multi-sede.", brands: "Cisco y alternativas según proyecto", href: "/soluciones/redes-infraestructura" },
+  { anchor: "monitores", title: "Monitores y periféricos", image: "/photos/products/monitor.jpg", use: "Puestos completos, videollamadas, productividad y ergonomía.", brands: "Líneas corporativas y profesionales", href: "/comparador" },
+  { anchor: "componentes", title: "Componentes y upgrades", image: "/photos/products/storage.jpg", use: "Memoria, SSD, almacenamiento, procesadores y ampliaciones.", brands: "Intel, AMD, Kingston y más", href: "/comparador" },
+  { anchor: "energia", title: "Energía y continuidad", image: "/photos/products/ups.jpg", use: "UPS, protección eléctrica y continuidad para puestos e infraestructura.", brands: "Alternativas según potencia y autonomía", href: "/soluciones/servidores" },
+  { anchor: "videovigilancia", title: "Videovigilancia", image: "/photos/products/cctv.jpg", use: "Cámaras IP, grabación, almacenamiento y monitoreo empresarial.", brands: "Opciones dimensionadas por cobertura y retención", href: "/soluciones/videovigilancia-cctv" },
 ];
 
 export default function CatalogoPage() {
@@ -70,7 +70,7 @@ export default function CatalogoPage() {
       >
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {families.map((family) => (
-            <article key={family.title} className="group overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200">
+            <article key={family.title} id={family.anchor} className="scroll-mt-24 group overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200">
               <div className="relative aspect-[16/8] overflow-hidden bg-slate-100">
                 <Image src={family.image} alt={family.title} fill sizes="(max-width: 1024px) 100vw, 33vw" className="object-cover transition duration-500 group-hover:scale-[1.03]" />
               </div>

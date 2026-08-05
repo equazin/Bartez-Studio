@@ -180,7 +180,7 @@ export function BarposWhatsAppForm() {
       </a>
 
       <p className="mt-4 text-[11.5px] leading-relaxed text-slate-500">
-        Te vamos a redirigir a WhatsApp con tu consulta lista para que podamos responderte mas rapido.
+        Te vamos a redirigir a WhatsApp con tu consulta lista para que podamos responderte más rápido.
       </p>
     </form>
   );

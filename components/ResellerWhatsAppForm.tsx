@@ -55,7 +55,7 @@ export function ResellerWhatsAppForm() {
         <input required value={form.empresa} onChange={(event) => update("empresa", event.target.value)} className={inputClass} placeholder="Nombre de la empresa" />
       </label>
       <label>
-        <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-700">CUIT (opciónal)</span>
+        <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-700">CUIT (opcional)</span>
         <input value={form.cuit} onChange={(event) => update("cuit", event.target.value)} className={inputClass} placeholder="30-00000000-0" />
       </label>
       <label>
@@ -71,7 +71,7 @@ export function ResellerWhatsAppForm() {
         <input required value={form.telefono} onChange={(event) => update("telefono", event.target.value)} className={inputClass} placeholder="+54 9 ..." />
       </label>
       <label className="sm:col-span-2">
-        <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-700">Email corporativo (opciónal)</span>
+        <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-700">Email corporativo (opcional)</span>
         <input type="email" value={form.email} onChange={(event) => update("email", event.target.value)} className={inputClass} placeholder="nombre@empresa.com" />
       </label>
       <label>

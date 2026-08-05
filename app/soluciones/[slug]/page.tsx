@@ -136,7 +136,7 @@ export default async function VerticalPage({
           tone="soft"
           eyebrow="Alcance"
           title="Como podemos acompañarte."
-          intro="El alcance final se define despues de entender tu entorno, prioridades y restricciones."
+          intro="El alcance final se define después de entender tu entorno, prioridades y restricciones."
         >
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {vertical.capabilities.map((capability) => (

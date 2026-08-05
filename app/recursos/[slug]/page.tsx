@@ -87,7 +87,7 @@ export default async function Articulo({ params, searchParams }: { params: Promi
           imagePriority
           mediaLabel="Guía"
           mediaTitle="Lectura para ordenar decisiones IT."
-          mediaSubtitle="Usa esta guía como base y despues validamos el alcance real por WhatsApp."
+          mediaSubtitle="Usá esta guía como base y después validamos el alcance real por WhatsApp."
           mediaItems={[
             { icon: Clock, title: article.readingTime, description: "Tiempo estimado de lectura." },
             { title: "Publicado", description: new Date(article.date).toLocaleDateString("es-AR", { day: "numeric", month: "long", year: "numeric" }) },

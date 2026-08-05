@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 const brands = [
   { name: "Dell", logo: "/logos/dell.png", category: "Servidores, notebooks, workstations y storage", products: ["PowerEdge", "Latitude", "Precision", "PowerVault"] },
   { name: "Lenovo", logo: "/logos/lenovo.png", category: "Notebooks, PCs y servidores", products: ["ThinkPad", "ThinkCentre", "ThinkStation", "ThinkSystem"] },
-  { name: "HP", logo: "/logos/hp.png", category: "Notebooks, PCs e impresion", products: ["ProBook", "EliteBook", "ProDesk", "LaserJet"] },
+  { name: "HP", logo: "/logos/hp.png", category: "Notebooks, PCs e impresión", products: ["ProBook", "EliteBook", "ProDesk", "LaserJet"] },
   { name: "HPE", logo: "/logos/hpe.png", category: "Servidores, storage y networking", products: ["ProLiant", "Alletra", "Aruba", "Pointnext"] },
   { name: "Cisco", logo: "/logos/cisco.png", category: "Switches, routers, firewalls y WiFi", products: ["Catalyst", "Meraki", "Firepower", "WiFi 6"] },
   { name: "Aruba", logo: "/logos/aruba.png", category: "Networking y WiFi corporativo", products: ["Instant On", "Access Points", "Switches", "Central"] },
@@ -30,9 +30,9 @@ const brands = [
   { name: "Kingston", logo: "/logos/kingston.png", category: "RAM, SSDs y memorias flash", products: ["DDR4", "DDR5", "NVMe", "USB"] },
   { name: "Microsoft", logo: "/logos/microsoft.svg", category: "Sistemas, licencias y cloud", products: ["Microsoft 365", "Windows Server", "Office", "Azure"] },
   { name: "ESET", logo: "/logos/eset.svg", category: "Antivirus y seguridad endpoint", products: ["Endpoint", "NOD32", "Cloud admin", "Mobile"] },
-  { name: "Epson", logo: "/logos/epson.png", category: "Impresion, proyectores y POS", products: ["EcoTank", "Laser", "Tickets POS", "PowerLite"] },
+  { name: "Epson", logo: "/logos/epson.png", category: "Impresión, proyectores y POS", products: ["EcoTank", "Laser", "Tickets POS", "PowerLite"] },
   { name: "3nStar", logo: "/logos/3nstar.png", category: "Punto de venta y lectores", products: ["Terminales POS", "Lectores", "Impresoras", "Cajones"] },
-  { name: "OCOM", logo: "/logos/ocom.png", category: "Hardware POS e impresion", products: ["Terminales", "Tickets", "Lectores", "Accesorios"] },
+  { name: "OCOM", logo: "/logos/ocom.png", category: "Hardware POS e impresión", products: ["Terminales", "Tickets", "Lectores", "Accesorios"] },
   { name: "Ubiquiti", logo: "/logos/ubiquiti.png", category: "WiFi, switching y videovigilancia", products: ["UniFi", "Switches", "Gateways", "Protect"] },
   { name: "Vertiv", logo: "/logos/vertiv.png", category: "Energía, racks y datacenter", products: ["Liebert", "SmartCabinet", "PDUs", "UPS"] },
   { name: "GLC", logo: "/logos/glc.png", category: "Fibra optica, cableado y conectividad", products: ["UTP", "Fibra", "Patch panels", "Racks"] },
@@ -85,7 +85,7 @@ export default function MarcasPage() {
         </div>
       </InternalHero>
 
-      <InternalSection tone="soft" eyebrow="Cómo trabajamos el portfolio" title="La marca se elige despues de entender la necesidad.">
+      <InternalSection tone="soft" eyebrow="Cómo trabajamos el portfolio" title="La marca se elige después de entender la necesidad.">
         <InternalFeatureGrid columns="four" features={whyBrands} />
       </InternalSection>
 
@@ -93,7 +93,7 @@ export default function MarcasPage() {
         tone="white"
         eyebrow="Portfolio"
         title="Fabricantes y líneas que podemos cotizar."
-        intro="Selecciónamos marcas líderes para cubrir segmentos corporativos, infraestructura, energía, punto de venta y componentes."
+        intro="Seleccionamos marcas líderes para cubrir segmentos corporativos, infraestructura, energía, punto de venta y componentes."
       >
         <div className="grid gap-5 md:grid-cols-2">
           {brands.map((brand) => {
@@ -134,7 +134,7 @@ export default function MarcasPage() {
 
       <InternalSection tone="soft" eyebrow="Disponibilidad" title="La cotización se confirma con datos vigentes.">
         <div className="grid gap-5 md:grid-cols-3">
-          {["Modelos equivalentes cuando no hay stock", "Plazos confirmados al momento de cotizar", "Condiciones por volumen para empresas y canal"].map((item) => (
+          {["Modelos equivalentes cuando el original no está disponible", "Plazos confirmados al momento de cotizar", "Condiciones por volumen para empresas y canal"].map((item) => (
             <div key={item} className="flex gap-3 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
               <CheckCircle2 className="mt-0.5 size-5 flex-none text-[#0046EA]" strokeWidth={1.8} />
               <p className="text-[14px] font-semibold leading-relaxed text-[#11142a]">{item}</p>

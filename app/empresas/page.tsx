@@ -50,7 +50,7 @@ const services = [
   {
     icon: Shield,
     title: "Videovigilancia CCTV",
-    description: "Cámaras IP, NVR, almacenamiento y monitoreo para proteger instalaciónes.",
+    description: "Cámaras IP, NVR, almacenamiento y monitoreo para proteger instalaciones.",
   },
   {
     icon: Package,

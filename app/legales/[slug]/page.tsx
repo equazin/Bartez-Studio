@@ -40,7 +40,7 @@ export default async function LegalPage({ params }: { params: Promise<{ slug: st
           { value: "Legal", label: "documento público" },
           {
             value: new Date(page.updated).toLocaleDateString("es-AR", { day: "numeric", month: "short" }),
-            label: "ultima actualizacion",
+            label: "última actualización",
           },
           { value: "AR", label: "marco aplicable" },
         ]}

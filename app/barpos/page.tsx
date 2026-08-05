@@ -57,7 +57,7 @@ const productCards = [
 const heroBenefits = [
   { title: "Controladora fiscal", detail: "homologada", icon: ShieldCheck },
   { title: "Cumple 100%", detail: "reglamentación ARCA", icon: CheckCircle2 },
-  { title: "Soporte tecnico", detail: "garantizado", icon: Headset },
+  { title: "Soporte técnico", detail: "garantizado", icon: Headset },
 ];
 
 const proofStrip = [
@@ -87,7 +87,7 @@ const distributorBenefits = [
 const contactBenefits = [
   { title: "Envíos a todo el país", icon: Truck },
   { title: "Asesoramiento especializado", icon: Headset },
-  { title: "Respaldo y garantia en cada solucion", icon: ShieldCheck },
+  { title: "Respaldo y garantía en cada solución", icon: ShieldCheck },
 ];
 
 export default function BarposPage() {
@@ -104,7 +104,7 @@ export default function BarposPage() {
           <div className="absolute right-0 top-16 hidden h-72 w-52 bg-[radial-gradient(circle,#b9d6ff_1px,transparent_1.6px)] [background-size:10px_10px] opacity-70 lg:block" />
           <div className="mx-auto grid max-w-[1320px] gap-10 px-5 py-14 sm:px-6 md:py-18 lg:grid-cols-[0.82fr_1.18fr] lg:items-center lg:py-20">
             <div className="relative z-10">
-              <p className="text-[13px] font-black uppercase tracking-[0.13em] text-[#071033]">
+              <p className="text-[13px] font-semibold uppercase tracking-[0.13em] text-[#071033]">
                 Punto de venta <span className="text-[#0046EA]">electrónico</span>
               </p>
               <h1 className="mt-4 font-display text-[clamp(52px,7vw,92px)] font-semibold leading-[0.94] tracking-[-0.055em] text-[#071033] text-balance">
@@ -175,7 +175,7 @@ export default function BarposPage() {
         <section className="bg-white py-12 md:py-16">
           <div className="mx-auto grid max-w-[1240px] gap-10 px-5 sm:px-6 lg:grid-cols-[0.74fr_1.26fr] lg:items-start">
             <div>
-              <p className="text-[13px] font-black uppercase tracking-[0.1em] text-[#1254e8]">Equipamiento incluido</p>
+              <p className="text-[13px] font-semibold uppercase tracking-[0.1em] text-[#1254e8]">Equipamiento incluido</p>
               <h2 className="mt-3 font-display text-[clamp(34px,4.6vw,58px)] font-semibold leading-[1.02] tracking-[-0.055em] text-[#071033] text-balance">
                 Un punto de venta <span className="text-[#1254e8]">listo para trabajar</span>
               </h2>
@@ -210,7 +210,7 @@ export default function BarposPage() {
                   <div className="relative aspect-[4/3]">
                     <Image src={product.image} alt={product.alt} fill sizes="(max-width: 1024px) 100vw, 28vw" className="object-contain" />
                   </div>
-                  <h3 className="mt-5 min-h-[42px] text-[15px] font-black uppercase leading-tight text-[#1254e8]">{product.title}</h3>
+                  <h3 className="mt-5 min-h-[42px] text-[15px] font-semibold uppercase leading-tight text-[#1254e8]">{product.title}</h3>
                   <ul className="mt-4 grid gap-2 text-[13px] leading-relaxed text-slate-700">
                     {product.specs.map((spec) => (
                       <li key={spec} className="flex gap-2">
@@ -228,12 +228,12 @@ export default function BarposPage() {
         <section id="software" className="border-y border-slate-200 bg-white py-12 md:py-16">
           <div className="mx-auto grid max-w-[1240px] gap-10 px-5 sm:px-6 lg:grid-cols-[0.82fr_1.18fr]">
             <div>
-              <p className="text-[13px] font-black uppercase tracking-[0.1em] text-[#1254e8]">Software BarPOS 4.0</p>
+              <p className="text-[13px] font-semibold uppercase tracking-[0.1em] text-[#1254e8]">Software BarPOS 4.0</p>
               <h2 className="mt-3 font-display text-[clamp(32px,4.3vw,54px)] font-semibold leading-[1.03] tracking-[-0.052em] text-[#071033] text-balance">
                 Módulos pensados para <span className="text-[#1254e8]">cada área de tu negocio</span>
               </h2>
               <p className="mt-5 max-w-[55ch] text-[15px] leading-relaxed text-slate-600">
-                Una plataforma completa para gestiónar ventas, stock, clientes, proveedores, reportes y mucho más. Escalable para acompañar el crecimiento de tu negocio.
+                Una plataforma completa para gestionar ventas, stock, clientes, proveedores, reportes y mucho más. Escalable para acompañar el crecimiento de tu negocio.
               </p>
               <Link href="#consulta" className="mt-8 inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-[#1254e8] bg-white px-5 py-3 text-[14px] font-extrabold text-[#1254e8] transition hover:bg-blue-50">
                 Conocer BarPOS 4.0 <ArrowRight size={17} strokeWidth={2} />
@@ -264,7 +264,7 @@ export default function BarposPage() {
           <div className="absolute inset-0 opacity-30 [background-image:linear-gradient(120deg,transparent_0%,transparent_40%,rgba(255,255,255,0.12)_40%,transparent_62%)]" />
           <div className="relative mx-auto grid max-w-[1240px] gap-10 px-5 sm:px-6 md:grid-cols-[0.92fr_0.72fr] lg:grid-cols-[0.9fr_0.82fr_0.9fr] lg:items-center">
             <div>
-              <p className="text-[13px] font-black uppercase tracking-[0.12em] text-[#6bd2ff]">Red de distribución</p>
+              <p className="text-[13px] font-semibold uppercase tracking-[0.12em] text-[#6bd2ff]">Red de distribución</p>
               <h2 className="mt-3 font-display text-[clamp(32px,4vw,56px)] font-semibold leading-[1.03] tracking-[-0.05em] text-balance">
                 Sumate a una <span className="text-[#34c8ff]">red que crece</span> todos los días
               </h2>
@@ -289,7 +289,7 @@ export default function BarposPage() {
             <div className="grid gap-5 md:col-span-2 lg:col-span-1">
               {[
                 { title: "Soluciones completas", detail: "Equipamiento + software + soporte para todo tipo de negocios.", icon: Handshake },
-                { title: "Soporte continuo", detail: "Acompañamiento tecnico y comercial permanente.", icon: Headset },
+                { title: "Soporte continuo", detail: "Acompañamiento técnico y comercial permanente.", icon: Headset },
                 { title: "Capacitación y herramientas", detail: "Todo lo que necesitás para vender mas y mejor.", icon: GraduationCap },
               ].map((item) => (
                 <div key={item.title} className="flex gap-4 border-b border-white/18 pb-5 last:border-b-0">
@@ -309,7 +309,7 @@ export default function BarposPage() {
         <section id="consulta" className="bg-white py-12 md:py-16">
           <div className="mx-auto grid max-w-[1240px] gap-10 px-5 sm:px-6 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
             <div>
-              <p className="text-[13px] font-black uppercase tracking-[0.1em] text-[#1254e8]">Cotizá BarPOS 4.0</p>
+              <p className="text-[13px] font-semibold uppercase tracking-[0.1em] text-[#1254e8]">Cotizá BarPOS 4.0</p>
               <h2 className="mt-3 font-display text-[clamp(32px,4.4vw,56px)] font-semibold leading-[1.03] tracking-[-0.052em] text-[#071033] text-balance">
                 Hablemos <span className="text-[#1254e8]">de tu proyecto</span>
               </h2>

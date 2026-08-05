@@ -536,7 +536,7 @@ export default function Configurador() {
                           </div>
                           <div className="flex items-center gap-2">
                             <Check size={13} className="text-[#0ea5ff]" />
-                            Stock confirmado antes de cotizar
+                            Disponibilidad confirmada antes de cotizar
                           </div>
                         </div>
 

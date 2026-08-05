@@ -87,7 +87,7 @@ const families = [
   { image: "/photos/products/laptop1.jpg", label: "Notebooks y PCs", href: "/catalogo#notebooks" },
   { image: "/photos/products/peripherals.jpg", label: "Componentes y hardware", href: "/catalogo#componentes" },
   { image: "/photos/products/monitor.jpg", label: "Monitores y displays", href: "/catalogo#monitores" },
-  { image: "/photos/products/peripherals.jpg", label: "Impresión y periféricos", href: "/catalogo#perifericos" },
+  { image: "/photos/products/peripherals.jpg", label: "Impresión y periféricos", href: "/catalogo#monitores" },
   { image: "/photos/products/storage.jpg", label: "Almacenamiento y memoria", href: "/catalogo#almacenamiento" },
   { image: "/photos/products/ups.jpg", label: "Energía y continuidad", href: "/catalogo#energia" },
 ];
@@ -138,7 +138,7 @@ export function HomeBlueWholesale() {
           <div className="absolute right-0 top-20 hidden h-64 w-40 bg-[radial-gradient(circle,#b8cdfd_1px,transparent_1.6px)] opacity-55 [background-size:10px_10px] lg:block" />
           <div className="relative mx-auto grid max-w-[1320px] items-center gap-8 px-6 pb-8 pt-12 lg:grid-cols-[0.82fr_1.18fr] lg:px-10 lg:pb-10 lg:pt-14">
             <div className="relative z-10 min-w-0">
-              <p className="text-[12px] font-black uppercase tracking-[0.17em] text-brand">Mayorista IT en Argentina</p>
+              <p className="text-[12px] font-semibold uppercase tracking-[0.17em] text-brand">Mayorista IT en Argentina</p>
               <h1 className="mt-5 max-w-[660px] font-display text-[clamp(38px,4.6vw,56px)] font-semibold leading-[1.04] tracking-[-0.04em] text-ink">
                 Distribución IT para <span className="text-brand">empresas y revendedores</span>
               </h1>
@@ -252,7 +252,7 @@ export function HomeBlueWholesale() {
           <div className="mx-auto max-w-[1320px] px-6 lg:px-10">
             <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p className="text-[12px] font-black uppercase tracking-[0.17em] text-brand">Herramientas online</p>
+                <p className="text-[12px] font-semibold uppercase tracking-[0.17em] text-brand">Herramientas online</p>
                 <h2 className="mt-2 font-display text-[clamp(26px,3.5vw,38px)] font-semibold tracking-[-0.04em] text-ink">Empezá a definir tu solución</h2>
               </div>
               <p className="max-w-[42ch] text-[14px] leading-relaxed text-slate-600">Usá estas herramientas para dimensionar, comparar y cotizar antes de hablar con un asesor.</p>
