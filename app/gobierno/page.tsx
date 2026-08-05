@@ -13,7 +13,7 @@ import { whatsappLinks } from "@/lib/whatsapp";
 export const metadata: Metadata = {
   title: "Tecnología para el Sector Público - Bartez Tecnología",
   description:
-    "Provision de equipamiento IT para organismos públicos, municipios, ministerios y entidades estatales en Argentina. Cotizaciones para licitaciones y compras directas.",
+    "Provisión de equipamiento IT para organismos públicos, municipios, ministerios y entidades estatales en Argentina. Cotizaciones para licitaciones y compras directas.",
 };
 
 const offerings = [
@@ -21,7 +21,7 @@ const offerings = [
   { icon: Building2, title: "Organismos de todos los niveles", description: "Municipal, provincial y nacional. Experiencia en diferentes escalas de gobierno." },
   { icon: ShieldCheck, title: "Factura A garantizada", description: "Somos Responsable Inscripto. Todas las operaciones con documentación fiscal correcta." },
   { icon: Package, title: "Equipamiento para cada requerimiento", description: "Productos de marcas reconocidas y acompañamiento según garantía de cada fabricante." },
-  { icon: Globe, title: "Cobertura nacional", description: "Coordinamos provision y entrega en cualquier punto del país." },
+  { icon: Globe, title: "Cobertura nacional", description: "Coordinamos provisión y entrega en cualquier punto del país." },
   { icon: Headphones, title: "Soporte técnico", description: "Acompañamiento técnico durante y después de la implementación." },
 ];
 
@@ -49,7 +49,7 @@ export default function GobiernoPage() {
         imagePriority
         mediaLabel="Compras institucionales"
         mediaTitle="Cotización formal con documentación clara."
-        mediaSubtitle="Acompanamos compras directas, pedidos institucionales y procesos con requisitos administrativos."
+        mediaSubtitle="Acompañamos compras directas, pedidos institucionales y procesos con requisitos administrativos."
         mediaItems={[
           { icon: FileText, title: "Formal", description: "Presupuestos y documentación." },
           { icon: Globe, title: "Nacional", description: "Entrega y coordinación en Argentina." },

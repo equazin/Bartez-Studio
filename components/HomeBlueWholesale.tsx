@@ -87,7 +87,7 @@ const families = [
   { image: "/photos/products/laptop1.jpg", label: "Notebooks y PCs", href: "/catalogo#notebooks" },
   { image: "/photos/products/peripherals.jpg", label: "Componentes y hardware", href: "/catalogo#componentes" },
   { image: "/photos/products/monitor.jpg", label: "Monitores y displays", href: "/catalogo#monitores" },
-  { image: "/photos/products/peripherals.jpg", label: "Impresión y periféricos", href: "/catalogo#monitores" },
+  { image: "/photos/products/peripherals.jpg", label: "Impresión y periféricos", href: "/catalogo#perifericos" },
   { image: "/photos/products/storage.jpg", label: "Almacenamiento y memoria", href: "/catalogo#almacenamiento" },
   { image: "/photos/products/ups.jpg", label: "Energía y continuidad", href: "/catalogo#energia" },
 ];

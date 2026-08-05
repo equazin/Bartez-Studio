@@ -20,7 +20,7 @@ const resources = [
   {
     title: "Brochure institucional Bartez",
     category: "Empresa",
-    description: "Presentacion de capacidades, segmentos atendidos y formas de trabajo.",
+    description: "Presentación de capacidades, segmentos atendidos y formas de trabajo.",
     href: "/brochure.pdf",
     icon: FileText,
     action: "Descargar brochure",

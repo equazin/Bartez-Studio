@@ -89,7 +89,7 @@ export default function SuppliersPage() {
             <AdminField label="Nombre" htmlFor="supplier-name"><AdminInput id="supplier-name" value={editing.name} onChange={(e) => setEditing({ ...editing, name: e.target.value })} /></AdminField>
             <AdminField label="CUIT" htmlFor="supplier-tax"><AdminInput id="supplier-tax" value={editing.taxId} onChange={(e) => setEditing({ ...editing, taxId: e.target.value })} /></AdminField>
             <AdminField label="Email" htmlFor="supplier-email"><AdminInput id="supplier-email" value={editing.email} onChange={(e) => setEditing({ ...editing, email: e.target.value })} /></AdminField>
-            <AdminField label="Telefono" htmlFor="supplier-phone"><AdminInput id="supplier-phone" value={editing.phone} onChange={(e) => setEditing({ ...editing, phone: e.target.value })} /></AdminField>
+            <AdminField label="Teléfono" htmlFor="supplier-phone"><AdminInput id="supplier-phone" value={editing.phone} onChange={(e) => setEditing({ ...editing, phone: e.target.value })} /></AdminField>
             <AdminField label="Direccion" htmlFor="supplier-address"><AdminInput id="supplier-address" value={editing.address} onChange={(e) => setEditing({ ...editing, address: e.target.value })} /></AdminField>
             <AdminField label="Condiciones" htmlFor="supplier-terms"><AdminInput id="supplier-terms" value={editing.paymentTerms} onChange={(e) => setEditing({ ...editing, paymentTerms: e.target.value })} /></AdminField>
           </div>

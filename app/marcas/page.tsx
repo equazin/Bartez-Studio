@@ -35,7 +35,7 @@ const brands = [
   { name: "OCOM", logo: "/logos/ocom.png", category: "Hardware POS e impresión", products: ["Terminales", "Tickets", "Lectores", "Accesorios"] },
   { name: "Ubiquiti", logo: "/logos/ubiquiti.png", category: "WiFi, switching y videovigilancia", products: ["UniFi", "Switches", "Gateways", "Protect"] },
   { name: "Vertiv", logo: "/logos/vertiv.png", category: "Energía, racks y datacenter", products: ["Liebert", "SmartCabinet", "PDUs", "UPS"] },
-  { name: "GLC", logo: "/logos/glc.png", category: "Fibra optica, cableado y conectividad", products: ["UTP", "Fibra", "Patch panels", "Racks"] },
+  { name: "GLC", logo: "/logos/glc.png", category: "Fibra óptica, cableado y conectividad", products: ["UTP", "Fibra", "Patch panels", "Racks"] },
   { name: "WD", logo: "/logos/wd.png", category: "Discos, SSDs y almacenamiento", products: ["Purple", "Red", "Gold", "NVMe"] },
 ];
 

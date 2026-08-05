@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Configurador de Servidores y Equipos | Bartez Tecnologia",
+  title: "Configurador de Servidores y Equipos | Bartez Tecnología",
   description:
-    "Configura servidores, notebooks, workstations y equipos IT a medida. Selecciona procesador, memoria, almacenamiento y más con el configurador de Bartez Tecnología.",
+    "Configurá servidores, notebooks, workstations y equipos IT a medida. Seleccioná procesador, memoria, almacenamiento y más con el configurador de Bartez Tecnología.",
   alternates: { canonical: "/configurador" },
 };
 

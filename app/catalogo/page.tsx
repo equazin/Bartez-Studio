@@ -23,6 +23,7 @@ const families = [
   { anchor: "redes", title: "Redes e infraestructura", image: "/photos/products/switch.jpg", use: "Switching, WiFi, routing, segmentación y conectividad multi-sede.", brands: "Cisco y alternativas según proyecto", href: "/soluciones/redes-infraestructura" },
   { anchor: "monitores", title: "Monitores y periféricos", image: "/photos/products/monitor.jpg", use: "Puestos completos, videollamadas, productividad y ergonomía.", brands: "Líneas corporativas y profesionales", href: "/comparador" },
   { anchor: "componentes", title: "Componentes y upgrades", image: "/photos/products/storage.jpg", use: "Memoria, SSD, almacenamiento, procesadores y ampliaciones.", brands: "Intel, AMD, Kingston y más", href: "/comparador" },
+  { anchor: "perifericos", title: "Impresión y periféricos", image: "/photos/products/peripherals.jpg", use: "Impresión de oficina y etiquetas, escaneo, teclados, mouse y accesorios de puesto.", brands: "HP, Epson, OCOM", href: "/comparador" },
   { anchor: "energia", title: "Energía y continuidad", image: "/photos/products/ups.jpg", use: "UPS, protección eléctrica y continuidad para puestos e infraestructura.", brands: "Alternativas según potencia y autonomía", href: "/soluciones/servidores" },
   { anchor: "videovigilancia", title: "Videovigilancia", image: "/photos/products/cctv.jpg", use: "Cámaras IP, grabación, almacenamiento y monitoreo empresarial.", brands: "Opciones dimensionadas por cobertura y retención", href: "/soluciones/videovigilancia-cctv" },
 ];

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Comparador de Productos IT | Bartez Tecnologia",
+  title: "Comparador de Productos IT | Bartez Tecnología",
   description:
-    "Compara servidores, notebooks, workstations y equipos de tecnologia lado a lado. Evalua especificaciones, precios y caracteristicas para elegir la mejor opcion.",
+    "Compará servidores, notebooks, workstations y equipos de tecnología lado a lado. Evaluá especificaciones, precios y características para elegir la mejor opción.",
   alternates: { canonical: "/comparador" },
 };
 

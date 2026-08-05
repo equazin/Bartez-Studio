@@ -78,7 +78,7 @@ export default function PurchaseOrderDetailPage() {
   }, [po, receivableLines]);
 
   async function receive() {
-    if (!warehouseId) { setError("Selecciona un deposito."); return; }
+    if (!warehouseId) { setError("Seleccioná un deposito."); return; }
     setSaving(true);
     setError(null);
     try {

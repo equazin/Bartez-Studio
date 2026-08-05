@@ -135,7 +135,7 @@ export default async function VerticalPage({
         <InternalSection
           tone="soft"
           eyebrow="Alcance"
-          title="Como podemos acompañarte."
+          title="Cómo podemos acompañarte."
           intro="El alcance final se define después de entender tu entorno, prioridades y restricciones."
         >
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">

@@ -23,7 +23,7 @@ const roles = [
 const quantities = [
   "1 punto de venta",
   "2 a 3 puntos de venta",
-  "4 o mas puntos de venta",
+  "4 o más puntos de venta",
   "Red de distribuidores",
 ];
 
@@ -47,7 +47,7 @@ function buildFormHref(form: HTMLFormElement) {
 
   return buildWhatsAppUrl("barpos", [
     name ? `Nombre: ${name}` : null,
-    phone ? `Telefono / WhatsApp: ${phone}` : null,
+    phone ? `Teléfono / WhatsApp: ${phone}` : null,
     email ? `Email: ${email}` : null,
     `Perfil: ${role}`,
     `Rubro: ${businessType}`,
@@ -119,8 +119,8 @@ export function BarposWhatsAppForm() {
         </label>
 
         <label className="grid min-w-0 gap-2 text-[11px] font-bold uppercase tracking-[0.11em] text-slate-500">
-          Telefono / WhatsApp *
-          <input name="phone" required pattern="[0-9+\s\-()]{7,20}" placeholder="Telefono / WhatsApp" className="w-full min-w-0 rounded-lg border border-slate-200 bg-white px-3 py-3 text-[14px] font-medium normal-case tracking-normal text-ink outline-none transition placeholder:text-slate-400 focus:border-brand focus:ring-4 focus:ring-blue-100" />
+          Teléfono / WhatsApp *
+          <input name="phone" required pattern="[0-9+\s\-()]{7,20}" placeholder="Teléfono / WhatsApp" className="w-full min-w-0 rounded-lg border border-slate-200 bg-white px-3 py-3 text-[14px] font-medium normal-case tracking-normal text-ink outline-none transition placeholder:text-slate-400 focus:border-brand focus:ring-4 focus:ring-blue-100" />
         </label>
 
         <label className="grid min-w-0 gap-2 text-[11px] font-bold uppercase tracking-[0.11em] text-slate-500">

@@ -125,7 +125,7 @@ export default function NewInvoicePage() {
   async function save() {
     if (!receiverName.trim()) { setError("Falta el nombre del receptor."); return; }
     if (lines.length === 0 || !lines.some((l) => l.description.trim())) { setError("Agregá al menos una línea con descripción."); return; }
-    if (needsRelatedInvoice && !relatedInvoiceId) { setError("Selecciona el comprobante asociado."); return; }
+    if (needsRelatedInvoice && !relatedInvoiceId) { setError("Seleccioná el comprobante asociado."); return; }
     setSaving(true);
     setError(null);
 

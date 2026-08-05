@@ -69,7 +69,7 @@ const defaultProfile = {
 function getProfile(title: string, intent: WhatsAppIntent) {
   // Los títulos llevan tilde ("renovación", "logística") y las claves de abajo no:
   // se comparan sin diacríticos para que el perfil coincida igual.
-  const text = title.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+  const text = title.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
   if (text.includes("ciberseguridad")) {
     return {
@@ -135,7 +135,7 @@ function getProfile(title: string, intent: WhatsAppIntent) {
     return {
       eyebrow: "Organizaciones de salud",
       image: "/photos/products/monitor.jpg",
-      mediaTitle: "Puestos, conectividad y continuidad para sedes criticas.",
+      mediaTitle: "Puestos, conectividad y continuidad para sedes críticas.",
       mediaSubtitle: "Dimensionamos según usuarios, áreas administrativas y servicios internos.",
       label: "Continuidad",
     };

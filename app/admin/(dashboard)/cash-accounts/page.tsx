@@ -160,7 +160,7 @@ export default function CashAccountsPage() {
   }
 
   async function createMovement() {
-    if (!movementAccountId) { setError("Selecciona una caja o banco."); return; }
+    if (!movementAccountId) { setError("Seleccioná una caja o banco."); return; }
     if (!movementDescription.trim()) { setError("Ingresa una descripcion."); return; }
     const parsedAmount = Number(movementAmount);
     if (!parsedAmount || parsedAmount <= 0) { setError("Ingresa un importe mayor a cero."); return; }

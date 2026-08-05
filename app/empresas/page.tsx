@@ -54,7 +54,7 @@ const services = [
   },
   {
     icon: Package,
-    title: "Perifericos y puestos",
+    title: "Periféricos y puestos",
     description: "Monitores, docks, headsets y accesorios para dejar cada puesto operativo.",
   },
 ];

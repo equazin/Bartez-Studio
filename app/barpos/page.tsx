@@ -63,7 +63,7 @@ const heroBenefits = [
 const proofStrip = [
   { title: "Más de 1.000", detail: "puntos de venta instalados", icon: BadgeCheck },
   { title: "Soluciones completas", detail: "equipamiento + software + soporte", icon: BarChart3 },
-  { title: "Capacitación", detail: "y herramientas para vender mas", icon: GraduationCap },
+  { title: "Capacitación", detail: "y herramientas para vender más", icon: GraduationCap },
   { title: "Marca confiable", detail: "respaldo, calidad y trayectoria", icon: ShieldCheck },
 ];
 
@@ -290,7 +290,7 @@ export default function BarposPage() {
               {[
                 { title: "Soluciones completas", detail: "Equipamiento + software + soporte para todo tipo de negocios.", icon: Handshake },
                 { title: "Soporte continuo", detail: "Acompañamiento técnico y comercial permanente.", icon: Headset },
-                { title: "Capacitación y herramientas", detail: "Todo lo que necesitás para vender mas y mejor.", icon: GraduationCap },
+                { title: "Capacitación y herramientas", detail: "Todo lo que necesitás para vender más y mejor.", icon: GraduationCap },
               ].map((item) => (
                 <div key={item.title} className="flex gap-4 border-b border-white/18 pb-5 last:border-b-0">
                   <span className="grid size-16 flex-none place-items-center rounded-full border border-white/25 bg-white/10 text-white">

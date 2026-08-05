@@ -47,7 +47,7 @@ export default function NewPurchaseOrderPage() {
   }
 
   async function save() {
-    if (!supplierId) { setError("Selecciona un proveedor."); return; }
+    if (!supplierId) { setError("Seleccioná un proveedor."); return; }
     if (!lines.some((line) => line.description.trim())) { setError("Agrega al menos una linea."); return; }
     setSaving(true);
     setError(null);
