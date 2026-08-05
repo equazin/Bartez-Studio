@@ -31,7 +31,7 @@ import { Navbar } from "@/components/Navbar";
 import { buildWhatsAppUrl, whatsappLinks } from "@/lib/whatsapp";
 
 const heroProof = [
-  { icon: PackageCheck, title: "Cotización en 24 hs", text: "hábiles" },
+  { icon: ClipboardList, title: "Cotización en 24 hs", text: "hábiles y sin compromiso" },
   { icon: Truck, title: "Envíos a todo", text: "el país" },
   { icon: Headphones, title: "Asesoramiento", text: "especializado" },
   { icon: ShieldCheck, title: "Respaldo y garantía", text: "en cada solución" },
@@ -54,7 +54,7 @@ const audienceCards = [
     href: "/revendedores",
     cta: "Alta de revendedor",
     image: "/photos/bartez-operations-hero-v2.webp",
-    bullets: ["Precios y condiciones exclusivas", "Stock y disponibilidad", "Acompañamiento comercial"],
+    bullets: ["Precios y condiciones exclusivas", "Abastecimiento a pedido", "Acompañamiento comercial"],
   },
   {
     icon: Landmark,
@@ -79,7 +79,7 @@ const audienceCards = [
 const stats = [
   { icon: Users, value: company.clients, label: "clientes" },
   { icon: ShieldCheck, value: company.experienceYears, label: "años en el rubro" },
-  { icon: PackageCheck, value: "Entregas ágiles", label: "a todo el país" },
+  { icon: PackageCheck, value: "Factura A", label: "en todas las operaciones" },
   { icon: Headphones, value: "Soporte técnico", label: "especializado" },
 ];
 
@@ -208,7 +208,7 @@ export function HomeBlueWholesale() {
                   <span className="grid size-14 place-items-center rounded-full bg-gradient-to-br from-[#0046EA] via-[#006dff] to-[#0ea5ff] text-white">
                     <card.icon size={27} strokeWidth={1.7} />
                   </span>
-                  <h3 className="mt-5 font-display text-[22px] font-black tracking-[-0.035em] text-ink">{card.title}</h3>
+                  <h3 className="mt-5 font-display text-[22px] font-semibold tracking-[-0.035em] text-ink">{card.title}</h3>
                   <p className="mt-2 min-h-[44px] text-[13.5px] leading-relaxed text-slate-600">{card.text}</p>
                   <ul className="mt-5 grid gap-2.5">
                     {card.bullets.map((bullet) => (
@@ -239,7 +239,7 @@ export function HomeBlueWholesale() {
                     <item.icon size={26} strokeWidth={1.8} />
                   </span>
                   <span>
-                    <span className="block font-display text-[28px] font-black tracking-[-0.04em] text-ink">{item.value}</span>
+                    <span className="block font-display text-[28px] font-semibold tracking-[-0.04em] text-ink">{item.value}</span>
                     <span className="block text-[13px] font-semibold text-slate-600">{item.label}</span>
                   </span>
                 </div>
@@ -253,7 +253,7 @@ export function HomeBlueWholesale() {
             <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <p className="text-[12px] font-black uppercase tracking-[0.17em] text-brand">Herramientas online</p>
-                <h2 className="mt-2 font-display text-[clamp(26px,3.5vw,38px)] font-black tracking-[-0.04em] text-ink">Empezá a definir tu solución</h2>
+                <h2 className="mt-2 font-display text-[clamp(26px,3.5vw,38px)] font-semibold tracking-[-0.04em] text-ink">Empezá a definir tu solución</h2>
               </div>
               <p className="max-w-[42ch] text-[14px] leading-relaxed text-slate-600">Usá estas herramientas para dimensionar, comparar y cotizar antes de hablar con un asesor.</p>
             </div>
@@ -262,7 +262,7 @@ export function HomeBlueWholesale() {
                 <span className="grid size-12 place-items-center rounded-xl bg-brand/10 text-brand transition group-hover:bg-brand group-hover:text-white">
                   <SlidersHorizontal size={24} strokeWidth={1.8} />
                 </span>
-                <h3 className="mt-4 font-display text-[20px] font-black tracking-[-0.03em] text-ink">Configurador IT</h3>
+                <h3 className="mt-4 font-display text-[20px] font-semibold tracking-[-0.03em] text-ink">Configurador IT</h3>
                 <p className="mt-2 text-[13px] leading-relaxed text-slate-600">Elegí perfil de uso, ajustá escala y obtené una recomendación técnica para llevar a cotización.</p>
                 <span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-black text-brand">Usar herramienta <ArrowRight size={15} /></span>
               </Link>
@@ -270,7 +270,7 @@ export function HomeBlueWholesale() {
                 <span className="grid size-12 place-items-center rounded-xl bg-brand/10 text-brand transition group-hover:bg-brand group-hover:text-white">
                   <GitCompareArrows size={24} strokeWidth={1.8} />
                 </span>
-                <h3 className="mt-4 font-display text-[20px] font-black tracking-[-0.03em] text-ink">Comparador orientativo</h3>
+                <h3 className="mt-4 font-display text-[20px] font-semibold tracking-[-0.03em] text-ink">Comparador orientativo</h3>
                 <p className="mt-2 text-[13px] leading-relaxed text-slate-600">Compará hasta 3 familias de equipos para ordenar la decisión según tu escenario real.</p>
                 <span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-black text-brand">Comparar equipos <ArrowRight size={15} /></span>
               </Link>
@@ -278,7 +278,7 @@ export function HomeBlueWholesale() {
                 <span className="grid size-12 place-items-center rounded-xl bg-brand/10 text-brand transition group-hover:bg-brand group-hover:text-white">
                   <ClipboardList size={24} strokeWidth={1.8} />
                 </span>
-                <h3 className="mt-4 font-display text-[20px] font-black tracking-[-0.03em] text-ink">Cotización masiva (RFQ)</h3>
+                <h3 className="mt-4 font-display text-[20px] font-semibold tracking-[-0.03em] text-ink">Cotización masiva (RFQ)</h3>
                 <p className="mt-2 text-[13px] leading-relaxed text-slate-600">Cargá tu pliego o lista técnica y recibí una propuesta formal con condiciones B2B en 24 hs.</p>
                 <span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-black text-brand">Iniciar RFQ <ArrowRight size={15} /></span>
               </Link>
@@ -289,7 +289,7 @@ export function HomeBlueWholesale() {
         <section className="bg-white py-8">
           <div className="mx-auto max-w-[1320px] px-6 lg:px-10">
             <div className="grid items-center gap-5 border-y border-slate-100 py-6 lg:grid-cols-[170px_1fr_auto]">
-              <h2 className="font-display text-[25px] font-black leading-[1.05] tracking-[-0.04em] text-ink">Familias de productos</h2>
+              <h2 className="font-display text-[25px] font-semibold leading-[1.05] tracking-[-0.04em] text-ink">Familias de productos</h2>
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6 lg:gap-5">
                 {families.map((family) => (
                   <Link
@@ -314,7 +314,7 @@ export function HomeBlueWholesale() {
         <section className="bg-white pb-10">
           <div className="mx-auto max-w-[1320px] px-6 lg:px-10">
             <div className="grid items-center gap-5 lg:grid-cols-[190px_1fr_auto]">
-              <h2 className="font-display text-[21px] font-black leading-[1.08] tracking-[-0.035em] text-ink">Marcas que trabajamos</h2>
+              <h2 className="font-display text-[21px] font-semibold leading-[1.08] tracking-[-0.035em] text-ink">Marcas que trabajamos</h2>
               <div className="grid grid-cols-3 items-center gap-x-6 gap-y-5 sm:grid-cols-5 lg:grid-cols-9">
                 {partners.brands.slice(0, 9).map((brand) => (
                   <div key={brand.name} className="flex h-10 items-center justify-center">
@@ -339,7 +339,7 @@ export function HomeBlueWholesale() {
                     <MessageCircle size={42} />
                   </span>
                   <div>
-                    <h2 className="font-display text-[clamp(26px,3.3vw,40px)] font-black tracking-[-0.045em]">¿Tenés un proyecto?</h2>
+                    <h2 className="font-display text-[clamp(26px,3.3vw,40px)] font-semibold tracking-[-0.045em]">¿Tenés un proyecto?</h2>
                     <p className="mt-2 max-w-[58ch] text-[15px] leading-relaxed text-blue-50">Hablemos por WhatsApp y te ayudamos a encontrar la mejor solución.</p>
                   </div>
                 </div>
@@ -348,7 +348,7 @@ export function HomeBlueWholesale() {
                   <SunsetButton href={buildWhatsAppUrl("quote", ["Origen: CTA final home rediseñada"])} className="min-w-[290px]">
                     <MessageCircle size={19} /> Cotizar por WhatsApp
                   </SunsetButton>
-                  <p className="mt-3 text-[12px] font-semibold text-blue-100">Respuesta inmediata de nuestro equipo comercial</p>
+                  <p className="mt-3 text-[12px] font-semibold text-blue-100">Respuesta de nuestro equipo comercial en 24 hs hábiles</p>
                 </div>
               </div>
             </div>

@@ -15,7 +15,7 @@ import { whatsappLinks } from "@/lib/whatsapp";
 export const metadata: Metadata = {
   title: "Quienes somos - Bartez Tecnología",
   description:
-    "Conoce la historia, misión y valores de Bartez Tecnología. Dieciocho años en el rubro distribuyendo tecnología para empresas, organismos y revendedores en toda Argentina desde Rosario.",
+    "Conocé la historia, misión y valores de Bartez Tecnología. Dieciocho años en el rubro distribuyendo tecnología para empresas, organismos y revendedores en toda Argentina desde Rosario.",
 };
 
 const channels = [
@@ -130,7 +130,7 @@ export default function QuienesSomosPage() {
         <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
           <div className="rounded-lg border border-slate-200 bg-[#f7f9fc] p-6">
             <CheckCircle2 className="size-7 text-[#0046EA]" strokeWidth={1.7} />
-            <h3 className="mt-5 font-display text-[22px] font-extrabold text-[#11142a]">Nuestra ventaja competitiva</h3>
+            <h3 className="mt-5 font-display text-[22px] font-semibold text-[#11142a]">Nuestra ventaja competitiva</h3>
             <p className="mt-3 text-[14.5px] leading-relaxed text-slate-600">
               Combinamos experiencia en el rubro, asesoramiento personalizado y una atención cercana para traducir necesidades reales en propuestas concretas.
             </p>
@@ -169,10 +169,10 @@ export default function QuienesSomosPage() {
                 </span>
                 <div className="flex-1 rounded-lg border border-slate-200 bg-white p-5 shadow-[0_18px_50px_-40px_rgba(17,20,42,0.35)] sm:p-6">
                   <div className="flex flex-wrap items-baseline gap-3">
-                    <span className="font-display text-[22px] font-extrabold leading-none text-brand sm:text-[26px]">
+                    <span className="font-display text-[22px] font-semibold leading-none text-brand sm:text-[26px]">
                       {milestone.year}
                     </span>
-                    <h3 className="font-display text-[16px] font-extrabold text-ink sm:text-[17px]">
+                    <h3 className="font-display text-[16px] font-semibold text-ink sm:text-[17px]">
                       {milestone.title}
                     </h3>
                   </div>
@@ -196,10 +196,10 @@ export default function QuienesSomosPage() {
       </InternalSection>
 
       <InternalCta
-        title="Querés trabajar con nosotros?"
-        intro="Contaños tu necesidad y un especialista te contactara con una propuesta concreta en 24 hs hábiles."
+        title="¿Querés trabajar con nosotros?"
+        intro="Contanos tu necesidad y un especialista te contactará con una propuesta concreta en 24 hs hábiles."
         actions={[
-          { label: "Contaños qué necesitás", href: whatsappLinks.general, external: true, icon: MessageCircle },
+          { label: "Contanos qué necesitás", href: whatsappLinks.general, external: true, icon: MessageCircle },
           { label: "Soy revendedor", href: "/revendedores", variant: "secondary", icon: ArrowRight },
         ]}
       />

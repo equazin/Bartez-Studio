@@ -111,7 +111,7 @@ export function Navbar() {
             <Link
               href="/barpos"
               aria-current={isBarposActive ? "page" : undefined}
-              className={`relative flex h-[60px] items-center px-3.5 text-[13px] font-bold transition-colors bg-[linear-gradient(90deg,rgba(255,143,31,0.08),transparent)] after:absolute after:bottom-0 after:left-3.5 after:right-3.5 after:h-[2px] after:rounded-t ${
+              className={`relative flex h-[60px] items-center px-3.5 text-[14px] font-bold transition-colors bg-[linear-gradient(90deg,rgba(255,143,31,0.08),transparent)] after:absolute after:bottom-0 after:left-3.5 after:right-3.5 after:h-[2px] after:rounded-t ${
                 isBarposActive
                   ? "text-[#ffd4a8] after:bg-[#ff8f1f]"
                   : "text-[#ffb86c] hover:text-[#ffd4a8] after:bg-[#ff8f1f]/60"

@@ -61,7 +61,7 @@ const services = [
 
 const reasons = [
   "Asesoramiento técnico personalizado, sin venderte lo que no necesitás.",
-  "Productos de marcas líderes y acompañamiento en la gestion de garantías.",
+  "Productos de marcas líderes y acompañamiento en la gestión de garantías.",
   "Factura A en todas las operaciones y condiciones comerciales B2B.",
   "Cobertura nacional con entregas coordinadas a una o varias sedes.",
   "Cuenta corriente y plazos acordes a cada operación.",
@@ -123,7 +123,7 @@ export default function EmpresasPage() {
         <div className="grid gap-8 lg:grid-cols-[0.75fr_1.25fr] lg:items-start">
           <div className="rounded-lg border border-slate-200 bg-[#f7f9fc] p-6">
             <Network className="size-7 text-[#0046EA]" strokeWidth={1.7} />
-            <h3 className="mt-5 font-display text-[22px] font-extrabold text-[#11142a]">Compra corporativa sin friccion</h3>
+            <h3 className="mt-5 font-display text-[22px] font-semibold text-[#11142a]">Compra corporativa sin friccion</h3>
             <p className="mt-3 text-[14px] leading-relaxed text-slate-600">
               Relevamos necesidad, cantidad, sedes y tiempos para que la propuesta llegue ordenada y con alternativas reales.
             </p>
@@ -133,8 +133,8 @@ export default function EmpresasPage() {
       </InternalSection>
 
       <InternalCta
-        title="Querés equipar tu empresa con tecnología de primera línea?"
-        intro="Contaños cuantos usuarios, que tipo de trabajo realizan y cual es tu plazo. Un especialista te responde con una propuesta en 24 hs hábiles."
+        title="¿Querés equipar tu empresa con tecnología de primera línea?"
+        intro="Contanos cuántos usuarios, qué tipo de trabajo realizan y cuál es tu plazo. Un especialista te responde con una propuesta en 24 hs hábiles."
         actions={[
           { label: "Solicitar asesoramiento", href: whatsappHref, external: true, icon: MessageCircle },
           { label: "Ver soluciones", href: "/soluciones/servidores", variant: "secondary", icon: ArrowRight },

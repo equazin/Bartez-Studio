@@ -48,7 +48,7 @@ const processSteps = [
     num: "03",
     icon: PackageCheck,
     title: "Entrega coordinada",
-    description: "Confirmamos stock, logística y fecha. Si hay varias sedes, coordinamos entregas parciales.",
+    description: "Confirmamos disponibilidad, logística y fecha. Si hay varias sedes, coordinamos entregas parciales.",
   },
   {
     num: "04",
@@ -73,7 +73,7 @@ function getProfile(title: string, intent: WhatsAppIntent) {
     return {
       eyebrow: "Seguridad IT",
       image: "/photos/products/router.jpg",
-      mediaTitle: "Proteccion por capas, sin sobredimensionar.",
+      mediaTitle: "Protección por capas, sin sobredimensionar.",
       mediaSubtitle: "Ordenamos prioridades: acceso, red, endpoints, backup y continuidad.",
       label: "Riesgo controlado",
     };
@@ -83,7 +83,7 @@ function getProfile(title: string, intent: WhatsAppIntent) {
     return {
       eyebrow: "Cloud y software",
       image: "/photos/office.jpg",
-      mediaTitle: "Licencias y servicios alíneados a usuarios reales.",
+      mediaTitle: "Licencias y servicios alineados a usuarios reales.",
       mediaSubtitle: "Evaluamos renovaciones, cuentas, backups y productividad.",
       label: "Licencias B2B",
     };
@@ -94,18 +94,18 @@ function getProfile(title: string, intent: WhatsAppIntent) {
       eyebrow: "Servicios IT",
       image: "/photos/engineer.jpg",
       mediaTitle: "Acompañamiento técnico con alcance documentado.",
-      mediaSubtitle: "Definimos niveles de atencion segun criticidad, sedes y equipos.",
+      mediaSubtitle: "Definimos niveles de atención según criticidad, sedes y equipos.",
       label: "Operaciones",
     };
   }
 
   if (text.includes("renting") || text.includes("leasing") || text.includes("renovacion")) {
     return {
-      eyebrow: "Financiacion tecnológica",
+      eyebrow: "Financiación tecnológica",
       image: "/photos/products/laptop2.jpg",
       mediaTitle: "Renovar tecnología con impacto financiero claro.",
-      mediaSubtitle: "Comparamos alternativas comerciales segun monto, plazo y disponibilidad.",
-      label: "Renovacion",
+      mediaSubtitle: "Comparamos alternativas comerciales según monto, plazo y disponibilidad.",
+      label: "Renovación",
     };
   }
 
@@ -134,7 +134,7 @@ function getProfile(title: string, intent: WhatsAppIntent) {
       eyebrow: "Organizaciones de salud",
       image: "/photos/products/monitor.jpg",
       mediaTitle: "Puestos, conectividad y continuidad para sedes criticas.",
-      mediaSubtitle: "Dimensionamos segun usuarios, areas administrativas y servicios internos.",
+      mediaSubtitle: "Dimensionamos según usuarios, áreas administrativas y servicios internos.",
       label: "Continuidad",
     };
   }
@@ -143,7 +143,7 @@ function getProfile(title: string, intent: WhatsAppIntent) {
     return {
       eyebrow: "Condiciones comerciales",
       image: "/photos/products/desktop.jpg",
-      mediaTitle: "Cada operación se evalua con información vigente.",
+      mediaTitle: "Cada operación se evalúa con información vigente.",
       mediaSubtitle: "Confirmamos disponibilidad, alternativas y condiciones al cotizar.",
       label: "Cotización",
     };
@@ -201,7 +201,7 @@ export function CommercialLanding({
       <InternalSection
         tone="soft"
         eyebrow="Alcance de trabajo"
-        title="Una solución definida por necesidad, no por catalogo."
+        title="Una solución definida por necesidad, no por catálogo."
         intro="Cada consulta se ordena con información técnica y comercial para llegar a una propuesta concreta."
       >
         <InternalFeatureGrid features={items} />
@@ -211,12 +211,12 @@ export function CommercialLanding({
         tone="white"
         eyebrow="Criterios de propuesta"
         title="Antes de cotizar, validamos lo que puede cambiar el resultado."
-        intro="La diferencia no esta solo en el producto: esta en elegirlo con datos de operación, plazos y condiciones reales."
+        intro="La diferencia no está solo en el producto: está en elegirlo con datos de operación, plazos y condiciones reales."
       >
         <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
           <div className="rounded-lg border border-slate-200 bg-[#f7f9fc] p-6">
             <CheckCircle2 className="size-7 text-[#0046EA]" strokeWidth={1.7} />
-            <h3 className="mt-5 font-display text-[22px] font-extrabold text-[#11142a]">Propuesta con respaldo</h3>
+            <h3 className="mt-5 font-display text-[22px] font-semibold text-[#11142a]">Propuesta con respaldo</h3>
             <p className="mt-3 text-[14px] leading-relaxed text-slate-600">
               No publicamos precios o promesas genéricas. Confirmamos el alcance según disponibilidad, marcas posibles y condiciones vigentes.
             </p>
@@ -238,11 +238,11 @@ export function CommercialLanding({
             const Icon = step.icon;
             return (
               <div key={step.num} className="relative rounded-lg border border-blue-200/60 bg-white p-6 shadow-sm">
-                <span className="font-display text-[32px] font-extrabold leading-none text-[#0046EA]/15">{step.num}</span>
+                <span className="font-display text-[32px] font-semibold leading-none text-[#0046EA]/15">{step.num}</span>
                 <span className="mt-3 grid size-10 place-items-center rounded-lg border border-blue-100 bg-blue-50">
                   <Icon className="size-5 text-[#0046EA]" strokeWidth={1.7} />
                 </span>
-                <h3 className="mt-4 font-display text-[16px] font-extrabold text-[#11142a]">{step.title}</h3>
+                <h3 className="mt-4 font-display text-[16px] font-semibold text-[#11142a]">{step.title}</h3>
                 <p className="mt-2 text-[13px] leading-relaxed text-slate-600">{step.description}</p>
               </div>
             );
@@ -252,7 +252,7 @@ export function CommercialLanding({
 
       <InternalCta
         title="Hablemos de tu operación y armamos el siguiente paso."
-        intro="Contaños qué necesitás resolver, con que plazo y en que escala. Un especialista te responde por WhatsApp."
+        intro="Contanos qué necesitás resolver, con qué plazo y en qué escala. Un especialista te responde por WhatsApp."
         actions={[
           { label: ctaLabel, href: whatsappHref, external: true, icon: MessageCircle },
           { label: "Ver marcas", href: "/marcas", variant: "secondary", icon: ArrowRight },

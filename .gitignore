@@ -37,3 +37,7 @@ tsconfig.tsbuildinfo
 .next-*/
 .npm-cache/
 tmp/
+
+# Artefactos de build locales
+/output/
+desktop/build/

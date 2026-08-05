@@ -109,7 +109,7 @@ export default function Rfq() {
                   <span className="size-1.5 rounded-full bg-[#ff8f1f]" />
                   Compras corporativas & Canal
                 </span>
-                <h1 className="mt-5 font-display text-[clamp(30px,4.5vw,48px)] font-extrabold leading-[1.05] tracking-[-0.035em]">
+                <h1 className="mt-5 font-display text-[clamp(30px,4.5vw,48px)] font-semibold leading-[1.05] tracking-[-0.035em]">
                   Cotización Masiva
                   <span className="text-sky"> (RFQ)</span>
                 </h1>
@@ -155,7 +155,7 @@ export default function Rfq() {
                   <span className="grid size-16 place-items-center rounded-full bg-emerald-50">
                     <CheckCircle2 size={32} className="text-emerald-600" />
                   </span>
-                  <h3 className="font-display text-[22px] font-extrabold text-ink">Tu cotización fue enviada por WhatsApp</h3>
+                  <h3 className="font-display text-[22px] font-semibold text-ink">Tu cotización fue enviada por WhatsApp</h3>
                   <p className="max-w-[48ch] text-[14px] leading-relaxed text-slate-500">
                     Un asesor revisará tu pliego y te contactará en menos de 24 hs hábiles. Revisá tu WhatsApp para confirmar el envío.
                   </p>
@@ -170,7 +170,7 @@ export default function Rfq() {
               ) : (
               <>
               <div className="mb-8 border-b border-slate-100 pb-6">
-                <h2 className="font-display text-[22px] font-extrabold text-ink">
+                <h2 className="font-display text-[22px] font-semibold text-ink">
                   Detalle de la cotización
                 </h2>
                 <p className="mt-1 text-[14px] text-slate-500">
@@ -389,7 +389,7 @@ export default function Rfq() {
               {[
                 "SLA 24 hs hábiles",
                 "Condiciones B2B",
-                "Stock verificado",
+                "Disponibilidad confirmada",
                 "Cobertura nacional",
               ].map((item) => (
                 <span key={item} className="flex items-center gap-1.5">

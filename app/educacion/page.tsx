@@ -17,10 +17,10 @@ export const metadata: Metadata = {
 };
 
 const solutions = [
-  { icon: Laptop, title: "Laboratorios de computacion", description: "PCs y notebooks para aulas de informatica, con imagen educativa y acceso a red." },
+  { icon: Laptop, title: "Laboratorios de computacion", description: "PCs y notebooks para aulas de informática, con imagen educativa y acceso a red." },
   { icon: Monitor, title: "Equipos para docentes", description: "Notebooks y accesorios para personal docente y administrativo." },
-  { icon: Network, title: "Conectividad y redes", description: "Redes WiFi y cableadas para aulas, gestion centralizada y acceso seguro." },
-  { icon: Server, title: "Servidores educativos", description: "Servidores para gestion acádemica, plataformas LMS y bases de datos." },
+  { icon: Network, title: "Conectividad y redes", description: "Redes WiFi y cableadas para aulas, gestión centralizada y acceso seguro." },
+  { icon: Server, title: "Servidores educativos", description: "Servidores para gestión académica, plataformas LMS y bases de datos." },
   { icon: Package, title: "Tablets y dispositivos", description: "Dispositivos para inclusion digital, programas 1 a 1 o flotas compartidas." },
   { icon: BookOpen, title: "Aulas audiovisuales", description: "Proyectores, pantallas, sonido y recursos para modernizar el aula." },
 ];
@@ -29,7 +29,7 @@ const levels = [
   { icon: School, title: "Nivel inicial y primario", description: "Equipamiento simple y robusto para primeras etapas de aprendizaje digital." },
   { icon: GraduationCap, title: "Nivel secundario", description: "Laboratorios, notebooks, redes WiFi y servidores para escuelas técnicas." },
   { icon: Users, title: "Institutos terciarios", description: "Equipamiento para carreras técnicas, diseño, sistemas y administración." },
-  { icon: BookOpen, title: "Universidades", description: "Laboratorios, campus, datacenters acádemicos y compras masivas." },
+  { icon: BookOpen, title: "Universidades", description: "Laboratorios, campus, datacenters académicos y compras masivas." },
 ];
 
 const proof = [
@@ -101,7 +101,7 @@ export default function EducacionPage() {
       </InternalSection>
 
       <InternalCta
-        title="Necesitás cotización para tu institución?"
+        title="¿Necesitás cotización para tu institución?"
         intro="Preparamos presupuestos formales adaptados a requerimientos educativos. Respondemos en 24-48 hs hábiles."
         actions={[
           { label: "Solicitar presupuesto", href: whatsappHref, external: true, icon: MessageCircle },

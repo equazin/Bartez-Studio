@@ -28,9 +28,9 @@ import { Navbar } from "@/components/Navbar";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
-  title: "BarPOS 4.0 - Punto de venta electronico | Bartez Tecnologia",
+  title: "BarPOS 4.0 - Punto de venta electrónico | Bartez Tecnología",
   description:
-    "BarPOS 4.0: equipamiento, software, implementacion y soporte para comercios. Consulta precio vigente o condiciones para distribuidores por WhatsApp.",
+    "BarPOS 4.0: equipamiento, software, implementación y soporte para comercios. Consultá precio vigente o condiciones para distribuidores por WhatsApp.",
 };
 
 const productCards = [
@@ -41,51 +41,51 @@ const productCards = [
     specs: ["Intel Core i3", "8GB memoria", "HDD 500GB", "Monitor 19 pulgadas", "Teclado y mouse"],
   },
   {
-    title: "IMPRESORA TERMICA OCOM 80MM",
+    title: "IMPRESORA TÉRMICA OCOM 80MM",
     image: "/photos/barpos/printer.png",
-    alt: "Impresora termica OCOM",
+    alt: "Impresora térmica OCOM",
     specs: ["USB + LAN", "Autocutter", "Alta velocidad", "Ticket 80mm"],
   },
   {
-    title: "LECTOR LASER OCOM OCBS-LA15",
+    title: "LECTOR LÁSER OCOM OCBS-LA15",
     image: "/photos/barpos/scanner.png",
-    alt: "Lector laser OCOM con base",
-    specs: ["USB 1D", "Base incluida", "Lectura rapida", "Uso intensivo"],
+    alt: "Lector láser OCOM con base",
+    specs: ["USB 1D", "Base incluida", "Lectura rápida", "Uso intensivo"],
   },
 ];
 
 const heroBenefits = [
   { title: "Controladora fiscal", detail: "homologada", icon: ShieldCheck },
-  { title: "Cumple 100%", detail: "reglamentacion ARCA", icon: CheckCircle2 },
+  { title: "Cumple 100%", detail: "reglamentación ARCA", icon: CheckCircle2 },
   { title: "Soporte tecnico", detail: "garantizado", icon: Headset },
 ];
 
 const proofStrip = [
-  { title: "Mas de 1.000", detail: "puntos de venta instalados", icon: BadgeCheck },
+  { title: "Más de 1.000", detail: "puntos de venta instalados", icon: BadgeCheck },
   { title: "Soluciones completas", detail: "equipamiento + software + soporte", icon: BarChart3 },
-  { title: "Capacitacion", detail: "y herramientas para vender mas", icon: GraduationCap },
+  { title: "Capacitación", detail: "y herramientas para vender mas", icon: GraduationCap },
   { title: "Marca confiable", detail: "respaldo, calidad y trayectoria", icon: ShieldCheck },
 ];
 
 const modules = [
-  { title: "Modulos de ventas", detail: "Caja / terminal de venta, gestion de clientes, pedidos y facturacion electronica.", icon: ShoppingCart },
-  { title: "Inventario y stock", detail: "Control de stock, gestion de productos y movimientos de inventario.", icon: Boxes },
-  { title: "Administracion", detail: "Proveedores, usuarios y cajas.", icon: Users },
-  { title: "Reportes y analisis", detail: "Reportes de ventas, rendimiento y financieros.", icon: BarChart3 },
-  { title: "Modulos de pagos", detail: "Gestion de pagos y medios.", icon: ReceiptText },
+  { title: "Módulos de ventas", detail: "Caja / terminal de venta, gestión de clientes, pedidos y facturación electrónica.", icon: ShoppingCart },
+  { title: "Inventario y stock", detail: "Control de stock, gestión de productos y movimientos de inventario.", icon: Boxes },
+  { title: "Administración", detail: "Proveedores, usuarios y cajas.", icon: Users },
+  { title: "Reportes y análisis", detail: "Reportes de ventas, rendimiento y financieros.", icon: BarChart3 },
+  { title: "Módulos de pagos", detail: "Gestión de pagos y medios.", icon: ReceiptText },
   { title: "Compatibilidad fiscal", detail: "Controladora fiscal homologada. Cumple 100% ARCA.", icon: ShieldCheck },
 ];
 
 const distributorBenefits = [
-  "Zonas a todo el pais",
+  "Zonas a todo el país",
   "Excelente rentabilidad",
-  "Capacitacion y herramientas",
+  "Capacitación y herramientas",
   "Soporte continuo",
   "Marca confiable",
 ];
 
 const contactBenefits = [
-  { title: "Envios a todo el pais", icon: Truck },
+  { title: "Envíos a todo el país", icon: Truck },
   { title: "Asesoramiento especializado", icon: Headset },
   { title: "Respaldo y garantia en cada solucion", icon: ShieldCheck },
 ];
@@ -105,16 +105,16 @@ export default function BarposPage() {
           <div className="mx-auto grid max-w-[1320px] gap-10 px-5 py-14 sm:px-6 md:py-18 lg:grid-cols-[0.82fr_1.18fr] lg:items-center lg:py-20">
             <div className="relative z-10">
               <p className="text-[13px] font-black uppercase tracking-[0.13em] text-[#071033]">
-                Punto de venta <span className="text-[#0046EA]">electronico</span>
+                Punto de venta <span className="text-[#0046EA]">electrónico</span>
               </p>
-              <h1 className="mt-4 font-display text-[clamp(52px,7vw,92px)] font-black leading-[0.94] tracking-[-0.055em] text-[#071033] text-balance">
+              <h1 className="mt-4 font-display text-[clamp(52px,7vw,92px)] font-semibold leading-[0.94] tracking-[-0.055em] text-[#071033] text-balance">
                 Bar<span className="text-[#1254e8]">POS 4.0</span>
               </h1>
-              <h2 className="mt-4 font-display text-[clamp(24px,3vw,36px)] font-extrabold leading-tight tracking-[-0.03em] text-[#071033]">
+              <h2 className="mt-4 font-display text-[clamp(24px,3vw,36px)] font-semibold leading-tight tracking-[-0.03em] text-[#071033]">
                 Completo, confiable y homologado.
               </h2>
               <p className="mt-5 max-w-[58ch] text-[15.5px] leading-relaxed text-slate-600">
-                El punto de venta electronico pensado para supermercados, despensas, panaderias, mini mercados, bares y todo tipo de comercio. Equipamiento profesional + software + controladora fiscal homologada.
+                El punto de venta electrónico pensado para supermercados, despensas, panaderías, mini mercados, bares y todo tipo de comercio. Equipamiento profesional + software + controladora fiscal homologada.
               </p>
 
               <div className="mt-8 grid gap-5 sm:grid-cols-3">
@@ -129,7 +129,7 @@ export default function BarposPage() {
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <a href={quoteHref} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-14 items-center justify-center gap-2 rounded-lg bg-[linear-gradient(90deg,#ff7718,#ff8f1f,#ffb000)] px-6 py-3.5 text-[14px] font-extrabold text-white shadow-[0_18px_34px_-18px_rgba(255,122,24,0.9)] transition hover:-translate-y-0.5">
-                  <MessageCircle size={18} strokeWidth={2} /> Pedir cotizacion por WhatsApp
+                  <MessageCircle size={18} strokeWidth={2} /> Pedir cotización por WhatsApp
                 </a>
                 <Link href="#software" className="inline-flex min-h-14 items-center justify-center gap-2 rounded-lg border border-[#1254e8] bg-white px-6 py-3.5 text-[14px] font-extrabold text-[#1254e8] shadow-sm transition hover:bg-blue-50">
                   Ver software BarPOS 4.0 <ArrowRight size={17} strokeWidth={2} />
@@ -138,7 +138,7 @@ export default function BarposPage() {
             </div>
 
             <div className="relative z-10 min-h-[360px] lg:min-h-[560px]">
-              <div className="absolute right-0 top-6 z-20 hidden rotate-1 rounded-lg border-4 border-[#1254e8] bg-[#0845c8] px-5 py-4 text-center font-display text-[22px] font-black uppercase leading-[0.95] text-white shadow-[0_18px_32px_-18px_rgba(0,70,234,0.8)] md:block">
+              <div className="absolute right-0 top-6 z-20 hidden rotate-1 rounded-lg border-4 border-[#1254e8] bg-[#0845c8] px-5 py-4 text-center font-display text-[22px] font-semibold uppercase leading-[0.95] text-white shadow-[0_18px_32px_-18px_rgba(0,70,234,0.8)] md:block">
                 Mejor precio<br />del mercado
                 <div className="mx-auto mt-2 grid size-14 place-items-center rounded-full border-4 border-white bg-white text-[#1254e8]">
                   <BadgeCheck size={28} fill="currentColor" strokeWidth={1.6} />
@@ -146,7 +146,7 @@ export default function BarposPage() {
               </div>
               <Image
                 src="/photos/barpos/kit-completo.png"
-                alt="Kit completo BarPOS con PC, impresora termica y lector laser"
+                alt="Kit completo BarPOS con PC, impresora térmica y lector láser"
                 width={1519}
                 height={1001}
                 priority
@@ -176,7 +176,7 @@ export default function BarposPage() {
           <div className="mx-auto grid max-w-[1240px] gap-10 px-5 sm:px-6 lg:grid-cols-[0.74fr_1.26fr] lg:items-start">
             <div>
               <p className="text-[13px] font-black uppercase tracking-[0.1em] text-[#1254e8]">Equipamiento incluido</p>
-              <h2 className="mt-3 font-display text-[clamp(34px,4.6vw,58px)] font-black leading-[1.02] tracking-[-0.055em] text-[#071033] text-balance">
+              <h2 className="mt-3 font-display text-[clamp(34px,4.6vw,58px)] font-semibold leading-[1.02] tracking-[-0.055em] text-[#071033] text-balance">
                 Un punto de venta <span className="text-[#1254e8]">listo para trabajar</span>
               </h2>
               <p className="mt-5 max-w-[54ch] text-[15px] leading-relaxed text-slate-600">
@@ -185,8 +185,8 @@ export default function BarposPage() {
               <div className="mt-7 grid gap-4">
                 {[
                   ["PC BARTEZ POS I3 C/W10", "Gabinete mate black alum 500W + teclado y mouse black + Intel Core i3 + 8GB RAM + HDD 500GB + monitor 19 pulgadas."],
-                  ["Impresora termica OCOM 80mm", "USB + LAN + autocutter."],
-                  ["Lector OCOM laser OCBS-LA15", "USB 1D con base."],
+                  ["Impresora térmica OCOM 80mm", "USB + LAN + autocutter."],
+                  ["Lector OCOM láser OCBS-LA15", "USB 1D con base."],
                 ].map(([title, detail]) => (
                   <div key={title} className="flex gap-3">
                     <CheckCircle2 className="mt-0.5 size-5 flex-none text-[#1254e8]" fill="currentColor" strokeWidth={1.8} />
@@ -229,11 +229,11 @@ export default function BarposPage() {
           <div className="mx-auto grid max-w-[1240px] gap-10 px-5 sm:px-6 lg:grid-cols-[0.82fr_1.18fr]">
             <div>
               <p className="text-[13px] font-black uppercase tracking-[0.1em] text-[#1254e8]">Software BarPOS 4.0</p>
-              <h2 className="mt-3 font-display text-[clamp(32px,4.3vw,54px)] font-black leading-[1.03] tracking-[-0.052em] text-[#071033] text-balance">
-                Modulos pensados para <span className="text-[#1254e8]">cada area de tu negocio</span>
+              <h2 className="mt-3 font-display text-[clamp(32px,4.3vw,54px)] font-semibold leading-[1.03] tracking-[-0.052em] text-[#071033] text-balance">
+                Módulos pensados para <span className="text-[#1254e8]">cada área de tu negocio</span>
               </h2>
               <p className="mt-5 max-w-[55ch] text-[15px] leading-relaxed text-slate-600">
-                Una plataforma completa para gestionar ventas, stock, clientes, proveedores, reportes y mucho mas. Escalable para acompanar el crecimiento de tu negocio.
+                Una plataforma completa para gestiónar ventas, stock, clientes, proveedores, reportes y mucho más. Escalable para acompañar el crecimiento de tu negocio.
               </p>
               <Link href="#consulta" className="mt-8 inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-[#1254e8] bg-white px-5 py-3 text-[14px] font-extrabold text-[#1254e8] transition hover:bg-blue-50">
                 Conocer BarPOS 4.0 <ArrowRight size={17} strokeWidth={2} />
@@ -264,12 +264,12 @@ export default function BarposPage() {
           <div className="absolute inset-0 opacity-30 [background-image:linear-gradient(120deg,transparent_0%,transparent_40%,rgba(255,255,255,0.12)_40%,transparent_62%)]" />
           <div className="relative mx-auto grid max-w-[1240px] gap-10 px-5 sm:px-6 md:grid-cols-[0.92fr_0.72fr] lg:grid-cols-[0.9fr_0.82fr_0.9fr] lg:items-center">
             <div>
-              <p className="text-[13px] font-black uppercase tracking-[0.12em] text-[#6bd2ff]">Red de distribucion</p>
-              <h2 className="mt-3 font-display text-[clamp(32px,4vw,56px)] font-black leading-[1.03] tracking-[-0.05em] text-balance">
-                Sumate a una <span className="text-[#34c8ff]">red que crece</span> todos los dias
+              <p className="text-[13px] font-black uppercase tracking-[0.12em] text-[#6bd2ff]">Red de distribución</p>
+              <h2 className="mt-3 font-display text-[clamp(32px,4vw,56px)] font-semibold leading-[1.03] tracking-[-0.05em] text-balance">
+                Sumate a una <span className="text-[#34c8ff]">red que crece</span> todos los días
               </h2>
               <p className="mt-5 max-w-[52ch] text-[15px] leading-relaxed text-blue-50">
-                Si queres vender soluciones y no cajas, tenemos todo lo que necesitas para crecer con nosotros.
+                Si querés vender soluciones y no cajas, tenemos todo lo que necesitás para crecer con nosotros.
               </p>
               <ul className="mt-6 grid gap-2">
                 {distributorBenefits.map((benefit) => (
@@ -289,15 +289,15 @@ export default function BarposPage() {
             <div className="grid gap-5 md:col-span-2 lg:col-span-1">
               {[
                 { title: "Soluciones completas", detail: "Equipamiento + software + soporte para todo tipo de negocios.", icon: Handshake },
-                { title: "Soporte continuo", detail: "Acompanamiento tecnico y comercial permanente.", icon: Headset },
-                { title: "Capacitacion y herramientas", detail: "Todo lo que necesitas para vender mas y mejor.", icon: GraduationCap },
+                { title: "Soporte continuo", detail: "Acompañamiento tecnico y comercial permanente.", icon: Headset },
+                { title: "Capacitación y herramientas", detail: "Todo lo que necesitás para vender mas y mejor.", icon: GraduationCap },
               ].map((item) => (
                 <div key={item.title} className="flex gap-4 border-b border-white/18 pb-5 last:border-b-0">
                   <span className="grid size-16 flex-none place-items-center rounded-full border border-white/25 bg-white/10 text-white">
                     <item.icon size={30} strokeWidth={1.7} />
                   </span>
                   <div>
-                    <h3 className="font-display text-[20px] font-black leading-tight">{item.title}</h3>
+                    <h3 className="font-display text-[20px] font-semibold leading-tight">{item.title}</h3>
                     <p className="mt-2 text-[14px] leading-relaxed text-blue-100">{item.detail}</p>
                   </div>
                 </div>
@@ -309,8 +309,8 @@ export default function BarposPage() {
         <section id="consulta" className="bg-white py-12 md:py-16">
           <div className="mx-auto grid max-w-[1240px] gap-10 px-5 sm:px-6 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
             <div>
-              <p className="text-[13px] font-black uppercase tracking-[0.1em] text-[#1254e8]">Cotiza BarPOS 4.0</p>
-              <h2 className="mt-3 font-display text-[clamp(32px,4.4vw,56px)] font-black leading-[1.03] tracking-[-0.052em] text-[#071033] text-balance">
+              <p className="text-[13px] font-black uppercase tracking-[0.1em] text-[#1254e8]">Cotizá BarPOS 4.0</p>
+              <h2 className="mt-3 font-display text-[clamp(32px,4.4vw,56px)] font-semibold leading-[1.03] tracking-[-0.052em] text-[#071033] text-balance">
                 Hablemos <span className="text-[#1254e8]">de tu proyecto</span>
               </h2>
               <p className="mt-5 max-w-[50ch] text-[15px] leading-relaxed text-slate-600">

@@ -67,7 +67,7 @@ export default async function Recursos() {
                     <Clock size={12} /> {article.readingTime}
                   </span>
                 </div>
-                <h2 className="mt-3 font-display text-[21px] font-extrabold leading-snug text-[#11142a]">{article.title}</h2>
+                <h2 className="mt-3 font-display text-[21px] font-semibold leading-snug text-[#11142a]">{article.title}</h2>
                 <p className="mt-2 flex-1 text-[14px] leading-relaxed text-slate-600">{article.excerpt}</p>
                 <span className="mt-5 inline-flex items-center gap-1.5 text-[14px] font-bold text-[#0046EA]">
                   Leer guía <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />

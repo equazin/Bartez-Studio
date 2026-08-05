@@ -16,7 +16,7 @@ import { Icon } from "@/components/icons";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 const processSteps = [
-  { icon: MessagesSquare, title: "Contaños el desafio", description: "Nos compartis qué necesitás resolver y cuales son tus prioridades." },
+  { icon: MessagesSquare, title: "Contanos el desafío", description: "Nos compartís qué necesitás resolver y cuáles son tus prioridades." },
   { icon: ClipboardList, title: "Evaluamos la necesidad", description: "Analizamos el entorno y relevamos los requerimientos clave." },
   { icon: FileText, title: "Presentamos la propuesta", description: "Diseñamos una solución y una propuesta de trabajo clara." },
   { icon: Rocket, title: "Implementamos y acompañamos", description: "Coordinamos la puesta en marcha y el seguimiento." },
@@ -125,7 +125,7 @@ export default async function VerticalPage({
             {vertical.bullets.map((bullet) => (
               <article key={bullet.title} className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200">
                 <CheckCircle2 className="size-6 text-[#0046EA]" strokeWidth={1.8} />
-                <h3 className="mt-5 font-display text-[17px] font-extrabold text-[#11142a]">{bullet.title}</h3>
+                <h3 className="mt-5 font-display text-[17px] font-semibold text-[#11142a]">{bullet.title}</h3>
                 <p className="mt-2 text-[13.5px] leading-relaxed text-slate-600">{bullet.desc}</p>
               </article>
             ))}
@@ -142,22 +142,22 @@ export default async function VerticalPage({
             {vertical.capabilities.map((capability) => (
               <article key={capability.title} className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
                 <Icon name={capability.icon} className="size-6 text-[#0046EA]" />
-                <h3 className="mt-4 font-display text-[16px] font-extrabold text-[#11142a]">{capability.title}</h3>
+                <h3 className="mt-4 font-display text-[16px] font-semibold text-[#11142a]">{capability.title}</h3>
                 <p className="mt-2 text-[12.8px] leading-relaxed text-slate-600">{capability.desc}</p>
               </article>
             ))}
           </div>
         </InternalSection>
 
-        <InternalSection tone="white" eyebrow="Proceso" title="De la consulta a la implementacion.">
+        <InternalSection tone="white" eyebrow="Proceso" title="De la consulta a la implementación.">
           <ol className="grid gap-5 md:grid-cols-4">
             {processSteps.map((step, index) => (
               <li key={step.title} className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-                <span className="grid size-10 place-items-center rounded-lg border border-blue-100 bg-blue-50 font-display text-[13px] font-extrabold text-[#0046EA]">
+                <span className="grid size-10 place-items-center rounded-lg border border-blue-100 bg-blue-50 font-display text-[13px] font-semibold text-[#0046EA]">
                   {index + 1}
                 </span>
                 <step.icon className="mt-6 size-6 text-[#0046EA]" strokeWidth={1.7} />
-                <h3 className="mt-4 font-display text-[16px] font-extrabold text-[#11142a]">{step.title}</h3>
+                <h3 className="mt-4 font-display text-[16px] font-semibold text-[#11142a]">{step.title}</h3>
                 <p className="mt-2 text-[13px] leading-relaxed text-slate-600">{step.description}</p>
               </li>
             ))}
@@ -168,7 +168,7 @@ export default async function VerticalPage({
           <div className="grid gap-5 lg:grid-cols-2">
             {vertical.faqs.map((item) => (
               <article key={item.q} className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-                <h3 className="font-display text-[16px] font-extrabold text-[#11142a]">{item.q}</h3>
+                <h3 className="font-display text-[16px] font-semibold text-[#11142a]">{item.q}</h3>
                 <p className="mt-2.5 text-[13.5px] leading-relaxed text-slate-600">{item.a}</p>
               </article>
             ))}
@@ -176,7 +176,7 @@ export default async function VerticalPage({
         </InternalSection>
 
         {related.length > 0 ? (
-          <InternalSection tone="white" eyebrow="Relacionados" title="Otras areas en las que podemos ayudarte.">
+          <InternalSection tone="white" eyebrow="Relacionados" title="Otras áreas en las que podemos ayudarte.">
             <div className="grid gap-4 md:grid-cols-2">
               {related.map((item) => (
                 <Link
@@ -187,7 +187,7 @@ export default async function VerticalPage({
                   <span className="grid size-11 place-items-center rounded-lg border border-blue-100 bg-blue-50 text-[#0046EA]">
                     <Icon name={item.icon} className="size-5" />
                   </span>
-                  <span className="font-display text-[16px] font-extrabold text-[#11142a]">{item.navLabel}</span>
+                  <span className="font-display text-[16px] font-semibold text-[#11142a]">{item.navLabel}</span>
                   <ArrowRight className="ml-auto size-4 text-[#0046EA] transition-transform group-hover:translate-x-1" />
                 </Link>
               ))}
@@ -199,7 +199,7 @@ export default async function VerticalPage({
           title="Hablemos de lo que necesita tu empresa."
           intro="Un especialista puede ayudarte a definir el alcance antes de preparar una propuesta. Respondemos en 24 hs hábiles."
           actions={[
-            { label: "Contaños tu desafio por WhatsApp", href: whatsappHref, external: true, icon: MessageCircle },
+            { label: "Contanos tu desafío por WhatsApp", href: whatsappHref, external: true, icon: MessageCircle },
             { label: "Ver marcas", href: "/marcas", variant: "secondary", icon: ArrowRight },
           ]}
         />

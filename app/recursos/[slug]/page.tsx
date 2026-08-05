@@ -112,7 +112,7 @@ export default async function Articulo({ params, searchParams }: { params: Promi
             <div>
               {article.body.map((block, index) =>
                 block.h ? (
-                  <h2 key={index} className="mt-9 font-display text-[24px] font-extrabold text-[#11142a] first:mt-0">
+                  <h2 key={index} className="mt-9 font-display text-[24px] font-semibold text-[#11142a] first:mt-0">
                     {block.h}
                   </h2>
                 ) : (
@@ -126,8 +126,8 @@ export default async function Articulo({ params, searchParams }: { params: Promi
         </InternalSection>
 
         <InternalCta
-          title="Querés evaluar este escenario?"
-          intro="Contaños tu contexto y un especialista te ayuda a definir el alcance."
+          title="¿Querés evaluar este escenario?"
+          intro="Contanos tu contexto y un especialista te ayuda a definir el alcance."
           actions={[
             { label: "Consultar por WhatsApp", href: buildWhatsAppUrl("quote", [`Articulo consultado: ${article.title}`]), external: true, icon: MessageCircle },
             { label: "Ver soluciones", href: "/soluciones/servidores", variant: "secondary", icon: ArrowLeft },

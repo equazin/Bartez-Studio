@@ -218,7 +218,7 @@ export function CorporateSolutionsShowcase() {
     <section id="soluciones" className="bg-[#f7f9ff] py-14 lg:py-16">
       <div className="mx-auto w-[calc(100vw-32px)] max-w-[1320px] min-w-0 px-0 sm:w-full sm:px-6 lg:px-10">
         <div className="text-center">
-          <h2 className="mx-auto max-w-[13ch] font-display text-[clamp(27px,7vw,48px)] font-black leading-tight tracking-[-0.045em] text-[#11142a] sm:max-w-none">
+          <h2 className="mx-auto max-w-[13ch] font-display text-[clamp(27px,7vw,48px)] font-semibold leading-tight tracking-[-0.045em] text-[#11142a] sm:max-w-none">
             Soluciones corporativas
           </h2>
           <p className="mt-2 text-[15px] font-medium text-slate-500">
@@ -258,7 +258,7 @@ export function CorporateSolutionsShowcase() {
                 <span className="inline-flex rounded-full bg-gradient-to-r from-[#0046EA] via-[#006dff] to-[#0ea5ff] px-3 py-1.5 text-[11px] font-black uppercase tracking-[0.08em] text-white">
                   {selected.eyebrow}
                 </span>
-                <h3 className="mt-6 max-w-[14ch] font-display text-[clamp(29px,3.6vw,42px)] font-black leading-[1.02] tracking-[-0.05em] text-[#11142a]">
+                <h3 className="mt-6 max-w-[14ch] font-display text-[clamp(29px,3.6vw,42px)] font-semibold leading-[1.02] tracking-[-0.05em] text-[#11142a]">
                   {selected.title}
                 </h3>
                 <p className="mt-5 max-w-[48ch] text-[14.5px] leading-relaxed text-slate-600">

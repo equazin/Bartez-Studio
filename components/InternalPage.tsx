@@ -159,7 +159,7 @@ export function InternalHero({
             </div>
           ) : null}
 
-          <h1 className="max-w-[780px] font-display text-[clamp(38px,5.4vw,68px)] font-extrabold leading-[1.02] text-ink text-balance">
+          <h1 className="max-w-[780px] font-display text-[clamp(38px,5.4vw,68px)] font-semibold leading-[1.02] text-ink text-balance">
             {title}
           </h1>
           <p className="mt-6 max-w-[62ch] text-[clamp(15.5px,1.45vw,18px)] leading-relaxed text-slate-600">{intro}</p>
@@ -176,7 +176,7 @@ export function InternalHero({
             <div className="mt-12 grid gap-5 border-t border-slate-200 pt-7 sm:grid-cols-3">
               {metrics.map((metric) => (
                 <div key={`${metric.value}-${metric.label}`}>
-                  <div className={cn("font-display text-[clamp(28px,4vw,42px)] font-extrabold leading-none", a.metric)}>{metric.value}</div>
+                  <div className={cn("font-display text-[clamp(28px,4vw,42px)] font-semibold leading-none", a.metric)}>{metric.value}</div>
                   <div className="mt-1 text-[12.5px] font-semibold text-ink">{metric.label}</div>
                   {metric.detail ? <div className="mt-1 text-[12px] leading-relaxed text-slate-600">{metric.detail}</div> : null}
                 </div>
@@ -272,7 +272,7 @@ export function InternalHeroMedia({
 
       {(title || subtitle || items.length) ? (
         <div className="p-5 md:p-6">
-          {title ? <h2 className="font-display text-[22px] font-extrabold leading-tight text-ink">{title}</h2> : null}
+          {title ? <h2 className="font-display text-[22px] font-semibold leading-tight text-ink">{title}</h2> : null}
           {subtitle ? <p className="mt-2 text-[13.5px] leading-relaxed text-slate-600">{subtitle}</p> : null}
           {items.length ? (
             <div className="mt-5 grid gap-4 border-t border-slate-200 pt-5 sm:grid-cols-3">
@@ -323,7 +323,7 @@ export function InternalSection({
         {(eyebrow || title || intro) ? (
           <div className="mb-10 max-w-[680px]">
             {eyebrow ? <p className="text-[13px] font-bold text-brand">{eyebrow}</p> : null}
-            {title ? <h2 className="mt-2 font-display text-[clamp(28px,3.8vw,44px)] font-extrabold leading-[1.05] text-ink text-balance">{title}</h2> : null}
+            {title ? <h2 className="mt-2 font-display text-[clamp(28px,3.8vw,44px)] font-semibold leading-[1.05] text-ink text-balance">{title}</h2> : null}
             {intro ? <p className="mt-4 text-[15.5px] leading-relaxed text-slate-600">{intro}</p> : null}
           </div>
         ) : null}
@@ -359,7 +359,7 @@ export function InternalFeatureGrid({
             <span className="grid size-11 place-items-center rounded-lg border border-blue-100 bg-blue-50">
               <Icon className="size-5 text-brand" strokeWidth={1.7} />
             </span>
-            <h3 className="mt-5 font-display text-[17px] font-extrabold text-ink">{feature.title}</h3>
+            <h3 className="mt-5 font-display text-[17px] font-semibold text-ink">{feature.title}</h3>
             <p className="mt-2 text-[13.5px] leading-relaxed text-slate-600">{feature.description}</p>
           </article>
         );
@@ -403,7 +403,7 @@ export function InternalCta({
   return (
     <section className={cn("py-16 md:py-20", tone === "dark" ? "bg-navy text-white" : "border-t border-slate-200 bg-white text-ink")}>
       <div className="mx-auto flex max-w-[1000px] flex-col items-center px-6 text-center">
-        <h2 className={cn("font-display text-[clamp(28px,4vw,46px)] font-extrabold leading-[1.06] text-balance", tone === "dark" ? "text-white" : "text-ink")}>{title}</h2>
+        <h2 className={cn("font-display text-[clamp(28px,4vw,46px)] font-semibold leading-[1.06] text-balance", tone === "dark" ? "text-white" : "text-ink")}>{title}</h2>
         <p className={cn("mt-4 max-w-[58ch] text-[15.5px] leading-relaxed", tone === "dark" ? "text-slate-300" : "text-slate-600")}>{intro}</p>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           {actions.map((action) => (

@@ -77,7 +77,7 @@ export default function MarcasPage() {
           </div>
           <div className="border-t border-slate-200 bg-[#f7f9fc] p-6">
             <p className="text-[13px] font-bold text-[#0046EA]">Hardware, software, energía y conectividad</p>
-            <h2 className="mt-2 font-display text-[24px] font-extrabold text-[#11142a]">Selección por categoría, disponibilidad y contexto.</h2>
+            <h2 className="mt-2 font-display text-[24px] font-semibold text-[#11142a]">Selección por categoría, disponibilidad y contexto.</h2>
             <p className="mt-2 text-[13.5px] leading-relaxed text-slate-600">
               No empujamos una sola marca. Comparamos alternativas según uso, presupuesto y plazo de entrega.
             </p>
@@ -144,7 +144,7 @@ export default function MarcasPage() {
       </InternalSection>
 
       <InternalCta
-        title="Buscás un producto específico?"
+        title="¿Buscás un producto específico?"
         intro="Consultanos disponibilidad, condiciones y precios. Un especialista te responde en 24 hs hábiles."
         actions={[
           { label: "Pedir cotización", href: whatsappLinks.quote, external: true, icon: MessageCircle },

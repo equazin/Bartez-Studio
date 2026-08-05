@@ -29,7 +29,7 @@ const sectors = [
   { icon: Landmark, title: "Municipios y comunas", description: "PCs, notebooks, impresoras, redes y servidores para administraciónes locales." },
   { icon: GraduationCap, title: "Educación pública", description: "Laboratorios, proyectores, tablets y conectividad para escuelas e institutos." },
   { icon: HeartPulse, title: "Salud pública", description: "Terminales, servidores, redes y equipamiento para hospitales y centros de salud." },
-  { icon: Building, title: "Organismos provinciales y nacionales", description: "Proyectos de mayor escala con coordinacion técnica y logistica multi-sede." },
+  { icon: Building, title: "Organismos provinciales y nacionales", description: "Proyectos de mayor escala con coordinación técnica y logística multi-sede." },
 ];
 
 export default function GobiernoPage() {
@@ -52,13 +52,13 @@ export default function GobiernoPage() {
         mediaSubtitle="Acompanamos compras directas, pedidos instituciónales y procesos con requisitos administrativos."
         mediaItems={[
           { icon: FileText, title: "Formal", description: "Presupuestos y documentación." },
-          { icon: Globe, title: "Nacional", description: "Entrega y coordinacion en Argentina." },
+          { icon: Globe, title: "Nacional", description: "Entrega y coordinación en Argentina." },
           { icon: ShieldCheck, title: "Fiscal", description: "Factura A y datos comerciales." },
         ]}
         metrics={[
           { value: "24-48", label: "hs respuesta" },
           { value: "ARG", label: "cobertura" },
-          { value: "A", label: "facturacion" },
+          { value: "A", label: "facturación" },
         ]}
         actions={[
           { label: "Solicitar cotización", href: whatsappLinks.government, external: true, icon: MessageCircle },
@@ -85,7 +85,7 @@ export default function GobiernoPage() {
       </InternalSection>
 
       <InternalCta
-        title="Necesitás una cotización para tu organismo?"
+        title="¿Necesitás una cotización para tu organismo?"
         intro="Preparamos presupuestos formales adaptados a los requerimientos del sector público. Respondemos en 24-48 hs hábiles."
         actions={[
           { label: "Solicitar presupuesto", href: whatsappLinks.government, external: true, icon: MessageCircle },

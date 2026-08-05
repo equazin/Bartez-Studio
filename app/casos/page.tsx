@@ -61,7 +61,7 @@ export default async function CasosPage() {
                 </div>
                 <div className="p-6">
                   <p className="text-[12px] font-bold text-[#0046EA]">{item.clientName}</p>
-                  <h2 className="mt-2 font-display text-[21px] font-extrabold text-[#11142a]">{item.title}</h2>
+                  <h2 className="mt-2 font-display text-[21px] font-semibold text-[#11142a]">{item.title}</h2>
                   <p className="mt-3 text-[13.5px] leading-relaxed text-slate-600">{item.description}</p>
                   <span className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-bold text-[#0046EA]">
                     Ver caso <ArrowRight size={15} />
@@ -72,9 +72,9 @@ export default async function CasosPage() {
           </div>
         ) : (
           <div className="rounded-lg border border-slate-200 bg-white p-8 shadow-sm">
-            <h2 className="font-display text-[24px] font-extrabold text-[#11142a]">Contenido en preparación</h2>
+            <h2 className="font-display text-[24px] font-semibold text-[#11142a]">Contenido en preparación</h2>
             <p className="mt-3 max-w-[64ch] text-[14px] leading-relaxed text-slate-600">
-              Los casos anónimos fueron retirados. Esta sección se hábilitara a medida que contemos con clientes, resultados y autorizaciónes verificables.
+              Los casos anónimos fueron retirados. Esta sección se habilitará a medida que contemos con clientes, resultados y autorizaciones verificables.
             </p>
             <a href={whatsappLinks.company} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex items-center gap-2 rounded-lg bg-[linear-gradient(90deg,#ff7a18,#ff8f1f,#ffb000)] px-5 py-3 text-[14px] font-bold text-white shadow-[0_16px_32px_-18px_rgba(255,122,24,0.9)]">
               <MessageCircle size={17} /> Consultar una solución similar
@@ -84,8 +84,8 @@ export default async function CasosPage() {
       </InternalSection>
 
       <InternalCta
-        title="Tenés un proyecto parecido en mente?"
-        intro="Contaños el contexto y armamos una propuesta adaptada a tu escala y restricciones."
+        title="¿Tenés un proyecto parecido en mente?"
+        intro="Contanos el contexto y armamos una propuesta adaptada a tu escala y restricciones."
         actions={[
           { label: "Hablar por WhatsApp", href: whatsappLinks.company, external: true, icon: MessageCircle },
           { label: "Ver soluciones", href: "/soluciones/servidores", variant: "secondary", icon: ArrowRight },

@@ -31,7 +31,7 @@ const benefits = [
   {
     icon: Percent,
     title: "Condiciones comerciales competitivas",
-    description: "Accedes a precios de canal con margenes pensados para que tu negocio sea rentable.",
+    description: "Accedés a precios de canal con márgenes pensados para que tu negocio sea rentable.",
   },
   {
     icon: Package,
@@ -63,8 +63,8 @@ const benefits = [
 const steps = [
   {
     num: "01",
-    title: "Completa el formulario",
-    desc: "Contaños quien sos, que productos distribuis y cual es tu mercado principal.",
+    title: "Completá el formulario",
+    desc: "Contanos quién sos, qué productos distribuís y cuál es tu mercado principal.",
   },
   {
     num: "02",
@@ -74,30 +74,30 @@ const steps = [
   {
     num: "03",
     title: "Definimos el circuito",
-    desc: "Acordamos margenes, plazos, logistica y soporte según volumen y canal.",
+    desc: "Acordamos márgenes, plazos, logística y soporte según volumen y canal.",
   },
   {
     num: "04",
     title: "Empezamos a operar",
-    desc: "Accedes a catalogo, precios de canal y seguimiento comercial para vender.",
+    desc: "Accedés a catálogo, precios de canal y seguimiento comercial para vender.",
   },
 ];
 
 const faqs = [
   {
-    q: "Qué tipos de revendedores trabajan con Bartez?",
-    a: "Trabajamos con tiendas de informatica, integradores de sistemas, empresas de servicios IT, distribuidores regionales y profesionales independientes.",
+    q: "¿Qué tipos de revendedores trabajan con Bartez?",
+    a: "Trabajamos con tiendas de informática, integradores de sistemas, empresas de servicios IT, distribuidores regionales y profesionales independientes.",
   },
   {
-    q: "Hay un mínimo de compra para ser revendedor?",
-    a: "No tenemos un mínimo rigido para ingresar al canal. Las condiciones se acuerdan según perfil, volumen estimado y tipo de productos.",
+    q: "¿Hay un mínimo de compra para ser revendedor?",
+    a: "No tenemos un mínimo rígido para ingresar al canal. Las condiciones se acuerdan según perfil, volumen estimado y tipo de productos.",
   },
   {
-    q: "Ofrecen soporte técnico para revendedores?",
+    q: "¿Ofrecen soporte técnico para revendedores?",
     a: "Sí. Tenés acceso a soporte comercial y orientación técnica para asesorar correctamente a tus clientes.",
   },
   {
-    q: "Cómo se gestionan las garantías?",
+    q: "¿Cómo se gestionan las garantías?",
     a: "Te informamos las condiciones aplicables a cada producto y acompañamos el inicio y seguimiento del caso cuando corresponde.",
   },
 ];
@@ -140,7 +140,7 @@ export default function RevendedoresPage() {
       <InternalSection
         tone="soft"
         eyebrow="Ventajas del canal"
-        title="Por que distribuir con Bartez."
+        title="Por qué distribuir con Bartez."
         intro="La propuesta de canal se apoya en respuesta comercial, variedad de marcas y experiencia real en el mercado IT argentino."
       >
         <InternalFeatureGrid features={benefits} />
@@ -149,16 +149,16 @@ export default function RevendedoresPage() {
       <InternalSection
         tone="white"
         eyebrow="Proceso de alta"
-        title="Como sumarte al canal."
-        intro="El alta se resuelve por etapas simples para entender tu negocio antes de hábilitar condiciones."
+        title="Cómo sumarte al canal."
+        intro="El alta se resuelve por etapas simples para entender tu negocio antes de habilitar condiciones."
       >
         <ol className="grid gap-5 md:grid-cols-4">
           {steps.map((step) => (
             <li key={step.num} className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-              <span className="grid size-10 place-items-center rounded-lg border border-blue-100 bg-blue-50 font-display text-[13px] font-extrabold text-[#0046EA]">
+              <span className="grid size-10 place-items-center rounded-lg border border-blue-100 bg-blue-50 font-display text-[13px] font-semibold text-[#0046EA]">
                 {step.num}
               </span>
-              <h3 className="mt-5 font-display text-[17px] font-extrabold text-[#11142a]">{step.title}</h3>
+              <h3 className="mt-5 font-display text-[17px] font-semibold text-[#11142a]">{step.title}</h3>
               <p className="mt-2 text-[13.5px] leading-relaxed text-slate-600">{step.desc}</p>
             </li>
           ))}
@@ -169,11 +169,11 @@ export default function RevendedoresPage() {
         <div className="mx-auto grid max-w-[1200px] gap-10 px-6 lg:grid-cols-[0.74fr_1.26fr] lg:gap-14">
           <div>
             <p className="text-[13px] font-bold text-[#0046EA]">Registro de canal</p>
-            <h2 className="mt-2 font-display text-[clamp(30px,4vw,46px)] font-extrabold leading-[1.05] text-[#11142a]">
-              Contaños sobre tu negocio.
+            <h2 className="mt-2 font-display text-[clamp(30px,4vw,46px)] font-semibold leading-[1.05] text-[#11142a]">
+              Contanos sobre tu negocio.
             </h2>
             <p className="mt-4 max-w-[38ch] text-[15.5px] leading-relaxed text-slate-600">
-              Completas el formulario y un asesor se comunica en las próximas 24 hs hábiles para revisar condiciones de trabajo.
+              Completás el formulario y un asesor se comunica en las próximas 24 hs hábiles para revisar condiciones de trabajo.
             </p>
             <a
               href={whatsappLinks.reseller}
@@ -186,7 +186,7 @@ export default function RevendedoresPage() {
           </div>
 
           <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-[0_28px_70px_-50px_rgba(17,20,42,0.45)] md:p-8">
-            <h3 className="font-display text-[22px] font-extrabold text-[#11142a]">Solicitud de revendedor</h3>
+            <h3 className="font-display text-[22px] font-semibold text-[#11142a]">Solicitud de revendedor</h3>
             <p className="mt-2 text-[13.5px] text-slate-600">Sin compromiso. Evaluamos cada consulta de forma personalizada.</p>
             <ResellerWhatsAppForm />
           </div>
@@ -200,7 +200,7 @@ export default function RevendedoresPage() {
               <div className="flex gap-3">
                 <CheckCircle2 className="mt-0.5 size-5 flex-none text-[#0046EA]" strokeWidth={1.8} />
                 <div>
-                  <h3 className="font-display text-[16px] font-extrabold text-[#11142a]">{item.q}</h3>
+                  <h3 className="font-display text-[16px] font-semibold text-[#11142a]">{item.q}</h3>
                   <p className="mt-2 text-[13.5px] leading-relaxed text-slate-600">{item.a}</p>
                 </div>
               </div>
@@ -210,7 +210,7 @@ export default function RevendedoresPage() {
       </InternalSection>
 
       <InternalCta
-        title="Listo para evaluar condiciones de canal?"
+        title="¿Listo para evaluar condiciones de canal?"
         intro="Enviamos el primer contacto por WhatsApp y despues ordenamos el circuito comercial según tu operación."
         actions={[
           { label: "Iniciar consulta de canal", href: whatsappLinks.reseller, external: true, icon: MessageCircle },

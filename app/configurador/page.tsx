@@ -166,7 +166,7 @@ export default function Configurador() {
               <span className="size-1.5 rounded-full bg-[#0ea5ff]" />
               Herramienta interactiva
             </span>
-            <h1 className="mt-5 font-display text-[clamp(30px,5vw,52px)] font-extrabold leading-[1.05] tracking-[-0.035em]">
+            <h1 className="mt-5 font-display text-[clamp(30px,5vw,52px)] font-semibold leading-[1.05] tracking-[-0.035em]">
               Configurador de Soluciones IT
             </h1>
             <p className="mx-auto mt-4 max-w-[52ch] text-[16px] leading-relaxed text-slate-300">
@@ -227,7 +227,7 @@ export default function Configurador() {
               {/* Step 1 */}
               {step === 1 && (
                 <div>
-                  <h2 className="font-display text-[24px] font-extrabold tracking-[-0.02em] text-[#11142a]">
+                  <h2 className="font-display text-[24px] font-semibold tracking-[-0.02em] text-[#11142a]">
                     ¿Cuál es el perfil de uso?
                   </h2>
                   <p className="mt-1.5 text-[14px] text-slate-500">
@@ -292,7 +292,7 @@ export default function Configurador() {
               {/* Step 2 */}
               {step === 2 && (
                 <div>
-                  <h2 className="font-display text-[24px] font-extrabold tracking-[-0.02em] text-[#11142a]">
+                  <h2 className="font-display text-[24px] font-semibold tracking-[-0.02em] text-[#11142a]">
                     Volumen y nivel de exigencia
                   </h2>
                   <p className="mt-1.5 text-[14px] text-slate-500">
@@ -413,7 +413,7 @@ export default function Configurador() {
                       })()}
                     </span>
                     <div>
-                      <h2 className="font-display text-[22px] font-extrabold tracking-[-0.02em] text-[#11142a]">
+                      <h2 className="font-display text-[22px] font-semibold tracking-[-0.02em] text-[#11142a]">
                         {profileData.name}
                       </h2>
                       <p className="text-[13px] text-slate-500">
@@ -498,7 +498,7 @@ export default function Configurador() {
                     {/* CTA panel */}
                     <div className="flex flex-col justify-between rounded-2xl bg-[#070a16] p-6 text-white">
                       <div>
-                        <h3 className="font-display text-[20px] font-extrabold tracking-[-0.02em]">
+                        <h3 className="font-display text-[20px] font-semibold tracking-[-0.02em]">
                           Cotizá esta configuración
                         </h3>
                         <p className="mt-2 text-[13px] leading-relaxed text-slate-300">

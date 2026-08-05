@@ -70,7 +70,7 @@ export default function AyudaPage() {
           {helpLinks.map((item) => (
             <Link key={item.href} href={item.href} className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200">
               <item.icon className="size-7 text-[#0046EA]" strokeWidth={1.7} />
-              <h2 className="mt-5 font-display text-[20px] font-extrabold text-[#11142a]">{item.title}</h2>
+              <h2 className="mt-5 font-display text-[20px] font-semibold text-[#11142a]">{item.title}</h2>
               <p className="mt-2 text-[13.5px] leading-relaxed text-slate-600">{item.description}</p>
               <span className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-bold text-[#0046EA]">
                 {item.action} <ArrowRight size={15} />
@@ -84,7 +84,7 @@ export default function AyudaPage() {
         <div className="grid gap-5 lg:grid-cols-2">
           {faq.items.map((item) => (
             <article key={item.q} className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-              <h3 className="font-display text-[16px] font-extrabold text-[#11142a]">{item.q}</h3>
+              <h3 className="font-display text-[16px] font-semibold text-[#11142a]">{item.q}</h3>
               <p className="mt-2 text-[13.5px] leading-relaxed text-slate-600">{item.a}</p>
             </article>
           ))}
@@ -92,7 +92,7 @@ export default function AyudaPage() {
       </InternalSection>
 
       <InternalCta
-        title="Tu consulta no aparece acá?"
+        title="¿Tu consulta no aparece acá?"
         intro="Escribinos por WhatsApp con el contexto y te respondemos por el canal más directo."
         actions={[
           { label: "Hacer otra consulta", href: whatsappLinks.general, external: true, icon: MessageCircle },

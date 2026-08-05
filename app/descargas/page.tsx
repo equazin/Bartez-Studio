@@ -69,7 +69,7 @@ export default function Descargas() {
               </span>
               <div>
                 <p className="text-[12px] font-bold text-[#0046EA]">{resource.category}</p>
-                <h2 className="mt-1 font-display text-[19px] font-extrabold text-[#11142a]">{resource.title}</h2>
+                <h2 className="mt-1 font-display text-[19px] font-semibold text-[#11142a]">{resource.title}</h2>
                 <p className="mt-1 text-[13.5px] leading-relaxed text-slate-600">{resource.description}</p>
               </div>
               <a href={resource.href} download className="inline-flex items-center justify-center gap-2 rounded-lg bg-[linear-gradient(90deg,#ff7a18,#ff8f1f,#ffb000)] px-4 py-2.5 text-[13px] font-bold text-white shadow-[0_16px_32px_-18px_rgba(255,122,24,0.9)]">
@@ -84,7 +84,7 @@ export default function Descargas() {
             </span>
             <div>
               <p className="text-[12px] font-bold text-[#0046EA]">Soporte</p>
-              <h2 className="mt-1 font-display text-[19px] font-extrabold text-[#11142a]">Garantías y RMA</h2>
+              <h2 className="mt-1 font-display text-[19px] font-semibold text-[#11142a]">Garantías y RMA</h2>
               <p className="mt-1 text-[13.5px] leading-relaxed text-slate-600">Pasos, información necesaria y canal de inicio para cada consulta.</p>
             </div>
             <Link href="/garantias-rma" className="inline-flex items-center justify-center gap-2 rounded-lg border border-blue-200 bg-white px-4 py-2.5 text-[13px] font-bold text-[#0046EA] hover:border-[#0046EA] hover:bg-blue-50">
@@ -95,7 +95,7 @@ export default function Descargas() {
       </InternalSection>
 
       <InternalCta
-        title="Necesitás una ficha o modelo específico?"
+        title="¿Necesitás una ficha o modelo específico?"
         intro="Indicá marca, familia, cantidad y uso previsto. El equipo comercial te ayuda a encontrar documentación y preparar cotización."
         actions={[
           { label: "Consultar por WhatsApp", href: whatsappLinks.quote, external: true, icon: MessageCircle },

@@ -16,7 +16,7 @@ export function ResellerWhatsAppForm() {
     telefono: "",
     email: "",
     provincia: "",
-    tipo: "Tienda de informatica",
+    tipo: "Tienda de informática",
     volumen: "Estoy comenzando",
     mensaje: "",
   });
@@ -78,7 +78,7 @@ export function ResellerWhatsAppForm() {
         <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-700">Tipo de canal</span>
         <select value={form.tipo} onChange={(event) => update("tipo", event.target.value)} className={inputClass}>
           {[
-            "Tienda de informatica",
+            "Tienda de informática",
             "Integrador de sistemas",
             "Empresa de servicios IT",
             "Distribuidor regional",
@@ -97,7 +97,7 @@ export function ResellerWhatsAppForm() {
         </select>
       </label>
       <label className="sm:col-span-2">
-        <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-700">Contaños sobre tu negocio</span>
+        <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-700">Contanos sobre tu negocio</span>
         <textarea value={form.mensaje} onChange={(event) => update("mensaje", event.target.value)} rows={3} className={`${inputClass} resize-none`} placeholder="Categorías que trabajas, mercado principal o marcas de interes" />
       </label>
       <button

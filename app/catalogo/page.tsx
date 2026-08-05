@@ -12,7 +12,7 @@ import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "Catálogo de soluciones IT - Bartez Tecnología",
-  description: "Explora familias de equipamiento e infraestructura IT y consulta disponibilidad por WhatsApp.",
+  description: "Explorá familias de equipamiento e infraestructura IT y consultá disponibilidad por WhatsApp.",
 };
 
 const families = [
@@ -39,7 +39,7 @@ export default function CatalogoPage() {
             Familias IT para elegir <span className="text-[#0046EA]">por necesidad.</span>
           </>
         }
-        intro="Explora el tipo de solución que necesitás. No publicamos precios ni stock en tiempo real: confirmamos modelos, alternativas y plazos cuando recibimos tu consulta."
+        intro="Explorá el tipo de solución que necesitás. No publicamos precios ni stock en tiempo real: confirmamos modelos, alternativas y plazos cuando recibimos tu consulta."
         image="/photos/hero-products-combo.png"
         imageAlt="Equipamiento tecnológico Bartez"
         imagePriority
@@ -49,7 +49,7 @@ export default function CatalogoPage() {
         mediaItems={[
           { title: "Familias", description: "Equipos, redes, servidores, POS y energía." },
           { title: "Alternativas", description: "Marcas y configuraciones equivalentes." },
-          { title: "Consulta", description: "Respuesta comercial con stock vigente." },
+          { title: "Consulta", description: "Respuesta comercial con disponibilidad y plazo confirmados." },
         ]}
         metrics={[
           { value: "9", label: "familias principales" },
@@ -65,7 +65,7 @@ export default function CatalogoPage() {
       <InternalSection
         tone="soft"
         eyebrow="Categorías"
-        title="Explora por tipo de solución."
+        title="Explorá por tipo de solución."
         intro="Usá estas familias como punto de partida. Después confirmamos modelos, equivalencias y plazos."
       >
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
@@ -75,7 +75,7 @@ export default function CatalogoPage() {
                 <Image src={family.image} alt={family.title} fill sizes="(max-width: 1024px) 100vw, 33vw" className="object-cover transition duration-500 group-hover:scale-[1.03]" />
               </div>
               <div className="p-6">
-                <h2 className="font-display text-[20px] font-extrabold text-[#11142a]">{family.title}</h2>
+                <h2 className="font-display text-[20px] font-semibold text-[#11142a]">{family.title}</h2>
                 <p className="mt-3 text-[13.5px] leading-relaxed text-slate-600">{family.use}</p>
                 <p className="mt-4 text-[12px] font-bold text-slate-500">{family.brands}</p>
                 <div className="mt-5 flex items-center justify-between gap-3 border-t border-slate-200 pt-4">

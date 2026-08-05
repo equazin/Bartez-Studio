@@ -103,7 +103,7 @@ export default function ComparadorPage() {
               <span className="size-1.5 rounded-full bg-[#ff8f1f]" />
               Herramienta de decisión
             </span>
-            <h1 className="mt-5 max-w-[780px] font-display text-[clamp(32px,5vw,52px)] font-extrabold leading-[1.05] tracking-[-0.035em]">
+            <h1 className="mt-5 max-w-[780px] font-display text-[clamp(32px,5vw,52px)] font-semibold leading-[1.05] tracking-[-0.035em]">
               Comparador orientativo
             </h1>
             <p className="mt-4 max-w-[58ch] text-[16px] leading-relaxed text-slate-300">
@@ -171,7 +171,7 @@ export default function ComparadorPage() {
                       <Icon size={22} />
                     </span>
 
-                    <h2 className="mt-4 font-display text-[20px] font-extrabold tracking-[-0.02em] text-[#11142a]">
+                    <h2 className="mt-4 font-display text-[20px] font-semibold tracking-[-0.02em] text-[#11142a]">
                       {option.name}
                     </h2>
 
@@ -228,7 +228,7 @@ export default function ComparadorPage() {
             {/* Inline CTA */}
             <div className="mt-10 flex flex-col items-center gap-5 rounded-2xl border border-slate-200 bg-[#f7f9fc] p-8 text-center sm:flex-row sm:text-left">
               <div className="flex-1">
-                <h2 className="font-display text-[20px] font-extrabold text-[#11142a]">
+                <h2 className="font-display text-[20px] font-semibold text-[#11142a]">
                   Llevá esta comparación a una cotización
                 </h2>
                 <p className="mt-1 text-[13.5px] text-slate-500">
@@ -251,7 +251,7 @@ export default function ComparadorPage() {
         {/* CTA dark */}
         <section className="bg-[#070a16] py-16 text-white md:py-20">
           <div className="mx-auto flex max-w-[900px] flex-col items-center px-6 text-center">
-            <h2 className="font-display text-[clamp(26px,4vw,42px)] font-extrabold leading-[1.06] tracking-[-0.03em] text-balance">
+            <h2 className="font-display text-[clamp(26px,4vw,42px)] font-semibold leading-[1.06] tracking-[-0.03em] text-balance">
               ¿Necesitás ayuda para definir el equipamiento?
             </h2>
             <p className="mt-4 max-w-[54ch] text-[15px] leading-relaxed text-slate-300">

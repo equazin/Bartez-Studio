@@ -13,7 +13,7 @@ import { whatsappLinks } from "@/lib/whatsapp";
 export const metadata: Metadata = {
   title: "Contacto - Bartez Tecnología",
   description:
-    "Contacta a Bartez Tecnología por WhatsApp, email o teléfono. Estamos en Rosario, Santa Fe, con atención a todo el país. Respondemos en 24 hs hábiles.",
+    "Contactá a Bartez Tecnología por WhatsApp, email o teléfono. Estamos en Rosario, Santa Fe, con atención a todo el país. Respondemos en 24 hs hábiles.",
 };
 
 const channels = [
@@ -66,13 +66,13 @@ export default function ContactoPage() {
       >
         <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-[0_28px_70px_-46px_rgba(17,20,42,0.42)]">
           <p className="text-[13px] font-bold text-brand">Rosario, Santa Fe</p>
-          <h2 className="mt-2 font-display text-[26px] font-extrabold text-ink">Contacto comercial y soporte.</h2>
+          <h2 className="mt-2 font-display text-[26px] font-semibold text-ink">Contacto comercial y soporte.</h2>
           <div className="mt-6 grid gap-4">
             <div className="flex gap-3 border-b border-slate-200 pb-4">
               <MapPin className="mt-0.5 size-5 flex-none text-brand" strokeWidth={1.7} />
               <div>
                 <p className="font-bold text-ink">{company.address}</p>
-                <p className="text-[13px] text-slate-500">Rosario, Santa Fe, Argentina</p>
+                <p className="text-[13px] text-slate-500">Atendemos clientes en todo el país.</p>
               </div>
             </div>
             <div className="flex gap-3 border-b border-slate-200 pb-4">
@@ -93,12 +93,12 @@ export default function ContactoPage() {
         </div>
       </InternalHero>
 
-      <InternalSection tone="soft" eyebrow="Canales disponibles" title="Elegí como querés avanzar.">
+      <InternalSection tone="soft" eyebrow="Canales disponibles" title="Elegí cómo querés avanzar.">
         <div className="grid gap-5 md:grid-cols-3">
           {channels.map((ch) => (
             <article key={ch.title} className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200">
               <ch.icon className="size-7 text-brand" strokeWidth={1.7} />
-              <h2 className="mt-5 font-display text-[19px] font-extrabold text-ink">{ch.title}</h2>
+              <h2 className="mt-5 font-display text-[19px] font-semibold text-ink">{ch.title}</h2>
               <p className="mt-1 text-[14px] font-bold text-slate-700">{ch.value}</p>
               <p className="mt-1 text-[12.5px] text-slate-500">{ch.sub}</p>
               <a
@@ -122,7 +122,7 @@ export default function ContactoPage() {
       >
         <div className="grid gap-8 lg:grid-cols-[1.08fr_0.92fr]">
           <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-[0_20px_60px_-48px_rgba(17,20,42,0.42)] md:p-8">
-            <h2 className="font-display text-[22px] font-extrabold text-ink">Prepará tu consulta</h2>
+            <h2 className="font-display text-[22px] font-semibold text-ink">Prepará tu consulta</h2>
             <p className="mt-2 text-[13.5px] text-slate-600">Sin compromiso. Respondemos en 24 hs hábiles.</p>
             <ContactWhatsAppForm />
           </div>

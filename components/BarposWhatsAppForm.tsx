@@ -28,7 +28,7 @@ const quantities = [
 ];
 
 const implementationOptions = [
-  "Si, necesito instalacion e implementacion",
+  "Si, necesito instalación e implementación",
   "Solo quiero cotizar el equipamiento",
   "Quiero consultar condiciones para revender",
 ];
@@ -95,7 +95,7 @@ export function BarposWhatsAppForm() {
         <span className="grid size-16 place-items-center rounded-full bg-emerald-50">
           <CheckCircle2 size={32} className="text-emerald-600" />
         </span>
-        <h3 className="font-display text-[20px] font-extrabold text-ink">Tu consulta fue enviada por WhatsApp</h3>
+        <h3 className="font-display text-[20px] font-semibold text-ink">Tu consulta fue enviada por WhatsApp</h3>
         <p className="max-w-[44ch] text-[14px] leading-relaxed text-slate-500">
           Un asesor se pondrá en contacto en menos de 24 hs hábiles. Revisá tu WhatsApp para confirmar el envío.
         </p>
@@ -161,7 +161,7 @@ export function BarposWhatsAppForm() {
         </label>
 
         <label className="grid min-w-0 gap-2 text-[11px] font-bold uppercase tracking-[0.11em] text-slate-500">
-          Implementacion
+          Implementación
           <select name="needsImplementation" defaultValue={implementationOptions[0]} className="w-full min-w-0 rounded-lg border border-slate-200 bg-white px-3 py-3 text-[14px] font-medium normal-case tracking-normal text-ink outline-none transition focus:border-brand focus:ring-4 focus:ring-blue-100">
             {implementationOptions.map((item) => (
               <option key={item}>{item}</option>

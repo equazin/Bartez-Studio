@@ -51,7 +51,7 @@ export default async function LegalPage({ params }: { params: Promise<{ slug: st
           <div className="space-y-8">
             {page.sections.map((section) => (
               <section key={section.h}>
-                <h2 className="font-display text-[20px] font-extrabold text-[#11142a]">{section.h}</h2>
+                <h2 className="font-display text-[20px] font-semibold text-[#11142a]">{section.h}</h2>
                 <p className="mt-3 text-[15.5px] leading-[1.75] text-slate-600">{section.p}</p>
               </section>
             ))}

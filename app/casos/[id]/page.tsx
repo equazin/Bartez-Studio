@@ -88,8 +88,8 @@ export default async function CasePage({ params }: { params: Promise<{ id: strin
       </InternalSection>
 
       <InternalCta
-        title="Tenés un proyecto parecido?"
-        intro="Contaños tu contexto y lo convertimos en una propuesta de alcance realista."
+        title="¿Tenés un proyecto parecido?"
+        intro="Contanos tu contexto y lo convertimos en una propuesta de alcance realista."
         actions={[
           { label: "Hablar por WhatsApp", href: whatsappLinks.company, external: true, icon: MessageCircle },
           { label: "Ver soluciones", href: "/soluciones/servidores", variant: "secondary", icon: ArrowRight },
