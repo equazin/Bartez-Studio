@@ -1,15 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { CheckCircle2, MessageCircle } from "lucide-react";
-import type { MouseEvent } from "react";
+import { useRouter } from "next/navigation";
+import { Loader2, MessageCircle, Send } from "lucide-react";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 const businessTypes = [
   "Minisuper / autoservicio",
-  "Despensa / almacen",
-  "Panaderia",
-  "Bar / gastronomia",
+  "Despensa / almacén",
+  "Panadería",
+  "Bar / gastronomía",
   "Mayorista / distribuidor",
   "Otro comercio",
 ];
@@ -33,154 +33,214 @@ const implementationOptions = [
   "Quiero consultar condiciones para revender",
 ];
 
-function buildFormHref(form: HTMLFormElement) {
-  const data = new FormData(form);
-  const name = String(data.get("name") || "").trim();
-  const phone = String(data.get("phone") || "").trim();
-  const email = String(data.get("email") || "").trim();
-  const role = String(data.get("role") || roles[0]);
-  const businessType = String(data.get("businessType") || businessTypes[0]);
-  const city = String(data.get("city") || "").trim();
-  const quantity = String(data.get("quantity") || quantities[0]);
-  const needsImplementation = String(data.get("needsImplementation") || implementationOptions[0]);
-  const notes = String(data.get("notes") || "").trim();
+type FormState = {
+  name: string;
+  phone: string;
+  email: string;
+  city: string;
+  role: string;
+  quantity: string;
+  businessType: string;
+  needsImplementation: string;
+  notes: string;
+  website: string;
+};
 
-  return buildWhatsAppUrl("barpos", [
-    name ? `Nombre: ${name}` : null,
-    phone ? `Teléfono / WhatsApp: ${phone}` : null,
-    email ? `Email: ${email}` : null,
-    `Perfil: ${role}`,
-    `Rubro: ${businessType}`,
-    city ? `Localidad/provincia: ${city}` : "Localidad/provincia: a confirmar",
-    `Cantidad estimada: ${quantity}`,
-    `Instalación: ${needsImplementation}`,
-    notes ? `Comentario: ${notes}` : null,
+const initialForm: FormState = {
+  name: "",
+  phone: "",
+  email: "",
+  city: "",
+  role: roles[0],
+  quantity: quantities[0],
+  businessType: businessTypes[0],
+  needsImplementation: implementationOptions[0],
+  notes: "",
+  website: "",
+};
+
+function buildDetails(form: FormState): string[] {
+  return [
+    `Nombre: ${form.name}`,
+    `Teléfono / WhatsApp: ${form.phone}`,
+    `Email: ${form.email}`,
+    `Perfil: ${form.role}`,
+    `Rubro: ${form.businessType}`,
+    form.city ? `Localidad/provincia: ${form.city}` : "Localidad/provincia: a confirmar",
+    `Cantidad estimada: ${form.quantity}`,
+    `Instalación: ${form.needsImplementation}`,
+    form.notes ? `Comentario: ${form.notes}` : "",
     "Origen: landing BarPOS 4.0",
-  ]);
+  ];
 }
 
+async function persistLead(form: FormState): Promise<boolean> {
+  try {
+    const res = await fetch("/api/lead", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        empresa: form.city || form.name, // el schema requiere empresa; caemos a datos disponibles
+        nombre: form.name,
+        email: form.email,
+        telefono: form.phone,
+        tipoConsulta: form.role === "Quiero revender BarPOS" ? "cuenta" : "cotizacion",
+        mensaje: [
+          `Perfil: ${form.role}`,
+          `Rubro: ${form.businessType}`,
+          `Cantidad estimada: ${form.quantity}`,
+          `Instalación: ${form.needsImplementation}`,
+          form.city ? `Localidad/provincia: ${form.city}` : "",
+          form.notes ? `\n${form.notes}` : "",
+        ]
+          .filter(Boolean)
+          .join("\n"),
+        origen: "web-barpos",
+        website: form.website,
+      }),
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
+const fieldClass =
+  "w-full min-w-0 rounded-lg border border-slate-200 bg-white px-3 py-3 text-[14px] font-medium normal-case tracking-normal text-ink outline-none transition placeholder:text-slate-400 focus:border-brand focus:ring-4 focus:ring-blue-100 disabled:cursor-not-allowed disabled:opacity-60";
+const labelClass = "grid min-w-0 gap-2 text-[11px] font-bold uppercase tracking-[0.11em] text-slate-500";
+
 export function BarposWhatsAppForm() {
-  const fallbackHref = buildWhatsAppUrl("barpos", [
-    `Perfil: ${roles[0]}`,
-    `Rubro: ${businessTypes[0]}`,
-    "Localidad/provincia: a confirmar",
-    `Cantidad estimada: ${quantities[0]}`,
-    `Instalación: ${implementationOptions[0]}`,
-    "Origen: landing BarPOS 4.0",
-  ]);
+  const router = useRouter();
+  const [form, setForm] = useState<FormState>(initialForm);
+  const [pending, setPending] = useState<"" | "submit" | "whatsapp">("");
+  const [error, setError] = useState<string | null>(null);
 
-  const [submitted, setSubmitted] = useState(false);
+  const update = <K extends keyof FormState>(key: K, value: FormState[K]) =>
+    setForm((current) => ({ ...current, [key]: value }));
 
-  const updateHrefFromForm = (event: MouseEvent<HTMLAnchorElement>) => {
-    const form = event.currentTarget.closest("form");
-    if (form instanceof HTMLFormElement) {
-      if (!form.reportValidity()) {
-        event.preventDefault();
-        return;
-      }
-      event.currentTarget.href = buildFormHref(form);
+  async function handleSubmit(mode: "submit" | "whatsapp") {
+    if (pending) return;
+    setPending(mode);
+    setError(null);
+
+    const persisted = await persistLead(form);
+
+    if (mode === "whatsapp") {
+      window.open(buildWhatsAppUrl("barpos", buildDetails(form)), "_blank", "noopener,noreferrer");
+      setPending("");
+      return;
     }
-  };
 
-  const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
-    updateHrefFromForm(event);
-    if (!event.defaultPrevented) {
-      setSubmitted(true);
+    if (!persisted) {
+      setError("No pudimos registrar tu consulta. Probá continuar por WhatsApp o escribinos directo.");
+      setPending("");
+      return;
     }
-  };
-
-  if (submitted) {
-    return (
-      <div className="flex flex-col items-center gap-4 py-8 text-center">
-        <span className="grid size-16 place-items-center rounded-full bg-emerald-50">
-          <CheckCircle2 size={32} className="text-emerald-600" />
-        </span>
-        <h3 className="font-display text-[20px] font-semibold text-ink">Tu consulta fue enviada por WhatsApp</h3>
-        <p className="max-w-[44ch] text-[14px] leading-relaxed text-slate-500">
-          Un asesor se pondrá en contacto en menos de 24 hs hábiles. Revisá tu WhatsApp para confirmar el envío.
-        </p>
-        <button
-          type="button"
-          onClick={() => setSubmitted(false)}
-          className="mt-2 inline-flex items-center gap-2 rounded-lg border border-slate-200 px-5 py-2.5 text-[13px] font-bold text-slate-700 transition hover:bg-slate-50"
-        >
-          Enviar otra consulta
-        </button>
-      </div>
-    );
+    router.push("/gracias");
   }
 
   return (
-    <form>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        void handleSubmit("submit");
+      }}
+    >
       <div className="grid gap-4 sm:grid-cols-2">
-        <label className="grid min-w-0 gap-2 text-[11px] font-bold uppercase tracking-[0.11em] text-slate-500">
+        <label className={labelClass}>
           Nombre y apellido *
-          <input name="name" required placeholder="Nombre y apellido" className="w-full min-w-0 rounded-lg border border-slate-200 bg-white px-3 py-3 text-[14px] font-medium normal-case tracking-normal text-ink outline-none transition placeholder:text-slate-400 focus:border-brand focus:ring-4 focus:ring-blue-100" />
+          <input required autoComplete="name" value={form.name} onChange={(e) => update("name", e.target.value)} placeholder="Nombre y apellido" className={fieldClass} />
         </label>
-
-        <label className="grid min-w-0 gap-2 text-[11px] font-bold uppercase tracking-[0.11em] text-slate-500">
+        <label className={labelClass}>
           Teléfono / WhatsApp *
-          <input name="phone" required pattern="[0-9+\s\-()]{7,20}" placeholder="Teléfono / WhatsApp" className="w-full min-w-0 rounded-lg border border-slate-200 bg-white px-3 py-3 text-[14px] font-medium normal-case tracking-normal text-ink outline-none transition placeholder:text-slate-400 focus:border-brand focus:ring-4 focus:ring-blue-100" />
+          <input required type="tel" autoComplete="tel" pattern="[0-9+\s\-()]{7,20}" value={form.phone} onChange={(e) => update("phone", e.target.value)} placeholder="Teléfono / WhatsApp" className={fieldClass} />
         </label>
-
-        <label className="grid min-w-0 gap-2 text-[11px] font-bold uppercase tracking-[0.11em] text-slate-500">
+        <label className={labelClass}>
           Email *
-          <input name="email" required type="email" placeholder="Email" className="w-full min-w-0 rounded-lg border border-slate-200 bg-white px-3 py-3 text-[14px] font-medium normal-case tracking-normal text-ink outline-none transition placeholder:text-slate-400 focus:border-brand focus:ring-4 focus:ring-blue-100" />
+          <input required type="email" autoComplete="email" value={form.email} onChange={(e) => update("email", e.target.value)} placeholder="Email" className={fieldClass} />
         </label>
-
-        <label className="grid min-w-0 gap-2 text-[11px] font-bold uppercase tracking-[0.11em] text-slate-500">
+        <label className={labelClass}>
           Localidad y provincia *
-          <input name="city" required placeholder="Localidad y provincia" className="w-full min-w-0 rounded-lg border border-slate-200 bg-white px-3 py-3 text-[14px] font-medium normal-case tracking-normal text-ink outline-none transition placeholder:text-slate-400 focus:border-brand focus:ring-4 focus:ring-blue-100" />
+          <input required value={form.city} onChange={(e) => update("city", e.target.value)} placeholder="Localidad y provincia" className={fieldClass} />
         </label>
-
-        <label className="grid min-w-0 gap-2 text-[11px] font-bold uppercase tracking-[0.11em] text-slate-500">
+        <label className={labelClass}>
           Tipo de consulta
-          <select name="role" defaultValue={roles[0]} className="w-full min-w-0 rounded-lg border border-slate-200 bg-white px-3 py-3 text-[14px] font-medium normal-case tracking-normal text-ink outline-none transition focus:border-brand focus:ring-4 focus:ring-blue-100">
-            {roles.map((item) => (
-              <option key={item}>{item}</option>
-            ))}
+          <select value={form.role} onChange={(e) => update("role", e.target.value)} className={fieldClass}>
+            {roles.map((item) => <option key={item}>{item}</option>)}
           </select>
         </label>
-
-        <label className="grid min-w-0 gap-2 text-[11px] font-bold uppercase tracking-[0.11em] text-slate-500">
+        <label className={labelClass}>
           Cantidad estimada
-          <select name="quantity" defaultValue={quantities[0]} className="w-full min-w-0 rounded-lg border border-slate-200 bg-white px-3 py-3 text-[14px] font-medium normal-case tracking-normal text-ink outline-none transition focus:border-brand focus:ring-4 focus:ring-blue-100">
-            {quantities.map((item) => (
-              <option key={item}>{item}</option>
-            ))}
+          <select value={form.quantity} onChange={(e) => update("quantity", e.target.value)} className={fieldClass}>
+            {quantities.map((item) => <option key={item}>{item}</option>)}
           </select>
         </label>
-
-        <label className="grid min-w-0 gap-2 text-[11px] font-bold uppercase tracking-[0.11em] text-slate-500">
+        <label className={labelClass}>
           Rubro
-          <select name="businessType" defaultValue={businessTypes[0]} className="w-full min-w-0 rounded-lg border border-slate-200 bg-white px-3 py-3 text-[14px] font-medium normal-case tracking-normal text-ink outline-none transition focus:border-brand focus:ring-4 focus:ring-blue-100">
-            {businessTypes.map((item) => (
-              <option key={item}>{item}</option>
-            ))}
+          <select value={form.businessType} onChange={(e) => update("businessType", e.target.value)} className={fieldClass}>
+            {businessTypes.map((item) => <option key={item}>{item}</option>)}
           </select>
         </label>
-
-        <label className="grid min-w-0 gap-2 text-[11px] font-bold uppercase tracking-[0.11em] text-slate-500">
+        <label className={labelClass}>
           Implementación
-          <select name="needsImplementation" defaultValue={implementationOptions[0]} className="w-full min-w-0 rounded-lg border border-slate-200 bg-white px-3 py-3 text-[14px] font-medium normal-case tracking-normal text-ink outline-none transition focus:border-brand focus:ring-4 focus:ring-blue-100">
-            {implementationOptions.map((item) => (
-              <option key={item}>{item}</option>
-            ))}
+          <select value={form.needsImplementation} onChange={(e) => update("needsImplementation", e.target.value)} className={fieldClass}>
+            {implementationOptions.map((item) => <option key={item}>{item}</option>)}
           </select>
         </label>
-
-        <label className="grid min-w-0 gap-2 text-[11px] font-bold uppercase tracking-[0.11em] text-slate-500 sm:col-span-2">
+        <label className={`${labelClass} sm:col-span-2`}>
           Comentanos tu necesidad (opcional)
-          <textarea name="notes" rows={4} placeholder="Ej: necesito factura A, formas de pago, entrega en zona, integración con controladora fiscal..." className="w-full min-w-0 resize-none rounded-lg border border-slate-200 bg-white px-3 py-3 text-[14px] font-medium normal-case tracking-normal text-ink outline-none transition placeholder:text-slate-400 focus:border-brand focus:ring-4 focus:ring-blue-100" />
+          <textarea rows={4} value={form.notes} onChange={(e) => update("notes", e.target.value)} placeholder="Ej: necesito factura A, formas de pago, entrega en zona, integración con controladora fiscal..." className={`${fieldClass} resize-none`} />
         </label>
       </div>
 
-      <a href={fallbackHref} onPointerDown={updateHrefFromForm} onClick={handleClick} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-lg bg-[linear-gradient(90deg,#ff7718,#ff8f1f,#ffb000)] px-5 py-3.5 text-[14px] font-extrabold text-white shadow-[0_18px_32px_-18px_rgba(255,122,24,0.85)] transition hover:-translate-y-0.5">
-        <MessageCircle size={18} /> Enviar consulta por WhatsApp
-      </a>
+      <input
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        value={form.website}
+        onChange={(e) => update("website", e.target.value)}
+        className="absolute -left-[9999px] h-0 w-0 opacity-0"
+        aria-hidden="true"
+      />
+
+      {error && (
+        <p role="alert" className="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-800">
+          {error}
+        </p>
+      )}
+
+      <div className="mt-6 grid gap-3 sm:grid-cols-[1fr_auto]">
+        <button
+          type="submit"
+          disabled={pending !== ""}
+          aria-busy={pending === "submit"}
+          className="inline-flex min-h-14 items-center justify-center gap-2 rounded-lg bg-brand px-6 py-3.5 text-[14.5px] font-semibold text-white shadow-[0_16px_32px_-18px_rgba(0,70,234,0.6)] transition hover:-translate-y-0.5 hover:bg-brand-bright disabled:cursor-wait disabled:opacity-80 disabled:hover:translate-y-0"
+        >
+          {pending === "submit" ? (
+            <>
+              <Loader2 size={18} className="animate-spin" /> Enviando...
+            </>
+          ) : (
+            <>
+              <Send size={17} /> Enviar consulta
+            </>
+          )}
+        </button>
+        <button
+          type="button"
+          onClick={() => void handleSubmit("whatsapp")}
+          disabled={pending !== ""}
+          aria-busy={pending === "whatsapp"}
+          className="inline-flex min-h-14 items-center justify-center gap-2 rounded-lg border border-[#10B981] bg-white px-6 py-3.5 text-[14.5px] font-semibold text-[#047857] transition hover:border-[#047857] hover:bg-[#ECFDF5] disabled:cursor-wait disabled:opacity-80"
+        >
+          {pending === "whatsapp" ? <Loader2 size={18} className="animate-spin" /> : <MessageCircle size={18} />}
+          Continuar por WhatsApp
+        </button>
+      </div>
 
       <p className="mt-4 text-[11.5px] leading-relaxed text-slate-500">
-        Te vamos a redirigir a WhatsApp con tu consulta lista para que podamos responderte más rápido.
+        Tu consulta queda registrada apenas envíes el formulario. Un asesor te contacta en 24 hs hábiles.
       </p>
     </form>
   );

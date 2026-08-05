@@ -10,6 +10,7 @@ await import("./schema.test.ts");
 await import("./ai.test.ts");
 await import("./api-chat.test.ts");
 await import("./api-lead.test.ts");
+await import("./lead-forms.test.ts");
 await import("./integrations/apollo.test.ts");
 await import("./integrations/mail.test.ts");
 await import("./integrations/monday.test.ts");
