@@ -111,9 +111,9 @@ export default function AirIntegrationPage() {
             <div>
               <div className="font-medium text-white">La integración está deshabilitada.</div>
               <p className="mt-1 text-sm text-white/60">
-                Configurá <code className="rounded bg-white/10 px-1">AIR_INTEGRATION_ENABLED=true</code> y las
-                credenciales <code className="rounded bg-white/10 px-1">AIR_USERNAME</code> /{" "}
-                <code className="rounded bg-white/10 px-1">AIR_PASSWORD</code> en las variables de entorno de Vercel.
+                Configurá <code className="rounded bg-white/10 px-1">AIR_INTEGRATION_ENABLED=true</code> y el token{" "}
+                <code className="rounded bg-white/10 px-1">AIR_TOKEN</code> en las variables de entorno de Vercel, o
+                cargalo desde Sistema → Integraciones → AIR.
               </p>
             </div>
           </div>

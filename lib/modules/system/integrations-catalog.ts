@@ -208,8 +208,7 @@ export const INTEGRATIONS: IntegrationDef[] = [
     category: "proveedores",
     readerMigrated: true,
     fields: [
-      { key: "username", label: "Usuario API", env: "AIR_USERNAME", required: true },
-      { key: "password", label: "Contraseña API", env: "AIR_PASSWORD", secret: true, required: true },
+      { key: "token", label: "Token API", env: "AIR_TOKEN", secret: true, required: true, hint: "Token bearer fijo provisto por AIR" },
       { key: "enabled", label: "Habilitar (true/false)", env: "AIR_INTEGRATION_ENABLED", hint: "Escribí 'true' para encender la sincronización y el picker" },
       { key: "base_url", label: "Base URL de la API", env: "AIR_BASE_URL", hint: "Default: https://api.air-intra.com/v2" },
       { key: "sync_interval", label: "Intervalo de sincronización (minutos)", env: "AIR_SYNC_INTERVAL_MINUTES", hint: "Default: 15" },
