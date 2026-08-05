@@ -85,36 +85,44 @@ export function ContactWhatsAppForm() {
   const [pending, setPending] = useState<"" | "submit" | "whatsapp">("");
   const [error, setError] = useState<string | null>(null);
 
-  const update = <K extends keyof FormState>(key: K, value: FormState[K]) =>
+  const update = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm((current) => ({ ...current, [key]: value }));
+    if (error) setError(null); // limpia el banner tras la primera corrección del usuario
+  };
 
   const topic = topics.find((t) => t.label === form.tema) ?? topics[0];
 
   async function handleSubmit(mode: "submit" | "whatsapp") {
     if (pending) return;
+
+    // Safari (y Chrome/Firefox endurecidos) bloquean window.open si no es
+    // consecuencia directa del gesto del usuario. Abrimos el tab AHORA con
+    // about:blank y le seteamos la URL después del await; si el navegador lo
+    // bloquea igual, caemos a location.assign en el mismo tab.
+    const waTab = mode === "whatsapp" ? window.open("about:blank", "_blank", "noopener,noreferrer") : null;
+
     setPending(mode);
     setError(null);
     track(mode === "submit" ? "contact_form_submitted" : "contact_whatsapp_started", { topic: form.tema });
 
-    const persisted = await persistLead(form, topic);
+    try {
+      const persisted = await persistLead(form, topic);
 
-    if (mode === "whatsapp") {
-      // WhatsApp abre siempre: si el POST falla, el lead se va por WhatsApp y no se pierde.
-      window.open(
-        buildWhatsAppUrl(topic.intent, buildWhatsAppDetails(form)),
-        "_blank",
-        "noopener,noreferrer",
-      );
-      setPending("");
-      return;
-    }
+      if (mode === "whatsapp") {
+        const waUrl = buildWhatsAppUrl(topic.intent, buildWhatsAppDetails(form));
+        if (waTab && !waTab.closed) waTab.location.href = waUrl;
+        else window.location.assign(waUrl);
+        return;
+      }
 
-    if (!persisted) {
-      setError("No pudimos registrar tu consulta. Probá continuar por WhatsApp o escribinos directo.");
+      if (!persisted) {
+        setError("No pudimos registrar tu consulta. Probá continuar por WhatsApp o escribinos directo.");
+        return;
+      }
+      router.push("/gracias");
+    } finally {
       setPending("");
-      return;
     }
-    router.push("/gracias");
   }
 
   return (
@@ -128,7 +136,7 @@ export function ContactWhatsAppForm() {
     >
       <label>
         <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-700">Nombre</span>
-        <input required autoComplete="name" value={form.nombre} onChange={(e) => update("nombre", e.target.value)} className={inputClass} placeholder="Tu nombre" />
+        <input required minLength={2} autoComplete="name" value={form.nombre} onChange={(e) => update("nombre", e.target.value)} className={inputClass} placeholder="Tu nombre" />
       </label>
       <label>
         <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-700">Empresa</span>

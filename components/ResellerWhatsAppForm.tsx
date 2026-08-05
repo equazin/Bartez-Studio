@@ -86,11 +86,18 @@ export function ResellerWhatsAppForm() {
   const [pending, setPending] = useState<"" | "submit" | "whatsapp">("");
   const [error, setError] = useState<string | null>(null);
 
-  const update = <K extends keyof FormState>(key: K, value: FormState[K]) =>
+  const update = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm((current) => ({ ...current, [key]: value }));
+    if (error) setError(null);
+  };
 
   async function handleSubmit(mode: "submit" | "whatsapp") {
     if (pending) return;
+
+    // Abrimos el tab dentro del gesto del usuario para no toparnos con el
+    // popup blocker de Safari cuando el POST demora.
+    const waTab = mode === "whatsapp" ? window.open("about:blank", "_blank", "noopener,noreferrer") : null;
+
     setPending(mode);
     setError(null);
     track(mode === "submit" ? "reseller_form_submitted" : "reseller_whatsapp_started", {
@@ -98,20 +105,24 @@ export function ResellerWhatsAppForm() {
       volume: form.volumen,
     });
 
-    const persisted = await persistLead(form);
+    try {
+      const persisted = await persistLead(form);
 
-    if (mode === "whatsapp") {
-      window.open(buildWhatsAppUrl("reseller", buildDetails(form)), "_blank", "noopener,noreferrer");
-      setPending("");
-      return;
-    }
+      if (mode === "whatsapp") {
+        const waUrl = buildWhatsAppUrl("reseller", buildDetails(form));
+        if (waTab && !waTab.closed) waTab.location.href = waUrl;
+        else window.location.assign(waUrl);
+        return;
+      }
 
-    if (!persisted) {
-      setError("No pudimos registrar tu consulta. Probá continuar por WhatsApp o escribinos directo.");
+      if (!persisted) {
+        setError("No pudimos registrar tu consulta. Probá continuar por WhatsApp o escribinos directo.");
+        return;
+      }
+      router.push("/gracias");
+    } finally {
       setPending("");
-      return;
     }
-    router.push("/gracias");
   }
 
   return (
@@ -125,7 +136,7 @@ export function ResellerWhatsAppForm() {
     >
       <label className="sm:col-span-2">
         <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-700">Empresa o razón social</span>
-        <input required autoComplete="organization" value={form.empresa} onChange={(e) => update("empresa", e.target.value)} className={inputClass} placeholder="Nombre de la empresa" />
+        <input required minLength={2} autoComplete="organization" value={form.empresa} onChange={(e) => update("empresa", e.target.value)} className={inputClass} placeholder="Nombre de la empresa" />
       </label>
       <label>
         <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-700">CUIT (opcional)</span>
@@ -137,7 +148,7 @@ export function ResellerWhatsAppForm() {
       </label>
       <label>
         <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-700">Nombre</span>
-        <input required autoComplete="name" value={form.nombre} onChange={(e) => update("nombre", e.target.value)} className={inputClass} placeholder="Tu nombre" />
+        <input required minLength={2} autoComplete="name" value={form.nombre} onChange={(e) => update("nombre", e.target.value)} className={inputClass} placeholder="Tu nombre" />
       </label>
       <label>
         <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-700">Teléfono / WhatsApp</span>

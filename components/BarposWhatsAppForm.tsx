@@ -35,6 +35,7 @@ const implementationOptions = [
 
 type FormState = {
   name: string;
+  business: string;
   phone: string;
   email: string;
   city: string;
@@ -48,6 +49,7 @@ type FormState = {
 
 const initialForm: FormState = {
   name: "",
+  business: "",
   phone: "",
   email: "",
   city: "",
@@ -62,6 +64,7 @@ const initialForm: FormState = {
 function buildDetails(form: FormState): string[] {
   return [
     `Nombre: ${form.name}`,
+    form.business ? `Comercio: ${form.business}` : "",
     `Teléfono / WhatsApp: ${form.phone}`,
     `Email: ${form.email}`,
     `Perfil: ${form.role}`,
@@ -76,11 +79,17 @@ function buildDetails(form: FormState): string[] {
 
 async function persistLead(form: FormState): Promise<boolean> {
   try {
+    // El schema requiere empresa. Preferimos el nombre del comercio; si el
+    // usuario no lo dio (campo opcional en la landing de consumo final),
+    // caemos al nombre del contacto para que el lead no se pierda por
+    // validación. Ciudad va SIEMPRE al mensaje, no al campo empresa —
+    // contaminaba la calidad del dato en el CRM.
+    const empresa = form.business.trim() || form.name.trim();
     const res = await fetch("/api/lead", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        empresa: form.city || form.name, // el schema requiere empresa; caemos a datos disponibles
+        empresa,
         nombre: form.name,
         email: form.email,
         telefono: form.phone,
@@ -115,28 +124,39 @@ export function BarposWhatsAppForm() {
   const [pending, setPending] = useState<"" | "submit" | "whatsapp">("");
   const [error, setError] = useState<string | null>(null);
 
-  const update = <K extends keyof FormState>(key: K, value: FormState[K]) =>
+  const update = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm((current) => ({ ...current, [key]: value }));
+    if (error) setError(null);
+  };
 
   async function handleSubmit(mode: "submit" | "whatsapp") {
     if (pending) return;
+
+    // Ver ContactWhatsAppForm: el tab se abre dentro del gesto del click,
+    // no después del await, para eludir el popup blocker de Safari.
+    const waTab = mode === "whatsapp" ? window.open("about:blank", "_blank", "noopener,noreferrer") : null;
+
     setPending(mode);
     setError(null);
 
-    const persisted = await persistLead(form);
+    try {
+      const persisted = await persistLead(form);
 
-    if (mode === "whatsapp") {
-      window.open(buildWhatsAppUrl("barpos", buildDetails(form)), "_blank", "noopener,noreferrer");
-      setPending("");
-      return;
-    }
+      if (mode === "whatsapp") {
+        const waUrl = buildWhatsAppUrl("barpos", buildDetails(form));
+        if (waTab && !waTab.closed) waTab.location.href = waUrl;
+        else window.location.assign(waUrl);
+        return;
+      }
 
-    if (!persisted) {
-      setError("No pudimos registrar tu consulta. Probá continuar por WhatsApp o escribinos directo.");
+      if (!persisted) {
+        setError("No pudimos registrar tu consulta. Probá continuar por WhatsApp o escribinos directo.");
+        return;
+      }
+      router.push("/gracias");
+    } finally {
       setPending("");
-      return;
     }
-    router.push("/gracias");
   }
 
   return (
@@ -149,7 +169,11 @@ export function BarposWhatsAppForm() {
       <div className="grid gap-4 sm:grid-cols-2">
         <label className={labelClass}>
           Nombre y apellido *
-          <input required autoComplete="name" value={form.name} onChange={(e) => update("name", e.target.value)} placeholder="Nombre y apellido" className={fieldClass} />
+          <input required minLength={2} autoComplete="name" value={form.name} onChange={(e) => update("name", e.target.value)} placeholder="Nombre y apellido" className={fieldClass} />
+        </label>
+        <label className={labelClass}>
+          Nombre del comercio
+          <input autoComplete="organization" value={form.business} onChange={(e) => update("business", e.target.value)} placeholder="Ej: Panadería La Central" className={fieldClass} />
         </label>
         <label className={labelClass}>
           Teléfono / WhatsApp *

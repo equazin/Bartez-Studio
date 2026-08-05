@@ -11,6 +11,8 @@ import {
   ShieldCheck,
   Check,
   CheckCircle2,
+  Send,
+  Loader2,
 } from "lucide-react";
 import { track } from "@/components/Analytics";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
@@ -43,6 +45,8 @@ const highlights = [
 
 export default function Rfq() {
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [form, setForm] = useState({
     nombre: "",
     email: "",
@@ -56,22 +60,16 @@ export default function Rfq() {
     pago: "A convenir",
     sustituciones: "Sí, acepto alternativas equivalentes",
     detalle: "",
+    website: "", // honeypot
   });
 
   const update = (key: string, value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }));
+    if (error) setError(null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    track("rfq_submitted", {
-      empresa: form.empresa,
-      cantidad: form.cantidad,
-      plazo: form.plazo,
-    });
-
-    const details = [
+  function buildDetails(): string[] {
+    return [
       "Origen: formulario RFQ de la web",
       `Empresa: ${form.empresa}`,
       form.cuit ? `CUIT: ${form.cuit}` : "",
@@ -86,13 +84,74 @@ export default function Rfq() {
       `Sustituciones: ${form.sustituciones}`,
       `Detalle técnico:\n${form.detalle}`,
     ];
+  }
 
-    window.open(
-      buildWhatsAppUrl("rfq", details),
-      "_blank",
-      "noopener,noreferrer",
-    );
-    setSubmitted(true);
+  async function persistLead(): Promise<boolean> {
+    try {
+      const res = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          empresa: form.empresa,
+          nombre: form.nombre,
+          email: form.email,
+          telefono: form.telefono,
+          tipoConsulta: "cotizacion",
+          mensaje: [
+            form.cuit ? `CUIT: ${form.cuit}` : "",
+            form.provincia ? `Provincia / localidad: ${form.provincia}` : "",
+            form.entrega ? `Lugar de entrega: ${form.entrega}` : "",
+            `Volumen requerido: ${form.cantidad}`,
+            `Plazo esperado: ${form.plazo}`,
+            `Condición de pago preferida: ${form.pago}`,
+            `Sustituciones: ${form.sustituciones}`,
+            "",
+            "Detalle técnico:",
+            form.detalle,
+          ]
+            .filter(Boolean)
+            .join("\n"),
+          escala: form.cantidad,
+          urgencia: form.plazo,
+          origen: "web-rfq",
+          website: form.website,
+        }),
+      });
+      return res.ok;
+    } catch {
+      return false;
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (sending) return;
+    setSending(true);
+    setError(null);
+
+    track("rfq_submitted", {
+      empresa: form.empresa,
+      cantidad: form.cantidad,
+      plazo: form.plazo,
+    });
+
+    try {
+      const persisted = await persistLead();
+      if (!persisted) {
+        setError(
+          "No pudimos registrar tu cotización. Escribinos por WhatsApp o al email de ventas y te respondemos igual.",
+        );
+        return;
+      }
+      setSubmitted(true);
+    } finally {
+      setSending(false);
+    }
+  };
+
+  const openWhatsApp = () => {
+    // El botón secundario abre WhatsApp dentro del click; no depende de await.
+    window.open(buildWhatsAppUrl("rfq", buildDetails()), "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -155,9 +214,9 @@ export default function Rfq() {
                   <span className="grid size-16 place-items-center rounded-full bg-emerald-50">
                     <CheckCircle2 size={32} className="text-emerald-600" />
                   </span>
-                  <h3 className="font-display text-[22px] font-semibold text-ink">Tu cotización fue enviada por WhatsApp</h3>
+                  <h3 className="font-display text-[22px] font-semibold text-ink">Tu cotización fue recibida.</h3>
                   <p className="max-w-[48ch] text-[14px] leading-relaxed text-slate-500">
-                    Un asesor revisará tu pliego y te contactará en menos de 24 hs hábiles. Revisá tu WhatsApp para confirmar el envío.
+                    Un asesor revisará tu pliego y te contactará en menos de 24 hs hábiles. Te llega también una confirmación al email.
                   </p>
                   <button
                     type="button"
@@ -367,18 +426,53 @@ export default function Rfq() {
                   </label>
                 </fieldset>
 
-                <div className="border-t border-slate-100 pt-6">
+                {/* Honeypot: solo llenado por bots. */}
+                <input
+                  type="text"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={form.website}
+                  onChange={(e) => update("website", e.target.value)}
+                  className="absolute -left-[9999px] h-0 w-0 opacity-0"
+                  aria-hidden="true"
+                />
+
+                {error && (
+                  <p role="alert" className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-800">
+                    {error}
+                  </p>
+                )}
+
+                <div className="grid gap-3 border-t border-slate-100 pt-6 sm:grid-cols-[1fr_auto]">
                   <button
                     type="submit"
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#11142a] px-6 py-4 text-[15px] font-bold text-white transition hover:bg-brand"
+                    disabled={sending}
+                    aria-busy={sending}
+                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-6 py-4 text-[15px] font-bold text-white shadow-[0_16px_32px_-18px_rgba(0,70,234,0.6)] transition hover:-translate-y-0.5 hover:bg-brand-bright disabled:cursor-wait disabled:opacity-80 disabled:hover:translate-y-0"
                   >
-                    <MessageCircle size={18} /> Continuar RFQ por WhatsApp
+                    {sending ? (
+                      <>
+                        <Loader2 size={18} className="animate-spin" /> Enviando...
+                      </>
+                    ) : (
+                      <>
+                        <Send size={18} /> Enviar cotización
+                      </>
+                    )}
                   </button>
-                  <p className="mt-3 text-center text-[12px] text-slate-500">
-                    WhatsApp abrirá el detalle completo para revisarlo antes de
-                    enviar.
-                  </p>
+                  <button
+                    type="button"
+                    onClick={openWhatsApp}
+                    disabled={sending}
+                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#10B981] bg-white px-6 py-4 text-[15px] font-bold text-[#047857] transition hover:border-[#047857] hover:bg-[#ECFDF5] disabled:cursor-wait disabled:opacity-80"
+                  >
+                    <MessageCircle size={18} /> Continuar por WhatsApp
+                  </button>
                 </div>
+                <p className="mt-3 text-center text-[12px] text-slate-500">
+                  Tu cotización queda registrada apenas envíes el formulario. Un asesor te contacta en 24 hs hábiles.
+                </p>
               </form>
               </>
               )}
