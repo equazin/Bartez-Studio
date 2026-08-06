@@ -15,8 +15,8 @@ export const company = {
   tagline: "Distribución IT para empresas y revendedores.",
   description:
     "Distribuimos equipamiento, infraestructura y soluciones tecnológicas para empresas, organismos y revendedores en toda Argentina. Dieciocho años de experiencia y atención comercial directa por WhatsApp.",
-  legalName: "Benítez, Andrés",
-  legalNotice: "Bartez Tecnología es un nombre comercial de Benítez, Andrés (Responsable Inscripto)",
+  legalName: "Bartez Tecnología",
+  legalNotice: "Responsable Inscripto",
   cuit: "20-21774424-6",
   taxCondition: "Responsable Inscripto · Factura A",
   city: "Rosario",

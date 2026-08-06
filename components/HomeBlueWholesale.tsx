@@ -19,6 +19,8 @@ import {
   ShieldCheck,
   SlidersHorizontal,
   ClipboardList,
+  FileCheck2,
+  Receipt,
   Truck,
   Users,
   type LucideIcon,
@@ -328,6 +330,43 @@ export function HomeBlueWholesale() {
               <Link href="/marcas" className="inline-flex items-center justify-center gap-2 text-[12.5px] font-black text-brand">
                 Ver todas las marcas <span className="grid size-8 place-items-center rounded-full bg-brand text-white"><ArrowRight size={15} /></span>
               </Link>
+            </div>
+          </div>
+        </section>
+
+        <section className="border-t border-slate-200 bg-[#f7f9fc] py-12 lg:py-14">
+          <div className="mx-auto max-w-[1320px] px-6 lg:px-10">
+            <div className="grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:items-center">
+              <div>
+                <p className="text-[12px] font-semibold uppercase tracking-[0.17em] text-brand">Respaldos verificables</p>
+                <h2 className="mt-3 font-display text-[clamp(22px,2.6vw,32px)] font-semibold leading-[1.1] tracking-[-0.035em] text-ink">
+                  Documentación B2B, sin promesas infladas.
+                </h2>
+                <p className="mt-3 max-w-[42ch] text-[14px] leading-relaxed text-slate-600">
+                  Publicamos solo lo que podemos respaldar. Cada operación se documenta según lo que tu proceso de compra necesite.
+                </p>
+                <Link href="/certificaciones" className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-semibold text-brand hover:underline">
+                  Ver certificaciones y respaldos <ArrowRight size={14} />
+                </Link>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {[
+                  { icon: Receipt, title: "Facturación tipo A", desc: "Para todas las operaciones B2B." },
+                  { icon: FileCheck2, title: "CUIT verificable", desc: `Responsable Inscripto · ${company.cuit}` },
+                  { icon: ShieldCheck, title: "Distribución oficial", desc: "Acuerdos con marcas autorizadas." },
+                  { icon: Truck, title: "Logística documentada", desc: "Cobertura nacional con seguro vigente." },
+                ].map((item) => (
+                  <div key={item.title} className="flex items-start gap-3 rounded-lg border border-slate-200 bg-white p-4">
+                    <span className="grid size-9 flex-none place-items-center rounded-lg border border-blue-100 bg-blue-50">
+                      <item.icon size={17} className="text-brand" strokeWidth={1.8} />
+                    </span>
+                    <div>
+                      <p className="text-[13.5px] font-semibold text-ink">{item.title}</p>
+                      <p className="mt-0.5 text-[12.5px] leading-relaxed text-slate-600">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>

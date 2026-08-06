@@ -34,7 +34,7 @@ const items = [
   {
     icon: Briefcase,
     title: "Relaciones con fabricantes",
-    description: "Canales de distribución activos con marcas líderes. Se detalla nivel real de acceso, no niveles inflados.",
+    description: "Canales de distribución activos con marcas líderes. Detallamos el nivel real de acceso, sin partnerships inflados.",
   },
   {
     icon: Lock,
@@ -75,7 +75,7 @@ export default function CertificacionesPage() {
         imagePriority
         mediaLabel="Transparencia"
         mediaTitle="Documentación disponible según operación."
-        mediaSubtitle="Preparamos respaldos comerciales cuando el proceso de compra lo requiere."
+        mediaSubtitle="Preparamos los respaldos comerciales que tu proceso de compra necesite."
         mediaItems={[
           { icon: FileCheck2, title: "Fiscal", description: "Datos comerciales y CUIT." },
           { icon: ShieldCheck, title: "Respaldo", description: "Solo información verificable." },

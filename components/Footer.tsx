@@ -11,6 +11,7 @@ const navLinks = [
   { label: "Marcas", href: "/marcas" },
   { label: "Cómo trabajamos", href: "/como-trabajamos" },
   { label: "Quiénes somos", href: "/quienes-somos" },
+  { label: "Certificaciones y respaldos", href: "/certificaciones" },
 ];
 
 const toolsLinks = [
