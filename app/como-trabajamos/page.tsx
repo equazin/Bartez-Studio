@@ -29,7 +29,7 @@ import { whatsappLinks } from "@/lib/whatsapp";
 export const metadata: Metadata = {
   title: "Cómo trabajamos — Bartez Tecnología",
   description:
-    "Bartez Tecnología opera con abastecimiento a demanda: cotizamos en 24 hs hábiles, compramos a los principales mayoristas del país y despachamos con garantía oficial. Transparencia operativa paso a paso.",
+    "Así trabajamos en Bartez Tecnología: cotizamos en 24 hs hábiles, conseguimos el equipamiento que necesitás y lo entregamos con garantía oficial a todo el país. Un solo interlocutor de punta a punta.",
   alternates: { canonical: "/como-trabajamos" },
 };
 
@@ -44,34 +44,34 @@ const steps = [
     num: "02",
     icon: ClipboardList,
     title: "Cotizamos en 24 hs hábiles",
-    desc: "Consultamos disponibilidad y precio con los principales mayoristas del país, y te devolvemos una propuesta formal con modelos, alternativas equivalentes y plazo real de entrega.",
+    desc: "Confirmamos disponibilidad y precio, y te devolvemos una propuesta formal con modelos, alternativas equivalentes y plazo real de entrega.",
   },
   {
     num: "03",
     icon: Truck,
     title: "Compra y despacho",
-    desc: "Al confirmar la orden, la compramos al proveedor y coordinamos el despacho por Andreani a todo el país. Recibís número de seguimiento el mismo día que sale.",
+    desc: "Al confirmar la orden, preparamos el pedido y coordinamos el despacho por Andreani a todo el país. Recibís número de seguimiento el mismo día que sale.",
   },
   {
     num: "04",
     icon: ShieldCheck,
     title: "Garantía oficial",
-    desc: "Todo el equipamiento se entrega con garantía oficial del fabricante. Si aparece una falla, coordinamos el RMA con el proveedor y hacemos seguimiento hasta la resolución.",
+    desc: "Todo el equipamiento se entrega con garantía oficial del fabricante. Si aparece una falla, gestionamos el RMA y hacemos seguimiento hasta la resolución.",
   },
 ];
 
 const modelBenefits = [
   {
     icon: Compass,
-    title: "Sin stock físico, sin sobreprecio",
+    title: "Precio directo, sin sobrecostos",
     description:
-      "No pagás la logística de un depósito propio: el equipo va del mayorista al cliente. El ahorro se traslada al precio.",
+      "Estructura ágil: cada operación se cotiza a precio actualizado, sin cargar sobrecostos operativos al presupuesto final.",
   },
   {
     icon: PackageSearch,
-    title: "Acceso a catálogo real",
+    title: "Catálogo amplio y flexible",
     description:
-      "Al no depender del stock propio, cotizamos cualquier modelo vigente en el país. Si un fabricante no tiene disponibilidad, proponemos alternativas equivalentes.",
+      "Cotizamos cualquier modelo vigente en el país. Si un fabricante no tiene disponibilidad, te proponemos alternativas equivalentes en la misma respuesta.",
   },
   {
     icon: BadgeCheck,
@@ -83,12 +83,12 @@ const modelBenefits = [
     icon: Building2,
     title: "18 años y +10.000 clientes",
     description:
-      "Vínculo directo con los principales mayoristas del país y experiencia comercial en compras corporativas, canal y sector público.",
+      "Trayectoria y experiencia comercial en compras corporativas, canal y sector público a lo largo del país.",
   },
 ];
 
 const transparencyItems = [
-  "No prometemos disponibilidad genérica: cada cotización lleva plazo real confirmado con el proveedor.",
+  "No prometemos disponibilidad genérica: cada cotización lleva plazo real confirmado.",
   "No publicamos precios ni stock en tiempo real porque cambian a diario; los confirmamos al recibir la consulta.",
   "Si un modelo no está disponible, lo decimos y proponemos alternativas equivalentes en la misma respuesta.",
   "El detalle técnico y comercial queda por escrito antes de la orden, no se cambia después.",
@@ -108,10 +108,10 @@ export default function ComoTrabajamosPage() {
         eyebrowIcon={Workflow}
         title={
           <>
-            Abastecimiento a demanda con <span className="text-[#0046EA]">entrega en todo el país.</span>
+            Un solo interlocutor, <span className="text-[#0046EA]">del pedido a la entrega.</span>
           </>
         }
-        intro="No tenemos stock físico: eso es una ventaja para el comprador corporativo. Cotizamos en 24 hs hábiles, conseguimos el equipamiento con los principales mayoristas del país y lo entregamos con garantía oficial vía Andreani."
+        intro="Cotizamos en 24 hs hábiles, conseguimos el equipamiento que necesitás y lo entregamos con garantía oficial vía Andreani a todo el país. De punta a punta hablás con el mismo asesor."
         image="/photos/home/warehouse-hero.png"
         imageAlt="Logística de abastecimiento IT"
         imagePriority
@@ -149,9 +149,9 @@ export default function ComoTrabajamosPage() {
 
       <InternalSection
         tone="white"
-        eyebrow="El modelo"
-        title="Por qué operar sin stock físico es una ventaja."
-        intro="La distribución IT tradicional carga costos de depósito, obsolescencia y capital inmovilizado al precio final. Nuestro modelo evita eso y transfiere el margen al cliente."
+        eyebrow="Ventajas"
+        title="Por qué comprar IT con nosotros."
+        intro="Trabajamos con estructura ágil y precio actualizado por operación. El resultado: mejor precio y respuesta directa para el cliente."
       >
         <div className="grid gap-5 sm:grid-cols-2">
           {modelBenefits.map((item) => (

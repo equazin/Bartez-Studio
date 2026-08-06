@@ -143,8 +143,8 @@ export function HomeBlueWholesale() {
                 Distribución IT para <span className="text-brand">empresas y revendedores</span>
               </h1>
               <p className="mt-6 max-w-[58ch] text-[15.5px] leading-relaxed text-slate-600 lg:text-[17px]">
-                Cotizamos en 24 hs hábiles, conseguimos el equipamiento con los principales mayoristas del país y lo
-                entregamos con garantía oficial.
+                Cotizamos en 24 hs hábiles, conseguimos el equipamiento que necesitás y lo entregamos con garantía
+                oficial a todo el país.
               </p>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
