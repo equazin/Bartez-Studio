@@ -23,6 +23,7 @@ import {
   InternalPageShell,
   InternalSection,
 } from "@/components/InternalPage";
+import { company } from "@/constants";
 import { whatsappLinks } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
@@ -212,7 +213,7 @@ export default function ComoTrabajamosPage() {
         </div>
         <div className="mt-6 flex items-center gap-3 rounded-lg border border-blue-100 bg-blue-50 p-4 text-[13.5px] text-[#11142a]">
           <CheckCircle2 size={20} className="flex-none text-[#0046EA]" strokeWidth={1.8} />
-          <p>Responsable Inscripto · CUIT 20-21774424-6 · Toda la operación en regla para compras corporativas, canal y sector público.</p>
+          <p>Responsable Inscripto · CUIT {company.cuit} · Toda la operación en regla para compras corporativas, canal y sector público.</p>
         </div>
       </InternalSection>
 
