@@ -353,7 +353,7 @@ export function HomeBlueWholesale() {
                 {[
                   { icon: Receipt, title: "Facturación tipo A", desc: "Para todas las operaciones B2B." },
                   { icon: FileCheck2, title: "CUIT verificable", desc: `Responsable Inscripto · ${company.cuit}` },
-                  { icon: ShieldCheck, title: "Distribución oficial", desc: "Acuerdos con marcas autorizadas." },
+                  { icon: ShieldCheck, title: "Revendedor autorizado", desc: "Lenovo, Dell, HP, Aruba y Cisco." },
                   { icon: Truck, title: "Logística documentada", desc: "Cobertura nacional con seguro vigente." },
                 ].map((item) => (
                   <div key={item.title} className="flex items-start gap-3 rounded-lg border border-slate-200 bg-white p-4">

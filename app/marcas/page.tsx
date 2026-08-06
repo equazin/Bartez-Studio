@@ -56,7 +56,7 @@ export default function MarcasPage() {
             Marcas que trabajamos <span className="text-[#0046EA]">para cada proyecto.</span>
           </>
         }
-        intro="Trabajamos con fabricantes reconocidos en equipamiento, infraestructura, redes, componentes y punto de venta. Consultanos disponibilidad, alternativas y condiciones para tu empresa o canal."
+        intro="Somos revendedor autorizado de Lenovo, Dell, HP, Aruba y Cisco, y trabajamos con otras marcas reconocidas en equipamiento, infraestructura, componentes y punto de venta. Consultanos disponibilidad, alternativas y condiciones para tu empresa o canal."
         actions={[
           { label: "Consultar disponibilidad", href: whatsappLinks.quote, external: true, icon: MessageCircle },
           { label: "Soy revendedor", href: "/revendedores", variant: "secondary", icon: ArrowRight },

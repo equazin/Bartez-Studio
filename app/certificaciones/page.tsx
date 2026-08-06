@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { ArrowRight, Award, Briefcase, Building2, FileCheck2, Lock, MessageCircle, Recycle, ShieldCheck, Truck } from "lucide-react";
 import {
   InternalChecklist,
@@ -9,6 +10,16 @@ import {
   InternalSection,
 } from "@/components/InternalPage";
 import { whatsappLinks } from "@/lib/whatsapp";
+
+// Fabricantes con revendedor autorizado vigente. El nivel de partnership no
+// se declara para no inflar el claim; alcanza con la autorización de venta.
+const authorizedBrands = [
+  { name: "Lenovo", logo: "/logos/lenovo.png" },
+  { name: "Dell", logo: "/logos/dell.png" },
+  { name: "HP", logo: "/logos/hp.png" },
+  { name: "Aruba", logo: "/logos/aruba.png" },
+  { name: "Cisco", logo: "/logos/cisco.png" },
+];
 
 export const metadata: Metadata = {
   title: "Certificaciones y respaldos - Bartez Tecnología",
@@ -33,8 +44,8 @@ const items = [
   },
   {
     icon: Briefcase,
-    title: "Relaciones con fabricantes",
-    description: "Canales de distribución activos con marcas líderes. Detallamos el nivel real de acceso, sin partnerships inflados.",
+    title: "Revendedor autorizado",
+    description: "Autorización de venta vigente con Lenovo, Dell, HP, Aruba y Cisco. Detallamos el alcance real, sin inflar niveles de partnership.",
   },
   {
     icon: Lock,
@@ -94,6 +105,24 @@ export default function CertificacionesPage() {
 
       <InternalSection tone="soft" eyebrow="Áreas documentadas" title="Respaldos comerciales y operativos." intro="Cada respaldo responde a un aspecto concreto de la operación. No publicamos certificaciones genéricas ni niveles sin documentación vigente.">
         <InternalFeatureGrid columns="three" features={items} />
+      </InternalSection>
+
+      <InternalSection
+        tone="white"
+        eyebrow="Revendedor autorizado"
+        title="Fabricantes con canal activo."
+        intro="Autorización de venta vigente con cinco marcas líderes del mercado corporativo. Alcance real, sin niveles inflados."
+      >
+        <div className="grid grid-cols-2 items-center gap-x-8 gap-y-6 sm:grid-cols-3 lg:grid-cols-5">
+          {authorizedBrands.map((brand) => (
+            <div key={brand.name} className="flex h-16 items-center justify-center rounded-lg border border-slate-200 bg-white p-4">
+              <Image src={brand.logo} alt={brand.name} width={140} height={44} className="max-h-10 w-auto object-contain" />
+            </div>
+          ))}
+        </div>
+        <p className="mt-6 text-center text-[12.5px] text-slate-500">
+          Constancias disponibles bajo solicitud para procesos de compra corporativos y licitaciones.
+        </p>
       </InternalSection>
 
       <InternalSection tone="white" eyebrow="Comprobables" title="Información que podés verificar." intro="Estos puntos forman parte de nuestra documentación estándar para operaciones corporativas y licitaciones.">
