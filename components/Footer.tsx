@@ -9,6 +9,7 @@ const navLinks = [
   { label: "Gobierno", href: "/gobierno" },
   { label: "Educación", href: "/educacion" },
   { label: "Marcas", href: "/marcas" },
+  { label: "Cómo trabajamos", href: "/como-trabajamos" },
   { label: "Quiénes somos", href: "/quienes-somos" },
 ];
 

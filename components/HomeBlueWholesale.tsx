@@ -160,6 +160,9 @@ export function HomeBlueWholesale() {
                   <Box size={18} /> Catálogo de soluciones
                 </Link>
               </div>
+              <Link href="/como-trabajamos" className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold text-slate-600 transition hover:text-brand">
+                Cómo trabajamos: cotización 24 hs · Andreani nacional · garantía oficial <ArrowRight size={14} />
+              </Link>
             </div>
 
             <div className="relative z-10 min-h-[300px] overflow-hidden rounded-3xl border border-blue-100 bg-[#f7f9ff] shadow-[0_34px_90px_-62px_rgba(0,70,234,0.6)] lg:min-h-[430px]">
