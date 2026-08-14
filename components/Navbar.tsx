@@ -10,6 +10,7 @@ import { whatsappLinks } from "@/lib/whatsapp";
 
 const institutionalLinks = [
   { label: "Marcas", href: "/marcas" },
+  { label: "Casos", href: "/casos" },
   { label: "Nosotros", href: "/quienes-somos" },
   { label: "Contacto", href: "/contacto" },
 ];
@@ -18,16 +19,29 @@ const solutionGroups = [
   {
     title: "Infraestructura",
     links: [
-      { label: "Servidores y almacenamiento", href: "/soluciones/servidores" },
       { label: "Redes e infraestructura", href: "/soluciones/redes-infraestructura" },
-      { label: "Ciberseguridad", href: "/ciberseguridad" },
-      { label: "Cloud y licenciamiento", href: "/cloud-licenciamiento" },
+      { label: "WiFi multi-sede (UniFi)", href: "/soluciones/wifi-multisede" },
+      { label: "Videovigilancia / CCTV", href: "/soluciones/videovigilancia-cctv" },
+      { label: "Servidores y storage", href: "/soluciones/servidores" },
+      { label: "Virtualización Proxmox", href: "/soluciones/virtualizacion-proxmox" },
+      { label: "Cableado y racks", href: "/soluciones/cableado-racks" },
     ],
   },
   {
-    title: "Equipamiento y servicios",
+    title: "Equipamiento",
     links: [
       { label: "Notebooks corporativas", href: "/soluciones/notebooks-corporativas" },
+      { label: "Workstations alta gama", href: "/soluciones/workstations-alta-gama" },
+      { label: "PCs de escritorio y flota", href: "/soluciones/workstations-pcs" },
+      { label: "Periféricos corporativos", href: "/soluciones/perifericos-corporativos" },
+    ],
+  },
+  {
+    title: "Servicios",
+    links: [
+      { label: "Servicios profesionales", href: "/servicios-profesionales" },
+      { label: "Ciberseguridad", href: "/ciberseguridad" },
+      { label: "Cloud y licenciamiento", href: "/cloud-licenciamiento" },
       { label: "Servicios administrados", href: "/servicios-administrados" },
       { label: "Soporte corporativo", href: "/soporte-corporativo" },
       { label: "Renting y leasing", href: "/renting-leasing" },
@@ -48,6 +62,11 @@ const channelLinks = [
     description: "Compras corporativas, proyectos IT, infraestructura y cuentas B2B.",
   },
   {
+    label: "Gobierno",
+    href: "/gobierno",
+    description: "Cotizaciones formales, pliegos, deal registration y compra pública.",
+  },
+  {
     label: "Revendedores",
     href: "/revendedores",
     description: "Canal mayorista, condiciones comerciales y distribución.",
@@ -66,6 +85,7 @@ const solutionPrefixes = [
   "/ciberseguridad",
   "/cloud-licenciamiento",
   "/servicios-administrados",
+  "/servicios-profesionales",
   "/soporte-corporativo",
   "/renting-leasing",
 ];
@@ -131,12 +151,12 @@ export function Navbar() {
               >
                 Soluciones <ChevronDown size={12} className="text-white/30 transition-colors group-hover:text-white/50" />
               </Link>
-              <div className={`${dropdownPanel} w-[920px]`}>
+              <div className={`${dropdownPanel} w-[1080px]`}>
                 <div className="mb-3 flex items-center justify-between border-b border-white/10 px-0.5 pb-3">
                   <strong className="text-[13px] font-bold text-white">Soluciones</strong>
                   <span className="text-[12px] font-medium text-slate-400">Agrupadas por necesidad</span>
                 </div>
-                <div className="grid grid-cols-[1.1fr_1fr_1fr_0.85fr] gap-3">
+                <div className="grid grid-cols-[1fr_1fr_1fr_1fr_0.85fr] gap-3">
                   <Link
                     href="/barpos"
                     className="min-h-[188px] rounded-xl border border-[#ff8f1f]/25 bg-[radial-gradient(circle_at_24px_20px,rgba(255,143,31,0.23),transparent_34px),linear-gradient(145deg,rgba(255,143,31,0.16),rgba(0,70,234,0.14))] p-[18px] transition hover:border-[#ff8f1f]/45"
@@ -180,12 +200,12 @@ export function Navbar() {
               >
                 Canal B2B <ChevronDown size={12} className="text-white/30 transition-colors group-hover:text-white/50" />
               </Link>
-              <div className={`${dropdownPanel} w-[520px]`}>
+              <div className={`${dropdownPanel} w-[720px]`}>
                 <div className="mb-3 flex items-center justify-between border-b border-white/10 px-0.5 pb-3">
                   <strong className="text-[13px] font-bold text-white">Canal B2B</strong>
-                  <span className="text-[12px] font-medium text-slate-400">Empresas y revendedores</span>
+                  <span className="text-[12px] font-medium text-slate-400">Empresas, gobierno y revendedores</span>
                 </div>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-3 gap-3">
                   {channelLinks.map((link) => (
                     <Link key={link.href} href={link.href} className="min-h-28 rounded-xl border border-white/10 bg-white/[0.045] p-4 transition hover:border-white/20 hover:bg-white/[0.065]">
                       <span className="block text-[15px] font-bold tracking-[-0.02em] text-white">{link.label}</span>

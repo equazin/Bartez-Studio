@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import {
@@ -13,9 +14,40 @@ import {
   CheckCircle2,
   Send,
   Loader2,
+  Landmark,
+  HardHat,
+  Cctv,
 } from "lucide-react";
 import { track } from "@/components/Analytics";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
+
+type OrigenRfq = "gobierno" | "proyecto" | "cctv" | "general";
+
+const origenBanners: Record<Exclude<OrigenRfq, "general">, { icon: typeof Landmark; title: string; description: string }> = {
+  gobierno: {
+    icon: Landmark,
+    title: "Cotización para sector público",
+    description:
+      "Preparamos presupuesto con validez explícita, plazos comprometidos, factura A y capacidad de recibir retenciones. Si aplica, gestionamos registro de oportunidad con el fabricante para precio de proyecto.",
+  },
+  proyecto: {
+    icon: HardHat,
+    title: "Cotización de proyecto corporativo",
+    description:
+      "Recibimos tu pliego, lista o descripción del proyecto y armamos una propuesta con alcance técnico, comparación multi-marca y coordinación con instaladores partners si el proyecto lo requiere.",
+  },
+  cctv: {
+    icon: Cctv,
+    title: "Cotización de CCTV / videovigilancia",
+    description:
+      "Contanos el predio, la cantidad de cámaras estimada, los días de retención y si necesitás cableado exterior. Cotizamos NVR, cámaras, discos CCTV específicos y coordinación de instalación.",
+  },
+};
+
+function parseOrigen(value: string | null): OrigenRfq {
+  if (value === "gobierno" || value === "proyecto" || value === "cctv") return value;
+  return "general";
+}
 
 const inputClass =
   "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-[14px] text-slate-900 outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/15";
@@ -43,7 +75,11 @@ const highlights = [
   },
 ];
 
-export default function Rfq() {
+function RfqInner() {
+  const searchParams = useSearchParams();
+  const origen = parseOrigen(searchParams.get("origen"));
+  const banner = origen !== "general" ? origenBanners[origen] : null;
+
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -59,6 +95,7 @@ export default function Rfq() {
     plazo: "30 días",
     pago: "A convenir",
     sustituciones: "Sí, acepto alternativas equivalentes",
+    instalacion: "No aplica",
     detalle: "",
     website: "", // honeypot
   });
@@ -71,6 +108,7 @@ export default function Rfq() {
   function buildDetails(): string[] {
     return [
       "Origen: formulario RFQ de la web",
+      origen !== "general" ? `Tipo de cotización: ${origen}` : "",
       `Empresa: ${form.empresa}`,
       form.cuit ? `CUIT: ${form.cuit}` : "",
       `Contacto: ${form.nombre}`,
@@ -82,6 +120,7 @@ export default function Rfq() {
       `Plazo esperado: ${form.plazo}`,
       `Condición de pago preferida: ${form.pago}`,
       `Sustituciones: ${form.sustituciones}`,
+      `Requiere instalación: ${form.instalacion}`,
       `Detalle técnico:\n${form.detalle}`,
     ];
   }
@@ -98,6 +137,7 @@ export default function Rfq() {
           telefono: form.telefono,
           tipoConsulta: "cotizacion",
           mensaje: [
+            origen !== "general" ? `Tipo de cotización: ${origen}` : "",
             form.cuit ? `CUIT: ${form.cuit}` : "",
             form.provincia ? `Provincia / localidad: ${form.provincia}` : "",
             form.entrega ? `Lugar de entrega: ${form.entrega}` : "",
@@ -105,6 +145,7 @@ export default function Rfq() {
             `Plazo esperado: ${form.plazo}`,
             `Condición de pago preferida: ${form.pago}`,
             `Sustituciones: ${form.sustituciones}`,
+            `Requiere instalación: ${form.instalacion}`,
             "",
             "Detalle técnico:",
             form.detalle,
@@ -113,7 +154,7 @@ export default function Rfq() {
             .join("\n"),
           escala: form.cantidad,
           urgencia: form.plazo,
-          origen: "web-rfq",
+          origen: origen !== "general" ? `web-rfq-${origen}` : "web-rfq",
           website: form.website,
         }),
       });
@@ -150,8 +191,14 @@ export default function Rfq() {
   };
 
   const openWhatsApp = () => {
-    // El botón secundario abre WhatsApp dentro del click; no depende de await.
-    window.open(buildWhatsAppUrl("rfq", buildDetails()), "_blank", "noopener,noreferrer");
+    // Abrimos la pestaña dentro del gesto del usuario para evitar el bloqueo
+    // de popups, y persistimos el lead en paralelo antes de setear la URL.
+    const waTab = window.open("about:blank", "_blank", "noopener,noreferrer");
+    const waUrl = buildWhatsAppUrl("rfq", buildDetails());
+    void persistLead().finally(() => {
+      if (waTab && !waTab.closed) waTab.location.href = waUrl;
+      else window.location.assign(waUrl);
+    });
   };
 
   return (
@@ -176,6 +223,13 @@ export default function Rfq() {
                   Para empresas y organismos que requieren cotizar volumen de
                   notebooks, servidores, soluciones de red o flotas completas.
                 </p>
+                {banner ? (
+                  <div className="mt-6 rounded-xl border border-white/15 bg-white/[0.05] p-4">
+                    <banner.icon size={18} className="text-sky" strokeWidth={1.8} />
+                    <p className="mt-2 text-[13.5px] font-bold text-white">{banner.title}</p>
+                    <p className="mt-1 text-[12.5px] leading-relaxed text-slate-300">{banner.description}</p>
+                  </div>
+                ) : null}
               </div>
 
               <div className="grid grid-cols-2 gap-3">
@@ -387,7 +441,7 @@ export default function Rfq() {
                         </option>
                       </select>
                     </label>
-                    <label className="block sm:col-span-2">
+                    <label className="block">
                       <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-600">
                         ¿Aceptás alternativas equivalentes?
                       </span>
@@ -401,6 +455,21 @@ export default function Rfq() {
                         <option>Sí, acepto alternativas equivalentes</option>
                         <option>Solo los modelos indicados</option>
                         <option>Consultar antes de reemplazar</option>
+                      </select>
+                    </label>
+                    <label className="block">
+                      <span className="mb-1.5 block text-[12.5px] font-semibold text-slate-600">
+                        ¿Requiere instalación / servicios profesionales?
+                      </span>
+                      <select
+                        value={form.instalacion}
+                        onChange={(e) => update("instalacion", e.target.value)}
+                        className={inputClass}
+                      >
+                        <option>No aplica</option>
+                        <option>Sí, instalación completa (llave en mano)</option>
+                        <option>Sí, solo puesta en marcha / configuración</option>
+                        <option>Consultar según propuesta</option>
                       </select>
                     </label>
                   </div>
@@ -514,5 +583,21 @@ export default function Rfq() {
       </main>
       <Footer />
     </>
+  );
+}
+
+export default function Rfq() {
+  return (
+    <Suspense
+      fallback={
+        <>
+          <Navbar />
+          <main id="main-content" className="min-h-screen bg-white" />
+          <Footer />
+        </>
+      }
+    >
+      <RfqInner />
+    </Suspense>
   );
 }

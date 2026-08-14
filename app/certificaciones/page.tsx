@@ -21,6 +21,16 @@ const authorizedBrands = [
   { name: "Cisco", logo: "/logos/cisco.png" },
 ];
 
+// Marcas técnicas que operamos regularmente en proyectos sin declarar canal
+// formal — el trato de venta se resuelve por distribuidores mayoristas.
+const operatedBrands = [
+  { name: "HPE", logo: "/logos/hpe.png" },
+  { name: "Ubiquiti", logo: "/logos/ubiquiti.png" },
+  { name: "APC", logo: "/logos/apc.svg" },
+  { name: "WD", logo: "/logos/wd.png" },
+  { name: "Vertiv", logo: "/logos/vertiv.png" },
+];
+
 export const metadata: Metadata = {
   title: "Certificaciones y respaldos - Bartez Tecnología",
   description: "Documentación comercial y respaldos verificables de Bartez Tecnología.",
@@ -122,6 +132,24 @@ export default function CertificacionesPage() {
         </div>
         <p className="mt-6 text-center text-[12.5px] text-slate-500">
           Constancias disponibles bajo solicitud para procesos de compra corporativos y licitaciones.
+        </p>
+      </InternalSection>
+
+      <InternalSection
+        tone="soft"
+        eyebrow="Marcas técnicas operadas"
+        title="Marcas que trabajamos regularmente sin canal formal."
+        intro="Para estas marcas la compra se resuelve a través de distribuidores mayoristas y no declaramos autorización directa. La experiencia técnica de nuestro equipo cubre las líneas más habituales del mercado corporativo."
+      >
+        <div className="grid grid-cols-2 items-center gap-x-8 gap-y-6 sm:grid-cols-3 lg:grid-cols-5">
+          {operatedBrands.map((brand) => (
+            <div key={brand.name} className="flex h-16 items-center justify-center rounded-lg border border-slate-200 bg-white p-4">
+              <Image src={brand.logo} alt={brand.name} width={140} height={44} className="max-h-10 w-auto object-contain" />
+            </div>
+          ))}
+        </div>
+        <p className="mt-6 text-center text-[12.5px] text-slate-500">
+          Otras marcas operadas en proyectos concretos: Hikvision, Dahua, Fortinet, Kingston, GLC. Consultanos.
         </p>
       </InternalSection>
 

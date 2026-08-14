@@ -30,6 +30,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/logistica-cobertura`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${base}/medios-de-pago`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${base}/servicios-administrados`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/servicios-profesionales`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
     { url: `${base}/renting-leasing`, lastModified: now, changeFrequency: "monthly", priority: 0.75 },
     { url: `${base}/cloud-licenciamiento`, lastModified: now, changeFrequency: "monthly", priority: 0.75 },
     { url: `${base}/ciberseguridad`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },

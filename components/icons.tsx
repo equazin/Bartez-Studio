@@ -3,6 +3,7 @@ import {
   Cpu,
   BadgeDollarSign,
   Server,
+  ServerCog,
   Laptop,
   Network,
   MonitorSmartphone,
@@ -19,6 +20,8 @@ import {
   ShieldCheck,
   Cloud,
   Boxes,
+  Wifi,
+  Cable,
   type LucideIcon,
 } from "lucide-react";
 
@@ -27,6 +30,7 @@ const map: Record<string, LucideIcon> = {
   Cpu,
   BadgeDollarSign,
   Server,
+  ServerCog,
   Laptop,
   Network,
   MonitorSmartphone,
@@ -43,6 +47,8 @@ const map: Record<string, LucideIcon> = {
   ShieldCheck,
   Cloud,
   Boxes,
+  Wifi,
+  Cable,
 };
 
 export function Icon({

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { ArrowRight, Building, Building2, FileText, Globe, GraduationCap, Headphones, HeartPulse, Landmark, Mail, MessageCircle, Package, ShieldCheck } from "lucide-react";
+import { ArrowRight, Building, Building2, ClipboardCheck, FileSignature, FileText, Globe, GraduationCap, Handshake, Headphones, HeartPulse, Landmark, Mail, MessageCircle, Package, Receipt, ShieldCheck, Timer } from "lucide-react";
 import {
+  InternalChecklist,
   InternalCta,
   InternalFeatureGrid,
   InternalHero,
@@ -30,6 +31,54 @@ const sectors = [
   { icon: GraduationCap, title: "Educación pública", description: "Laboratorios, proyectores, tablets y conectividad para escuelas e institutos." },
   { icon: HeartPulse, title: "Salud pública", description: "Terminales, servidores, redes y equipamiento para hospitales y centros de salud." },
   { icon: Building, title: "Organismos provinciales y nacionales", description: "Proyectos de mayor escala con coordinación técnica y logística multi-sede." },
+];
+
+const formalOps = [
+  {
+    icon: Handshake,
+    title: "Registro de oportunidad (deal reg)",
+    description:
+      "Gestionamos el registro de oportunidad con Dell, HPE y Lenovo para obtener precio de proyecto en compras de organismos, cuando la escala y el equipamiento lo habilitan.",
+  },
+  {
+    icon: Receipt,
+    title: "Factura A y retenciones",
+    description:
+      "Responsable Inscripto, CUIT verificable en AFIP y capacidad de recibir las retenciones (Ganancias, IVA, IIBB) que apliquen a cada jurisdicción.",
+  },
+  {
+    icon: Timer,
+    title: "Validez de oferta y plazos",
+    description:
+      "Cotizaciones con validez explícita, plazos de entrega comprometidos por escrito y condiciones documentadas para la etapa de adjudicación.",
+  },
+  {
+    icon: FileSignature,
+    title: "Documentación para pliegos",
+    description:
+      "Preparamos la documentación técnica y comercial requerida por cada pliego: fichas técnicas, cumplimiento de especificaciones, constancias y anexos.",
+  },
+  {
+    icon: ClipboardCheck,
+    title: "Compra directa y contratación",
+    description:
+      "Operamos en compras directas, contrataciones menores y procesos formales de contratación pública según la normativa aplicable.",
+  },
+  {
+    icon: Globe,
+    title: "Portales de compra pública",
+    description:
+      "Experiencia trabajando con COMPR.AR, SIPAF y portales de contratación provinciales y municipales.",
+  },
+];
+
+const rfqChecklist = [
+  "Pliego, especificaciones técnicas o lista de requerimientos",
+  "Volumen requerido y lugares de entrega",
+  "Plazo esperado y ventana de contratación",
+  "Condiciones de pago habituales del organismo",
+  "Jurisdicción y régimen de retenciones aplicable",
+  "Punto de contacto administrativo y técnico",
 ];
 
 export default function GobiernoPage() {
@@ -79,16 +128,55 @@ export default function GobiernoPage() {
         tone="white"
         eyebrow="Organismos"
         title="Trabajamos con todo el sector público."
-        intro="Desde pequenas comunas hasta organismos nacionales, adaptamos la propuesta a la escala y los procesos de cada organismo."
+        intro="Desde pequeñas comunas hasta organismos nacionales, adaptamos la propuesta a la escala y los procesos de cada organismo."
       >
         <InternalFeatureGrid columns="four" features={sectors} />
+      </InternalSection>
+
+      <InternalSection
+        tone="soft"
+        eyebrow="Operatoria formal"
+        title="Cómo trabajamos las compras del sector público."
+        intro="No es lo mismo cotizarle a una empresa que a un organismo. Estos son los aspectos administrativos y comerciales que ya tenemos resueltos."
+      >
+        <InternalFeatureGrid columns="three" features={formalOps} />
+      </InternalSection>
+
+      <InternalSection
+        tone="white"
+        eyebrow="Enviá tu pliego"
+        title="Qué necesitamos para armar una cotización formal."
+        intro="Cuantos más datos nos pases, más rápida y precisa es la propuesta. Usá el formulario de cotización de proyectos con el preset de sector público."
+      >
+        <div className="grid gap-6 lg:grid-cols-[1fr_0.8fr] lg:items-start">
+          <div>
+            <InternalChecklist items={rfqChecklist} columns="one" />
+          </div>
+          <div className="rounded-lg border border-blue-200 bg-blue-50 p-6">
+            <FileText className="size-8 text-[#0046EA]" strokeWidth={1.6} />
+            <h3 className="mt-4 font-display text-[18px] font-semibold text-[#11142a]">
+              Formulario específico para sector público
+            </h3>
+            <p className="mt-3 text-[13.5px] leading-relaxed text-slate-700">
+              El formulario RFQ tiene una vista específica para organismos con
+              información sobre validez de oferta, retenciones y plazos.
+            </p>
+            <a
+              href="/rfq?origen=gobierno"
+              className="mt-5 inline-flex items-center gap-2 rounded-lg bg-[#0046EA] px-5 py-3 text-[13.5px] font-bold text-white transition hover:bg-[#0038C4]"
+            >
+              Cotizar para organismo <ArrowRight size={16} />
+            </a>
+          </div>
+        </div>
       </InternalSection>
 
       <InternalCta
         title="¿Necesitás una cotización para tu organismo?"
         intro="Preparamos presupuestos formales adaptados a los requerimientos del sector público. Respondemos en 24-48 hs hábiles."
         actions={[
-          { label: "Solicitar presupuesto", href: whatsappLinks.government, external: true, icon: MessageCircle },
+          { label: "Enviar pliego (RFQ)", href: "/rfq?origen=gobierno", icon: ArrowRight },
+          { label: "Solicitar por WhatsApp", href: whatsappLinks.government, external: true, variant: "secondary", icon: MessageCircle },
           { label: contact.email, href: `mailto:${contact.email}?subject=Cotización%20sector%20público`, variant: "secondary", icon: Mail },
         ]}
       />
