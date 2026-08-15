@@ -343,18 +343,25 @@ export function HomeBlueWholesale() {
                   Documentación B2B, sin promesas infladas.
                 </h2>
                 <p className="mt-3 max-w-[42ch] text-[14px] leading-relaxed text-slate-600">
-                  Publicamos solo lo que podemos respaldar. Cada operación se documenta según lo que tu proceso de compra necesite.
+                  Publicamos solo lo que podemos respaldar. Cada operación se documenta según lo que tu proceso de compra o pliego necesite.
                 </p>
-                <Link href="/certificaciones" className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-semibold text-brand hover:underline">
-                  Ver certificaciones y respaldos <ArrowRight size={14} />
-                </Link>
+                <div className="mt-5 flex flex-wrap gap-3">
+                  <Link href="/certificaciones" className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-brand hover:underline">
+                    Ver certificaciones y respaldos <ArrowRight size={14} />
+                  </Link>
+                  <Link href="/gobierno" className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-slate-600 hover:text-brand hover:underline">
+                    Operatoria con sector público <ArrowRight size={14} />
+                  </Link>
+                </div>
               </div>
               <div className="grid gap-3 sm:grid-cols-2">
                 {[
-                  { icon: Receipt, title: "Facturación tipo A", desc: "Para todas las operaciones B2B." },
+                  { icon: Receipt, title: "Facturación tipo A", desc: "Para todas las operaciones B2B y sector público." },
                   { icon: FileCheck2, title: "CUIT verificable", desc: `Responsable Inscripto · ${company.cuit}` },
                   { icon: ShieldCheck, title: "Revendedor autorizado", desc: "Lenovo, Dell, HP, Aruba y Cisco." },
-                  { icon: Truck, title: "Logística documentada", desc: "Cobertura nacional con seguro vigente." },
+                  { icon: ClipboardList, title: "Deal registration", desc: "Precio de proyecto con Dell, HPE y Lenovo." },
+                  { icon: Truck, title: "Logística nacional", desc: "Cobertura documentada con seguro vigente." },
+                  { icon: Landmark, title: "Cotización para pliegos", desc: "Validez de oferta, retenciones y plazos por escrito." },
                 ].map((item) => (
                   <div key={item.title} className="flex items-start gap-3 rounded-lg border border-slate-200 bg-white p-4">
                     <span className="grid size-9 flex-none place-items-center rounded-lg border border-blue-100 bg-blue-50">
