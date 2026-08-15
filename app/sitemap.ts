@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { company, verticals, legalPages } from "../constants";
 import { getDynamicArticles, getDynamicSuccessCases } from "../lib/db-content";
+import { workstationsSoftware } from "../lib/workstations-software";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = company.url;
@@ -54,6 +55,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: strategic[item.slug] ?? 0.8,
       };
     }),
+    ...workstationsSoftware.map((item) => ({
+      url: `${base}/soluciones/workstations-alta-gama/${item.slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
     ...articles.map((article) => ({
       url: `${base}/recursos/${article.slug}`,
       lastModified: new Date(article.date),

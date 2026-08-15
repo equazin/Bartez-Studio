@@ -6,6 +6,7 @@ import { ArrowRight, CheckCircle2, ClipboardList, FileText, MessageCircle, Messa
 import { company, verticals } from "@/constants";
 import { getDynamicPartners } from "@/lib/db-content";
 import { safeJsonLd } from "@/lib/json-ld";
+import { workstationsSoftware } from "@/lib/workstations-software";
 import {
   InternalCta,
   InternalHero,
@@ -201,6 +202,40 @@ export default async function VerticalPage({
             ))}
           </div>
         </InternalSection>
+
+        {vertical.slug === "workstations-alta-gama" ? (
+          <InternalSection
+            tone="soft"
+            eyebrow="Configuraciones por software"
+            title="Workstations dimensionadas por caso de uso."
+            intro="Configuraciones específicas por software profesional — CPU, RAM, GPU y storage recomendados por tipo de proyecto."
+          >
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {workstationsSoftware.map((item) => (
+                <Link
+                  key={item.slug}
+                  href={`/soluciones/workstations-alta-gama/${item.slug}`}
+                  className="group flex items-start gap-4 rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200"
+                >
+                  <span className="grid size-11 flex-none place-items-center rounded-lg border border-blue-100 bg-blue-50 text-[#0046EA]">
+                    <item.icon size={20} strokeWidth={1.8} />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-display text-[16px] font-semibold text-[#11142a]">
+                      {item.softwareName}
+                    </p>
+                    <p className="mt-1 text-[12.5px] leading-relaxed text-slate-600">
+                      {item.useCase}
+                    </p>
+                    <span className="mt-2 inline-flex items-center gap-1 text-[12px] font-bold text-[#0046EA]">
+                      Ver config sugerida <ArrowRight size={12} className="transition-transform group-hover:translate-x-1" />
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </InternalSection>
+        ) : null}
 
         {related.length > 0 ? (
           <InternalSection tone="white" eyebrow="Relacionados" title="Otras áreas en las que podemos ayudarte.">
