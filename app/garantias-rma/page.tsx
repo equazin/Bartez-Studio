@@ -76,7 +76,8 @@ export default function GarantiasRmaPage() {
           { value: "ARG", label: "gestión nacional" },
         ]}
         actions={[
-          { label: "Iniciar reclamo", href: whatsappHref, external: true, icon: MessageCircle },
+          { label: "Iniciar caso ahora", href: "/garantias-rma/nuevo", icon: ArrowRight },
+          { label: "Preguntar por WhatsApp", href: whatsappHref, external: true, variant: "secondary", icon: MessageCircle },
           { label: "Enviar por email", href: `mailto:${contact.email}?subject=Reclamo%20de%20garantía`, variant: "secondary", icon: Mail },
         ]}
       />
