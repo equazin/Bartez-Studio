@@ -31,6 +31,14 @@ export const metadata: Metadata = {
   title: "BarPOS 4.0 - Punto de venta electrónico | Bartez Tecnología",
   description:
     "BarPOS 4.0: equipamiento, software, implementación y soporte para comercios. Consultá precio vigente o condiciones para distribuidores por WhatsApp.",
+  alternates: { canonical: "/barpos" },
+  openGraph: {
+    title: "BarPOS 4.0 - Punto de venta electrónico | Bartez Tecnología",
+    description:
+      "Solución de punto de venta para comercios con controladora fiscal homologada, software, periféricos, implementación y soporte.",
+    url: "https://bartez.com.ar/barpos",
+    type: "website",
+  },
 };
 
 const productCards = [

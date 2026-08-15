@@ -108,7 +108,6 @@ export function Navbar() {
 
   const isSolutionsActive = matchesPrefix(pathname, solutionPrefixes);
   const isChannelActive = matchesPrefix(pathname, channelPrefixes);
-  const isBarposActive = isActive("/barpos");
 
   return (
     <header className="sticky inset-x-0 top-0 z-50 bg-[linear-gradient(180deg,#080b18,#060914)] text-white shadow-[0_1px_0_0_rgba(0,70,234,0.15),0_12px_32px_-16px_rgba(0,0,0,0.5)]">
@@ -127,22 +126,7 @@ export function Navbar() {
           </Link>
 
           <nav className="ml-7 hidden items-center lg:flex" aria-label="Navegación principal">
-            {/* BarPOS — accent link */}
-            <Link
-              href="/barpos"
-              aria-current={isBarposActive ? "page" : undefined}
-              className={`relative flex h-[60px] items-center px-3.5 text-[14px] font-bold transition-colors bg-[linear-gradient(90deg,rgba(255,143,31,0.08),transparent)] after:absolute after:bottom-0 after:left-3.5 after:right-3.5 after:h-[2px] after:rounded-t ${
-                isBarposActive
-                  ? "text-[#ffd4a8] after:bg-[#ff8f1f]"
-                  : "text-[#ffb86c] hover:text-[#ffd4a8] after:bg-[#ff8f1f]/60"
-              }`}
-            >
-              BarPOS
-            </Link>
-
-            <span className="mx-1 h-5 w-px bg-white/8" />
-
-            {/* Soluciones dropdown */}
+            {/* Soluciones dropdown — BarPOS aparece como card destacada dentro */}
             <div className="group relative">
               <Link
                 href="/#soluciones"
@@ -271,15 +255,7 @@ export function Navbar() {
       {open ? (
         <nav className="max-h-[calc(100vh-60px)] overflow-y-auto border-t border-white/10 bg-[#060914] px-5 py-5 lg:hidden" aria-label="Navegación móvil">
           <div className="mx-auto flex max-w-[1200px] flex-col">
-            <Link
-              href="/barpos"
-              onClick={() => setOpen(false)}
-              className="mb-2 flex items-center justify-between rounded-xl border border-[#ff8f1f]/30 bg-[#ff8f1f]/10 px-4 py-3.5 text-[14px] font-bold text-white transition hover:bg-[#ff8f1f]/20"
-            >
-              BarPOS punto de venta <span aria-hidden="true">→</span>
-            </Link>
-
-            <span className="pt-4 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Soluciones</span>
+            <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Soluciones</span>
             <div className="grid sm:grid-cols-2">
               {solutionGroups.flatMap((group) =>
                 group.links.map((link) => (
