@@ -5,17 +5,22 @@ import {
   BatteryCharging,
   Box,
   Building2,
+  Cctv,
   CheckCircle2,
   GitCompareArrows,
   GraduationCap,
   HardDrive,
+  HardHat,
   Headphones,
   Landmark,
   Laptop,
+  Map as MapIcon,
   MessageCircle,
   Monitor,
   PackageCheck,
   Printer,
+  Scale,
+  Server,
   ShieldCheck,
   SlidersHorizontal,
   ClipboardList,
@@ -23,6 +28,7 @@ import {
   Receipt,
   Truck,
   Users,
+  Wifi,
   type LucideIcon,
 } from "lucide-react";
 import { company, contact, partners } from "@/constants";
@@ -79,10 +85,57 @@ const audienceCards = [
 ];
 
 const stats = [
-  { icon: Users, value: company.clients, label: "clientes" },
-  { icon: ShieldCheck, value: company.experienceYears, label: "años en el rubro" },
-  { icon: PackageCheck, value: "Factura A", label: "en todas las operaciones" },
-  { icon: Headphones, value: "Soporte técnico", label: "especializado" },
+  { icon: ShieldCheck, value: `+${company.experienceYears}`, label: "años operando · desde 2008" },
+  { icon: Users, value: company.clients, label: "clientes atendidos" },
+  { icon: MapIcon, value: "Nacional", label: "cobertura logística documentada" },
+  { icon: Scale, value: "1 → 500+", label: "escala por operación" },
+];
+
+// Capacidades demostradas: describen clases de operación que Bartez resuelve
+// habitualmente, sin identificar clientes ni fabricar métricas puntuales.
+// Refuerza que el rango va más allá de vender un equipo suelto.
+const capabilities: {
+  icon: LucideIcon;
+  title: string;
+  desc: string;
+  href: string;
+}[] = [
+  {
+    icon: Laptop,
+    title: "Renovación de parque",
+    desc: "Compras por lote de 20 a 100+ notebooks o PCs corporativas con Windows 11 Pro, imagen unificada y entrega escalonada a una o varias sedes.",
+    href: "/soluciones/notebooks-corporativas",
+  },
+  {
+    icon: Wifi,
+    title: "WiFi multi-sede coordinado",
+    desc: "Proyectos con UniFi en varias sedes, relevamiento por sitio, equipamiento de contingencia e instaladores partners en cada provincia bajo coordinación técnica propia.",
+    href: "/soluciones/wifi-multisede",
+  },
+  {
+    icon: Server,
+    title: "Servidores para virtualización",
+    desc: "Servidores rack Lenovo, HPE y Dell configurados para Proxmox VE con HBA para ZFS, canales de memoria poblados y fuentes redundantes cuando la criticidad lo justifica.",
+    href: "/soluciones/virtualizacion-proxmox",
+  },
+  {
+    icon: Cctv,
+    title: "CCTV en predios grandes",
+    desc: "Cámaras IP direccionales, panorámicas y 360° para oficinas, plantas y espacios recreativos, con NVR dimensionado, discos CCTV específicos y cableado exterior.",
+    href: "/soluciones/videovigilancia-cctv",
+  },
+  {
+    icon: Landmark,
+    title: "Compras a organismos públicos",
+    desc: "Cotización formal con validez de oferta, retenciones, plazos por escrito y deal registration con Dell, HPE y Lenovo cuando corresponde.",
+    href: "/gobierno",
+  },
+  {
+    icon: HardHat,
+    title: "Proyectos llave en mano",
+    desc: "Cuando el proyecto pide cableado, montaje o integración, sumamos instaladores partners al alcance y coordinamos todo desde nuestro equipo técnico.",
+    href: "/servicios-profesionales",
+  },
 ];
 
 const families = [
@@ -257,6 +310,63 @@ export function HomeBlueWholesale() {
           <div className="mx-auto max-w-[1320px] px-6 lg:px-10">
             <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
               <div>
+                <p className="text-[12px] font-semibold uppercase tracking-[0.17em] text-brand">Capacidades demostradas</p>
+                <h2 className="mt-2 max-w-[24ch] font-display text-[clamp(26px,3.5vw,38px)] font-semibold tracking-[-0.04em] text-ink">
+                  Operaciones que resolvemos, más allá de vender un equipo suelto.
+                </h2>
+              </div>
+              <p className="max-w-[42ch] text-[14px] leading-relaxed text-slate-600">
+                Tipos de proyecto que coordinamos habitualmente. No son casos de clientes concretos — describen la clase de operación.
+              </p>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {capabilities.map((item) => (
+                <Link
+                  key={item.title}
+                  href={item.href}
+                  className="group flex flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-soft transition hover:-translate-y-1 hover:border-blue-200 hover:shadow-card"
+                >
+                  <span className="grid size-11 place-items-center rounded-xl bg-blue-50 text-brand">
+                    <item.icon size={22} strokeWidth={1.8} />
+                  </span>
+                  <h3 className="mt-4 font-display text-[18px] font-semibold tracking-[-0.03em] text-ink">
+                    {item.title}
+                  </h3>
+                  <p className="mt-2 flex-1 text-[13.5px] leading-relaxed text-slate-600">
+                    {item.desc}
+                  </p>
+                  <span className="mt-5 inline-flex items-center gap-1.5 text-[12.5px] font-black text-brand">
+                    Ver detalle <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+                  </span>
+                </Link>
+              ))}
+            </div>
+            <div className="mt-8 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-blue-100 bg-white px-6 py-5">
+              <p className="text-[13.5px] leading-relaxed text-slate-600">
+                ¿Un proyecto que no encaja en ninguna categoría? Contanos el contexto y armamos una propuesta.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <Link
+                  href="/rfq?origen=proyecto"
+                  className="inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-2.5 text-[13.5px] font-black text-white shadow-[0_14px_28px_-16px_rgba(0,70,234,0.6)] transition hover:-translate-y-0.5 hover:bg-brand-bright"
+                >
+                  Cotizar un proyecto <ArrowRight size={15} />
+                </Link>
+                <Link
+                  href="/servicios-profesionales"
+                  className="inline-flex items-center gap-2 rounded-xl border border-brand/70 bg-white px-5 py-2.5 text-[13.5px] font-black text-brand transition hover:bg-blue-50"
+                >
+                  Cómo trabajamos servicios profesionales
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-[#f7f9fc] py-12 lg:py-16">
+          <div className="mx-auto max-w-[1320px] px-6 lg:px-10">
+            <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+              <div>
                 <p className="text-[12px] font-semibold uppercase tracking-[0.17em] text-brand">Herramientas online</p>
                 <h2 className="mt-2 font-display text-[clamp(26px,3.5vw,38px)] font-semibold tracking-[-0.04em] text-ink">Empezá a definir tu solución</h2>
               </div>
@@ -320,8 +430,8 @@ export function HomeBlueWholesale() {
           <div className="mx-auto max-w-[1320px] px-6 lg:px-10">
             <div className="grid items-center gap-5 lg:grid-cols-[190px_1fr_auto]">
               <h2 className="font-display text-[21px] font-semibold leading-[1.08] tracking-[-0.035em] text-ink">Marcas que trabajamos</h2>
-              <div className="grid grid-cols-3 items-center gap-x-6 gap-y-5 sm:grid-cols-5 lg:grid-cols-9">
-                {partners.brands.slice(0, 9).map((brand) => (
+              <div className="grid grid-cols-3 items-center gap-x-6 gap-y-5 sm:grid-cols-5 lg:grid-cols-10">
+                {partners.brands.slice(0, 10).map((brand) => (
                   <div key={brand.name} className="flex h-10 items-center justify-center">
                     <Image src={brand.logo} alt={brand.name} width={118} height={42} className="max-h-9 w-auto object-contain" />
                   </div>
