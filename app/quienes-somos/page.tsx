@@ -10,12 +10,58 @@ import {
   InternalSection,
 } from "@/components/InternalPage";
 import { company } from "@/constants";
+import { safeJsonLd } from "@/lib/json-ld";
 import { whatsappLinks } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "Quienes somos - Bartez Tecnología",
   description:
     "Conocé la historia, misión y valores de Bartez Tecnología. Dieciocho años en el rubro distribuyendo tecnología para empresas, organismos y revendedores en toda Argentina desde Rosario.",
+  alternates: { canonical: "/quienes-somos" },
+  openGraph: {
+    title: "Quienes somos - Bartez Tecnología",
+    description:
+      "Distribuidor mayorista IT desde 2008 en Rosario. Operatoria con empresas, organismos públicos, educación y canal de revendedores en toda Argentina.",
+    url: `${company.url}/quienes-somos`,
+    type: "website",
+  },
+};
+
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: company.name,
+  legalName: company.legalName,
+  url: company.url,
+  foundingDate: company.founded,
+  foundingLocation: {
+    "@type": "Place",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: company.city,
+      addressRegion: company.province,
+      addressCountry: "AR",
+    },
+  },
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "9 de Julio 3418",
+    addressLocality: company.city,
+    addressRegion: company.province,
+    addressCountry: "AR",
+  },
+  taxID: company.cuit,
+  areaServed: { "@type": "Country", name: "Argentina" },
+  description: company.description,
+};
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: company.url },
+    { "@type": "ListItem", position: 2, name: "Quiénes somos", item: `${company.url}/quienes-somos` },
+  ],
 };
 
 const channels = [
@@ -60,37 +106,40 @@ const milestones: TimelineMilestone[] = [
     year: "2008",
     icon: Rocket,
     title: "Fundación en Rosario",
-    detail: "Bartez nace con foco en distribución IT al canal y al sector corporativo argentino.",
+    detail: "Bartez nace en Rosario con foco en distribución IT al canal de revendedores y al sector corporativo argentino, con atención comercial directa como diferencial.",
   },
   {
     year: "2013",
     icon: Store,
     title: "Apertura del canal mayorista",
-    detail: "Acuerdos directos con fabricantes líderes y crecimiento del programa de revendedores en todo el país.",
+    detail: "Autorización de venta con Lenovo, Dell y HP para el canal B2B. Crecimiento del programa de revendedores con condiciones de canal y respuesta comercial en 24 hs hábiles.",
   },
   {
     year: "2017",
     icon: Network,
-    title: "Infraestructura y proyectos",
-    detail: "Sumamos servidores, redes, energía y servicios profesionales para escalar a proyectos de mayor complejidad.",
+    title: "Infraestructura y proyectos corporativos",
+    detail: "Sumamos servidores, storage, networking (Cisco / Aruba) y servicios profesionales. Aparecen los primeros proyectos multi-marca comparados en paralelo (Lenovo ThinkSystem / HPE ProLiant / Dell PowerEdge).",
   },
   {
     year: "2020",
     icon: Truck,
-    title: "Logística nacional",
-    detail: "Coordinación de entregas multi-sede y operaciones en organismos públicos, salud y educación.",
+    title: "Cobertura nacional y sector público",
+    detail: "Coordinación de entregas multi-sede y operaciones sostenidas con organismos municipales, provinciales y nacionales. Registro de oportunidad con fabricantes para compras de proyecto.",
   },
   {
     year: "2026",
     icon: Sparkles,
     title: "Hoy",
-    detail: "Más de 10.000 clientes atendidos, BarPOS 4.0 en el portfolio y herramientas online para cotizar y comparar.",
+    detail: "10.000+ clientes atendidos. Capacidades demostradas en workstations CTO/BTO (GIS, render, GPU), WiFi multi-sede con UniFi y coordinación con instaladores partners, virtualización Proxmox VE, CCTV en predios de gran superficie y BarPOS 4.0 en el portfolio.",
   },
 ];
 
 export default function QuienesSomosPage() {
   return (
-    <InternalPageShell>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(organizationJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
+      <InternalPageShell>
       <InternalHero
         eyebrow="Distribuidora IT - Rosario"
         title={
@@ -203,6 +252,7 @@ export default function QuienesSomosPage() {
           { label: "Soy revendedor", href: "/revendedores", variant: "secondary", icon: ArrowRight },
         ]}
       />
-    </InternalPageShell>
+      </InternalPageShell>
+    </>
   );
 }
