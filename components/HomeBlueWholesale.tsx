@@ -5,22 +5,18 @@ import {
   BatteryCharging,
   Box,
   Building2,
-  Cctv,
   CheckCircle2,
   GitCompareArrows,
   GraduationCap,
   HardDrive,
-  HardHat,
   Headphones,
   Landmark,
-  Laptop,
   Map as MapIcon,
   MessageCircle,
   Monitor,
   PackageCheck,
   Printer,
   Scale,
-  Server,
   ShieldCheck,
   SlidersHorizontal,
   ClipboardList,
@@ -28,10 +24,10 @@ import {
   Receipt,
   Truck,
   Users,
-  Wifi,
   type LucideIcon,
 } from "lucide-react";
 import { company, contact, partners } from "@/constants";
+import { capabilities } from "@/lib/capabilities";
 import { CookieBanner } from "@/components/CookieBanner";
 import { CorporateSolutionsShowcase } from "@/components/CorporateSolutionsShowcase";
 import { Footer } from "@/components/Footer";
@@ -91,52 +87,8 @@ const stats = [
   { icon: Scale, value: "1 → 500+", label: "escala por operación" },
 ];
 
-// Capacidades demostradas: describen clases de operación que Bartez resuelve
-// habitualmente, sin identificar clientes ni fabricar métricas puntuales.
-// Refuerza que el rango va más allá de vender un equipo suelto.
-const capabilities: {
-  icon: LucideIcon;
-  title: string;
-  desc: string;
-  href: string;
-}[] = [
-  {
-    icon: Laptop,
-    title: "Renovación de parque",
-    desc: "Compras por lote de 20 a 100+ notebooks o PCs corporativas con Windows 11 Pro, imagen unificada y entrega escalonada a una o varias sedes.",
-    href: "/soluciones/notebooks-corporativas",
-  },
-  {
-    icon: Wifi,
-    title: "WiFi multi-sede coordinado",
-    desc: "Proyectos con UniFi en varias sedes, relevamiento por sitio, equipamiento de contingencia e instaladores partners en cada provincia bajo coordinación técnica propia.",
-    href: "/soluciones/wifi-multisede",
-  },
-  {
-    icon: Server,
-    title: "Servidores para virtualización",
-    desc: "Servidores rack Lenovo, HPE y Dell configurados para Proxmox VE con HBA para ZFS, canales de memoria poblados y fuentes redundantes cuando la criticidad lo justifica.",
-    href: "/soluciones/virtualizacion-proxmox",
-  },
-  {
-    icon: Cctv,
-    title: "CCTV en predios grandes",
-    desc: "Cámaras IP direccionales, panorámicas y 360° para oficinas, plantas y espacios recreativos, con NVR dimensionado, discos CCTV específicos y cableado exterior.",
-    href: "/soluciones/videovigilancia-cctv",
-  },
-  {
-    icon: Landmark,
-    title: "Compras a organismos públicos",
-    desc: "Cotización formal con validez de oferta, retenciones, plazos por escrito y deal registration con Dell, HPE y Lenovo cuando corresponde.",
-    href: "/gobierno",
-  },
-  {
-    icon: HardHat,
-    title: "Proyectos llave en mano",
-    desc: "Cuando el proyecto pide cableado, montaje o integración, sumamos instaladores partners al alcance y coordinamos todo desde nuestro equipo técnico.",
-    href: "/servicios-profesionales",
-  },
-];
+// La lista `capabilities` vive en lib/capabilities.ts y se comparte con /casos
+// (fallback cuando no hay casos autorizados publicados).
 
 const families = [
   { image: "/photos/products/laptop1.jpg", label: "Notebooks y PCs", href: "/catalogo#notebooks" },

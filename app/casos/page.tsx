@@ -8,6 +8,7 @@ import {
   InternalPageShell,
   InternalSection,
 } from "@/components/InternalPage";
+import { capabilities } from "@/lib/capabilities";
 import { getDynamicSuccessCases } from "@/lib/db-content";
 import { whatsappLinks } from "@/lib/whatsapp";
 
@@ -71,14 +72,40 @@ export default async function CasosPage() {
             ))}
           </div>
         ) : (
-          <div className="rounded-lg border border-slate-200 bg-white p-8 shadow-sm">
-            <h2 className="font-display text-[24px] font-semibold text-[#11142a]">Contenido en preparación</h2>
-            <p className="mt-3 max-w-[64ch] text-[14px] leading-relaxed text-slate-600">
-              Los casos anónimos fueron retirados. Esta sección se habilitará a medida que contemos con clientes, resultados y autorizaciones verificables.
-            </p>
-            <a href={whatsappLinks.company} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex items-center gap-2 rounded-lg bg-[linear-gradient(90deg,#ff7a18,#ff8f1f,#ffb000)] px-5 py-3 text-[14px] font-bold text-white shadow-[0_16px_32px_-18px_rgba(255,122,24,0.9)]">
-              <MessageCircle size={17} /> Consultar una solución similar
-            </a>
+          <div className="space-y-8">
+            <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 className="font-display text-[22px] font-semibold text-[#11142a]">
+                Biblioteca en preparación
+              </h2>
+              <p className="mt-2 max-w-[64ch] text-[13.5px] leading-relaxed text-slate-600">
+                Publicamos casos únicamente con autorización del cliente. Hasta
+                completar esas piezas, describimos abajo las clases de operación
+                que resolvemos habitualmente — sin identificar clientes ni
+                fabricar métricas puntuales.
+              </p>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {capabilities.map((item) => (
+                <Link
+                  key={item.title}
+                  href={item.href}
+                  className="group flex flex-col rounded-lg border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200"
+                >
+                  <span className="grid size-11 place-items-center rounded-lg border border-blue-100 bg-blue-50 text-[#0046EA]">
+                    <item.icon size={22} strokeWidth={1.8} />
+                  </span>
+                  <h3 className="mt-4 font-display text-[17px] font-semibold text-[#11142a]">
+                    {item.title}
+                  </h3>
+                  <p className="mt-2 flex-1 text-[13px] leading-relaxed text-slate-600">
+                    {item.desc}
+                  </p>
+                  <span className="mt-5 inline-flex items-center gap-1.5 text-[12.5px] font-bold text-[#0046EA]">
+                    Ver detalle <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+                  </span>
+                </Link>
+              ))}
+            </div>
           </div>
         )}
       </InternalSection>
