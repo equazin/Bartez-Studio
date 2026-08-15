@@ -6,6 +6,7 @@ import {
   InternalPageShell,
   InternalSection,
 } from "@/components/InternalPage";
+import { downloadGuides } from "@/lib/downloads";
 import { whatsappLinks } from "@/lib/whatsapp";
 
 const resources = [
@@ -60,7 +61,44 @@ export default function Descargas() {
         ]}
       />
 
-      <InternalSection tone="soft" eyebrow="Archivos" title="Descargas disponibles.">
+      <InternalSection
+        tone="soft"
+        eyebrow="Guías técnicas B2B"
+        title="Fichas técnicas y guías de dimensionamiento."
+        intro="Referencias consultivas para ordenar la decisión antes de cotizar. Cada guía se puede leer online o descargar como PDF desde el navegador."
+      >
+        <div className="grid gap-4 sm:grid-cols-2">
+          {downloadGuides.map((guide) => (
+            <Link
+              key={guide.slug}
+              href={`/descargas/${guide.slug}`}
+              className="group flex flex-col rounded-lg border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200"
+            >
+              <div className="flex items-start gap-3">
+                <span className="grid size-11 flex-none place-items-center rounded-lg border border-blue-100 bg-blue-50 text-[#0046EA]">
+                  <guide.icon size={20} strokeWidth={1.8} />
+                </span>
+                <div className="min-w-0">
+                  <p className="text-[11.5px] font-bold uppercase tracking-[0.08em] text-[#0046EA]">
+                    {guide.category}
+                  </p>
+                  <h3 className="mt-1 font-display text-[17px] font-semibold text-[#11142a]">
+                    {guide.title}
+                  </h3>
+                </div>
+              </div>
+              <p className="mt-4 flex-1 text-[13px] leading-relaxed text-slate-600">
+                {guide.description}
+              </p>
+              <span className="mt-4 inline-flex items-center gap-1.5 text-[12.5px] font-bold text-[#0046EA]">
+                Leer y descargar <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+              </span>
+            </Link>
+          ))}
+        </div>
+      </InternalSection>
+
+      <InternalSection tone="white" eyebrow="Archivos" title="Otros documentos.">
         <div className="grid gap-5">
           {resources.map((resource) => (
             <article key={resource.href} className="grid gap-5 rounded-lg border border-slate-200 bg-white p-6 shadow-sm sm:grid-cols-[48px_1fr_auto] sm:items-center">

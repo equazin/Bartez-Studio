@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { company, verticals, legalPages } from "../constants";
 import { getDynamicArticles, getDynamicSuccessCases } from "../lib/db-content";
+import { downloadGuides } from "../lib/downloads";
 import { workstationsSoftware } from "../lib/workstations-software";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -60,6 +61,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: now,
       changeFrequency: "monthly" as const,
       priority: 0.7,
+    })),
+    ...downloadGuides.map((item) => ({
+      url: `${base}/descargas/${item.slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.65,
     })),
     ...articles.map((article) => ({
       url: `${base}/recursos/${article.slug}`,
