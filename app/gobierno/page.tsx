@@ -134,8 +134,8 @@ export default function GobiernoPage() {
           </>
         }
         intro="Proveemos equipamiento IT, infraestructura y soluciones tecnológicas para municipios, ministerios, hospitales, escuelas y entidades estatales en toda Argentina."
-        image="/photos/datacenter.jpg"
-        imageAlt="Infraestructura tecnológica para organismos públicos"
+        image="/photos/office.jpg"
+        imageAlt="Equipamiento y servicios IT para organismos públicos"
         imagePriority
         mediaLabel="Compras institucionales"
         mediaTitle="Cotización formal con documentación clara."

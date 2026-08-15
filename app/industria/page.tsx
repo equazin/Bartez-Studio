@@ -2,7 +2,17 @@ import type { Metadata } from "next";
 import { Cpu, Factory, HardDrive, Monitor, Network, Server } from "lucide-react";
 import { CommercialLanding } from "@/components/CommercialLanding";
 
-export const metadata: Metadata = { title: "Soluciones IT para industria — Bartez Tecnología", description: "Equipamiento, workstations, redes e infraestructura para plantas y empresas industriales." };
+export const metadata: Metadata = {
+  title: "Soluciones IT para industria — Bartez Tecnología",
+  description: "Equipamiento, workstations, redes e infraestructura para plantas y empresas industriales.",
+  alternates: { canonical: "/industria" },
+  openGraph: {
+    title: "Soluciones IT para industria — Bartez Tecnología",
+    description: "Workstations para ingeniería y CAD, redes de planta, servidores y almacenamiento para empresas industriales en Argentina.",
+    url: "https://bartez.com.ar/industria",
+    type: "website",
+  },
+};
 
 export default function IndustriaPage() {
   return <CommercialLanding title="Infraestructura IT para entornos industriales." intro="Diseñamos propuestas para oficinas, ingeniería, planta y operaciones conectadas. La selección considera condiciones de uso, criticidad y crecimiento esperado." intent="company" whatsappDetails={["Sector: industria"]} items={[

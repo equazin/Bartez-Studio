@@ -2,7 +2,17 @@ import type { Metadata } from "next";
 import { Barcode, Laptop, MapPinned, Network, Server, Truck } from "lucide-react";
 import { CommercialLanding } from "@/components/CommercialLanding";
 
-export const metadata: Metadata = { title: "Soluciones IT para logística — Bartez Tecnología", description: "Equipamiento, conectividad e infraestructura para depósitos, operadores y empresas de logística." };
+export const metadata: Metadata = {
+  title: "Soluciones IT para logística — Bartez Tecnología",
+  description: "Equipamiento, conectividad e infraestructura para depósitos, operadores y empresas de logística.",
+  alternates: { canonical: "/logistica" },
+  openGraph: {
+    title: "Soluciones IT para logística — Bartez Tecnología",
+    description: "Puestos, WiFi de depósito, servidores y coordinación multi-sede para empresas de logística y distribución.",
+    url: "https://bartez.com.ar/logistica",
+    type: "website",
+  },
+};
 
 export default function LogisticaPage() {
   return <CommercialLanding title="Tecnología para logística, depósitos y distribución." intro="Conectamos puestos, movilidad, depósitos y sedes con equipamiento e infraestructura dimensionados para el flujo operativo." intent="company" whatsappDetails={["Sector: logística y distribución"]} items={[

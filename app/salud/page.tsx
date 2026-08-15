@@ -2,7 +2,17 @@ import type { Metadata } from "next";
 import { Database, HeartPulse, Laptop, Network, Server, ShieldCheck } from "lucide-react";
 import { CommercialLanding } from "@/components/CommercialLanding";
 
-export const metadata: Metadata = { title: "Soluciones IT para salud — Bartez Tecnología", description: "Equipamiento, redes e infraestructura tecnológica para clínicas, centros médicos y organizaciones de salud." };
+export const metadata: Metadata = {
+  title: "Soluciones IT para salud — Bartez Tecnología",
+  description: "Equipamiento, redes e infraestructura tecnológica para clínicas, centros médicos y organizaciones de salud.",
+  alternates: { canonical: "/salud" },
+  openGraph: {
+    title: "Soluciones IT para salud — Bartez Tecnología",
+    description: "Puestos de trabajo, redes, servidores, storage y continuidad para clínicas y centros de salud en Argentina.",
+    url: "https://bartez.com.ar/salud",
+    type: "website",
+  },
+};
 
 export default function SaludPage() {
   return <CommercialLanding title="Tecnología para organizaciones de salud." intro="Equipamiento e infraestructura para puestos administrativos, profesionales, sedes y servicios internos. Relevamos criticidad, continuidad y requisitos de cada entorno." intent="company" whatsappDetails={["Sector: salud"]} items={[
