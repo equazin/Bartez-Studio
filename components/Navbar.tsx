@@ -89,7 +89,7 @@ const solutionPrefixes = [
   "/soporte-corporativo",
   "/renting-leasing",
 ];
-const channelPrefixes = ["/empresas", "/revendedores", "/gobierno", "/educacion"];
+const channelPrefixes = ["/empresas", "/revendedores", "/gobierno"];
 
 function matchesPrefix(pathname: string | null, prefixes: string[]): boolean {
   if (!pathname) return false;

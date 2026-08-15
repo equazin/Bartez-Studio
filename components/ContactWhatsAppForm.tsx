@@ -12,6 +12,7 @@ import {
   Package,
   Send,
   ShieldQuestion,
+  type LucideIcon,
 } from "lucide-react";
 import { track } from "@/components/Analytics";
 import { buildWhatsAppUrl, type WhatsAppIntent } from "@/lib/whatsapp";
@@ -101,7 +102,7 @@ async function persistLead(form: FormState, topic: Topic, intent: Intent): Promi
 
 const choices: {
   key: "puntual" | "proyecto" | "gobierno" | "otros";
-  icon: typeof Package;
+  icon: LucideIcon;
   title: string;
   subtitle: string;
   hint: string;

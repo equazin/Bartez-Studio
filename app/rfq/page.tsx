@@ -17,13 +17,14 @@ import {
   Landmark,
   HardHat,
   Cctv,
+  type LucideIcon,
 } from "lucide-react";
 import { track } from "@/components/Analytics";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 type OrigenRfq = "gobierno" | "proyecto" | "cctv" | "general";
 
-const origenBanners: Record<Exclude<OrigenRfq, "general">, { icon: typeof Landmark; title: string; description: string }> = {
+const origenBanners: Record<Exclude<OrigenRfq, "general">, { icon: LucideIcon; title: string; description: string }> = {
   gobierno: {
     icon: Landmark,
     title: "Cotización para sector público",
@@ -82,6 +83,7 @@ function RfqInner() {
 
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
+  const [waSending, setWaSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [form, setForm] = useState({
     nombre: "",
@@ -191,6 +193,8 @@ function RfqInner() {
   };
 
   const openWhatsApp = () => {
+    if (waSending || sending) return; // guarda contra doble-click
+    setWaSending(true);
     // Abrimos la pestaña dentro del gesto del usuario para evitar el bloqueo
     // de popups, y persistimos el lead en paralelo antes de setear la URL.
     const waTab = window.open("about:blank", "_blank", "noopener,noreferrer");
@@ -198,6 +202,7 @@ function RfqInner() {
     void persistLead().finally(() => {
       if (waTab && !waTab.closed) waTab.location.href = waUrl;
       else window.location.assign(waUrl);
+      setWaSending(false);
     });
   };
 
@@ -533,10 +538,12 @@ function RfqInner() {
                   <button
                     type="button"
                     onClick={openWhatsApp}
-                    disabled={sending}
+                    disabled={sending || waSending}
+                    aria-busy={waSending}
                     className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#10B981] bg-white px-6 py-4 text-[15px] font-bold text-[#047857] transition hover:border-[#047857] hover:bg-[#ECFDF5] disabled:cursor-wait disabled:opacity-80"
                   >
-                    <MessageCircle size={18} /> Continuar por WhatsApp
+                    {waSending ? <Loader2 size={18} className="animate-spin" /> : <MessageCircle size={18} />}
+                    Continuar por WhatsApp
                   </button>
                 </div>
                 <p className="mt-3 text-center text-[12px] text-slate-500">

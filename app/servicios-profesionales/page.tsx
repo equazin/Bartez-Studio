@@ -1,16 +1,21 @@
 import type { Metadata } from "next";
 import {
   ArrowRight,
+  Cctv,
   ClipboardList,
   DraftingCompass,
   FileText,
   HardHat,
   Handshake,
   Headset,
+  Laptop,
   MessageCircle,
   Rocket,
+  Server,
   ShieldCheck,
+  Wifi,
   Wrench,
+  type LucideIcon,
 } from "lucide-react";
 import {
   InternalChecklist,
@@ -75,7 +80,7 @@ const breadcrumbJsonLd = {
   ],
 };
 
-const phases = [
+const phases: { icon: LucideIcon; title: string; description: string }[] = [
   {
     icon: DraftingCompass,
     title: "1. Relevamiento",
@@ -114,27 +119,27 @@ const phases = [
   },
 ];
 
-const projectExamples = [
+const projectExamples: { icon: LucideIcon; title: string; description: string }[] = [
   {
-    icon: DraftingCompass,
+    icon: Server,
     title: "Renovación de datacenter",
     description:
       "Reemplazo de switches core, servidores rack para virtualización y UPS. Incluye migración de servicios en ventana pactada.",
   },
   {
-    icon: DraftingCompass,
+    icon: Wifi,
     title: "WiFi multi-sede",
     description:
       "UniFi o Aruba en varias sedes con controlador central, relevamiento por sitio, equipamiento de contingencia y despliegue en cada punto.",
   },
   {
-    icon: DraftingCompass,
+    icon: Cctv,
     title: "CCTV IP con exterior",
     description:
       "Cámaras direccionales, panorámicas o 360°, NVR dimensionado, discos CCTV específicos y cableado exterior con instalador partner.",
   },
   {
-    icon: DraftingCompass,
+    icon: Laptop,
     title: "Renovación de parque",
     description:
       "20+ notebooks o PCs con Windows 11 Pro, imagen unificada, joineo a dominio y entrega escalonada a una o varias sedes.",
