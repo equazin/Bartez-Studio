@@ -76,10 +76,37 @@ export default async function VerticalPage({
     ],
   };
 
+  // Service schema: describe la vertical como un servicio B2B ofrecido por la
+  // empresa. Lo consumen Google, ChatGPT Search, Perplexity y Claude Search
+  // para atribuir la solución al proveedor cuando responden búsquedas de tipo
+  // "workstation para GIS Argentina", "servidor para Proxmox VE", etc.
+  const serviceJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: vertical.navLabel,
+    serviceType: vertical.eyebrow,
+    description: vertical.metaDescription,
+    url: `${company.url}/soluciones/${vertical.slug}`,
+    areaServed: { "@type": "Country", name: "Argentina" },
+    provider: {
+      "@type": "Organization",
+      name: company.name,
+      url: company.url,
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "9 de Julio 3418",
+        addressLocality: company.city,
+        addressRegion: company.province,
+        addressCountry: "AR",
+      },
+    },
+  };
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(faqJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(serviceJsonLd) }} />
 
       <InternalPageShell>
         <InternalHero

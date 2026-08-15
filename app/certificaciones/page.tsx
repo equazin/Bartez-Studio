@@ -9,6 +9,8 @@ import {
   InternalPageShell,
   InternalSection,
 } from "@/components/InternalPage";
+import { company } from "@/constants";
+import { safeJsonLd } from "@/lib/json-ld";
 import { whatsappLinks } from "@/lib/whatsapp";
 
 // Fabricantes con revendedor autorizado vigente. El nivel de partnership no
@@ -34,6 +36,47 @@ const operatedBrands = [
 export const metadata: Metadata = {
   title: "Certificaciones y respaldos - Bartez Tecnología",
   description: "Documentación comercial y respaldos verificables de Bartez Tecnología.",
+  alternates: { canonical: "/certificaciones" },
+  openGraph: {
+    title: "Certificaciones y respaldos - Bartez Tecnología",
+    description:
+      "Revendedor autorizado Lenovo, Dell, HP, Aruba y Cisco. Documentación comercial verificable para procesos B2B y sector público.",
+    url: `${company.url}/certificaciones`,
+    type: "website",
+  },
+};
+
+// Organization + partner tiers: describe la relación formal con fabricantes.
+// Motores de búsqueda usan este dato para autorizar / desautorizar claims.
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: company.name,
+  url: company.url,
+  taxID: company.cuit,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "9 de Julio 3418",
+    addressLocality: company.city,
+    addressRegion: company.province,
+    addressCountry: "AR",
+  },
+  brand: ["Lenovo", "Dell", "HP", "Aruba", "Cisco"],
+  makesOffer: [
+    { "@type": "Offer", itemOffered: "Notebooks corporativas Lenovo, Dell, HP" },
+    { "@type": "Offer", itemOffered: "Servidores Lenovo ThinkSystem, HPE ProLiant, Dell PowerEdge" },
+    { "@type": "Offer", itemOffered: "Networking Cisco Catalyst, Aruba y Ubiquiti UniFi" },
+    { "@type": "Offer", itemOffered: "Videovigilancia IP Hikvision, Dahua, Ubiquiti Protect" },
+  ],
+};
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: company.url },
+    { "@type": "ListItem", position: 2, name: "Certificaciones", item: `${company.url}/certificaciones` },
+  ],
 };
 
 const items = [
@@ -82,7 +125,10 @@ const proofItems = [
 
 export default function CertificacionesPage() {
   return (
-    <InternalPageShell>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(organizationJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
+      <InternalPageShell>
       <InternalHero
         eyebrow="Respaldos verificables"
         title={
@@ -178,6 +224,7 @@ export default function CertificacionesPage() {
           { label: "Ver descargas", href: "/descargas", variant: "secondary", icon: ArrowRight },
         ]}
       />
-    </InternalPageShell>
+      </InternalPageShell>
+    </>
   );
 }

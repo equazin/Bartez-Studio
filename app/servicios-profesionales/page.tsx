@@ -20,6 +20,8 @@ import {
   InternalPageShell,
   InternalSection,
 } from "@/components/InternalPage";
+import { company } from "@/constants";
+import { safeJsonLd } from "@/lib/json-ld";
 import { whatsappLinks } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
@@ -27,6 +29,50 @@ export const metadata: Metadata = {
   description:
     "Proyectos IT llave en mano: relevamiento, propuesta con alcance, provisión de equipamiento, coordinación de instaladores partners para el despliegue físico y puesta en marcha.",
   alternates: { canonical: "/servicios-profesionales" },
+  openGraph: {
+    title: "Servicios profesionales y proyectos llave en mano | Bartez Tecnología",
+    description:
+      "Un solo interlocutor: equipos, materiales, instalación coordinada y factura A. Coordinación técnica propia con instaladores partners.",
+    url: `${company.url}/servicios-profesionales`,
+    type: "website",
+  },
+};
+
+const serviceJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "Proyectos IT llave en mano",
+  serviceType: "Servicios profesionales de tecnología",
+  description:
+    "Relevamiento, propuesta con alcance (SOW), provisión de equipamiento, coordinación de instaladores partners para el despliegue físico y puesta en marcha con documentación.",
+  url: `${company.url}/servicios-profesionales`,
+  areaServed: { "@type": "Country", name: "Argentina" },
+  provider: {
+    "@type": "Organization",
+    name: company.name,
+    url: company.url,
+  },
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Fases del proyecto",
+    itemListElement: [
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Relevamiento técnico" } },
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Propuesta con SOW y comparación multi-marca" } },
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Provisión de equipamiento" } },
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Coordinación de despliegue físico con instaladores partners" } },
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Puesta en marcha y documentación" } },
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Soporte posventa" } },
+    ],
+  },
+};
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: company.url },
+    { "@type": "ListItem", position: 2, name: "Servicios profesionales", item: `${company.url}/servicios-profesionales` },
+  ],
 };
 
 const phases = [
@@ -108,7 +154,10 @@ const scopeItems = [
 
 export default function ServiciosProfesionalesPage() {
   return (
-    <InternalPageShell>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(serviceJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
+      <InternalPageShell>
       <InternalHero
         eyebrow="Servicios profesionales"
         title={
@@ -219,6 +268,7 @@ export default function ServiciosProfesionalesPage() {
           { label: "Escribir por WhatsApp", href: whatsappLinks.services, external: true, variant: "secondary", icon: MessageCircle },
         ]}
       />
-    </InternalPageShell>
+      </InternalPageShell>
+    </>
   );
 }

@@ -13,7 +13,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/revendedores`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     { url: `${base}/marcas`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/empresas`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
-    { url: `${base}/gobierno`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/gobierno`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${base}/servicios-profesionales`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     { url: `${base}/educacion`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/garantias-rma`, lastModified: now, changeFrequency: "monthly", priority: 0.75 },
     { url: `${base}/contacto`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
@@ -30,7 +31,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/logistica-cobertura`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${base}/medios-de-pago`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${base}/servicios-administrados`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/servicios-profesionales`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
     { url: `${base}/renting-leasing`, lastModified: now, changeFrequency: "monthly", priority: 0.75 },
     { url: `${base}/cloud-licenciamiento`, lastModified: now, changeFrequency: "monthly", priority: 0.75 },
     { url: `${base}/ciberseguridad`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
@@ -38,12 +38,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/salud`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${base}/industria`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${base}/logistica`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
-    ...verticals.map((item) => ({
-      url: `${base}/soluciones/${item.slug}`,
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
-    })),
+    ...verticals.map((item) => {
+      // Verticales estratégicas con más profundidad técnica y demanda B2B —
+      // priorizadas ligeramente en el sitemap para reflejar su valor comercial.
+      const strategic: Record<string, number> = {
+        "virtualizacion-proxmox": 0.85,
+        "workstations-alta-gama": 0.85,
+        "wifi-multisede": 0.85,
+        "servidores": 0.85,
+      };
+      return {
+        url: `${base}/soluciones/${item.slug}`,
+        lastModified: now,
+        changeFrequency: "monthly" as const,
+        priority: strategic[item.slug] ?? 0.8,
+      };
+    }),
     ...articles.map((article) => ({
       url: `${base}/recursos/${article.slug}`,
       lastModified: new Date(article.date),

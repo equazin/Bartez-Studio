@@ -8,13 +8,51 @@ import {
   InternalPageShell,
   InternalSection,
 } from "@/components/InternalPage";
-import { contact } from "@/constants";
+import { company, contact } from "@/constants";
+import { safeJsonLd } from "@/lib/json-ld";
 import { whatsappLinks } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "Tecnología para el Sector Público - Bartez Tecnología",
   description:
     "Provisión de equipamiento IT para organismos públicos, municipios, ministerios y entidades estatales en Argentina. Cotizaciones para licitaciones y compras directas.",
+  alternates: { canonical: "/gobierno" },
+  openGraph: {
+    title: "Tecnología para el Sector Público - Bartez Tecnología",
+    description:
+      "Cotizaciones formales para organismos con validez de oferta, deal registration, factura A y experiencia con COMPR.AR y SIPAF.",
+    url: `${company.url}/gobierno`,
+    type: "website",
+  },
+};
+
+const serviceJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "Provisión de tecnología para el sector público",
+  serviceType: "Compra pública IT",
+  description:
+    "Cotizaciones formales para organismos públicos con validez de oferta, retenciones, plazos comprometidos, deal registration con Dell/HPE/Lenovo y experiencia con COMPR.AR y SIPAF.",
+  url: `${company.url}/gobierno`,
+  areaServed: { "@type": "Country", name: "Argentina" },
+  audience: {
+    "@type": "GovernmentOrganization",
+    name: "Organismos públicos municipales, provinciales y nacionales",
+  },
+  provider: {
+    "@type": "Organization",
+    name: company.name,
+    url: company.url,
+  },
+};
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: company.url },
+    { "@type": "ListItem", position: 2, name: "Gobierno", item: `${company.url}/gobierno` },
+  ],
 };
 
 const offerings = [
@@ -83,7 +121,10 @@ const rfqChecklist = [
 
 export default function GobiernoPage() {
   return (
-    <InternalPageShell>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(serviceJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
+      <InternalPageShell>
       <InternalHero
         accent="teal"
         eyebrow="Sector público"
@@ -180,6 +221,7 @@ export default function GobiernoPage() {
           { label: contact.email, href: `mailto:${contact.email}?subject=Cotización%20sector%20público`, variant: "secondary", icon: Mail },
         ]}
       />
-    </InternalPageShell>
+      </InternalPageShell>
+    </>
   );
 }
