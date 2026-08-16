@@ -16,8 +16,8 @@
  * Editá el archivo específico por dominio, no este barrel.
  */
 
-export { company, contact, faq, cookie, seo } from "./constants/company";
-export { partners } from "./constants/partners";
-export { type Vertical, verticals } from "./constants/verticals";
-export { type Article, articles } from "./constants/articles";
-export { type LegalPage, legalPages } from "./constants/legal";
+export { company, contact, faq, cookie, seo } from "./constants/company.ts";
+export { partners } from "./constants/partners.ts";
+export { type Vertical, verticals } from "./constants/verticals.ts";
+export { type Article, articles } from "./constants/articles.ts";
+export { type LegalPage, legalPages } from "./constants/legal.ts";
