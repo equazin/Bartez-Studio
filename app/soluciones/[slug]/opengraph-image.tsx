@@ -1,12 +1,20 @@
 import { ImageResponse } from "next/og";
-import { company } from "../constants";
+import { verticals } from "@/constants";
 
-export const runtime = "edge";
-export const alt = company.name;
+export const alt = "Bartez Tecnología";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default function OG() {
+export default async function OpengraphImage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const vertical = verticals.find((v) => v.slug === slug);
+  const eyebrow = vertical?.eyebrow ?? "Soluciones B2B";
+  const title = vertical?.navLabel ?? "Bartez Tecnología";
+
   return new ImageResponse(
     (
       <div
@@ -46,18 +54,52 @@ export default function OG() {
         </div>
 
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ fontSize: 70, lineHeight: 1.05, letterSpacing: "-0.02em", maxWidth: 940, fontWeight: 700 }}>
-            Distribución IT para empresas y revendedores.
+          <div
+            style={{
+              fontSize: 24,
+              color: "#a8c4ff",
+              textTransform: "uppercase",
+              letterSpacing: "0.08em",
+              fontWeight: 600,
+              marginBottom: 18,
+            }}
+          >
+            {eyebrow}
           </div>
-          <div style={{ fontSize: 27, color: "rgba(255,255,255,.78)", marginTop: 22, maxWidth: 900 }}>
-            Infraestructura, equipamiento y servicios IT · Rosario, Argentina
+          <div
+            style={{
+              fontSize: 74,
+              lineHeight: 1.05,
+              letterSpacing: "-0.03em",
+              maxWidth: 1000,
+              fontWeight: 700,
+            }}
+          >
+            {title}
+          </div>
+          <div
+            style={{
+              fontSize: 27,
+              color: "rgba(255,255,255,.78)",
+              marginTop: 22,
+              maxWidth: 900,
+            }}
+          >
+            Distribución IT B2B · Rosario, Argentina · Cobertura nacional
           </div>
         </div>
 
-        <div style={{ display: "flex", gap: 30, color: "#a8c4ff", fontSize: 22 }}>
+        <div
+          style={{
+            display: "flex",
+            gap: 30,
+            color: "#a8c4ff",
+            fontSize: 22,
+          }}
+        >
           <span>Factura A</span>
           <span>·</span>
-          <span>Cobertura nacional</span>
+          <span>Multi-marca</span>
           <span>·</span>
           <span>Respuesta 24 hs</span>
         </div>
