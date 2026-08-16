@@ -29,6 +29,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/barpos`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
     { url: `${base}/comparador`, lastModified: now, changeFrequency: "monthly", priority: 0.75 },
     { url: `${base}/ayuda`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/preguntas-frecuentes`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/casos`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${base}/certificaciones`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     { url: `${base}/logistica-cobertura`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
