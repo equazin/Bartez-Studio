@@ -31,6 +31,13 @@ export const metadata: Metadata = {
   description:
     "Así trabajamos en Bartez Tecnología: cotizamos en 24 hs hábiles, conseguimos el equipamiento que necesitás y lo entregamos con garantía oficial a todo el país. Un solo interlocutor de punta a punta.",
   alternates: { canonical: "/como-trabajamos" },
+  openGraph: {
+    title: "Cómo trabajamos — Bartez Tecnología",
+    description:
+      "Cotización 24 hs, provisión con garantía oficial, coordinación de proyectos llave en mano con instaladores partners y factura A.",
+    url: "https://bartez.com.ar/como-trabajamos",
+    type: "website",
+  },
 };
 
 const steps = [
