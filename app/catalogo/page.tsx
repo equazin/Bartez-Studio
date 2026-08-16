@@ -8,24 +8,120 @@ import {
   InternalPageShell,
   InternalSection,
 } from "@/components/InternalPage";
+import { company } from "@/constants";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "Catálogo de soluciones IT - Bartez Tecnología",
-  description: "Explorá familias de equipamiento e infraestructura IT y consultá disponibilidad por WhatsApp.",
+  description:
+    "Familias IT para empresas y organismos: notebooks, workstations alta gama, servidores, redes, WiFi multi-sede, CCTV, cableado, energía y BarPOS. Cotización real en 24 hs.",
+  alternates: { canonical: "/catalogo" },
+  openGraph: {
+    title: "Catálogo de soluciones IT - Bartez Tecnología",
+    description:
+      "12 familias B2B: notebooks, workstations alta gama, servidores rack, redes Cisco/Aruba/UniFi, CCTV, cableado y racks, energía UPS, y BarPOS.",
+    url: `${company.url}/catalogo`,
+    type: "website",
+  },
 };
 
 const families = [
-  { anchor: "notebooks", title: "Notebooks corporativas", image: "/photos/products/laptop1.jpg", use: "Administración, ventas, dirección, movilidad y renovación de flotas.", brands: "Dell, Lenovo, HP", href: "/soluciones/notebooks-corporativas" },
-  { anchor: "pcs", title: "PCs y workstations", image: "/photos/products/desktop.jpg", use: "Oficina, diseño, ingeniería, CAD, desarrollo y alto desempeño.", brands: "Dell, Lenovo, HP, Intel, AMD", href: "/configurador" },
-  { anchor: "pos", title: "BarPOS punto de venta", image: "/photos/products/desktop.jpg", use: "Puesto de venta electrónico completo para comercios, con software, periféricos, implementación y soporte.", brands: "BarPOS, OCOM, controladora fiscal", href: "/barpos" },
-  { anchor: "almacenamiento", title: "Servidores y almacenamiento", image: "/photos/products/server.jpg", use: "Virtualización, archivos, bases de datos, aplicaciones y continuidad.", brands: "Dell, HPE, Lenovo, Kingston", href: "/soluciones/servidores" },
-  { anchor: "redes", title: "Redes e infraestructura", image: "/photos/products/switch.jpg", use: "Switching, WiFi, routing, segmentación y conectividad multi-sede.", brands: "Cisco y alternativas según proyecto", href: "/soluciones/redes-infraestructura" },
-  { anchor: "monitores", title: "Monitores y periféricos", image: "/photos/products/monitor.jpg", use: "Puestos completos, videollamadas, productividad y ergonomía.", brands: "Líneas corporativas y profesionales", href: "/comparador" },
-  { anchor: "componentes", title: "Componentes y upgrades", image: "/photos/products/storage.jpg", use: "Memoria, SSD, almacenamiento, procesadores y ampliaciones.", brands: "Intel, AMD, Kingston y más", href: "/comparador" },
-  { anchor: "perifericos", title: "Impresión y periféricos", image: "/photos/products/peripherals.jpg", use: "Impresión de oficina y etiquetas, escaneo, teclados, mouse y accesorios de puesto.", brands: "HP, Epson, OCOM", href: "/comparador" },
-  { anchor: "energia", title: "Energía y continuidad", image: "/photos/products/ups.jpg", use: "UPS, protección eléctrica y continuidad para puestos e infraestructura.", brands: "Alternativas según potencia y autonomía", href: "/soluciones/servidores" },
-  { anchor: "videovigilancia", title: "Videovigilancia", image: "/photos/products/cctv.jpg", use: "Cámaras IP, grabación, almacenamiento y monitoreo empresarial.", brands: "Opciones dimensionadas por cobertura y retención", href: "/soluciones/videovigilancia-cctv" },
+  {
+    anchor: "notebooks",
+    title: "Notebooks corporativas",
+    image: "/photos/products/laptop1.jpg",
+    use: "Renovación de parque por lote con Windows 11 Pro, imagen unificada y entrega escalonada a una o varias sedes.",
+    brands: "Lenovo ThinkPad · HP ProBook / EliteBook · Dell Latitude",
+    href: "/soluciones/notebooks-corporativas",
+  },
+  {
+    anchor: "workstations-alta-gama",
+    title: "Workstations alta gama",
+    image: "/photos/products/desktop.jpg",
+    use: "Estaciones CTO/BTO para GIS/fotogrametría, render, cálculo, CAD, IA/GPU. RAM ECC hasta 512 GB y GPU profesional certificada ISV.",
+    brands: "Dell Precision · HP Z / ZBook · Lenovo ThinkStation",
+    href: "/soluciones/workstations-alta-gama",
+  },
+  {
+    anchor: "pcs",
+    title: "PCs de escritorio y flota",
+    image: "/photos/products/desktop.jpg",
+    use: "Renovación de puestos administrativos, atención al cliente, producción y aulas. Compra por lote con Win 11 Pro.",
+    brands: "Lenovo ThinkCentre · HP ProDesk / EliteDesk · Dell OptiPlex",
+    href: "/soluciones/workstations-pcs",
+  },
+  {
+    anchor: "almacenamiento",
+    title: "Servidores y virtualización",
+    image: "/photos/products/server.jpg",
+    use: "Servidores rack configurados a medida para virtualización Proxmox VE, VMware o Hyper-V. HBA para ZFS, canales de memoria poblados, fuentes redundantes.",
+    brands: "Lenovo ThinkSystem · HPE ProLiant · Dell PowerEdge",
+    href: "/soluciones/servidores",
+  },
+  {
+    anchor: "redes",
+    title: "Redes empresariales",
+    image: "/photos/products/switch.jpg",
+    use: "Switches core administrables, WiFi corporativo, firewalls y segmentación por VLAN. Relevamiento previo e implementación con instaladores partners.",
+    brands: "Cisco Catalyst · Aruba · Ubiquiti UniFi · Fortinet",
+    href: "/soluciones/redes-infraestructura",
+  },
+  {
+    anchor: "wifi-multisede",
+    title: "WiFi multi-sede (UniFi)",
+    image: "/photos/products/switch.jpg",
+    use: "Proyectos WiFi en varias sedes con controlador central UniFi, relevamiento por sitio, equipamiento de contingencia y despliegue con partners.",
+    brands: "Ubiquiti UniFi · Alternativa Aruba Central",
+    href: "/soluciones/wifi-multisede",
+  },
+  {
+    anchor: "videovigilancia",
+    title: "Videovigilancia / CCTV",
+    image: "/photos/cctv.jpg",
+    use: "Cámaras IP direccionales, panorámicas y 360° para oficinas, plantas y predios recreativos. NVR dimensionado, discos CCTV específicos y cableado exterior.",
+    brands: "Hikvision · Dahua · Ubiquiti Protect · WD Purple / SkyHawk",
+    href: "/soluciones/videovigilancia-cctv",
+  },
+  {
+    anchor: "cableado-racks",
+    title: "Cableado y racks",
+    image: "/photos/products/switch.jpg",
+    use: "Racks abiertos y cerrados, bandejas, patch panels, cableado UTP/FTP y fibra óptica. Suministro y coordinación de tendido con instaladores partners.",
+    brands: "GLC · Kingston · Alternativas según proyecto",
+    href: "/soluciones/cableado-racks",
+  },
+  {
+    anchor: "energia",
+    title: "Energía y continuidad",
+    image: "/photos/products/ups.jpg",
+    use: "UPS para servidores, racks, puestos críticos y CCTV. PDU para racks. Dimensionamiento por consumo y autonomía requerida.",
+    brands: "APC · Vertiv · Alternativas según potencia",
+    href: "/soluciones/servidores",
+  },
+  {
+    anchor: "monitores",
+    title: "Monitores y periféricos",
+    image: "/photos/products/monitor.jpg",
+    use: "Puestos completos, videollamadas, calibración para diseño, dual/triple monitor y ergonomía. Docks USB-C para notebooks.",
+    brands: "Dell UltraSharp · HP Z · Lenovo · Líneas profesionales",
+    href: "/soluciones/perifericos-corporativos",
+  },
+  {
+    anchor: "componentes",
+    title: "Componentes y upgrades",
+    image: "/photos/products/storage.jpg",
+    use: "Memoria DDR4/DDR5 ECC y no-ECC, SSD NVMe y SAS enterprise, procesadores y ampliaciones para servidores y workstations.",
+    brands: "Kingston · WD · Intel · AMD",
+    href: "/comparador",
+  },
+  {
+    anchor: "pos",
+    title: "BarPOS punto de venta",
+    image: "/photos/products/desktop.jpg",
+    use: "Puesto de venta electrónico completo para comercios: hardware, software, controladora fiscal, capacitación y soporte.",
+    brands: "BarPOS 4.0 · 3nStar · OCOM · Epson",
+    href: "/barpos",
+  },
 ];
 
 export default function CatalogoPage() {
@@ -40,21 +136,21 @@ export default function CatalogoPage() {
             Familias IT para elegir <span className="text-[#0046EA]">por necesidad.</span>
           </>
         }
-        intro="Explorá el tipo de solución que necesitás. No publicamos precios ni stock en tiempo real: confirmamos modelos, alternativas y plazos cuando recibimos tu consulta."
+        intro="Explorá las 12 familias que trabajamos. No publicamos precios ni stock en tiempo real — confirmamos modelos, alternativas y plazos cuando recibimos tu consulta, con comparación multi-marca cuando corresponde."
         image="/photos/hero-products-combo.png"
         imageAlt="Equipamiento tecnológico Bartez"
         imagePriority
         mediaLabel="Portfolio B2B"
         mediaTitle="Catálogo orientativo, cotización real."
-        mediaSubtitle="Cada familia puede tener modelos equivalentes según disponibilidad, plazo y uso."
+        mediaSubtitle="Cada familia con modelos equivalentes de las principales marcas del mercado corporativo."
         mediaItems={[
-          { title: "Familias", description: "Equipos, redes, servidores, POS y energía." },
-          { title: "Alternativas", description: "Marcas y configuraciones equivalentes." },
-          { title: "Consulta", description: "Respuesta comercial con disponibilidad y plazo confirmados." },
+          { title: "Familias", description: `${families.length} categorías del rango B2B.` },
+          { title: "Multi-marca", description: "Lenovo, HPE, Dell, Cisco, Aruba, UniFi, APC." },
+          { title: "Consulta", description: "Disponibilidad y plazo confirmados al cotizar." },
         ]}
         metrics={[
-          { value: "9", label: "familias principales" },
-          { value: "B2B", label: "catálogo corporativo" },
+          { value: `${families.length}`, label: "familias del catálogo" },
+          { value: "B2B", label: "cotización real, no lista" },
           { value: "24 hs", label: "respuesta inicial" },
         ]}
         actions={[
@@ -67,7 +163,7 @@ export default function CatalogoPage() {
         tone="soft"
         eyebrow="Categorías"
         title="Explorá por tipo de solución."
-        intro="Usá estas familias como punto de partida. Después confirmamos modelos, equivalencias y plazos."
+        intro="Cada familia linkea a su vertical con el detalle técnico, comparativa multi-marca y FAQs específicas."
       >
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {families.map((family) => (
@@ -95,10 +191,10 @@ export default function CatalogoPage() {
 
       <InternalCta
         title="¿Tenés una lista de modelos o cantidades?"
-        intro="Enviá el detalle y preparamos una respuesta con disponibilidad, alternativas y plazos."
+        intro="Enviá el detalle por RFQ (con CUIT, cantidad, plazo, condiciones) y preparamos una respuesta con disponibilidad, alternativas multi-marca y plazos por escrito."
         actions={[
-          { label: "Enviar por WhatsApp", href: whatsappHref, external: true, icon: MessageCircle },
-          { label: "Usar RFQ", href: "/rfq", variant: "secondary", icon: ArrowRight },
+          { label: "Enviar RFQ", href: "/rfq", icon: ArrowRight },
+          { label: "Consultar por WhatsApp", href: whatsappHref, external: true, variant: "secondary", icon: MessageCircle },
         ]}
       />
     </InternalPageShell>
