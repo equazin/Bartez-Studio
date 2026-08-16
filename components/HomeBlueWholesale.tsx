@@ -175,7 +175,7 @@ export function HomeBlueWholesale() {
             <div className="relative z-10 min-h-[300px] overflow-hidden rounded-3xl border border-blue-100 bg-[#f7f9ff] shadow-[0_34px_90px_-62px_rgba(0,70,234,0.6)] lg:min-h-[430px]">
               <div className="absolute inset-y-0 right-0 w-[78%] origin-bottom-left -skew-x-12 overflow-hidden rounded-l-[48px] bg-brand/10">
                 <Image
-                  src="/photos/home/warehouse-hero.png"
+                  src="/photos/home/warehouse-hero.jpg"
                   alt=""
                   fill
                   priority

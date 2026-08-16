@@ -119,7 +119,7 @@ export default function ComoTrabajamosPage() {
           </>
         }
         intro="Cotizamos en 24 hs hábiles, conseguimos el equipamiento que necesitás y lo entregamos con garantía oficial vía Andreani a todo el país. De punta a punta hablás con el mismo asesor."
-        image="/photos/home/warehouse-hero.png"
+        image="/photos/home/warehouse-hero.jpg"
         imageAlt="Logística de abastecimiento IT"
         imagePriority
         mediaLabel="Modelo operativo"
