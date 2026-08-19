@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, FileText, MessageCircle } from "lucide-react";
 import {
@@ -8,17 +7,20 @@ import {
   InternalPageShell,
   InternalSection,
 } from "@/components/InternalPage";
+import { ClientCaseIdentity } from "@/components/ClientCaseIdentity";
 import { capabilities } from "@/lib/capabilities";
 import { getDynamicSuccessCases } from "@/lib/db-content";
 import { whatsappLinks } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "Casos de éxito - Bartez Tecnología",
-  description: "Proyectos tecnológicos documentados y autorizados por clientes de Bartez.",
+  description: "Proyectos y cuentas activas documentados y autorizados por clientes de Bartez.",
+  alternates: { canonical: "/casos" },
 };
 
 export default async function CasosPage() {
   const cases = await getDynamicSuccessCases();
+  const recurrentes = cases.filter((c) => c.relationship === "recurrente").length;
 
   return (
     <InternalPageShell>
@@ -26,13 +28,10 @@ export default async function CasosPage() {
         eyebrow="Casos documentados"
         title={
           <>
-            Casos de éxito <span className="text-[#0046EA]">verificables.</span>
+            Clientes reales, <span className="text-[#0046EA]">proyectos verificables.</span>
           </>
         }
-        intro="Publicamos únicamente proyectos con información y autorización suficiente para respaldar alcance, contexto y resultados."
-        image="/photos/datacenter.jpg"
-        imageAlt="Proyecto tecnológico documentado"
-        imagePriority
+        intro="Publicamos únicamente proyectos y cuentas con autorización del cliente. Algunos son un proyecto con fecha de cierre; otros son cuentas activas con compras recurrentes — lo aclaramos en cada caso."
         mediaLabel="Proyectos"
         mediaTitle="Contenido publicado solo con respaldo."
         mediaSubtitle="Preferimos mostrar menos casos, pero con información real y autorizada."
@@ -43,8 +42,8 @@ export default async function CasosPage() {
         ]}
         metrics={[
           { value: `${cases.length}`, label: "casos publicados" },
-          { value: "OK", label: "autorización" },
-          { value: "B2B", label: "proyectos reales" },
+          { value: `${recurrentes}`, label: "cuentas recurrentes" },
+          { value: "B2B", label: "clientes reales" },
         ]}
         actions={[
           { label: "Consultar una solución similar", href: whatsappLinks.company, external: true, icon: MessageCircle },
@@ -52,17 +51,19 @@ export default async function CasosPage() {
         ]}
       />
 
-      <InternalSection tone="soft" eyebrow="Biblioteca" title="Proyectos publicados.">
+      <InternalSection tone="soft" eyebrow="Biblioteca" title="Proyectos y cuentas publicadas.">
         {cases.length > 0 ? (
           <div className="grid gap-5 md:grid-cols-2">
             {cases.map((item) => (
-              <Link key={item.id} href={`/casos/${item.id}`} className="group overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200">
-                <div className="relative aspect-[16/8] bg-slate-100">
-                  <Image src={item.coverImage} alt={item.title} fill className="object-cover transition duration-500 group-hover:scale-[1.03]" />
-                </div>
+              <Link
+                key={item.id}
+                href={`/casos/${item.id}`}
+                className="group overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200"
+              >
+                <ClientCaseIdentity item={item} size="sm" className="rounded-none border-none" />
                 <div className="p-6">
                   <p className="text-[12px] font-bold text-[#0046EA]">{item.clientName}</p>
-                  <h2 className="mt-2 font-display text-[21px] font-semibold text-[#11142a]">{item.title}</h2>
+                  <h2 className="mt-2 font-display text-[20px] font-semibold leading-tight text-[#11142a]">{item.title}</h2>
                   <p className="mt-3 text-[13.5px] leading-relaxed text-slate-600">{item.description}</p>
                   <span className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-bold text-[#0046EA]">
                     Ver caso <ArrowRight size={15} />

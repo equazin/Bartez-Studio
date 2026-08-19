@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, FileText, MessageCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, MessageCircle, Repeat, ShieldCheck } from "lucide-react";
 import { company } from "@/constants";
 import { getDynamicSuccessCaseById } from "@/lib/db-content";
 import {
@@ -10,6 +10,7 @@ import {
   InternalPageShell,
   InternalSection,
 } from "@/components/InternalPage";
+import { ClientCaseIdentity } from "@/components/ClientCaseIdentity";
 import { whatsappLinks } from "@/lib/whatsapp";
 
 export const revalidate = 3600;
@@ -38,6 +39,7 @@ export default async function CasePage({ params }: { params: Promise<{ id: strin
   if (!item) notFound();
 
   const paragraphs = item.content.split(/\n{2,}/).map((paragraph) => paragraph.trim()).filter(Boolean);
+  const isRecurrente = item.relationship === "recurrente";
 
   return (
     <InternalPageShell>
@@ -45,37 +47,46 @@ export default async function CasePage({ params }: { params: Promise<{ id: strin
         eyebrow={item.clientName}
         title={item.title}
         intro={item.description}
-        image={item.coverImage}
-        imageAlt={item.title}
-        imagePriority
-        mediaLabel="Caso documentado"
-        mediaTitle="Proyecto con alcance verificable."
-        mediaSubtitle="El detalle se publica solo cuando existe información autorizada."
-        mediaItems={[
-          { icon: FileText, title: "Contexto", description: "Situacion y necesidad inicial." },
-          { icon: ArrowRight, title: "Solución", description: "Alcance técnico aplicado." },
-          { icon: MessageCircle, title: "Consulta", description: "Caso similar por WhatsApp." },
-        ]}
-        metrics={item.metrics.length > 0 ? item.metrics.slice(0, 3).map((metric) => ({ value: metric, label: "resultado" })) : [
-          { value: "Caso", label: "documentado" },
-          { value: "OK", label: "autorizado" },
-          { value: "B2B", label: "proyecto" },
-        ]}
+        metrics={
+          item.relationship === "recurrente"
+            ? [
+                { value: "Activo", label: "estado de la cuenta" },
+                { value: item.cadence ?? "Recurrente", label: "frecuencia de compra" },
+                { value: "OK", label: "autorizado" },
+              ]
+            : [
+                { value: "Cerrado", label: "estado del proyecto" },
+                { value: "OK", label: "autorizado" },
+                { value: "B2B", label: "condiciones" },
+              ]
+        }
         actions={[
           { label: "Consultar una solución similar", href: whatsappLinks.company, external: true, icon: MessageCircle },
           { label: "Volver a casos", href: "/casos", variant: "secondary", icon: ArrowLeft },
         ]}
-      />
+      >
+        <ClientCaseIdentity item={item} size="lg" />
+      </InternalHero>
 
       <InternalSection tone="soft">
         <article className="mx-auto max-w-[820px] rounded-lg border border-slate-200 bg-white p-7 shadow-sm md:p-10">
-          <Link href="/casos" className="mb-8 inline-flex items-center gap-1.5 text-[13px] font-bold text-[#0046EA] hover:underline">
+          <Link href="/casos" className="mb-6 inline-flex items-center gap-1.5 text-[13px] font-bold text-[#0046EA] hover:underline">
             <ArrowLeft size={15} /> Casos
           </Link>
+
+          {item.relationship ? (
+            <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-2 text-[12.5px] font-bold text-[#0046EA]">
+              {isRecurrente ? <Repeat size={14} strokeWidth={2.2} /> : <ShieldCheck size={14} strokeWidth={2.2} />}
+              {isRecurrente
+                ? `Cliente recurrente${item.cadence ? ` · ${item.cadence}` : ""}`
+                : "Proyecto puntual con alcance cerrado"}
+            </div>
+          ) : null}
+
           {item.metrics.length > 0 ? (
-            <div className="mb-8 grid gap-3 border-b border-slate-200 pb-8 sm:grid-cols-2">
+            <div className="mb-8 grid gap-3 border-b border-slate-200 pb-8 sm:grid-cols-3">
               {item.metrics.map((metric) => (
-                <p key={metric} className="rounded-lg border border-blue-100 bg-blue-50 px-4 py-3 text-[13px] font-bold text-[#0046EA]">{metric}</p>
+                <p key={metric} className="rounded-lg border border-blue-100 bg-blue-50 px-4 py-3 text-center text-[13px] font-bold text-[#0046EA]">{metric}</p>
               ))}
             </div>
           ) : null}
@@ -89,7 +100,7 @@ export default async function CasePage({ params }: { params: Promise<{ id: strin
 
       <InternalCta
         title="¿Tenés un proyecto parecido?"
-        intro="Contanos tu contexto y lo convertimos en una propuesta de alcance realista."
+        intro="Contanos tu contexto y lo convertimos en una propuesta de alcance realista — puntual o recurrente."
         actions={[
           { label: "Hablar por WhatsApp", href: whatsappLinks.company, external: true, icon: MessageCircle },
           { label: "Ver soluciones", href: "/soluciones/servidores", variant: "secondary", icon: ArrowRight },

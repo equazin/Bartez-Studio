@@ -10,6 +10,11 @@
  * la DB (que arranca en 1). Cuando el admin cargue un caso real, tomará
  * un ID bajo y no pisa a estos.
  *
+ * `logoUrl` queda en null hasta contar con el archivo real del cliente
+ * (público, en /public/logos/clientes/). Mientras tanto la UI usa un
+ * wordmark tipográfico como identidad visual — nunca una foto de stock
+ * genérica haciendo de "logo".
+ *
  * Cada caso está publicado con autorización del cliente.
  */
 import type { DynamicSuccessCase } from "./db-content.ts";
@@ -18,46 +23,54 @@ export const staticSuccessCases: DynamicSuccessCase[] = [
   {
     id: 9001,
     clientName: "Supermercados La Reina",
-    title: "Apertura de sucursal en Funes: PCs corporativas para todas las cajas",
+    industry: "Retail — supermercados",
+    relationship: "puntual",
+    title: "PCs para los puestos de facturación de la nueva sucursal en Funes",
     description:
-      "Proveímos las PCs corporativas para los puestos de facturación de la nueva sucursal de La Reina en Funes. Equipos dimensionados para el software de facturación que la cadena ya usa, coordinados con el cronograma de apertura para que las cajas trabajaran el primer día sin intervenciones.",
-    logoUrl: null,
+      "La Reina abría una sucursal en Funes y necesitaba las PCs de todos los puestos de caja listas antes del día de apertura. El sistema de facturación ya lo tenían — nuestro alcance fue el hardware: equipos, entrega y puesta en marcha a tiempo.",
+    logoUrl: "/logos/clientes/la-reina.png",
     coverImage: "/photos/products/desktop.jpg",
-    metrics: ["Sucursal completa", "Cajas operativas día 1", "Retail — Funes"],
+    metrics: ["Proyecto puntual", "Apertura de sucursal", "PCs de checkout"],
     content: [
-      "Supermercados La Reina abría una nueva sucursal en Funes y necesitaba las PCs para todos los puestos de facturación antes de la apertura al público. El sistema de facturación es el que la cadena ya opera en el resto de sus sucursales — el alcance del pedido a Bartez fue puntualmente el hardware.",
-      "Cotizamos las PCs de escritorio corporativas dimensionadas para el uso sostenido de checkout, coordinamos la entrega con el cronograma de obra y dejamos los equipos listos, configurados y probados antes del primer turno de ventas.",
-      "El día de la apertura los puestos de caja trabajaron desde el minuto uno, sin sorpresas de última hora ni intervenciones técnicas en horario comercial. El pedido se ejecutó respetando los tiempos de apertura de la sucursal.",
+      "La Reina estaba por abrir una nueva sucursal en Funes y tenía una fecha de apertura fija. El sistema de facturación que usan en el resto de la cadena ya estaba definido — lo que faltaba era el hardware para que cada puesto de caja pudiera facturar desde el primer día.",
+      "Cotizamos las PCs de escritorio para todos los puestos, coordinamos la entrega con el cronograma de obra de la sucursal y dejamos los equipos instalados y probados con el software de facturación antes de la apertura.",
+      "El día de apertura, todos los puestos de caja facturaron sin intervención técnica. Fue un pedido acotado y con fecha límite clara — el tipo de proyecto donde cumplir el plazo es la parte que más importa.",
     ].join("\n\n"),
   },
   {
     id: 9002,
     clientName: "Cormetal",
-    title: "Ciclo trimestral de renovación de estaciones para AutoCAD y fabricación de caños",
+    industry: "Industria — metalurgia",
+    relationship: "recurrente",
+    cadence: "Cada 3 meses",
+    title: "Renovación trimestral de estaciones para diseño y corte de caños",
     description:
-      "Programa continuo con Cormetal: cada 3 meses cotizamos y proveemos nuevas workstations y actualizaciones para el equipo de diseño, cálculo y corte de caños. Configuraciones a medida por proyecto — RAM ECC, GPU profesional y CPU multicore según el software que el equipo esté usando en cada ciclo.",
-    logoUrl: null,
+      "Cormetal no es un proyecto cerrado: es una cuenta activa. Cada 3 meses relevamos qué puesto necesita actualizarse — diseño en AutoCAD, cálculo o las estaciones que manejan el corte de caños — y armamos la reposición de ese ciclo.",
+    logoUrl: "/logos/clientes/cormetal.png",
     coverImage: "/photos/products/desktop.jpg",
-    metrics: ["Renovación trimestral", "Workstations CAD", "Industria — metalurgia"],
+    metrics: ["Cliente activo", "Renovación cada 3 meses", "Estaciones para AutoCAD"],
     content: [
-      "Cormetal opera con un flujo continuo de diseño y fabricación de caños que exige que las estaciones de trabajo sigan el ritmo del software (AutoCAD y herramientas específicas de diseño / corte). El equipo interno definió un ciclo de renovación trimestral para evitar cuellos de botella por hardware.",
-      "En cada ciclo relevamos qué necesita cada puesto — no todos los perfiles son iguales — y armamos configuraciones específicas: workstations con Xeon o Threadripper, RAM ECC dimensionada por proyecto, GPU profesional certificada ISV y storage NVMe para archivos de trabajo pesados.",
-      "El programa lleva varios ciclos consecutivos. Coordinamos entrega, imagen unificada y baja del equipo saliente cuando corresponde, para que el equipo de ingeniería no tenga que gestionar la logística de renovación.",
+      "Cormetal trabaja con equipos de diseño en AutoCAD y estaciones específicas para el cálculo y corte de caños. En lugar de renovar todo junto y quedarse después varios años con hardware envejecido, definieron con nosotros un ciclo de reposición cada 3 meses: se actualiza lo que hace falta, cuando hace falta.",
+      "En cada ciclo relevamos qué puesto está quedando corto — no es la misma exigencia diseñar en AutoCAD que correr el software de corte — y armamos la configuración específica para ese caso: procesador, RAM y GPU según el uso real del puesto.",
+      "Es una cuenta en curso, no un proyecto con fecha de cierre. Coordinamos entrega, imagen del equipo y baja del hardware saliente en cada ciclo, para que el área técnica de Cormetal no tenga que gestionar la logística de renovación.",
     ].join("\n\n"),
   },
   {
     id: 9003,
     clientName: "Federada Salud",
-    title: "Renovación completa de switches Aruba en toda la red interna",
+    industry: "Salud — obra social",
+    relationship: "recurrente",
+    cadence: "Compras semestrales",
+    title: "Renovación de switches Aruba por sector, en compras semestrales",
     description:
-      "Reemplazamos la infraestructura de switching de Federada Salud por equipamiento Aruba: modelos 6200 con 24 y 48 puertos PoE para cubrir toda la organización. Plataforma administrable centralizada con capacidad PoE para access points y telefonía IP.",
-    logoUrl: null,
+      "Federada Salud compra equipamiento de red en ciclos semestrales, sector por sector. El más reciente fue la renovación completa a switches Aruba serie 6200 — variantes de 24 y 48 puertos PoE según la densidad de cada sector.",
+    logoUrl: "/logos/clientes/federada-salud.png",
     coverImage: "/photos/products/switch.jpg",
-    metrics: ["Switches Aruba 6200", "24 y 48 puertos PoE", "Salud — obra social"],
+    metrics: ["Cliente activo", "Switches Aruba 6200", "24 y 48 puertos PoE"],
     content: [
-      "Federada Salud decidió modernizar la red interna con equipamiento Aruba en toda la organización. El alcance cubrió el reemplazo completo de los switches por modelos administrables de la línea 6200, en variantes de 24 y 48 puertos PoE según la densidad de cada sector.",
-      "Cotizamos el equipamiento con condiciones B2B y factura A, coordinamos la logística de entrega y acompañamos técnicamente la puesta en marcha por sector para no interrumpir la operación de la obra social.",
-      "La renovación dejó la red preparada para PoE de access points y teléfonos IP, con visibilidad centralizada de la plataforma Aruba y capacidad de expansión por sector según las necesidades futuras.",
+      "Federada Salud no encara la renovación de red como un proyecto único: compra equipamiento en ciclos semestrales, sector por sector, según el estado de la infraestructura de cada área. Es una cuenta que viene de varios ciclos de compra con nosotros.",
+      "En el ciclo más reciente, el foco fue estandarizar todo el switching a Aruba serie 6200: modelos de 24 y 48 puertos PoE según la densidad de cada sector, para tener una plataforma administrable homogénea en toda la organización.",
+      "Cotizamos el equipamiento con condiciones B2B y factura A, coordinamos la logística por sector para no interrumpir la operación de la obra social, y acompañamos la puesta en marcha de cada tramo. La relación sigue activa para los próximos ciclos de compra.",
     ].join("\n\n"),
   },
 ];

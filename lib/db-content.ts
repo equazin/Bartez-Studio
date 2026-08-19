@@ -24,6 +24,12 @@ export type DynamicSuccessCase = {
   description: string;
   metrics: string[];
   content: string;
+  // Campos opcionales — solo presentes en casos estáticos (lib/success-cases.ts)
+  // hasta que el modelo Prisma SuccessCase los incorpore. Distinguen un
+  // proyecto puntual de una cuenta con compras recurrentes.
+  industry?: string;
+  relationship?: "puntual" | "recurrente";
+  cadence?: string;
 };
 
 function hasDatabase() {
