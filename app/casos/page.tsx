@@ -7,7 +7,7 @@ import {
   InternalPageShell,
   InternalSection,
 } from "@/components/InternalPage";
-import { ClientCaseIdentity } from "@/components/ClientCaseIdentity";
+import { CaseListCard } from "@/components/CaseListCard";
 import { capabilities } from "@/lib/capabilities";
 import { getDynamicSuccessCases } from "@/lib/db-content";
 import { whatsappLinks } from "@/lib/whatsapp";
@@ -55,21 +55,7 @@ export default async function CasosPage() {
         {cases.length > 0 ? (
           <div className="grid gap-5 md:grid-cols-2">
             {cases.map((item) => (
-              <Link
-                key={item.id}
-                href={`/casos/${item.id}`}
-                className="group overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200"
-              >
-                <ClientCaseIdentity item={item} size="sm" className="rounded-none border-none" />
-                <div className="p-6">
-                  <p className="text-[12px] font-bold text-[#0046EA]">{item.clientName}</p>
-                  <h2 className="mt-2 font-display text-[20px] font-semibold leading-tight text-[#11142a]">{item.title}</h2>
-                  <p className="mt-3 text-[13.5px] leading-relaxed text-slate-600">{item.description}</p>
-                  <span className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-bold text-[#0046EA]">
-                    Ver caso <ArrowRight size={15} />
-                  </span>
-                </div>
-              </Link>
+              <CaseListCard key={item.id} item={item} />
             ))}
           </div>
         ) : (

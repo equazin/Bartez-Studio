@@ -25,6 +25,9 @@ export const staticSuccessCases: DynamicSuccessCase[] = [
     clientName: "Supermercados La Reina",
     industry: "Retail — supermercados",
     relationship: "puntual",
+    headlineStat: "Día 1",
+    headlineStatLabel: "cajas operativas desde la apertura",
+    focus: "Equipamiento de checkout",
     title: "PCs para los puestos de facturación de la nueva sucursal en Funes",
     description:
       "La Reina abría una sucursal en Funes y necesitaba las PCs de todos los puestos de caja listas antes del día de apertura. El sistema de facturación ya lo tenían — nuestro alcance fue el hardware: equipos, entrega y puesta en marcha a tiempo.",
@@ -43,6 +46,9 @@ export const staticSuccessCases: DynamicSuccessCase[] = [
     industry: "Industria — metalurgia",
     relationship: "recurrente",
     cadence: "Cada 3 meses",
+    headlineStat: "Cada 3 meses",
+    headlineStatLabel: "ciclo de renovación activo",
+    focus: "Workstations para AutoCAD y corte",
     title: "Renovación trimestral de estaciones para diseño y corte de caños",
     description:
       "Cormetal no es un proyecto cerrado: es una cuenta activa. Cada 3 meses relevamos qué puesto necesita actualizarse — diseño en AutoCAD, cálculo o las estaciones que manejan el corte de caños — y armamos la reposición de ese ciclo.",
@@ -61,6 +67,9 @@ export const staticSuccessCases: DynamicSuccessCase[] = [
     industry: "Salud — obra social",
     relationship: "recurrente",
     cadence: "Compras semestrales",
+    headlineStat: "Aruba 6200",
+    headlineStatLabel: "switching estandarizado en toda la red",
+    focus: "Switching Aruba en toda la red",
     title: "Renovación de switches Aruba por sector, en compras semestrales",
     description:
       "Federada Salud compra equipamiento de red en ciclos semestrales, sector por sector. El más reciente fue la renovación completa a switches Aruba serie 6200 — variantes de 24 y 48 puertos PoE según la densidad de cada sector.",

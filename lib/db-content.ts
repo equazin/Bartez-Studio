@@ -30,6 +30,13 @@ export type DynamicSuccessCase = {
   industry?: string;
   relationship?: "puntual" | "recurrente";
   cadence?: string;
+  // Estadística destacada de la card de listado (p. ej. "Cada 3 meses",
+  // "Día 1") con su etiqueta corta.
+  headlineStat?: string;
+  headlineStatLabel?: string;
+  // Frase corta de qué es el foco de la relación/proyecto, usada en el
+  // panel de resumen del detalle (p. ej. "Workstations para AutoCAD").
+  focus?: string;
 };
 
 function hasDatabase() {
