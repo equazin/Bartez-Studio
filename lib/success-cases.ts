@@ -18,16 +18,16 @@ export const staticSuccessCases: DynamicSuccessCase[] = [
   {
     id: 9001,
     clientName: "Supermercados La Reina",
-    title: "Apertura de sucursal en Funes con puntos de venta llave en mano",
+    title: "Apertura de sucursal en Funes: PCs corporativas para todas las cajas",
     description:
-      "Equipamos íntegramente los checkouts para la apertura de la nueva sucursal de La Reina en Funes: PCs BarPOS por caja, impresoras térmicas, lectores de código y periféricos. Coordinación con el cronograma de apertura para que el primer día de operación las cajas estuvieran listas y probadas.",
+      "Proveímos las PCs corporativas para los puestos de facturación de la nueva sucursal de La Reina en Funes. Equipos dimensionados para el software de facturación que la cadena ya usa, coordinados con el cronograma de apertura para que las cajas trabajaran el primer día sin intervenciones.",
     logoUrl: null,
     coverImage: "/photos/products/desktop.jpg",
     metrics: ["Sucursal completa", "Cajas operativas día 1", "Retail — Funes"],
     content: [
-      "Supermercados La Reina abría una nueva sucursal en Funes y necesitaba dejar los checkouts operativos antes de la apertura al público. El pedido cubría todo el equipamiento del punto de venta: PCs por caja, impresoras fiscales, lectores de código, cableado y configuración inicial.",
-      "Cotizamos el paquete completo con equipamiento BarPOS 4.0 y periféricos OCOM / Epson, coordinamos la entrega con el cronograma de obra y dejamos las cajas armadas, configuradas y probadas antes del primer turno de ventas.",
-      "El día de la apertura las cajas trabajaron desde el minuto uno, sin sorpresas de última hora ni intervenciones técnicas en horario comercial. La operación quedó documentada como referencia interna para futuras aperturas.",
+      "Supermercados La Reina abría una nueva sucursal en Funes y necesitaba las PCs para todos los puestos de facturación antes de la apertura al público. El sistema de facturación es el que la cadena ya opera en el resto de sus sucursales — el alcance del pedido a Bartez fue puntualmente el hardware.",
+      "Cotizamos las PCs de escritorio corporativas dimensionadas para el uso sostenido de checkout, coordinamos la entrega con el cronograma de obra y dejamos los equipos listos, configurados y probados antes del primer turno de ventas.",
+      "El día de la apertura los puestos de caja trabajaron desde el minuto uno, sin sorpresas de última hora ni intervenciones técnicas en horario comercial. El pedido se ejecutó respetando los tiempos de apertura de la sucursal.",
     ].join("\n\n"),
   },
   {
