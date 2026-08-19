@@ -17,7 +17,7 @@ export const company = {
   url: "https://bartez.com.ar",
   founded: "2008",
   experienceYears: "18",
-  clients: "10.000+",
+  clients: "5.000+",
   channels: ["Empresas", "Revendedores", "Sector público", "Educación"],
 };
 
@@ -59,7 +59,7 @@ export const cookie = {
 export const seo = {
   title: "Bartez Tecnología — Distribución IT para empresas y revendedores",
   description:
-    "Equipamiento, infraestructura y soluciones IT para empresas, organismos y revendedores. Dieciocho años en el rubro, más de 10.000 clientes y cobertura nacional desde Rosario.",
+    "Equipamiento, infraestructura y soluciones IT para empresas, organismos y revendedores. Dieciocho años en el rubro, más de 5.000 clientes atendidos y cobertura nacional desde Rosario.",
   keywords: [
     "distribuidora IT Argentina",
     "soluciones IT para empresas",

@@ -130,7 +130,7 @@ const milestones: TimelineMilestone[] = [
     year: "2026",
     icon: Sparkles,
     title: "Hoy",
-    detail: "10.000+ clientes atendidos. Capacidades demostradas en workstations CTO/BTO (GIS, render, GPU), WiFi multi-sede con UniFi y coordinación con instaladores partners, virtualización Proxmox VE, CCTV en predios de gran superficie y BarPOS 4.0 en el portfolio.",
+    detail: "5.000+ clientes atendidos. Capacidades demostradas en workstations CTO/BTO (GIS, render, GPU), WiFi multi-sede con UniFi y coordinación con instaladores partners, virtualización Proxmox VE, CCTV en predios de gran superficie y BarPOS 4.0 en el portfolio.",
   },
 ];
 

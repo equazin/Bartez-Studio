@@ -42,7 +42,7 @@ export function Footer() {
             Distribución de equipamiento, infraestructura y soluciones IT para empresas, organismos y revendedores en toda Argentina.
           </p>
           <p className="mt-4 text-[11.5px] font-bold uppercase tracking-[0.13em] text-sky">
-            18 años · +10.000 clientes
+            18 años · +5.000 clientes
           </p>
           <div className="mt-5 flex gap-3">
             <a

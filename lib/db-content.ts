@@ -1,6 +1,7 @@
 import { bodyBlockSchema } from "./admin-schema.ts";
 import { getDb } from "./db.ts";
 import { partners as staticPartners, articles as staticArticles } from "../constants.ts";
+import { staticSuccessCases } from "./success-cases.ts";
 
 export type DynamicBrand = { name: string; logo: string };
 export type DynamicClient = { name: string; logo: string };
@@ -101,12 +102,13 @@ export async function getDynamicArticleBySlug(slug: string, opts?: { preview?: b
 }
 
 export async function getDynamicSuccessCases(): Promise<DynamicSuccessCase[]> {
-  if (!hasDatabase()) return [];
+  if (!hasDatabase()) return staticSuccessCases;
   try {
     const cases = await getDb().successCase.findMany({
       where: { active: true },
       orderBy: { id: "desc" },
     });
+    if (cases.length === 0) return staticSuccessCases;
     return cases.map((item) => ({
       id: item.id,
       title: item.title,
@@ -119,15 +121,16 @@ export async function getDynamicSuccessCases(): Promise<DynamicSuccessCase[]> {
     }));
   } catch (error) {
     console.error("[content] No se pudieron cargar casos dinámicos.", error);
-    return [];
+    return staticSuccessCases;
   }
 }
 
 export async function getDynamicSuccessCaseById(id: number) {
-  if (!hasDatabase()) return null;
+  const staticMatch = staticSuccessCases.find((item) => item.id === id) ?? null;
+  if (!hasDatabase()) return staticMatch;
   try {
     const item = await getDb().successCase.findFirst({ where: { id, active: true } });
-    if (!item) return null;
+    if (!item) return staticMatch;
     return {
       id: item.id,
       title: item.title,
@@ -140,6 +143,6 @@ export async function getDynamicSuccessCaseById(id: number) {
     } satisfies DynamicSuccessCase;
   } catch (error) {
     console.error("[content] No se pudo cargar el caso.", error);
-    return null;
+    return staticMatch;
   }
 }

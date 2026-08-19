@@ -3,7 +3,7 @@ import { ArrowRight, CalendarDays, FileCheck2, MapPinned, MessageCircle, UsersRo
 import { whatsappLinks } from "@/lib/whatsapp";
 
 const proof: Array<{ label: string; icon: LucideIcon }> = [
-  { label: "+10.000 clientes", icon: UsersRound },
+  { label: "+5.000 clientes", icon: UsersRound },
   { label: "18 años en el rubro", icon: CalendarDays },
   { label: "Cobertura nacional", icon: MapPinned },
   { label: "Factura A", icon: FileCheck2 },

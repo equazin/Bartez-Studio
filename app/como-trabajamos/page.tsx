@@ -88,7 +88,7 @@ const modelBenefits = [
   },
   {
     icon: Building2,
-    title: "18 años y +10.000 clientes",
+    title: "18 años y +5.000 clientes",
     description:
       "Trayectoria y experiencia comercial en compras corporativas, canal y sector público a lo largo del país.",
   },
