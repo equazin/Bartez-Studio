@@ -122,6 +122,8 @@ export function HomeBlueWholesale() {
         <Navbar />
 
         <section className="relative overflow-hidden border-b border-slate-200 bg-white">
+          <div className="absolute inset-y-0 right-0 hidden w-[42%] bg-[linear-gradient(132deg,transparent_0%,transparent_25%,rgba(0,70,234,0.06)_25%,rgba(0,70,234,0.06)_62%,transparent_62%)] lg:block" />
+          <div className="absolute right-0 top-16 hidden h-56 w-36 bg-[radial-gradient(circle,#b8cdfd_1px,transparent_1.6px)] opacity-50 [background-size:10px_10px] lg:block" />
           <div className="relative mx-auto grid max-w-[1320px] items-center gap-10 px-6 pb-10 pt-12 lg:grid-cols-[0.92fr_1.08fr] lg:px-10 lg:pb-12 lg:pt-16">
             <div className="relative z-10 min-w-0">
               <p className="text-[12px] font-semibold uppercase tracking-[0.17em] text-brand">Mayorista IT en Argentina</p>
@@ -159,7 +161,7 @@ export function HomeBlueWholesale() {
               </Link>
             </div>
 
-            <div className="relative z-10 overflow-hidden rounded-2xl border border-slate-200 shadow-[0_28px_70px_-46px_rgba(15,23,42,0.4)]">
+            <div className="relative z-10 overflow-hidden rounded-2xl border border-blue-100 shadow-[0_28px_70px_-46px_rgba(0,70,234,0.35)]">
               <div className="relative aspect-[4/3.05]">
                 <Image
                   src="/photos/bartez-operations-hero-v2.webp"

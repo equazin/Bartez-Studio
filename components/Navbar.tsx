@@ -75,9 +75,9 @@ const channelLinks = [
 ];
 
 const navLinkBase =
-  "relative flex items-center h-[64px] px-3.5 text-[13.5px] font-semibold text-ink/85 transition-colors hover:text-ink after:absolute after:bottom-0 after:left-3.5 after:right-3.5 after:h-[2px] after:rounded-t after:transition-colors";
+  "relative flex items-center h-[64px] px-3.5 text-[13.5px] font-semibold text-ink/85 transition-colors hover:text-ink hover:bg-blue-50/70 after:absolute after:bottom-0 after:left-3.5 after:right-3.5 after:h-[2px] after:rounded-t after:transition-colors";
 const navLinkHover = "hover:after:bg-brand/30";
-const navLinkActive = "text-ink after:bg-brand";
+const navLinkActive = "text-ink after:bg-brand bg-blue-50/50";
 const dropdownPanel =
   "invisible absolute left-1/2 top-[60px] -translate-x-1/2 translate-y-2 rounded-2xl border border-slate-200 bg-white p-[18px] opacity-0 shadow-[0_28px_70px_-40px_rgba(15,23,42,0.35)] transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100";
 
@@ -112,7 +112,8 @@ export function Navbar() {
   const isChannelActive = matchesPrefix(pathname, channelPrefixes);
 
   return (
-    <header className="sticky inset-x-0 top-0 z-50 border-b border-slate-200 bg-white shadow-[0_1px_0_0_rgba(15,23,42,0.02)]">
+    <header className="sticky inset-x-0 top-0 z-50 border-b border-slate-200 bg-[#fbfcff] shadow-[0_1px_0_0_rgba(15,23,42,0.02)]">
+      <div className="h-[3px] w-full bg-gradient-to-r from-brand via-[#0ea5ff] to-brand" />
       <div className="mx-auto flex h-[64px] max-w-[1320px] min-w-0 items-center justify-between px-5 sm:px-6">
         {/* Left: logo + nav */}
         <div className="flex min-w-0 items-center">
