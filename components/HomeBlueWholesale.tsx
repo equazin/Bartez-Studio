@@ -2,32 +2,24 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight,
-  BatteryCharging,
   Box,
   Building2,
   CheckCircle2,
-  GitCompareArrows,
-  GraduationCap,
-  HardDrive,
-  Headphones,
-  Landmark,
-  Map as MapIcon,
-  MessageCircle,
-  Monitor,
-  PackageCheck,
-  Printer,
-  Scale,
-  ShieldCheck,
-  SlidersHorizontal,
   ClipboardList,
   FileCheck2,
+  Headphones,
+  Landmark,
+  MessageCircle,
   Receipt,
+  ShieldCheck,
   Truck,
   Users,
   type LucideIcon,
 } from "lucide-react";
-import { company, contact, partners } from "@/constants";
+import { company, partners } from "@/constants";
 import { capabilities } from "@/lib/capabilities";
+import { resolveClientLogo } from "@/lib/client-logo";
+import { staticSuccessCases } from "@/lib/success-cases";
 import { CookieBanner } from "@/components/CookieBanner";
 import { CorporateSolutionsShowcase } from "@/components/CorporateSolutionsShowcase";
 import { Footer } from "@/components/Footer";
@@ -39,6 +31,12 @@ const heroProof = [
   { icon: Truck, title: "Envíos a todo", text: "el país" },
   { icon: Headphones, title: "Asesoramiento", text: "especializado" },
   { icon: ShieldCheck, title: "Respaldo y garantía", text: "en cada solución" },
+];
+
+const heroTrust = [
+  { value: `+${company.experienceYears}`, label: "años" },
+  { value: company.clients, label: "clientes" },
+  { value: "24 hs", label: "respuesta" },
 ];
 
 const audienceCards = [
@@ -69,35 +67,12 @@ const audienceCards = [
     image: "/photos/datacenter.jpg",
     bullets: ["Licitaciones y contratos", "Soluciones escalables", "Cumplimiento y trazabilidad"],
   },
-  {
-    icon: GraduationCap,
-    title: "Educación",
-    text: "Equipamiento y soluciones para instituciones educativas.",
-    href: "/educacion",
-    cta: "Ver soluciones",
-    image: "/photos/engineer.jpg",
-    bullets: ["Aulas y laboratorios", "Conectividad y redes", "Soporte especializado"],
-  },
-];
-
-const stats = [
-  { icon: ShieldCheck, value: `+${company.experienceYears}`, label: "años operando · desde 2008" },
-  { icon: Users, value: company.clients, label: "clientes atendidos" },
-  { icon: MapIcon, value: "Nacional", label: "cobertura logística documentada" },
-  { icon: Scale, value: "1 → 500+", label: "escala por operación" },
 ];
 
 // La lista `capabilities` vive en lib/capabilities.ts y se comparte con /casos
-// (fallback cuando no hay casos autorizados publicados).
-
-const families = [
-  { image: "/photos/products/laptop1.jpg", label: "Notebooks y PCs", href: "/catalogo#notebooks" },
-  { image: "/photos/products/peripherals.jpg", label: "Componentes y hardware", href: "/catalogo#componentes" },
-  { image: "/photos/products/monitor.jpg", label: "Monitores y displays", href: "/catalogo#monitores" },
-  { image: "/photos/products/peripherals.jpg", label: "Impresión y periféricos", href: "/catalogo#perifericos" },
-  { image: "/photos/products/storage.jpg", label: "Almacenamiento y memoria", href: "/catalogo#almacenamiento" },
-  { image: "/photos/products/ups.jpg", label: "Energía y continuidad", href: "/catalogo#energia" },
-];
+// (fallback cuando no hay casos autorizados publicados). En home mostramos
+// solo las primeras 4 — el resto se ve en /casos.
+const homeCapabilities = capabilities.slice(0, 4);
 
 function SunsetButton({
   href,
@@ -135,21 +110,25 @@ function ProofItem({ icon: Icon, title, text }: { icon: LucideIcon; title: strin
 }
 
 export function HomeBlueWholesale() {
+  // Logos de clientes reales para el trust bar — se filtran los que aún no
+  // tienen archivo subido en disco (ver lib/client-logo.ts).
+  const clientLogos = staticSuccessCases
+    .map((item) => ({ name: item.clientName, logo: resolveClientLogo(item.logoUrl) }))
+    .filter((item): item is { name: string; logo: string } => Boolean(item.logo));
+
   return (
     <>
       <main id="main-content" className="home-blue min-h-screen w-full max-w-full overflow-hidden bg-white text-ink">
         <Navbar />
 
         <section className="relative overflow-hidden border-b border-slate-200 bg-white">
-          <div className="absolute inset-y-0 right-0 hidden w-[46%] bg-[linear-gradient(132deg,transparent_0%,transparent_25%,rgba(0,70,234,0.08)_25%,rgba(0,70,234,0.08)_62%,transparent_62%)] lg:block" />
-          <div className="absolute right-0 top-20 hidden h-64 w-40 bg-[radial-gradient(circle,#b8cdfd_1px,transparent_1.6px)] opacity-55 [background-size:10px_10px] lg:block" />
-          <div className="relative mx-auto grid max-w-[1320px] items-center gap-8 px-6 pb-8 pt-12 lg:grid-cols-[0.82fr_1.18fr] lg:px-10 lg:pb-10 lg:pt-14">
+          <div className="relative mx-auto grid max-w-[1320px] items-center gap-10 px-6 pb-10 pt-12 lg:grid-cols-[0.92fr_1.08fr] lg:px-10 lg:pb-12 lg:pt-16">
             <div className="relative z-10 min-w-0">
               <p className="text-[12px] font-semibold uppercase tracking-[0.17em] text-brand">Mayorista IT en Argentina</p>
-              <h1 className="mt-5 max-w-[660px] font-display text-[clamp(38px,4.6vw,56px)] font-semibold leading-[1.04] tracking-[-0.04em] text-ink">
+              <h1 className="mt-5 max-w-[620px] font-display text-[clamp(38px,4.6vw,52px)] font-semibold leading-[1.06] tracking-[-0.035em] text-ink">
                 Distribución IT para <span className="text-brand">empresas y revendedores</span>
               </h1>
-              <p className="mt-6 max-w-[58ch] text-[15.5px] leading-relaxed text-slate-600 lg:text-[17px]">
+              <p className="mt-6 max-w-[54ch] text-[15.5px] leading-relaxed text-slate-600 lg:text-[16.5px]">
                 Cotizamos en 24 hs hábiles, conseguimos el equipamiento que necesitás y lo entregamos con garantía
                 oficial a todo el país.
               </p>
@@ -167,34 +146,33 @@ export function HomeBlueWholesale() {
                   <Box size={18} /> Catálogo de soluciones
                 </Link>
               </div>
-              <Link href="/como-trabajamos" className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold text-slate-600 transition hover:text-brand">
+
+              <div className="mt-7 flex flex-wrap items-center gap-x-7 gap-y-2 border-t border-slate-200 pt-6">
+                {heroTrust.map((item) => (
+                  <span key={item.label} className="text-[12.5px] font-semibold text-slate-500">
+                    <span className="font-display text-[15px] font-semibold text-ink">{item.value}</span> {item.label}
+                  </span>
+                ))}
+              </div>
+              <Link href="/como-trabajamos" className="mt-3 inline-flex items-center gap-1.5 text-[13px] font-semibold text-slate-600 transition hover:text-brand">
                 Cómo trabajamos: cotización 24 hs · Andreani nacional · garantía oficial <ArrowRight size={14} />
               </Link>
             </div>
 
-            <div className="relative z-10 min-h-[300px] overflow-hidden rounded-3xl border border-blue-100 bg-[#f7f9ff] shadow-[0_34px_90px_-62px_rgba(0,70,234,0.6)] lg:min-h-[430px]">
-              <div className="absolute inset-y-0 right-0 w-[78%] origin-bottom-left -skew-x-12 overflow-hidden rounded-l-[48px] bg-brand/10">
+            <div className="relative z-10 overflow-hidden rounded-2xl border border-slate-200 shadow-[0_28px_70px_-46px_rgba(15,23,42,0.4)]">
+              <div className="relative aspect-[4/3.05]">
                 <Image
-                  src="/photos/home/warehouse-hero.jpg"
-                  alt=""
+                  src="/photos/bartez-operations-hero-v2.webp"
+                  alt="Operación y logística de Bartez Tecnología"
                   fill
                   priority
-                  sizes="(max-width: 1024px) 80vw, 620px"
-                  className="scale-110 object-cover object-center opacity-80 skew-x-12"
+                  sizes="(max-width: 1024px) 100vw, 660px"
+                  className="object-cover"
                 />
-                <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(50,20,180,0.62),rgba(0,70,234,0.22)_45%,rgba(255,255,255,0.08))]" />
+                <div className="absolute inset-0 bg-[linear-gradient(200deg,rgba(0,70,234,0.14),transparent_55%)]" />
               </div>
-              <div className="absolute inset-0 bg-[linear-gradient(90deg,#fff_0%,rgba(255,255,255,0.9)_20%,rgba(255,255,255,0.22)_54%,rgba(255,255,255,0)_100%)]" />
-              <Image
-                src="/photos/home/hero-it-equipment-transparent.png"
-                alt="Equipamiento IT para empresas y revendedores"
-                fill
-                priority
-                sizes="(max-width: 1024px) 100vw, 760px"
-                className="relative z-10 object-contain object-center p-0 drop-shadow-[0_28px_34px_rgba(15,23,42,0.18)] sm:p-2 lg:p-0"
-              />
-              <div className="absolute bottom-4 left-4 hidden rounded-xl border border-blue-100 bg-white/92 px-4 py-2 text-[12px] font-black text-brand shadow-sm backdrop-blur-sm sm:block">
-                Equipamiento, infraestructura y soluciones IT
+              <div className="absolute bottom-4 left-4 rounded-xl bg-white/94 px-4 py-2 text-[12px] font-black text-ink shadow-sm backdrop-blur-sm">
+                Operación y logística propia · Rosario
               </div>
             </div>
           </div>
@@ -208,10 +186,39 @@ export function HomeBlueWholesale() {
           </div>
         </section>
 
+        <section className="border-b border-slate-200 bg-[#f7f9fc] py-6">
+          <div className="mx-auto flex max-w-[1320px] flex-col items-center gap-5 px-6 lg:flex-row lg:gap-9 lg:px-10">
+            {clientLogos.length > 0 ? (
+              <>
+                <span className="flex-none text-[11px] font-bold uppercase tracking-[0.1em] text-slate-500">Clientes reales</span>
+                <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 lg:justify-start">
+                  {clientLogos.map((client) => (
+                    <div key={client.name} className="relative h-6 w-[110px]">
+                      <Image src={client.logo} alt={client.name} fill sizes="110px" className="object-contain object-left opacity-80" />
+                    </div>
+                  ))}
+                </div>
+                <span className="hidden h-6 w-px flex-none bg-slate-200 lg:block" />
+              </>
+            ) : null}
+            <span className="flex-none text-[11px] font-bold uppercase tracking-[0.1em] text-slate-500">Marcas</span>
+            <div className="flex flex-1 flex-wrap items-center justify-center gap-x-8 gap-y-3 lg:justify-start">
+              {partners.brands.slice(0, 8).map((brand) => (
+                <div key={brand.name} className="relative h-6 w-[86px]">
+                  <Image src={brand.logo} alt={brand.name} fill sizes="86px" className="object-contain object-left opacity-75" />
+                </div>
+              ))}
+            </div>
+            <Link href="/marcas" className="flex-none text-[12px] font-bold text-brand hover:underline">
+              Ver todas →
+            </Link>
+          </div>
+        </section>
+
         <CorporateSolutionsShowcase />
 
         <section className="bg-white py-10 lg:py-16">
-          <div className="mx-auto grid max-w-[1320px] gap-5 px-6 sm:grid-cols-2 lg:grid-cols-4 lg:px-10">
+          <div className="mx-auto grid max-w-[1320px] gap-5 px-6 sm:grid-cols-2 lg:grid-cols-3 lg:px-10">
             {audienceCards.map((card) => (
               <article key={card.title} className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_22px_70px_-54px_rgba(15,23,42,0.75)] transition hover:-translate-y-1 hover:shadow-[0_28px_80px_-48px_rgba(0,70,234,0.5)]">
                 <div className="p-6">
@@ -232,29 +239,11 @@ export function HomeBlueWholesale() {
                   </Link>
                 </div>
                 <div className="relative aspect-[16/8] bg-slate-100">
-                  <Image src={card.image} alt="" fill sizes="(max-width: 1024px) 50vw, 25vw" className="object-cover transition duration-500 group-hover:scale-[1.035]" />
+                  <Image src={card.image} alt="" fill sizes="(max-width: 1024px) 50vw, 33vw" className="object-cover transition duration-500 group-hover:scale-[1.035]" />
                   <div className="absolute inset-0 bg-gradient-to-t from-ink/18 to-transparent" />
                 </div>
               </article>
             ))}
-          </div>
-        </section>
-
-        <section className="bg-white pb-10">
-          <div className="mx-auto max-w-[1320px] px-6 lg:px-10">
-            <div className="grid gap-px overflow-hidden rounded-2xl border border-blue-100 bg-blue-100 sm:grid-cols-2 lg:grid-cols-4">
-              {stats.map((item) => (
-                <div key={item.value} className="flex items-center gap-4 bg-white px-7 py-5">
-                  <span className="grid size-12 place-items-center rounded-2xl bg-blue-50 text-brand">
-                    <item.icon size={26} strokeWidth={1.8} />
-                  </span>
-                  <span>
-                    <span className="block font-display text-[28px] font-semibold tracking-[-0.04em] text-ink">{item.value}</span>
-                    <span className="block text-[13px] font-semibold text-slate-600">{item.label}</span>
-                  </span>
-                </div>
-              ))}
-            </div>
           </div>
         </section>
 
@@ -267,12 +256,12 @@ export function HomeBlueWholesale() {
                   Operaciones que resolvemos, más allá de vender un equipo suelto.
                 </h2>
               </div>
-              <p className="max-w-[42ch] text-[14px] leading-relaxed text-slate-600">
-                Tipos de proyecto que coordinamos habitualmente. No son casos de clientes concretos — describen la clase de operación.
-              </p>
+              <Link href="/casos" className="inline-flex items-center gap-1.5 text-[13px] font-black text-brand">
+                Ver todos los casos <ArrowRight size={15} />
+              </Link>
             </div>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {capabilities.map((item) => (
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {homeCapabilities.map((item) => (
                 <Link
                   key={item.title}
                   href={item.href}
@@ -281,10 +270,10 @@ export function HomeBlueWholesale() {
                   <span className="grid size-11 place-items-center rounded-xl bg-blue-50 text-brand">
                     <item.icon size={22} strokeWidth={1.8} />
                   </span>
-                  <h3 className="mt-4 font-display text-[18px] font-semibold tracking-[-0.03em] text-ink">
+                  <h3 className="mt-4 font-display text-[16.5px] font-semibold tracking-[-0.03em] text-ink">
                     {item.title}
                   </h3>
-                  <p className="mt-2 flex-1 text-[13.5px] leading-relaxed text-slate-600">
+                  <p className="mt-2 flex-1 text-[13px] leading-relaxed text-slate-600">
                     {item.desc}
                   </p>
                   <span className="mt-5 inline-flex items-center gap-1.5 text-[12.5px] font-black text-brand">
@@ -311,87 +300,6 @@ export function HomeBlueWholesale() {
                   Cómo trabajamos servicios profesionales
                 </Link>
               </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-[#f7f9fc] py-12 lg:py-16">
-          <div className="mx-auto max-w-[1320px] px-6 lg:px-10">
-            <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-              <div>
-                <p className="text-[12px] font-semibold uppercase tracking-[0.17em] text-brand">Herramientas online</p>
-                <h2 className="mt-2 font-display text-[clamp(26px,3.5vw,38px)] font-semibold tracking-[-0.04em] text-ink">Empezá a definir tu solución</h2>
-              </div>
-              <p className="max-w-[42ch] text-[14px] leading-relaxed text-slate-600">Usá estas herramientas para dimensionar, comparar y cotizar antes de hablar con un asesor.</p>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-3">
-              <Link href="/configurador" className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-soft transition hover:-translate-y-1 hover:shadow-card">
-                <span className="grid size-12 place-items-center rounded-xl bg-brand/10 text-brand transition group-hover:bg-brand group-hover:text-white">
-                  <SlidersHorizontal size={24} strokeWidth={1.8} />
-                </span>
-                <h3 className="mt-4 font-display text-[20px] font-semibold tracking-[-0.03em] text-ink">Configurador IT</h3>
-                <p className="mt-2 text-[13px] leading-relaxed text-slate-600">Elegí perfil de uso, ajustá escala y obtené una recomendación técnica para llevar a cotización.</p>
-                <span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-black text-brand">Usar herramienta <ArrowRight size={15} /></span>
-              </Link>
-              <Link href="/comparador" className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-soft transition hover:-translate-y-1 hover:shadow-card">
-                <span className="grid size-12 place-items-center rounded-xl bg-brand/10 text-brand transition group-hover:bg-brand group-hover:text-white">
-                  <GitCompareArrows size={24} strokeWidth={1.8} />
-                </span>
-                <h3 className="mt-4 font-display text-[20px] font-semibold tracking-[-0.03em] text-ink">Comparador orientativo</h3>
-                <p className="mt-2 text-[13px] leading-relaxed text-slate-600">Compará hasta 3 familias de equipos para ordenar la decisión según tu escenario real.</p>
-                <span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-black text-brand">Comparar equipos <ArrowRight size={15} /></span>
-              </Link>
-              <Link href="/rfq" className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-soft transition hover:-translate-y-1 hover:shadow-card">
-                <span className="grid size-12 place-items-center rounded-xl bg-brand/10 text-brand transition group-hover:bg-brand group-hover:text-white">
-                  <ClipboardList size={24} strokeWidth={1.8} />
-                </span>
-                <h3 className="mt-4 font-display text-[20px] font-semibold tracking-[-0.03em] text-ink">Cotización masiva (RFQ)</h3>
-                <p className="mt-2 text-[13px] leading-relaxed text-slate-600">Cargá tu pliego o lista técnica y recibí una propuesta formal con condiciones B2B en 24 hs.</p>
-                <span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-black text-brand">Iniciar RFQ <ArrowRight size={15} /></span>
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-white py-8">
-          <div className="mx-auto max-w-[1320px] px-6 lg:px-10">
-            <div className="grid items-center gap-5 border-y border-slate-100 py-6 lg:grid-cols-[170px_1fr_auto]">
-              <h2 className="font-display text-[25px] font-semibold leading-[1.05] tracking-[-0.04em] text-ink">Familias de productos</h2>
-              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6 lg:gap-5">
-                {families.map((family) => (
-                  <Link
-                    key={family.label}
-                    href={family.href}
-                    className="group flex min-w-0 min-h-[44px] items-center gap-2 rounded-xl p-1.5 transition hover:bg-blue-50/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50"
-                  >
-                    <div className="relative size-14 flex-none overflow-hidden rounded-xl bg-white transition group-hover:scale-[1.04]">
-                      <Image src={family.image} alt="" fill sizes="56px" className="object-contain" />
-                    </div>
-                    <p className="text-[11.5px] font-black leading-tight text-slate-800 group-hover:text-brand">{family.label}</p>
-                  </Link>
-                ))}
-              </div>
-              <Link href="/catalogo" className="inline-flex items-center justify-center gap-2 text-[12.5px] font-black text-brand">
-                Ver todas las categorías <span className="grid size-8 place-items-center rounded-full bg-brand text-white"><ArrowRight size={15} /></span>
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-white pb-10">
-          <div className="mx-auto max-w-[1320px] px-6 lg:px-10">
-            <div className="grid items-center gap-5 lg:grid-cols-[190px_1fr_auto]">
-              <h2 className="font-display text-[21px] font-semibold leading-[1.08] tracking-[-0.035em] text-ink">Marcas que trabajamos</h2>
-              <div className="grid grid-cols-3 items-center gap-x-6 gap-y-5 sm:grid-cols-5 lg:grid-cols-10">
-                {partners.brands.slice(0, 10).map((brand) => (
-                  <div key={brand.name} className="flex h-10 items-center justify-center">
-                    <Image src={brand.logo} alt={brand.name} width={118} height={42} className="max-h-9 w-auto object-contain" />
-                  </div>
-                ))}
-              </div>
-              <Link href="/marcas" className="inline-flex items-center justify-center gap-2 text-[12.5px] font-black text-brand">
-                Ver todas las marcas <span className="grid size-8 place-items-center rounded-full bg-brand text-white"><ArrowRight size={15} /></span>
-              </Link>
             </div>
           </div>
         </section>
