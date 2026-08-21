@@ -118,10 +118,10 @@ export function HomeBlueWholesale() {
 
   return (
     <>
-      <main id="main-content" className="home-blue min-h-screen w-full max-w-full overflow-hidden bg-white text-ink">
+      <main id="main-content" className="home-blue min-h-screen w-full max-w-full overflow-hidden bg-[#eef1f5] text-ink">
         <Navbar />
 
-        <section className="relative overflow-hidden border-b border-slate-200 bg-white">
+        <section className="relative overflow-hidden border-b border-slate-300">
           <div className="absolute inset-y-0 right-0 hidden w-[42%] bg-[linear-gradient(132deg,transparent_0%,transparent_25%,rgba(0,70,234,0.06)_25%,rgba(0,70,234,0.06)_62%,transparent_62%)] lg:block" />
           <div className="absolute right-0 top-16 hidden h-56 w-36 bg-[radial-gradient(circle,#b8cdfd_1px,transparent_1.6px)] opacity-50 [background-size:10px_10px] lg:block" />
           <div className="relative mx-auto grid max-w-[1320px] items-center gap-10 px-6 pb-10 pt-12 lg:grid-cols-[0.92fr_1.08fr] lg:px-10 lg:pb-12 lg:pt-16">
@@ -188,7 +188,7 @@ export function HomeBlueWholesale() {
           </div>
         </section>
 
-        <section className="border-b border-slate-200 bg-[#f7f9fc] py-6">
+        <section className="border-b border-slate-300 bg-white py-6">
           <div className="mx-auto flex max-w-[1320px] flex-col items-center gap-5 px-6 lg:flex-row lg:gap-9 lg:px-10">
             {clientLogos.length > 0 ? (
               <>
@@ -219,7 +219,7 @@ export function HomeBlueWholesale() {
 
         <CorporateSolutionsShowcase />
 
-        <section className="bg-white py-10 lg:py-16">
+        <section className="py-10 lg:py-16">
           <div className="mx-auto grid max-w-[1320px] gap-5 px-6 sm:grid-cols-2 lg:grid-cols-3 lg:px-10">
             {audienceCards.map((card) => (
               <article key={card.title} className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_22px_70px_-54px_rgba(15,23,42,0.75)] transition hover:-translate-y-1 hover:shadow-[0_28px_80px_-48px_rgba(0,70,234,0.5)]">
@@ -350,7 +350,7 @@ export function HomeBlueWholesale() {
           </div>
         </section>
 
-        <section className="bg-white py-10">
+        <section className="py-10">
           <div className="mx-auto max-w-[1320px] px-6 lg:px-10">
             <div className="relative overflow-hidden rounded-[28px] bg-gradient-to-br from-[#071d78] via-[#0046EA] to-[#0ea5ff] p-7 text-white shadow-[0_34px_80px_-44px_rgba(0,109,255,0.85)] md:p-10">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_50%,rgba(255,255,255,0.24),transparent_20%),radial-gradient(circle_at_88%_0%,rgba(255,176,0,0.18),transparent_26%)]" />
