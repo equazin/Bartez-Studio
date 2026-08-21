@@ -117,15 +117,22 @@ export function Navbar() {
       <div className="mx-auto flex h-[64px] max-w-[1320px] min-w-0 items-center justify-between px-5 sm:px-6">
         {/* Left: logo + nav */}
         <div className="flex min-w-0 items-center">
-          <Link href="/" className="flex min-w-0 items-center" aria-label="Bartez Tecnología — inicio">
+          <Link href="/" className="flex min-w-0 items-center gap-2.5" aria-label="Bartez Tecnología — inicio">
+            {/* bartez-logo.png tiene el wordmark en blanco (pensado para fondos
+                oscuros como el Footer o el panel admin). En este navbar claro
+                usamos el isologo (círculo azul, visible en cualquier fondo) +
+                texto real en tinta — no depende del color fijo de una imagen. */}
             <Image
-              src="/brand/bartez-logo.png"
-              alt="Bartez Tecnología"
-              width={160}
-              height={40}
-              className="h-[32px] w-auto object-contain"
+              src="/brand/bartez-isologo.png"
+              alt=""
+              width={36}
+              height={36}
+              className="size-8 flex-none object-contain"
               priority
             />
+            <span className="font-display text-[16.5px] font-semibold leading-none tracking-[-0.02em] text-ink">
+              Bartez <span className="font-normal text-slate-500">Tecnología</span>
+            </span>
           </Link>
 
           <nav className="ml-7 hidden items-center lg:flex" aria-label="Navegación principal">
