@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Inter, Manrope } from "next/font/google";
 import "streamdown/styles.css";
 import "./globals.css";
 import { company, seo, contact, faq } from "../constants";
@@ -16,7 +16,7 @@ const inter = Inter({
   display: "swap",
 });
 
-const spaceGrotesk = Space_Grotesk({
+const manrope = Manrope({
   subsets: ["latin"],
   variable: "--font-space",
   weight: ["500", "600", "700"],
@@ -114,7 +114,7 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" data-scroll-behavior="smooth" className={`${inter.variable} ${spaceGrotesk.variable}`}>
+    <html lang="es" data-scroll-behavior="smooth" className={`${inter.variable} ${manrope.variable}`}>
       <head>
         <script
           type="application/ld+json"
