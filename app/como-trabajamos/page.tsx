@@ -57,7 +57,7 @@ const steps = [
     num: "03",
     icon: Truck,
     title: "Compra y despacho",
-    desc: "Al confirmar la orden, preparamos el pedido y coordinamos el despacho por Andreani a todo el país. Recibís número de seguimiento el mismo día que sale.",
+    desc: "Al confirmar la orden, preparamos el pedido y coordinamos el despacho con el operador logístico que mejor cubra tu zona, a todo el país. Recibís número de seguimiento el mismo día que sale.",
   },
   {
     num: "04",
@@ -118,7 +118,7 @@ export default function ComoTrabajamosPage() {
             Un solo interlocutor, <span className="text-[#0046EA]">del pedido a la entrega.</span>
           </>
         }
-        intro="Cotizamos en 24 hs hábiles, conseguimos el equipamiento que necesitás y lo entregamos con garantía oficial vía Andreani a todo el país. De punta a punta hablás con el mismo asesor."
+        intro="Cotizamos en 24 hs hábiles, conseguimos el equipamiento que necesitás y lo entregamos con garantía oficial a todo el país. De punta a punta hablás con el mismo asesor."
         image="/photos/home/warehouse-hero.jpg"
         imageAlt="Logística de abastecimiento IT"
         imagePriority
@@ -127,7 +127,7 @@ export default function ComoTrabajamosPage() {
         mediaSubtitle="Proceso ordenado, plazos reales y documentación completa desde la primera respuesta."
         mediaItems={[
           { icon: ClipboardList, title: "24 hs", description: "Cotización hábil, no genérica." },
-          { icon: Truck, title: "Andreani", description: "Despacho nacional con tracking." },
+          { icon: Truck, title: "Logística", description: "Despacho nacional con tracking." },
           { icon: ShieldCheck, title: "Garantía", description: "Oficial del fabricante en cada compra." },
         ]}
         metrics={[
@@ -209,7 +209,7 @@ export default function ComoTrabajamosPage() {
           {[
             { icon: Receipt, label: "Cotización formal por escrito" },
             { icon: Package, label: "Confirmación de disponibilidad y plazo" },
-            { icon: Truck, label: "Número de seguimiento Andreani" },
+            { icon: Truck, label: "Número de seguimiento del envío" },
             { icon: FileCheck2, label: "Factura A y remito" },
           ].map((item) => (
             <div key={item.label} className="flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-4">

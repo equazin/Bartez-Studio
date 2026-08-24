@@ -157,7 +157,7 @@ export function HomeBlueWholesale() {
                 ))}
               </div>
               <Link href="/como-trabajamos" className="mt-3 inline-flex items-center gap-1.5 text-[13px] font-semibold text-slate-600 transition hover:text-brand">
-                Cómo trabajamos: cotización 24 hs · Andreani nacional · garantía oficial <ArrowRight size={14} />
+                Cómo trabajamos: cotización 24 hs · envíos a todo el país · garantía oficial <ArrowRight size={14} />
               </Link>
             </div>
 
