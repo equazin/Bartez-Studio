@@ -122,77 +122,82 @@ export function HomeBlueWholesale() {
         <Navbar />
 
         <section className="relative overflow-hidden border-b border-slate-300">
-          {/* Desktop (lg+): foto full-bleed a la derecha, sin card flotante ni
-              huecos de canvas alrededor. Degradado ancho (8 paradas en 50 puntos
-              de ancho) para que se funda como niebla, no como un borde recto. */}
-          <div className="absolute inset-y-0 right-0 hidden w-[78%] lg:block">
-            <Image
-              src="/photos/bartez-operations-hero-v2.webp"
-              alt="Operación y logística de Bartez Tecnología"
-              fill
-              priority
-              sizes="78vw"
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-[linear-gradient(90deg,#eef1f5_0%,#eef1f5_20%,rgba(238,241,245,0.97)_30%,rgba(238,241,245,0.85)_38%,rgba(238,241,245,0.6)_46%,rgba(238,241,245,0.32)_54%,rgba(238,241,245,0.12)_62%,rgba(238,241,245,0)_72%)]" />
-            <div className="absolute bottom-6 right-6 rounded-xl bg-white/94 px-4 py-2 text-[12px] font-black text-ink shadow-sm backdrop-blur-sm">
-              Operación y logística propia · Rosario
+          {/* Envoltorio propio para la foto + el contenido del hero: así el
+              inset-y-0 de la foto no se estira detrás de la fila de íconos
+              de abajo (que vive en su propio bloque, fuera de este wrapper). */}
+          <div className="relative overflow-hidden">
+            {/* Desktop (lg+): foto full-bleed a la derecha, sin card flotante
+                ni huecos de canvas alrededor. Degradado ancho (8 paradas en
+                50 puntos de ancho) para que se funda como niebla. */}
+            <div className="absolute inset-y-0 right-0 hidden w-[78%] lg:block">
+              <Image
+                src="/photos/bartez-operations-hero-v2.webp"
+                alt="Operación y logística de Bartez Tecnología"
+                fill
+                priority
+                sizes="78vw"
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-[linear-gradient(90deg,#eef1f5_0%,#eef1f5_20%,rgba(238,241,245,0.97)_30%,rgba(238,241,245,0.85)_38%,rgba(238,241,245,0.6)_46%,rgba(238,241,245,0.32)_54%,rgba(238,241,245,0.12)_62%,rgba(238,241,245,0)_72%)]" />
+              <div className="absolute bottom-6 right-6 rounded-xl bg-white/94 px-4 py-2 text-[12px] font-black text-ink shadow-sm backdrop-blur-sm">
+                Operación y logística propia · Rosario
+              </div>
             </div>
-          </div>
 
-          {/* Mobile (< lg): la foto pasa a ser una banda horizontal arriba con
-              degradado vertical — nunca se fuerza el corte lateral en pantallas
-              angostas. */}
-          <div className="relative h-[200px] overflow-hidden lg:hidden">
-            <Image
-              src="/photos/bartez-operations-hero-v2.webp"
-              alt="Operación y logística de Bartez Tecnología"
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(238,241,245,0)_60%,#eef1f5_100%)]" />
-            <div className="absolute bottom-3 left-4 rounded-xl bg-white/94 px-3 py-1.5 text-[11px] font-black text-ink shadow-sm backdrop-blur-sm">
-              Operación propia · Rosario
+            {/* Mobile (< lg): la foto pasa a ser una banda horizontal arriba
+                con degradado vertical — nunca se fuerza el corte lateral en
+                pantallas angostas. */}
+            <div className="relative h-[200px] overflow-hidden lg:hidden">
+              <Image
+                src="/photos/bartez-operations-hero-v2.webp"
+                alt="Operación y logística de Bartez Tecnología"
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(238,241,245,0)_60%,#eef1f5_100%)]" />
+              <div className="absolute bottom-3 left-4 rounded-xl bg-white/94 px-3 py-1.5 text-[11px] font-black text-ink shadow-sm backdrop-blur-sm">
+                Operación propia · Rosario
+              </div>
             </div>
-          </div>
 
-          <div className="relative z-10 mx-auto max-w-[1320px] px-6 pb-10 pt-8 lg:px-10 lg:pb-12 lg:pt-16">
-            <div className="max-w-[540px]">
-              <p className="text-[12px] font-semibold uppercase tracking-[0.17em] text-brand">Mayorista IT en Argentina</p>
-              <h1 className="mt-5 font-display text-[clamp(34px,4.6vw,50px)] font-semibold leading-[1.08] tracking-[-0.035em] text-ink">
-                Distribución IT para <span className="text-brand">empresas y revendedores</span>
-              </h1>
-              <p className="mt-6 max-w-[52ch] text-[15px] leading-relaxed text-slate-600 lg:text-[16px]">
-                Cotizamos en 24 hs hábiles, conseguimos el equipamiento que necesitás y lo entregamos con garantía
-                oficial a todo el país.
-              </p>
+            <div className="relative z-10 mx-auto max-w-[1320px] px-6 pb-10 pt-8 lg:px-10 lg:pb-12 lg:pt-16">
+              <div className="max-w-[540px]">
+                <p className="text-[12px] font-semibold uppercase tracking-[0.17em] text-brand">Mayorista IT en Argentina</p>
+                <h1 className="mt-5 font-display text-[clamp(34px,4.6vw,50px)] font-semibold leading-[1.08] tracking-[-0.035em] text-ink">
+                  Distribución IT para <span className="text-brand">empresas y revendedores</span>
+                </h1>
+                <p className="mt-6 max-w-[52ch] text-[15px] leading-relaxed text-slate-600 lg:text-[16px]">
+                  Cotizamos en 24 hs hábiles, conseguimos el equipamiento que necesitás y lo entregamos con garantía
+                  oficial a todo el país.
+                </p>
 
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <a
-                  href={whatsappLinks.quote}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-6 py-3.5 text-[14px] font-black text-white shadow-[0_18px_38px_-18px_rgba(0,70,234,0.65)] transition hover:-translate-y-0.5 hover:bg-brand-bright"
-                >
-                  <MessageCircle size={19} /> Cotizar por WhatsApp
-                </a>
-                <Link href="/catalogo" className="inline-flex items-center justify-center gap-2 rounded-xl border border-brand/70 bg-white px-6 py-3.5 text-[14px] font-black text-brand transition hover:bg-blue-50">
-                  <Box size={18} /> Catálogo de soluciones
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                  <a
+                    href={whatsappLinks.quote}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-6 py-3.5 text-[14px] font-black text-white shadow-[0_18px_38px_-18px_rgba(0,70,234,0.65)] transition hover:-translate-y-0.5 hover:bg-brand-bright"
+                  >
+                    <MessageCircle size={19} /> Cotizar por WhatsApp
+                  </a>
+                  <Link href="/catalogo" className="inline-flex items-center justify-center gap-2 rounded-xl border border-brand/70 bg-white px-6 py-3.5 text-[14px] font-black text-brand transition hover:bg-blue-50">
+                    <Box size={18} /> Catálogo de soluciones
+                  </Link>
+                </div>
+
+                <div className="mt-7 flex flex-wrap items-center gap-x-7 gap-y-2 border-t border-slate-200 pt-6">
+                  {heroTrust.map((item) => (
+                    <span key={item.label} className="text-[12.5px] font-semibold text-slate-500">
+                      <span className="font-display text-[15px] font-semibold text-ink">{item.value}</span> {item.label}
+                    </span>
+                  ))}
+                </div>
+                <Link href="/como-trabajamos" className="mt-3 inline-flex items-center gap-1.5 text-[13px] font-semibold text-slate-600 transition hover:text-brand">
+                  Cómo trabajamos: cotización 24 hs · envíos a todo el país · garantía oficial <ArrowRight size={14} />
                 </Link>
               </div>
-
-              <div className="mt-7 flex flex-wrap items-center gap-x-7 gap-y-2 border-t border-slate-200 pt-6">
-                {heroTrust.map((item) => (
-                  <span key={item.label} className="text-[12.5px] font-semibold text-slate-500">
-                    <span className="font-display text-[15px] font-semibold text-ink">{item.value}</span> {item.label}
-                  </span>
-                ))}
-              </div>
-              <Link href="/como-trabajamos" className="mt-3 inline-flex items-center gap-1.5 text-[13px] font-semibold text-slate-600 transition hover:text-brand">
-                Cómo trabajamos: cotización 24 hs · envíos a todo el país · garantía oficial <ArrowRight size={14} />
-              </Link>
             </div>
           </div>
 
