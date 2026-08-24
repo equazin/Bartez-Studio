@@ -122,15 +122,49 @@ export function HomeBlueWholesale() {
         <Navbar />
 
         <section className="relative overflow-hidden border-b border-slate-300">
-          <div className="absolute inset-y-0 right-0 hidden w-[42%] bg-[linear-gradient(132deg,transparent_0%,transparent_25%,rgba(0,70,234,0.06)_25%,rgba(0,70,234,0.06)_62%,transparent_62%)] lg:block" />
-          <div className="absolute right-0 top-16 hidden h-56 w-36 bg-[radial-gradient(circle,#b8cdfd_1px,transparent_1.6px)] opacity-50 [background-size:10px_10px] lg:block" />
-          <div className="relative mx-auto grid max-w-[1320px] items-center gap-10 px-6 pb-10 pt-12 lg:grid-cols-[0.92fr_1.08fr] lg:px-10 lg:pb-12 lg:pt-16">
-            <div className="relative z-10 min-w-0">
+          {/* Desktop (lg+): foto full-bleed a la derecha, sin card flotante ni
+              huecos de canvas alrededor. Degradado ancho (8 paradas en 50 puntos
+              de ancho) para que se funda como niebla, no como un borde recto. */}
+          <div className="absolute inset-y-0 right-0 hidden w-[78%] lg:block">
+            <Image
+              src="/photos/bartez-operations-hero-v2.webp"
+              alt="Operación y logística de Bartez Tecnología"
+              fill
+              priority
+              sizes="78vw"
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-[linear-gradient(90deg,#eef1f5_0%,#eef1f5_20%,rgba(238,241,245,0.97)_30%,rgba(238,241,245,0.85)_38%,rgba(238,241,245,0.6)_46%,rgba(238,241,245,0.32)_54%,rgba(238,241,245,0.12)_62%,rgba(238,241,245,0)_72%)]" />
+            <div className="absolute bottom-6 right-6 rounded-xl bg-white/94 px-4 py-2 text-[12px] font-black text-ink shadow-sm backdrop-blur-sm">
+              Operación y logística propia · Rosario
+            </div>
+          </div>
+
+          {/* Mobile (< lg): la foto pasa a ser una banda horizontal arriba con
+              degradado vertical — nunca se fuerza el corte lateral en pantallas
+              angostas. */}
+          <div className="relative h-[200px] overflow-hidden lg:hidden">
+            <Image
+              src="/photos/bartez-operations-hero-v2.webp"
+              alt="Operación y logística de Bartez Tecnología"
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(238,241,245,0)_60%,#eef1f5_100%)]" />
+            <div className="absolute bottom-3 left-4 rounded-xl bg-white/94 px-3 py-1.5 text-[11px] font-black text-ink shadow-sm backdrop-blur-sm">
+              Operación propia · Rosario
+            </div>
+          </div>
+
+          <div className="relative z-10 mx-auto max-w-[1320px] px-6 pb-10 pt-8 lg:px-10 lg:pb-12 lg:pt-16">
+            <div className="max-w-[540px]">
               <p className="text-[12px] font-semibold uppercase tracking-[0.17em] text-brand">Mayorista IT en Argentina</p>
-              <h1 className="mt-5 max-w-[620px] font-display text-[clamp(38px,4.6vw,52px)] font-semibold leading-[1.06] tracking-[-0.035em] text-ink">
+              <h1 className="mt-5 font-display text-[clamp(34px,4.6vw,50px)] font-semibold leading-[1.08] tracking-[-0.035em] text-ink">
                 Distribución IT para <span className="text-brand">empresas y revendedores</span>
               </h1>
-              <p className="mt-6 max-w-[54ch] text-[15.5px] leading-relaxed text-slate-600 lg:text-[16.5px]">
+              <p className="mt-6 max-w-[52ch] text-[15px] leading-relaxed text-slate-600 lg:text-[16px]">
                 Cotizamos en 24 hs hábiles, conseguimos el equipamiento que necesitás y lo entregamos con garantía
                 oficial a todo el país.
               </p>
@@ -160,26 +194,9 @@ export function HomeBlueWholesale() {
                 Cómo trabajamos: cotización 24 hs · envíos a todo el país · garantía oficial <ArrowRight size={14} />
               </Link>
             </div>
-
-            <div className="relative z-10 overflow-hidden rounded-2xl border border-blue-100 shadow-[0_28px_70px_-46px_rgba(0,70,234,0.35)]">
-              <div className="relative aspect-[4/3.05]">
-                <Image
-                  src="/photos/bartez-operations-hero-v2.webp"
-                  alt="Operación y logística de Bartez Tecnología"
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 660px"
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-[linear-gradient(200deg,rgba(0,70,234,0.14),transparent_55%)]" />
-              </div>
-              <div className="absolute bottom-4 left-4 rounded-xl bg-white/94 px-4 py-2 text-[12px] font-black text-ink shadow-sm backdrop-blur-sm">
-                Operación y logística propia · Rosario
-              </div>
-            </div>
           </div>
 
-          <div className="mx-auto max-w-[1320px] px-6 lg:px-10">
+          <div className="relative z-10 mx-auto max-w-[1320px] px-6 lg:px-10">
             <div className="grid gap-6 border-t border-slate-200 py-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-10">
               {heroProof.map((item) => (
                 <ProofItem key={item.title} {...item} />
