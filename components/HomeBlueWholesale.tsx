@@ -18,8 +18,6 @@ import {
 } from "lucide-react";
 import { company, partners } from "@/constants";
 import { capabilities } from "@/lib/capabilities";
-import { resolveClientLogo } from "@/lib/client-logo";
-import { staticSuccessCases } from "@/lib/success-cases";
 import { CookieBanner } from "@/components/CookieBanner";
 import { CorporateSolutionsShowcase } from "@/components/CorporateSolutionsShowcase";
 import { Footer } from "@/components/Footer";
@@ -110,12 +108,6 @@ function ProofItem({ icon: Icon, title, text }: { icon: LucideIcon; title: strin
 }
 
 export function HomeBlueWholesale() {
-  // Logos de clientes reales para el trust bar — se filtran los que aún no
-  // tienen archivo subido en disco (ver lib/client-logo.ts).
-  const clientLogos = staticSuccessCases
-    .map((item) => ({ name: item.clientName, logo: resolveClientLogo(item.logoUrl) }))
-    .filter((item): item is { name: string; logo: string } => Boolean(item.logo));
-
   return (
     <>
       <main id="main-content" className="home-blue min-h-screen w-full max-w-full overflow-hidden bg-[#eef1f5] text-ink">
@@ -210,26 +202,13 @@ export function HomeBlueWholesale() {
           </div>
         </section>
 
-        <section className="border-b border-slate-300 bg-white py-6">
-          <div className="mx-auto flex max-w-[1320px] flex-col items-center gap-5 px-6 lg:flex-row lg:gap-9 lg:px-10">
-            {clientLogos.length > 0 ? (
-              <>
-                <span className="flex-none text-[11px] font-bold uppercase tracking-[0.1em] text-slate-500">Clientes reales</span>
-                <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 lg:justify-start">
-                  {clientLogos.map((client) => (
-                    <div key={client.name} className="relative h-6 w-[110px]">
-                      <Image src={client.logo} alt={client.name} fill sizes="110px" className="object-contain object-left opacity-80" />
-                    </div>
-                  ))}
-                </div>
-                <span className="hidden h-6 w-px flex-none bg-slate-200 lg:block" />
-              </>
-            ) : null}
-            <span className="flex-none text-[11px] font-bold uppercase tracking-[0.1em] text-slate-500">Marcas</span>
-            <div className="flex flex-1 flex-wrap items-center justify-center gap-x-8 gap-y-3 lg:justify-start">
+        <section className="border-b border-slate-300 bg-white py-8">
+          <div className="mx-auto flex max-w-[1320px] flex-col items-center gap-6 px-6 lg:flex-row lg:gap-10 lg:px-10">
+            <span className="flex-none text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Marcas</span>
+            <div className="flex flex-1 flex-wrap items-center justify-center gap-x-14 gap-y-6">
               {partners.brands.slice(0, 8).map((brand) => (
-                <div key={brand.name} className="relative h-6 w-[86px]">
-                  <Image src={brand.logo} alt={brand.name} fill sizes="86px" className="object-contain object-left opacity-75" />
+                <div key={brand.name} className="relative h-8 w-[104px]">
+                  <Image src={brand.logo} alt={brand.name} fill sizes="104px" className="object-contain opacity-75" />
                 </div>
               ))}
             </div>
