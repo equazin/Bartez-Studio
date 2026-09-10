@@ -1,5 +1,6 @@
+import { Prisma } from "@prisma/client";
 import { getDb } from "../../db.ts";
-import { findDocType } from "../afip/catalog.ts";
+import { AFIP_DOC_TYPES, findDocType } from "../afip/catalog.ts";
 
 /**
  * Centro de alertas operativas (computado on-demand, sin tabla propia).
@@ -132,5 +133,60 @@ export async function computeAlerts(organizationId: string): Promise<AlertsResul
       pendingApprovals: pendingApprovals.length,
       total: overdueInvoices.length + lowStock.length + pendingApprovals.length,
     },
+  };
+}
+
+export type AlertCounts = AlertsResult["counts"];
+
+/**
+ * Variante liviana de {@link computeAlerts}: devuelve solo los contadores,
+ * agregando en SQL en vez de traer las filas y contarlas en memoria.
+ *
+ * La usa el badge de alertas del shell, que hace polling y solo necesita
+ * `total`. Traer los tres listados completos cada pocos minutos era el
+ * principal consumo de transferencia de datos del panel.
+ */
+export async function computeAlertCounts(organizationId: string): Promise<AlertCounts> {
+  const db = getDb();
+  const now = new Date();
+  const creditNoteCodes = AFIP_DOC_TYPES.filter((t) => t.isCreditNote).map((t) => t.code);
+
+  const [overdueRows, lowStockRows, pendingApprovals] = await Promise.all([
+    db.$queryRaw<{ count: number }[]>`
+      SELECT COUNT(*)::int AS count FROM (
+        SELECT i.id
+        FROM "Invoice" i
+        LEFT JOIN "ReceiptAllocation" ra ON ra."invoiceId" = i.id
+        WHERE i."organizationId" = ${organizationId}
+          AND i.status = 'issued'
+          AND i."deletedAt" IS NULL
+          AND i."paymentDueDate" < ${now}
+          AND i."docTypeCode" NOT IN (${Prisma.join(creditNoteCodes)})
+        GROUP BY i.id, i.total
+        HAVING i.total - COALESCE(SUM(ra.amount), 0) > 0.005
+      ) t
+    `,
+    db.$queryRaw<{ count: number }[]>`
+      SELECT COUNT(*)::int AS count
+      FROM "StockItem" si
+      JOIN "Product" p ON p.id = si."productId"
+      WHERE si."reorderPoint" IS NOT NULL
+        AND si.quantity <= si."reorderPoint"
+        AND p."organizationId" = ${organizationId}
+        AND p."deletedAt" IS NULL
+    `,
+    db.purchaseOrder.count({
+      where: { organizationId, deletedAt: null, approvalStatus: "pending" },
+    }),
+  ]);
+
+  const overdueInvoices = overdueRows[0]?.count ?? 0;
+  const lowStock = lowStockRows[0]?.count ?? 0;
+
+  return {
+    overdueInvoices,
+    lowStock,
+    pendingApprovals,
+    total: overdueInvoices + lowStock + pendingApprovals,
   };
 }

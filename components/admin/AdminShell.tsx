@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
   BarChart3, Bell, BookOpen, Boxes, Building2, BriefcaseBusiness, CalendarCheck,
   ChevronDown, ExternalLink, FileSpreadsheet, FileText, Hash, LayoutDashboard,
@@ -12,6 +12,7 @@ import {
   UsersRound, Wallet, Warehouse, Wrench, X,
 } from "lucide-react";
 import { Copilot } from "./Copilot";
+import { usePolling } from "./usePolling";
 import { OnboardingTour } from "./OnboardingTour";
 import { cn } from "../../lib/utils";
 import { AdminToastProvider, LeadNotificationPoller } from "./AdminToast";
@@ -206,37 +207,34 @@ function Brand() {
   );
 }
 
+const ALERTS_POLL_MS = 600_000; // 10 min
+
 function AlertsBell() {
   const [count, setCount] = useState(0);
   const previousCountRef = useRef<number | null>(null);
 
-  useEffect(() => {
-    let active = true;
-    async function poll() {
-      try {
-        const res = await fetch("/api/admin/alerts");
-        const json = await res.json();
-        if (active && res.ok && json.ok) {
-          const nextCount = json.data.counts.total;
-          if (
-            previousCountRef.current !== null &&
-            nextCount > previousCountRef.current &&
-            window.bartezDesktop?.isDesktop
-          ) {
-            void window.bartezDesktop.notify({
-              title: "Nuevas alertas operativas",
-              body: `${nextCount} alertas pendientes en Bartez ERP`,
-            });
-          }
-          previousCountRef.current = nextCount;
-          setCount(nextCount);
-        }
-      } catch { /* noop */ }
-    }
-    void poll();
-    const interval = setInterval(poll, 120_000); // refresca cada 2 min
-    return () => { active = false; clearInterval(interval); };
-  }, []);
+  usePolling(async () => {
+    try {
+      // ?counts=1: solo los contadores, no los listados completos.
+      const res = await fetch("/api/admin/alerts?counts=1");
+      if (!res.ok) return;
+      const json = await res.json();
+      if (!json.ok) return;
+      const nextCount = json.data.counts.total;
+      if (
+        previousCountRef.current !== null &&
+        nextCount > previousCountRef.current &&
+        window.bartezDesktop?.isDesktop
+      ) {
+        void window.bartezDesktop.notify({
+          title: "Nuevas alertas operativas",
+          body: `${nextCount} alertas pendientes en Bartez ERP`,
+        });
+      }
+      previousCountRef.current = nextCount;
+      setCount(nextCount);
+    } catch { /* noop */ }
+  }, ALERTS_POLL_MS);
 
   return (
     <Link

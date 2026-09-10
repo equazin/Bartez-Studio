@@ -3,6 +3,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Bell, UserCheck, X } from "lucide-react";
 import { cn } from "../../lib/utils";
+import { usePolling } from "./usePolling";
+
+const LEADS_POLL_MS = 300_000; // 5 min
 
 type Toast = {
   id: string;
@@ -69,35 +72,29 @@ export function AdminToastProvider() {
 export function LeadNotificationPoller() {
   const lastCheckRef = useRef<string | null>(null);
 
-  useEffect(() => {
-    let active = true;
+  usePolling(async () => {
+    try {
+      // withTotal=0 evita el count() sobre toda la tabla: solo necesitamos
+      // el lead más reciente para decidir si mostramos el toast.
+      const res = await fetch("/api/admin/leads?limit=1&page=1&withTotal=0");
+      if (!res.ok) return;
+      const json = await res.json();
+      const latest = json.data?.[0];
+      if (!latest) return;
 
-    async function poll() {
-      try {
-        const res = await fetch("/api/admin/leads?limit=1&page=1");
-        if (!res.ok) return;
-        const json = await res.json();
-        const latest = json.data?.[0];
-        if (!latest) return;
-
-        const key = `${latest.id}-${latest.createdAt}`;
-        if (lastCheckRef.current && lastCheckRef.current !== key) {
-          showToast({
-            title: "Nuevo lead",
-            body: `${latest.name}${latest.company ? ` · ${latest.company}` : ""} — ${latest.source}`,
-            icon: "lead",
-          });
-        }
-        lastCheckRef.current = key;
-      } catch {
-        // silent
+      const key = `${latest.id}-${latest.createdAt}`;
+      if (lastCheckRef.current && lastCheckRef.current !== key) {
+        showToast({
+          title: "Nuevo lead",
+          body: `${latest.name}${latest.company ? ` · ${latest.company}` : ""} — ${latest.source}`,
+          icon: "lead",
+        });
       }
+      lastCheckRef.current = key;
+    } catch {
+      // silent
     }
-
-    void poll();
-    const interval = setInterval(() => { if (active) void poll(); }, 30_000);
-    return () => { active = false; clearInterval(interval); };
-  }, []);
+  }, LEADS_POLL_MS);
 
   return null;
 }

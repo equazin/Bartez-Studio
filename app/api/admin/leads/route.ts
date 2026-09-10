@@ -3,6 +3,7 @@ import { verifyToken, tokenFromCookieHeader } from "../../../../lib/auth-token";
 import { getDb } from "../../../../lib/db";
 import { checkRateLimit } from "../../../../lib/rate-limit";
 import { logAudit } from "../../../../lib/audit";
+import { adminServerError } from "../../../../lib/admin-api";
 
 export const dynamic = "force-dynamic";
 
@@ -27,18 +28,26 @@ export async function GET(request: NextRequest) {
     ];
   }
 
-  const db = getDb();
-  const [leads, total] = await Promise.all([
-    db.lead.findMany({
-      where,
-      orderBy: { updatedAt: "desc" },
-      skip: (page - 1) * limit,
-      take: limit,
-    }),
-    db.lead.count({ where }),
-  ]);
+  // withTotal=0 omite el count() sobre la tabla entera. Lo usa el poller de
+  // notificaciones, que solo mira el lead más reciente y descarta el total.
+  const withTotal = url.searchParams.get("withTotal") !== "0";
 
-  return NextResponse.json({ data: leads, meta: { total, page, limit } });
+  const db = getDb();
+  try {
+    const [leads, total] = await Promise.all([
+      db.lead.findMany({
+        where,
+        orderBy: { updatedAt: "desc" },
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+      withTotal ? db.lead.count({ where }) : Promise.resolve(null),
+    ]);
+
+    return NextResponse.json({ data: leads, meta: { total, page, limit } });
+  } catch (error) {
+    return adminServerError("leads.list", error);
+  }
 }
 
 export async function POST(request: NextRequest) {

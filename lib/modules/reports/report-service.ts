@@ -27,6 +27,47 @@ function periodTrunc(date: Date, grouping: ReportGrouping): string {
   return `${y}-W${String(week).padStart(2, "0")}`;
 }
 
+interface ReceivablesAging {
+  total: number;
+  d0_30: number;
+  d31_60: number;
+  d61_90: number;
+  d90_plus: number;
+}
+
+/**
+ * Cuentas por cobrar y su antigüedad, agregadas en SQL.
+ *
+ * Antes se traían todas las facturas emitidas con todas sus imputaciones para
+ * sumarlas en memoria: un query sin techo que crecía con la antigüedad de la
+ * organización y se ejecutaba en cada render del dashboard. El resultado es el
+ * mismo, pero ahora cruza la red una sola fila.
+ */
+async function receivablesAging(organizationId: string): Promise<ReceivablesAging> {
+  const db = getDb();
+  const rows = await db.$queryRaw<ReceivablesAging[]>`
+    SELECT
+      COALESCE(SUM(pending), 0)::float8                             AS total,
+      COALESCE(SUM(pending) FILTER (WHERE age <= 30), 0)::float8    AS d0_30,
+      COALESCE(SUM(pending) FILTER (WHERE age > 30 AND age <= 60), 0)::float8 AS d31_60,
+      COALESCE(SUM(pending) FILTER (WHERE age > 60 AND age <= 90), 0)::float8 AS d61_90,
+      COALESCE(SUM(pending) FILTER (WHERE age > 90), 0)::float8     AS d90_plus
+    FROM (
+      SELECT
+        i.total - COALESCE(SUM(ra.amount), 0) AS pending,
+        FLOOR(EXTRACT(EPOCH FROM (NOW() - i."issueDate")) / 86400) AS age
+      FROM "Invoice" i
+      LEFT JOIN "ReceiptAllocation" ra ON ra."invoiceId" = i.id
+      WHERE i."organizationId" = ${organizationId}
+        AND i.status = 'issued'
+        AND i."deletedAt" IS NULL
+      GROUP BY i.id, i.total, i."issueDate"
+      HAVING i.total - COALESCE(SUM(ra.amount), 0) > 0.005
+    ) t
+  `;
+  return rows[0] ?? { total: 0, d0_30: 0, d31_60: 0, d61_90: 0, d90_plus: 0 };
+}
+
 export async function financialOverview(options: { organizationId: string; from?: Date; to?: Date }) {
   const db = getDb();
   const where = {
@@ -34,7 +75,7 @@ export async function financialOverview(options: { organizationId: string; from?
     ...(options.from || options.to ? { issueDate: { gte: options.from, lte: options.to } } : {}),
   };
 
-  const [salesAgg, receiptsAgg, purchasesAgg, paymentsAgg, openInvoices, openSupplierAccounts, cashAccounts] = await Promise.all([
+  const [salesAgg, receiptsAgg, purchasesAgg, paymentsAgg, receivables, openSupplierAccounts, cashAccounts] = await Promise.all([
     db.invoice.aggregate({
       _sum: { total: true, taxTotal: true },
       _count: { _all: true },
@@ -55,10 +96,7 @@ export async function financialOverview(options: { organizationId: string; from?
       _count: { _all: true },
       where: { organizationId: options.organizationId, ...(options.from || options.to ? { paymentDate: { gte: options.from, lte: options.to } } : {}) },
     }),
-    db.invoice.findMany({
-      where: { organizationId: options.organizationId, status: "issued", deletedAt: null },
-      select: { id: true, total: true, issueDate: true, currency: true, allocations: { select: { amount: true } } },
-    }),
+    receivablesAging(options.organizationId),
     db.supplierAccountEntry.groupBy({
       by: ["supplierId", "currency"],
       where: { organizationId: options.organizationId },
@@ -70,20 +108,8 @@ export async function financialOverview(options: { organizationId: string; from?
     }),
   ]);
 
-  // AR aging
-  const aging = { d0_30: 0, d31_60: 0, d61_90: 0, d90_plus: 0 };
-  let totalReceivables = 0;
-  for (const inv of openInvoices) {
-    const paid = inv.allocations.reduce((s, a) => s + Number(a.amount), 0);
-    const pending = Number(inv.total) - paid;
-    if (pending <= 0.005) continue;
-    totalReceivables += pending;
-    const ageDays = Math.floor((Date.now() - inv.issueDate.getTime()) / 86400_000);
-    if (ageDays <= 30) aging.d0_30 += pending;
-    else if (ageDays <= 60) aging.d31_60 += pending;
-    else if (ageDays <= 90) aging.d61_90 += pending;
-    else aging.d90_plus += pending;
-  }
+  const totalReceivables = receivables.total;
+  const aging = receivables;
 
   // AP por proveedor
   let totalPayables = 0;
@@ -246,23 +272,17 @@ export async function ticketSummary(options: { organizationId: string; from?: Da
 export async function daysSalesOutstanding(options: { organizationId: string }) {
   const db = getDb();
   const ninetyDaysAgo = new Date(Date.now() - 90 * 86400_000);
-  const [salesAgg, openInvoices] = await Promise.all([
+  const [salesAgg, aging] = await Promise.all([
     db.invoice.aggregate({
       _sum: { total: true },
       where: { organizationId: options.organizationId, status: "issued", deletedAt: null, issueDate: { gte: ninetyDaysAgo } },
     }),
-    db.invoice.findMany({
-      where: { organizationId: options.organizationId, status: "issued", deletedAt: null },
-      select: { total: true, allocations: { select: { amount: true } } },
-    }),
+    receivablesAging(options.organizationId),
   ]);
 
   const totalSales = Number(salesAgg._sum.total ?? 0);
   if (totalSales <= 0) return { dso: 0, totalReceivables: 0, totalSales: 0 };
-  const receivables = openInvoices.reduce((s, inv) => {
-    const paid = inv.allocations.reduce((sa, a) => sa + Number(a.amount), 0);
-    return s + Math.max(0, Number(inv.total) - paid);
-  }, 0);
+  const receivables = aging.total;
   const dso = Math.round((receivables / totalSales) * 90);
   return { dso, totalReceivables: Math.round(receivables * 100) / 100, totalSales: Math.round(totalSales * 100) / 100 };
 }
