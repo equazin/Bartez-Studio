@@ -461,3 +461,67 @@ test("handleIncomingMessage skips processing if conversation status is escalated
     process.env.OPENAI_API_KEY = oldOpenaiKey;
   }
 });
+
+test("cuando la IA falla, deriva a humano sin fabricar un lead ni pedir confirmacion", async () => {
+  prismaMock.reset();
+
+  const oldGatewayKey = process.env.AI_GATEWAY_API_KEY;
+  const oldWaToken = process.env.WHATSAPP_API_TOKEN;
+  const oldWaPhoneId = process.env.WHATSAPP_PHONE_NUMBER_ID;
+  process.env.AI_GATEWAY_API_KEY = "mock-key";
+  process.env.WHATSAPP_API_TOKEN = "mock-wa-token";
+  process.env.WHATSAPP_PHONE_NUMBER_ID = "123456789";
+
+  const originalFetch = global.fetch;
+  try {
+    global.fetch = (async (url: string, options: any) => {
+      if (url.includes("/messages")) {
+        return new Response(
+          JSON.stringify({ messaging_product: "whatsapp", messages: [{ id: "wamid.sent-xxx" }] }),
+          { status: 200, headers: { "Content-Type": "application/json" } },
+        );
+      }
+      // La llamada al modelo falla: es lo que dispara fallbackResponse().
+      return new Response(JSON.stringify({ error: { message: "Unauthorized" } }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      });
+    }) as any;
+
+    await handleIncomingMessage({
+      senderPhone: "5493415559999",
+      senderName: "Matias",
+      messageId: "wamid.ai-caida",
+      messageType: "text" as const,
+      body: "Hola, vengo de la web de Bartez y necesito asesoramiento.",
+      timestamp: Date.now(),
+    });
+
+    const outbound = prismaMock.messages.filter((m) => m.direction === "outbound");
+    assert.equal(outbound.length, 1, "debe responder una sola vez");
+    assert.ok(
+      (outbound[0].body ?? "").includes("problema técnico"),
+      "responde el fallback tecnico",
+    );
+
+    // Nunca debe pedir el consentimiento ni dejar un lead pendiente en metadata:
+    // los datos de la IA no existen, armar un lead con ellos produce basura.
+    assert.ok(
+      !outbound.some((m) => (m.body ?? "").includes("confirmame con")),
+      "no pide confirmacion de lead",
+    );
+    assert.ok(
+      !outbound.some((m) => m.metadata?.pendingLead),
+      "no deja un pendingLead en metadata",
+    );
+
+    const conv = prismaMock.conversations[0];
+    assert.equal(conv.status, "escalated", "deriva la conversacion a un humano");
+    assert.notEqual(conv.leadCreated, true, "no marca leadCreated");
+  } finally {
+    global.fetch = originalFetch;
+    process.env.AI_GATEWAY_API_KEY = oldGatewayKey;
+    process.env.WHATSAPP_API_TOKEN = oldWaToken;
+    process.env.WHATSAPP_PHONE_NUMBER_ID = oldWaPhoneId;
+  }
+});

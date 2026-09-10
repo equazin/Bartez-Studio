@@ -7,6 +7,7 @@ import {
   WHATSAPP_REQUIRE_LEAD_CONFIRMATION,
 } from "./config.ts";
 import { getDb } from "../db.ts";
+import { logger } from "../logger.ts";
 import { processLead } from "../integrations/index.ts";
 import type { Lead } from "../schema.ts";
 
@@ -127,6 +128,21 @@ export async function handleIncomingMessage(message: ParsedMessage): Promise<voi
 
   const aiResult = await processWithAI(userText, history);
 
+  // La IA se cayó: derivamos a un humano y cortamos acá. `category` y
+  // `leadData` no son una clasificación real, así que armar un lead con ellos
+  // produce basura ("empresa: Sin especificar", necesidad = el texto del error)
+  // y además marca leadCreated, bloqueando el lead legítimo más adelante.
+  if (aiResult.failed) {
+    await createAndSendOutbound(db, conversation.id, message.senderPhone, aiResult.reply);
+    if (conversation.status !== "escalated") {
+      await db.waConversation.update({
+        where: { id: conversation.id },
+        data: { status: "escalated" },
+      });
+    }
+    return;
+  }
+
   const shouldCreateLead =
     aiResult.shouldEscalate ||
     (["cotizacion", "revendedor"].includes(aiResult.category) && hasEnoughLeadData(aiResult));
@@ -153,12 +169,19 @@ export async function handleIncomingMessage(message: ParsedMessage): Promise<voi
   if (shouldCreateLead && !conversation.leadCreated && !WHATSAPP_REQUIRE_LEAD_CONFIRMATION) {
     try {
       const lead = buildLeadFromAI(aiResult, message, conversation);
-      await processLead(lead);
-      await db.waConversation.update({
-        where: { id: conversation.id },
-        data: { leadCreated: true },
-      });
-      console.info("[wa:router] Lead creado para conversación", conversation.id);
+      // processLead no lanza: aísla el fallo de cada destino y lo reporta en
+      // `persisted`. Si no quedó guardado en ninguno, NO marcamos leadCreated,
+      // porque ese flag bloquea cualquier intento posterior en la conversación.
+      const { persisted } = await processLead(lead);
+      if (!persisted) {
+        logger.error("wa.router.leadNotPersisted", `conversacion ${conversation.id}`);
+      } else {
+        await db.waConversation.update({
+          where: { id: conversation.id },
+          data: { leadCreated: true },
+        });
+        console.info("[wa:router] Lead creado para conversación", conversation.id);
+      }
     } catch (err) {
       console.error("[wa:router] Error creando lead", err);
     }
@@ -266,7 +289,8 @@ async function handlePendingLeadConfirmation(
     }
 
     try {
-      await processLead(lead);
+      const { persisted } = await processLead(lead);
+      if (!persisted) throw new Error("ningún destino durable conservó el lead");
       await db.waConversation.update({
         where: { id: conversation.id },
         data: { leadCreated: true, status: "escalated" },

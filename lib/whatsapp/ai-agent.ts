@@ -4,6 +4,7 @@
 
 import { generateText } from "ai";
 import { BARTEZ_KNOWLEDGE } from "../ai/knowledge.ts";
+import { logger } from "../logger.ts";
 
 // ---- Types -----------------------------------------------------------------
 
@@ -20,6 +21,12 @@ export type AIResponse = {
   reply: string;
   category: WaCategory;
   shouldEscalate: boolean;
+  /**
+   * true cuando la llamada al modelo falló y esto es el fallback técnico.
+   * No es una clasificación de la IA: `category` y `leadData` no significan
+   * nada en ese caso, así que el router no debe armar un lead con ellos.
+   */
+  failed?: boolean;
   leadData?: {
     empresa?: string;
     necesidad?: string;
@@ -120,10 +127,7 @@ export async function processWithAI(
 
     return parseAIResponse(result.text);
   } catch (error) {
-    console.error(
-      "[whatsapp/ai-agent] AI generation error",
-      error instanceof Error ? error.message : error,
-    );
+    logger.error("whatsapp.ai.generate", error);
     return fallbackResponse();
   }
 }
@@ -170,6 +174,8 @@ function fallbackResponse(): AIResponse {
     reply:
       "Disculpá, tuve un problema técnico. ¿Podés repetir tu consulta? Si es urgente, escribinos a ventas@bartez.com.ar 📩",
     category: "info_general",
+    // Derivamos a un humano: si el bot no puede responder, que atienda alguien.
     shouldEscalate: true,
+    failed: true,
   };
 }
