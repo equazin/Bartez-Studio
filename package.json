@@ -16,6 +16,7 @@
     "db:generate": "prisma generate"
   },
   "dependencies": {
+    "@ai-sdk/anthropic": "^3.0.119",
     "@ai-sdk/react": "^3.0.210",
     "@prisma/client": "^6.2.1",
     "@streamdown/cjk": "^1.0.3",

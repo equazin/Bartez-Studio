@@ -3,8 +3,14 @@
 // ---------------------------------------------------------------------------
 
 import { generateText } from "ai";
+import { anthropic } from "@ai-sdk/anthropic";
 import { BARTEZ_KNOWLEDGE } from "../ai/knowledge.ts";
 import { logger } from "../logger.ts";
+
+// Modelo Anthropic por defecto. Puede sobrescribirse con WHATSAPP_AI_MODEL para
+// subir a Sonnet 5 sin redeploy. Nombre de modelo idéntico al de la Console de
+// Anthropic. Requiere ANTHROPIC_API_KEY en el entorno.
+const WHATSAPP_MODEL_ID = process.env.WHATSAPP_AI_MODEL || "claude-haiku-4-5-20251001";
 
 // ---- Types -----------------------------------------------------------------
 
@@ -108,21 +114,13 @@ export async function processWithAI(
 ): Promise<AIResponse> {
   try {
     const result = await generateText({
-      model: process.env.AI_GATEWAY_MODEL || "anthropic/claude-haiku-4.5",
+      model: anthropic(WHATSAPP_MODEL_ID),
       system: WHATSAPP_SYSTEM_PROMPT,
       messages: [
         ...history.map((h) => ({ role: h.role as "user" | "assistant", content: h.content })),
         { role: "user" as const, content: message },
       ],
       maxOutputTokens: 500,
-      providerOptions: {
-        gateway: {
-          tags: [
-            "feature:bartez-whatsapp",
-            `env:${process.env.VERCEL_ENV || "local"}`,
-          ],
-        },
-      },
     });
 
     return parseAIResponse(result.text);

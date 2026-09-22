@@ -94,6 +94,7 @@ test("handleIncomingMessage processes inbound text message, calls AI, saves outb
   const oldWaToken = process.env.WHATSAPP_API_TOKEN;
   const oldWaPhoneId = process.env.WHATSAPP_PHONE_NUMBER_ID;
   process.env.AI_GATEWAY_API_KEY = "mock-key";
+  process.env.ANTHROPIC_API_KEY = "mock-key";
   process.env.OPENAI_API_KEY = "mock-key";
   process.env.WHATSAPP_API_TOKEN = "mock-wa-token";
   process.env.WHATSAPP_PHONE_NUMBER_ID = "123456789";
@@ -105,7 +106,7 @@ test("handleIncomingMessage processes inbound text message, calls AI, saves outb
   global.fetch = (async (url: string, options: any) => {
     fetchCalls.push({ url, options });
 
-    if (url.includes("/messages")) {
+    if (url.includes("graph.facebook.com")) {
       // Mock WhatsApp API success response
       return new Response(JSON.stringify({ messaging_product: "whatsapp", messages: [{ id: "wamid.sent-xxx" }] }), {
         status: 200,
@@ -125,20 +126,13 @@ test("handleIncomingMessage processes inbound text message, calls AI, saves outb
           }),
         },
       ],
-      finishReason: "stop",
-      usage: {
-        inputTokens: {
-          total: 10,
-          noCache: 10,
-          cacheRead: 0,
-          cacheWrite: 0,
-        },
-        outputTokens: {
-          total: 10,
-          text: 10,
-          reasoning: 0,
-        },
-      },
+      id: "msg_test",
+      type: "message",
+      role: "assistant",
+      model: "claude-haiku-4-5-20251001",
+      stop_reason: "end_turn",
+      stop_sequence: null,
+      usage: { input_tokens: 10, output_tokens: 10 },
     };
 
     return new Response(JSON.stringify(aiResponsePayload), {
@@ -184,7 +178,7 @@ test("handleIncomingMessage processes inbound text message, calls AI, saves outb
     assert.equal(conv.category, "cotizacion");
 
     // 4. Check fetch requests
-    const whatsappSends = fetchCalls.filter((c) => c.url.includes("/messages"));
+    const whatsappSends = fetchCalls.filter((c) => c.url.includes("graph.facebook.com"));
     // One for markAsRead and one for sendTextMessage
     assert.equal(whatsappSends.length, 2);
 
@@ -211,6 +205,7 @@ test("handleIncomingMessage asks for confirmation before creating a lead", async
   const oldLeadConfirmation = process.env.WHATSAPP_REQUIRE_LEAD_CONFIRMATION;
 
   process.env.AI_GATEWAY_API_KEY = "mock-key";
+  process.env.ANTHROPIC_API_KEY = "mock-key";
   process.env.OPENAI_API_KEY = "mock-key";
   process.env.MONDAY_API_TOKEN = "mock-token";
   process.env.WHATSAPP_API_TOKEN = "mock-wa-token";
@@ -223,7 +218,7 @@ test("handleIncomingMessage asks for confirmation before creating a lead", async
   global.fetch = (async (url: string, options: any) => {
     fetchCalls.push({ url, options });
 
-    if (url.includes("/messages")) {
+    if (url.includes("graph.facebook.com")) {
       return new Response(JSON.stringify({ ok: true }), { status: 200 });
     }
 
@@ -248,20 +243,13 @@ test("handleIncomingMessage asks for confirmation before creating a lead", async
           }),
         },
       ],
-      finishReason: "stop",
-      usage: {
-        inputTokens: {
-          total: 10,
-          noCache: 10,
-          cacheRead: 0,
-          cacheWrite: 0,
-        },
-        outputTokens: {
-          total: 10,
-          text: 10,
-          reasoning: 0,
-        },
-      },
+      id: "msg_test",
+      type: "message",
+      role: "assistant",
+      model: "claude-haiku-4-5-20251001",
+      stop_reason: "end_turn",
+      stop_sequence: null,
+      usage: { input_tokens: 10, output_tokens: 10 },
     };
 
     return new Response(JSON.stringify(aiResponsePayload), { status: 200 });
@@ -314,6 +302,7 @@ test("handleIncomingMessage creates lead after explicit WhatsApp confirmation", 
   const oldWaPhoneId = process.env.WHATSAPP_PHONE_NUMBER_ID;
 
   process.env.AI_GATEWAY_API_KEY = "mock-key";
+  process.env.ANTHROPIC_API_KEY = "mock-key";
   process.env.OPENAI_API_KEY = "mock-key";
   process.env.MONDAY_API_TOKEN = "mock-token";
   process.env.WHATSAPP_API_TOKEN = "mock-wa-token";
@@ -325,7 +314,7 @@ test("handleIncomingMessage creates lead after explicit WhatsApp confirmation", 
   global.fetch = (async (url: string, options: any) => {
     fetchCalls.push({ url, options });
 
-    if (url.includes("/messages")) {
+    if (url.includes("graph.facebook.com")) {
       return new Response(JSON.stringify({ ok: true }), { status: 200 });
     }
 
@@ -400,6 +389,7 @@ test("handleIncomingMessage skips processing if conversation status is escalated
   const oldGatewayKey = process.env.AI_GATEWAY_API_KEY;
   const oldOpenaiKey = process.env.OPENAI_API_KEY;
   process.env.AI_GATEWAY_API_KEY = "mock-key";
+  process.env.ANTHROPIC_API_KEY = "mock-key";
   process.env.OPENAI_API_KEY = "mock-key";
   process.env.WHATSAPP_API_TOKEN = "mock-wa-token";
   process.env.WHATSAPP_PHONE_NUMBER_ID = "123456789";
@@ -443,7 +433,7 @@ test("handleIncomingMessage skips processing if conversation status is escalated
     assert.equal(inboundMsg.body, "Hola, ¿hay alguien ahí?");
 
     // 3. No outbound messages should have been sent to Meta API
-    const whatsappSends = fetchCalls.filter((c) => c.url.includes("/messages"));
+    const whatsappSends = fetchCalls.filter((c) => c.url.includes("graph.facebook.com"));
     // Since it's escalated, we markAsRead (blue ticks) is acceptable/fired,
     // but no sendTextMessage (sending outbound message) should be called.
     // Let's verify markAsRead is called but no text send.
@@ -469,13 +459,14 @@ test("cuando la IA falla, deriva a humano sin fabricar un lead ni pedir confirma
   const oldWaToken = process.env.WHATSAPP_API_TOKEN;
   const oldWaPhoneId = process.env.WHATSAPP_PHONE_NUMBER_ID;
   process.env.AI_GATEWAY_API_KEY = "mock-key";
+  process.env.ANTHROPIC_API_KEY = "mock-key";
   process.env.WHATSAPP_API_TOKEN = "mock-wa-token";
   process.env.WHATSAPP_PHONE_NUMBER_ID = "123456789";
 
   const originalFetch = global.fetch;
   try {
     global.fetch = (async (url: string, options: any) => {
-      if (url.includes("/messages")) {
+      if (url.includes("graph.facebook.com")) {
         return new Response(
           JSON.stringify({ messaging_product: "whatsapp", messages: [{ id: "wamid.sent-xxx" }] }),
           { status: 200, headers: { "Content-Type": "application/json" } },
