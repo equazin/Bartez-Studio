@@ -6,6 +6,7 @@ import { generateText } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { BARTEZ_KNOWLEDGE } from "../ai/knowledge.ts";
 import { logger } from "../logger.ts";
+import { isMailConfigured, sendEmail } from "../integrations/mail.ts";
 
 // Modelo Anthropic por defecto. Puede sobrescribirse con WHATSAPP_AI_MODEL para
 // subir a Sonnet 5 sin redeploy. Nombre de modelo idéntico al de la Console de
@@ -85,6 +86,55 @@ Respondé SIEMPRE en JSON válido con esta estructura exacta, sin texto adiciona
 }
 `.trim();
 
+// ---- Fallback rate tracker (alert anti-repetition) ------------------------
+
+const FALLBACK_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+const FALLBACK_ALERT_THRESHOLD = 5;
+const fallbackTimestamps: number[] = [];
+let alertSentAt = 0;
+
+function trackFallback(): void {
+  const now = Date.now();
+  fallbackTimestamps.push(now);
+
+  // Prune timestamps older than the window
+  const cutoff = now - FALLBACK_WINDOW_MS;
+  while (fallbackTimestamps.length > 0 && fallbackTimestamps[0] < cutoff) {
+    fallbackTimestamps.shift();
+  }
+
+  if (fallbackTimestamps.length >= FALLBACK_ALERT_THRESHOLD && now - alertSentAt > FALLBACK_WINDOW_MS) {
+    alertSentAt = now;
+    sendFallbackAlert(fallbackTimestamps.length).catch((err) =>
+      logger.error("whatsapp.ai.fallbackAlert", err),
+    );
+  }
+}
+
+async function sendFallbackAlert(count: number): Promise<void> {
+  if (!(await isMailConfigured())) return;
+
+  const to = process.env.MAIL_TO || "";
+  if (!to) return;
+
+  const subject = `⚠️ Bot WhatsApp: ${count} fallos en la última hora`;
+  const html = `<div style="font-family:Arial,sans-serif;max-width:560px;margin:auto">
+    <h2 style="color:#c0392b">⚠️ Alerta: bot WhatsApp con fallos repetidos</h2>
+    <p>El bot de WhatsApp respondió con el <b>fallback técnico ${count} veces</b> en la última hora.</p>
+    <p>Esto indica que la IA no está respondiendo correctamente. Posibles causas:</p>
+    <ul>
+      <li>API key de Anthropic expirada o sin crédito</li>
+      <li>Modelo no disponible o rate-limited</li>
+      <li>Error de red hacia api.anthropic.com</li>
+    </ul>
+    <p>Revisá las variables de entorno en Vercel y los logs de la función <code>/api/whatsapp/webhook</code>.</p>
+    <p style="color:#667;font-size:12px">Esta alerta no se repite hasta que pase 1 hora desde el último envío.</p>
+  </div>`;
+
+  await sendEmail(to, subject, html);
+  logger.info("whatsapp.ai.fallbackAlertSent", { count, to });
+}
+
 // ---- Valid categories for fallback -----------------------------------------
 
 const VALID_CATEGORIES = new Set<WaCategory>([
@@ -126,6 +176,7 @@ export async function processWithAI(
     return parseAIResponse(result.text);
   } catch (error) {
     logger.error("whatsapp.ai.generate", error);
+    trackFallback();
     return fallbackResponse();
   }
 }
